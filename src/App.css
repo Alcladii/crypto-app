@@ -1,3 +1,9 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +45,106 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+}
+
+.individual-coin {
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.coin-name-icon-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.coin-column-width {
+  width: 150px;
+}
+
+.coin-data-width {
+  width: 80px;
+}
+
+.individual-coin-chart{
+  width: 150px;
+}
+
+.result-list{
+  position: absolute;
+  color: black;
+  top: 10px;
+  width: 300px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px #ddd;
+  margin-top: 1rem;
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.search-wrapper{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; 
+}
+
+.coin-page-columns{
+  display: flex;
+  width: 900px;
+}
+
+.coin-page-column-1{
+  width: 25%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coin-page-column-2{
+  width: 30%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coin-page-column-3{
+  width: 45%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ath-atl-container{
+  display: flex;
+  width: 100%;
+}
+
+.ath-column{
+  border: 1px solid white;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atl-column{
+  border: 1px solid white;
+  width: 50%;
 }

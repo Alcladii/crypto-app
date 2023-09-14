@@ -1,55 +1,60 @@
-import React from "react"
+import React, {useState} from "react"
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import Coins from "./pages/Coins";
+import Portfolio from  "./pages/Portfolio";
+import CoinPage from "./pages/CoinPage"
+import queryString from 'query-string';
+import {SearchItemInput} from './components/SearchInput'
+import { ResultList } from "./components/ResultList";
+
+let urlObject = {
+  user: "sam",
+  access: true,
+  role: ["admin", "editor", "manager"],
+};
+
 
 export default function App() {
+  const [results, setResults] = useState([]);
+  
   return (
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
+          <div>
+            <ul>
+              <button>
+                <Link to="/coins">Coins</Link>
+              </button>&nbsp;&nbsp;
+              <button>
+                <Link to="/portfolio">Portfolio</Link>
+              </button>
+            </ul>
+            <div className="search-wrapper">
+              <SearchItemInput setResults={setResults}/> 
+              <ResultList results={results}/>
+            </div>            
+          </div>               
         </nav>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
+          <Route exact path="/coins">
+            <Coins />
           </Route>
-          <Route path="/users">
-            <Users />
+          <Route exact path="/portfolio">
+            <Portfolio />
           </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route exact path="/coin-page/:coinId" component={(props) => (
+            <CoinPage {...props}/>
+          )}/>
         </Switch>
       </div>
     </Router>
+    
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
