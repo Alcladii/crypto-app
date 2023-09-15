@@ -87,7 +87,15 @@ const CoinPage = ({ match }) => {
             </div>
           </div>    
         </div>
-        <div className="coin-page-column-3"></div>
+        <div className="coin-page-column-3">
+          {singleCoin.market_data && <div>Market Cap: ${(singleCoin.market_data.market_cap.usd/1000000000).toFixed(2)}B&nbsp;&nbsp;{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>}
+          {singleCoin.market_data && <div>Fully Diluted Valuation: ${(singleCoin.market_data.fully_diluted_valuation.usd/1000000000).toFixed(2)}B</div>}
+          <div>Volume 24h: </div>
+          <div>Volume/Market: </div>
+          <div>Total Volume: </div>
+          <div>Circulating Supply: </div>
+          <div>Max Supply: </div>
+        </div>
       </div>
     </div>
   );

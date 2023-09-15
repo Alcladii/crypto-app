@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { Link, useHistory} from 'react-router-dom';
 import axios from "axios";
 import styled from "styled-components";
@@ -7,8 +7,9 @@ import LineChart from "../components/LineChart"
 import BarChart from "../components/BarChart"
 import LineChartIndividualCoin from "../components/LineChartIndividualCoin"
 import '../App.css'
-import api from "../api";
+//import api from "../api";
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { CryptoContext } from "../contexts/cryptoContext";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -38,33 +39,26 @@ const ProgressBarInner = styled.div`
 
 console.clear();
 
-//console.log(process.env.NODE_ENV)
-
-const useLocalState = (key, initialValue) => {
-  const storedValue = window.localStorage.getItem(key);
-  const item = storedValue ? JSON.parse(storedValue) : initialValue;
-  const [state, setState] = useState(item);
-
-  const updateState = (value) => {
-    window.localStorage.setItem(key, JSON.stringify(value));
-    setState(value);
-  };
-  return [state, updateState];
-};
-
 function Coins() {
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [coinList, setCoinList] = useState([])
+  const {
+    coinList,
+    getCoinList,
+    coinListDsc,
+    setToDsc,
+    setToAsc,
+    isLoading,
+    hasError,
+    useLocalState,
+  } = useContext(CryptoContext)
+
   const [priceList, setPriceList] = useState([]);
   const [volumeList, setVolumeList] = useState([]);
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
-  const [coinListDsc, setCoinListDsc] = useState(true)
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false)
   const [coinPage, setCoinPage] = useState(1)
 
-  const getCoinList = async () => {
+  /*const getCoinList = async () => {
     try {
       /*setIsLoading(true);
       const {data}  = await axios(      
@@ -76,7 +70,7 @@ function Coins() {
         "/coins/markets",
         "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
       );*/
-      let coins;
+      /*let coins;
       if (coinListDsc === true){
         setIsLoading(true)
         const response = await api(
@@ -104,7 +98,7 @@ function Coins() {
       setHasError(true); 
       setisLoading(false);
     }
-  };
+  };*/
 
   const getCoinPriceVolume = async (numOfDays) => {
     try {
@@ -167,13 +161,13 @@ function Coins() {
     getCoinPriceVolume(numOfDays)
   }, [])
 
-  const setToDsc = () => {
+  /*const setToDsc = () => {
     setCoinListDsc(true); 
   };
 
   const setToAsc = () => {
     setCoinListDsc(false); 
-  };
+  };*/
 
   useEffect(()=>{
     getCoinList()

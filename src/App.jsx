@@ -11,6 +11,8 @@ import CoinPage from "./pages/CoinPage"
 import queryString from 'query-string';
 import {SearchItemInput} from './components/SearchInput'
 import { ResultList } from "./components/ResultList";
+import {CurrencySelector} from "./components/CurrencySelector"
+import {CryptoProvider} from "./contexts/cryptoContext"
 
 let urlObject = {
   user: "sam",
@@ -20,10 +22,12 @@ let urlObject = {
 
 
 export default function App() {
+  
   const [results, setResults] = useState([]);
   
   return (
     <Router>
+      <CryptoProvider>
       <div>
         <nav>
           <div>
@@ -38,11 +42,14 @@ export default function App() {
             <div className="search-wrapper">
               <SearchItemInput setResults={setResults}/> 
               <ResultList results={results}/>
-            </div>            
+            </div>  
+            <div>
+              <CurrencySelector />
+            </div>          
           </div>               
         </nav>
 
-        <Switch>
+        <Switch>       
           <Route exact path="/coins">
             <Coins />
           </Route>
@@ -53,7 +60,9 @@ export default function App() {
             <CoinPage {...props}/>
           )}/>
         </Switch>
+        
       </div>
+      </CryptoProvider>
     </Router>
     
   );
