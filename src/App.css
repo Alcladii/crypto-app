@@ -1,0 +1,161 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+}
+
+.individual-coin {
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.coin-name-icon-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.coin-column-width {
+  width: 150px;
+}
+
+.coin-data-width {
+  width: 80px;
+}
+
+.individual-coin-chart {
+  width: 150px;
+}
+
+.result-list {
+  position: absolute;
+  color: black;
+  top: 10px;
+  width: 300px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px #ddd;
+  margin-top: 1rem;
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.coin-page-columns {
+  display: flex;
+  width: 900px;
+}
+
+.coin-page-column-1 {
+  width: 25%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coin-page-column-2 {
+  width: 30%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coin-page-column-3 {
+  width: 45%;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 10px;
+}
+
+.ath-atl-container {
+  display: flex;
+  width: 100%;
+}
+
+.ath-column {
+  border: 1px solid white;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atl-column {
+  border: 1px solid white;
+  width: 50%;
+}
+
+.market-cap-change-wrapper {
+   display: flex;
+   justify-content: space-between;
+}
+
+.currency-selector{
+   max-height: 100px;
+   overflow-y: "auto";
+}
