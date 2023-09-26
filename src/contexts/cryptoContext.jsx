@@ -57,8 +57,6 @@ export const CryptoProvider = ({ children }) => {
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol
 
-  console.log(currencySymbol)
-
   return (
     <CryptoContext.Provider
       value={{
