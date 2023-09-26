@@ -1,4 +1,4 @@
-
+import currencies from "../mocks/currencies.json"
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 import React, { useState, useContext } from "react";
@@ -16,7 +16,7 @@ export const CurrencySelector = () => {
     <div>
     <select className='currency-selector' value={displayCurrency} onChange={handleChange}>
       {currencyList.map((currency)=>(
-        <option key={uid} value={currency}>{currency}</option>
+        <option key={uid} value={currency}>{currency.toUpperCase()}</option>
       ))}  
     </select>
     </div>

@@ -1,9 +1,11 @@
+import currencies from "../mocks/currencies.json"
 import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
+
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -266,6 +268,7 @@ function Coins() {
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
+              {/*{currencies[displayCurrency.toUpperCase()]?.symbol}*/}
               {currencySymbol}
               {singleCoin.current_price /*.toLocaleString()*/}
             </div>

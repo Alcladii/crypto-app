@@ -1,10 +1,14 @@
+
+import api from "../api";
+import currencies from "../mocks/currencies.json"
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import api from "../api";
+
 
 export const CryptoContext = createContext();
 
 export const CryptoProvider = ({ children }) => {
+
   const useLocalState = (key, initialValue) => {
     const storedValue = window.localStorage.getItem(key);
     const item = storedValue ? JSON.parse(storedValue) : initialValue;
@@ -41,7 +45,7 @@ export const CryptoProvider = ({ children }) => {
       );
       let fetchCurrencyList;
       fetchCurrencyList = Object.keys(singleCoinData.data.market_data.ath);
-      console.log(fetchCurrencyList);
+      //console.log(fetchCurrencyList);
       setCurrencyListIsLoading(false);
       setCurrencyList(fetchCurrencyList);
       setCurrencyLoadingHasError(false);
@@ -51,40 +55,9 @@ export const CryptoProvider = ({ children }) => {
     }
   };
 
-  let currencySymbol;
+  const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol
 
-  switch (displayCurrency) {
-    case "aed":
-      currencySymbol = "د.إ";
-      break;
-    case "ars":
-      currencySymbol = "AR$";
-      break;
-    case "aud":
-      currencySymbol = "AU$";
-      break;
-    case "bch":
-      currencySymbol = "BCH";
-      break;
-    case "bdt":
-      currencySymbol = "ó";
-      break;
-    case "bhd":
-      currencySymbol = ".د.";
-      break;
-    case "hkd":
-      currencySymbol = "HK$";
-      break;
-    case "usd":
-      currencySymbol = "$";
-      break;
-    case "gbp":
-      currencySymbol = "£";
-      break;
-    case "eur":
-      currencySymbol = "€";
-      break;
-  }
+  console.log(currencySymbol)
 
   return (
     <CryptoContext.Provider

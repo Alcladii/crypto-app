@@ -1,4 +1,5 @@
 import { CryptoContext } from "../contexts/cryptoContext";
+import currencies from "../mocks/currencies.json"
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -11,8 +12,8 @@ const CoinPage = () => {
   const {
     convertToBillion,
     displayCurrency,
-    currencySymbol,
     getCurrencyList,
+    currencySymbol,
   } = useContext(CryptoContext)
 
   const [singleCoin, setSingleCoin] = useState({});
