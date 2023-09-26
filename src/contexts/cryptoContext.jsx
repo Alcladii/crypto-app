@@ -25,6 +25,7 @@ export const CryptoProvider = ({ children }) => {
     "currentDisplayCurrency",
     "usd"
   );
+
   const [currencyList, setCurrencyList] = useState([]);
   const [currencyListIsLoading, setCurrencyListIsLoading] = useState(false);
   const [currencyLoadingHasError, setCurrencyLoadingHasError] = useState(false);
