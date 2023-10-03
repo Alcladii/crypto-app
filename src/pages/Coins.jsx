@@ -45,9 +45,6 @@ function Coins() {
     useLocalState,
     convertToBillion,
     retainTwoDigits,
-    displayCurrency,
-    currencySymbol,
-    getCurrencyList,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
@@ -171,10 +168,6 @@ function Coins() {
     history.push(`/coin-page/${item.id}`);
   };
 
-  useEffect(() => {
-    getCurrencyList();
-  }, []);
-
   return (
     <div className="App">
       <div>
@@ -269,7 +262,6 @@ function Coins() {
             &nbsp;&nbsp;
             <div className="coin-data-width">
               {/*{currencies[displayCurrency.toUpperCase()]?.symbol}*/}
-              {currencySymbol}
               {singleCoin.current_price /*.toLocaleString()*/}
             </div>
             &nbsp;&nbsp;
@@ -300,11 +292,9 @@ function Coins() {
             <div className="coin-column-width">
               <div className="market-cap-change-wrapper">
                 <span>
-                  {currencySymbol}
                   {convertToBillion(singleCoin.market_cap_change_24h)}B
                 </span>
                 <span>
-                  {currencySymbol}
                   {convertToBillion(singleCoin.market_cap)}B
                 </span>
               </div>

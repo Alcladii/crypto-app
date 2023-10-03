@@ -11,9 +11,6 @@ const CoinPage = () => {
 
   const {
     convertToBillion,
-    displayCurrency,
-    getCurrencyList,
-    currencySymbol,
   } = useContext(CryptoContext)
 
   const [singleCoin, setSingleCoin] = useState({});
@@ -41,11 +38,6 @@ const CoinPage = () => {
     getSingleCoinData(coinId.coinId);
   }, [coinId]);
 
-  useEffect(() => {
-    getCurrencyList() 
-  }, [])
-
-  
   return (
     <div>
       {singleCoinIsLoading && <div>Loading Coin</div>}
@@ -65,7 +57,7 @@ const CoinPage = () => {
         </div>
         <div className="coin-page-column-2">
           {singleCoin.market_data && (
-            <div>{currencySymbol}{singleCoin.market_data.current_price[displayCurrency].toLocaleString()}</div>
+            <div>{singleCoin.market_data.current_price.usd.toLocaleString()}</div>
           )}
           {singleCoin.market_data && (
             <div>{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>
@@ -73,13 +65,13 @@ const CoinPage = () => {
           <div className="ath-atl-container">
             <div className="ath-column">ATH:
               {singleCoin.market_data && (
-                <div>{currencySymbol}{singleCoin.market_data.ath[displayCurrency].toLocaleString()}</div>
+                <div>{singleCoin.market_data.ath.usd.toLocaleString()}</div>
               )}
               {singleCoin.market_data && (
-                <div>{singleCoin.market_data.ath_change_percentage[displayCurrency].toFixed(2)}%</div>
+                <div>{singleCoin.market_data.ath_change_percentage.usd.toFixed(2)}%</div>
               )}
               {singleCoin.market_data && (
-                <div>{new Date(singleCoin.market_data.ath_date[displayCurrency]).toLocaleDateString('en-US', {
+                <div>{new Date(singleCoin.market_data.ath_date.usd).toLocaleDateString('en-US', {
                   month: '2-digit',
                   day: '2-digit',
                   year: 'numeric',
@@ -89,13 +81,13 @@ const CoinPage = () => {
             </div>
             <div className="atl-column">ATL:
             {singleCoin.market_data && (
-                <div>{currencySymbol}{singleCoin.market_data.atl[displayCurrency].toLocaleString()}</div>
+                <div>{singleCoin.market_data.atl.usd.toLocaleString()}</div>
               )}
               {singleCoin.market_data && (
-                <div>{singleCoin.market_data.atl_change_percentage[displayCurrency].toFixed(2)}%</div>
+                <div>{singleCoin.market_data.atl_change_percentage.usd.toFixed(2)}%</div>
               )}
               {singleCoin.market_data && (
-                <div>{new Date(singleCoin.market_data.atl_date[displayCurrency]).toLocaleDateString('en-US', {
+                <div>{new Date(singleCoin.market_data.atl_date.usd).toLocaleDateString('en-US', {
                   month: '2-digit',
                   day: '2-digit',
                   year: 'numeric',
@@ -105,8 +97,8 @@ const CoinPage = () => {
           </div>    
         </div>
         <div className="coin-page-column-3">
-          {singleCoin.market_data && <div>Market Cap: {currencySymbol}{convertToBillion(singleCoin.market_data.market_cap[displayCurrency])}B&nbsp;&nbsp;{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>}
-          {singleCoin.market_data && <div>Fully Diluted Valuation: {currencySymbol}{convertToBillion(singleCoin.market_data.fully_diluted_valuation[displayCurrency])}B</div>}
+          {singleCoin.market_data && <div>Market Cap: {convertToBillion(singleCoin.market_data.market_cap.usd)}B&nbsp;&nbsp;{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>}
+          {singleCoin.market_data && <div>Fully Diluted Valuation: {convertToBillion(singleCoin.market_data.fully_diluted_valuation.usd)}B</div>}
           <div>Volume 24h: </div>
           <div>Volume/Market: </div>
           <div>Total Volume: </div>

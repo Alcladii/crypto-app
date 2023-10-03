@@ -38,9 +38,6 @@ export default function App() {
                 <SearchItemInput setResults={setResults} />
                 <ResultList results={results} />
               </div>
-              <div>
-                <CurrencySelector />
-              </div>
             </div>
           </nav>
           <Switch>
