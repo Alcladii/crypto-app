@@ -1,37 +1,53 @@
-import React, { useState, useEffect } from "react";
+import { CryptoContext } from "../contexts/cryptoContext";
+import currencies from "../mocks/currencies.json"
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-const CoinPage = ({ match }) => {
-  const [singleCoin, setSingleCoin] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+const CoinPage = () => {
 
-  const getSingleCoinData = async () => {
+  const coinId = useParams()
+
+  const {
+    convertToBillion,
+    displayCurrency,
+    getCurrencyList,
+    currencySymbol,
+  } = useContext(CryptoContext)
+
+  const [singleCoin, setSingleCoin] = useState({});
+  const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
+  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
+    useState(false);
+
+  const getSingleCoinData = async (item) => {
     try {
-      setIsLoading(true)
+      setSingleCoin({});
+      setSingleCoinIsLoading(true);
       const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${match.params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
-      //console.log("from singleCoinData.data", singleCoinData.data)
-      setIsLoading(false);
+      setSingleCoinIsLoading(false);
       setSingleCoin(singleCoinData.data);
-      setHasError(false)
+      setSingleCoinLoadingHasError(false);
     } catch (err) {
-      //console.log("Error in Fetching Data");
-      setHasError(true)
-      setIsLoading(false)
+      setSingleCoinLoadingHasError(true);
+      setSingleCoinIsLoading(false);
     }
   };
 
-  //console.log(singleCoin)
+  useEffect(() => {
+    getSingleCoinData(coinId.coinId);
+  }, [coinId]);
 
   useEffect(() => {
-    getSingleCoinData();
-  }, [match.params.coinId]);
+    getCurrencyList() 
+  }, [])
 
   return (
     <div>
+      {singleCoinIsLoading && <div>Loading Coin</div>}
       <div className="coin-page-columns">
         <div className="coin-page-column-1">
           {/*<img src={(singleCoin.image).length > 0 && singleCoin.image.small} />*/}
@@ -48,21 +64,21 @@ const CoinPage = ({ match }) => {
         </div>
         <div className="coin-page-column-2">
           {singleCoin.market_data && (
-            <div>${(singleCoin.market_data.current_price.usd).toLocaleString()}</div>
+            <div>{currencySymbol}{singleCoin.market_data.current_price[displayCurrency].toLocaleString()}</div>
           )}
           {singleCoin.market_data && (
             <div>{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>
           )}  
           <div className="ath-atl-container">
             <div className="ath-column">ATH:
+              {singleCoin.market_data && 
+                <div>{currencySymbol}{singleCoin.market_data.ath[displayCurrency].toLocaleString()}</div>
+              }
               {singleCoin.market_data && (
-                <div>${singleCoin.market_data.ath.usd.toLocaleString()}</div>
+                <div>{singleCoin.market_data.ath_change_percentage[displayCurrency].toFixed(2)}%</div>
               )}
               {singleCoin.market_data && (
-                <div>{singleCoin.market_data.ath_change_percentage.usd.toFixed(2)}%</div>
-              )}
-              {singleCoin.market_data && (
-                <div>{new Date(singleCoin.market_data.ath_date.usd).toLocaleDateString('en-US', {
+                <div>{new Date(singleCoin.market_data.ath_date[displayCurrency]).toLocaleDateString('en-US', {
                   month: '2-digit',
                   day: '2-digit',
                   year: 'numeric',
@@ -72,13 +88,13 @@ const CoinPage = ({ match }) => {
             </div>
             <div className="atl-column">ATL:
             {singleCoin.market_data && (
-                <div>${singleCoin.market_data.atl.usd.toLocaleString()}</div>
+                <div>{currencySymbol}{singleCoin.market_data.atl[displayCurrency].toLocaleString()}</div>
               )}
               {singleCoin.market_data && (
-                <div>{singleCoin.market_data.atl_change_percentage.usd.toFixed(2)}%</div>
+                <div>{singleCoin.market_data.atl_change_percentage[displayCurrency].toFixed(2)}%</div>
               )}
               {singleCoin.market_data && (
-                <div>{new Date(singleCoin.market_data.atl_date.usd).toLocaleDateString('en-US', {
+                <div>{new Date(singleCoin.market_data.atl_date[displayCurrency]).toLocaleDateString('en-US', {
                   month: '2-digit',
                   day: '2-digit',
                   year: 'numeric',
@@ -87,8 +103,17 @@ const CoinPage = ({ match }) => {
             </div>
           </div>    
         </div>
-        <div className="coin-page-column-3"></div>
+        <div className="coin-page-column-3">
+          {singleCoin.market_data && <div>Market Cap: {currencySymbol}{convertToBillion(singleCoin.market_data.market_cap[displayCurrency])}B&nbsp;&nbsp;{singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%</div>}
+          {singleCoin.market_data && <div>Fully Diluted Valuation: {currencySymbol}{convertToBillion(singleCoin.market_data.fully_diluted_valuation[displayCurrency])}B</div>}
+          <div>Volume 24h: </div>
+          <div>Volume/Market: </div>
+          <div>Total Volume: </div>
+          <div>Circulating Supply: </div>
+          <div>Max Supply: </div>
+        </div>
       </div>
+      {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
     </div>
   );
 };
