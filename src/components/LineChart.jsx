@@ -1,57 +1,56 @@
-import React from 'react'
-import { Line } from 'react-chartjs-2'
+import React from "react";
+import { Line } from "react-chartjs-2";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Filler,
-    Legend,
-  } from 'chart.js';
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Filler,
-    Legend
-  );
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
 
-const LineChart = ({priceList}) => {
-
+const LineChart = ({ priceList }) => {
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       title: {
         display: false,
-        text: "Chart.js Line Chart"
-      }
+        text: "Chart.js Line Chart",
+      },
     },
     scales: {
       y: {
         display: false,
         grid: {
           display: false,
-          drawBorder: false
-        }
+          drawBorder: false,
+        },
       },
       x: {
         display: true,
         grid: {
           display: false,
-          drawBorder: false
-        }
-      }
+          drawBorder: false,
+        },
+      },
     },
-    tension: 0.5
+    tension: 0.5,
   };
 
   const priceData = {
@@ -71,14 +70,12 @@ const LineChart = ({priceList}) => {
         },
         pointRadius: 0,
         borderWidth: 3,
-        fill: true
-      }
-    ]
-    
+        fill: true,
+      },
+    ],
   };
 
-  return <Line data={priceData} options={options}/>
-  
-}
+  return <Line data={priceData} options={options} />;
+};
 
-export default LineChart
+export default LineChart;

@@ -1,4 +1,9 @@
-import currencies from "../mocks/currencies.json"
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
+import InfiniteScroll from "react-infinite-scroll-component";
+import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
 import LineChart from "../components/LineChart";
@@ -6,11 +11,7 @@ import BarChart from "../components/BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
 
-import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroll-component";
+console.clear();
 
 const CoinTag = styled.img`
   width: 30px;
@@ -60,8 +61,7 @@ function Coins() {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
-  const [priceList, setPriceList] = useState([]);
-  const [volumeList, setVolumeList] = useState([]);
+  const [priceVolumeList, setPriceVolumeList] = useState(null);
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
@@ -88,7 +88,6 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
-      //setSingleCoin({});
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -114,10 +113,10 @@ function Coins() {
       setPriceVolumeChartIsLoading(false);
       setPriceVolumeChartIsLoadingHasError(false);
       setNumOfDays(numOfDays);
-      setPriceList(data.prices);
-      setVolumeList(data.total_volumes);
+      setPriceVolumeList(data);
     } catch (err) {
       console.log("error getting price and volume");
+      // one is for loading, the other is for error
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
@@ -152,10 +151,6 @@ function Coins() {
     },
     tension: 0.5,
   };
-
-  useEffect(() => {
-    getCoinList();
-  }, []);
 
   useEffect(() => {
     getCoinPriceVolume(numOfDays);
@@ -195,6 +190,7 @@ function Coins() {
           {" "}
           7 Days{" "}
         </button>
+        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
         &nbsp;&nbsp;
         <button
           onClick={() => {
@@ -236,8 +232,12 @@ function Coins() {
         {priceVolumeChartIsLoading && (
           <div>Loading Price and Volumne Chart</div>
         )}
-        <LineChart priceList={priceList} />
-        <BarChart volumeList={volumeList} />
+        {priceVolumeList !== null && (
+          <LineChart priceList={priceVolumeList.prices} />
+        )}
+        {priceVolumeList !== null && (
+          <BarChart volumeList={priceVolumeList.total_volumes} />
+        )}
         {priceVolumeChartIsLoadingHasError && (
           <div>Error fetching Price and Volumne Chart</div>
         )}
