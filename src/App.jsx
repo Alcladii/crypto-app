@@ -10,7 +10,6 @@ import { CurrencySelector } from "./components/CurrencySelector";
 import { CryptoProvider } from "./contexts/cryptoContext";
 
 export default function App() {
-
   const [results, setResults] = useState([]);
 
   return (
@@ -23,6 +22,7 @@ export default function App() {
                 <button>
                   <Link to="/coins">Coins</Link>
                 </button>
+                {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
                 &nbsp;&nbsp;
                 <button>
                   <Link to="/portfolio">Portfolio</Link>
@@ -44,12 +44,9 @@ export default function App() {
             <Route exact path="/portfolio">
               <Portfolio />
             </Route>
-            <Route
-              exact
-              path="/coin-page/:coinId">
-              {/*component={(props) => <CoinPage {...props} />}*/}
+            <Route exact path="/coin-page/:coinId">
               <CoinPage />
-            </Route >
+            </Route>
           </Switch>
         </div>
       </CryptoProvider>

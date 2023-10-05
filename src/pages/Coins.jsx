@@ -11,8 +11,6 @@ import BarChart from "../components/BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
 
-console.clear();
-
 const CoinTag = styled.img`
   width: 30px;
   display: flex;
@@ -38,8 +36,6 @@ const ProgressBarInner = styled.div`
   width: ${(props) => props.width * 5.44}px;
   background: purple;
 `;
-
-console.clear();
 
 function Coins() {
   const {
@@ -115,7 +111,6 @@ function Coins() {
       setNumOfDays(numOfDays);
       setPriceVolumeList(data);
     } catch (err) {
-      console.log("error getting price and volume");
       // one is for loading, the other is for error
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
@@ -268,9 +263,8 @@ function Coins() {
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
-              {/*{currencies[displayCurrency.toUpperCase()]?.symbol}*/}
               {currencySymbol}
-              {singleCoin.current_price /*.toLocaleString()*/}
+              {singleCoin && singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
