@@ -21,18 +21,14 @@ const CoinPage = () => {
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
-      //console.log("from singleCoinData.data", singleCoinData.data)
       setSingleCoinIsLoading(false);
       setSingleCoin(singleCoinData.data);
       setSingleCoinLoadingHasError(false);
     } catch (err) {
-      //console.log("Error in Fetching Data");
       setSingleCoinLoadingHasError(true);
       setSingleCoinIsLoading(false);
     }
   };
-
-  //console.log(singleCoin)
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);
@@ -42,7 +38,6 @@ const CoinPage = () => {
     <div>
       <div className="coin-page-columns">
         <div className="coin-page-column-1">
-          {/*<img src={(singleCoin.image).length > 0 && singleCoin.image.small} />*/}
           {singleCoin.image && <img src={singleCoin.image.small} />}
           <div>
             <span>{singleCoin.name}</span>&nbsp;

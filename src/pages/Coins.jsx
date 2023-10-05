@@ -107,7 +107,6 @@ function Coins() {
       setPriceList(data.prices);
       setVolumeList(data.total_volumes);
     } catch (err) {
-      console.log("error getting price and volume");
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
@@ -232,6 +231,7 @@ function Coins() {
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
         <button onClick={setToAsc}> Bottom 50 </button>
         {coinListIsLoading && <div>Loading Coin List</div>}
+        {/*save for infiniate scroll when making real API call*/}
         {/*<InfiniteScroll
             dataLength={coinList}
             next={getCoinList}
@@ -240,10 +240,6 @@ function Coins() {
           >*/}
         {coinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
-            {/*(<Link to={`/coin-page/${item.id}`}>
-                {/*<CoinTag src={item.image}/>&nbsp;&nbsp;
-                <span >{item.name}</span> 
-          </Link>*/}
             <div
               className="coin-column-width"
               onClick={() => handleClick(singleCoin)}
@@ -256,7 +252,7 @@ function Coins() {
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
-              ${singleCoin.current_price /*.toLocaleString()*/}
+              ${singleCoin && singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
@@ -283,8 +279,6 @@ function Coins() {
                 : "N/A"}
               %
             </div>
-            {/*<div className='coin-data-width'>{singleCoin.price_change_percentage_24h_in_currency.toFixed(2)}%</div>&nbsp;&nbsp; 
-            <div className='coin-data-width'>{singleCoin.price_change_percentage_7d_in_currency.toFixed(2)}%</div>&nbsp;&nbsp;*/}
             <div className="coin-column-width">
               <span>
                 ${convertToBillion(singleCoin.market_cap_change_24h)}B

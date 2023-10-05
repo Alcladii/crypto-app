@@ -42,7 +42,6 @@ export default function App() {
             <Route
               exact
               path="/coin-page/:coinId"
-              /*component={(props) => <CoinPage {...props} />}*/
             >
               <CoinPage />
             </Route>
