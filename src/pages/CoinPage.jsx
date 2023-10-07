@@ -1,9 +1,8 @@
-import { CryptoContext } from "../contexts/cryptoContext";
-import currencies from "../mocks/currencies.json";
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { CryptoContext } from "../contexts/cryptoContext";
 
 const CoinPage = () => {
   const coinId = useParams();

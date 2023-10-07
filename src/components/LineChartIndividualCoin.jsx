@@ -55,7 +55,6 @@ const LineChartIndividualCoin = ({ priceList }) => {
 
   const priceData = {
     labels: priceList.map(() => ""),
-    //labels: priceList.map((item) => new Date(item[0]).toLocaleDateString()),
     datasets: [
       {
         label: "Trade Price",

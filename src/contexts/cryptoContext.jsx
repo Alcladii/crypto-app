@@ -2,11 +2,10 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import currencies from "../mocks/currencies.json"
 
-
 export const CryptoContext = createContext();
 
 export const CryptoProvider = ({ children }) => {
-
+  
   const useLocalState = (key, initialValue) => {
     const storedValue = window.localStorage.getItem(key);
     const item = storedValue ? JSON.parse(storedValue) : initialValue;
@@ -73,3 +72,4 @@ export const CryptoProvider = ({ children }) => {
     </CryptoContext.Provider>
   );
 };
+
