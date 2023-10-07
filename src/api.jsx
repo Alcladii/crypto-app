@@ -3,7 +3,6 @@ import axios from "axios";
 async function api(url, search) {
   const base = "https://api.coingecko.com/api/v3";
   const fullURL = `${base}${url}?${search}`;
-  /*const fileName = url.split("/").filter((s) => s);*/
   const fileName1 = search.split("=").filter((s) => s);
   const order = fileName1[2].split("&");
   const file = await import(`./mocks/${order[0]}.json`);

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import queryString from "query-string";
-import { SearchItemInput } from "./components/SearchInput";
-import { ResultList } from "./components/ResultList";
-import { CryptoProvider } from "./contexts/cryptoContext";
 import Coins from "./pages/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
+import queryString from "query-string";
+import { SearchItemInput } from "./components/SearchInput";
+import { ResultList } from "./components/ResultList";
+import { CurrencySelector } from "./components/CurrencySelector";
+import { CryptoProvider } from "./contexts/cryptoContext";
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -21,6 +22,7 @@ export default function App() {
                 <button>
                   <Link to="/coins">Coins</Link>
                 </button>
+                {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
                 &nbsp;&nbsp;
                 <button>
                   <Link to="/portfolio">Portfolio</Link>
@@ -29,6 +31,9 @@ export default function App() {
               <div className="search-wrapper">
                 <SearchItemInput setResults={setResults} />
                 <ResultList results={results} />
+              </div>
+              <div>
+                <CurrencySelector />
               </div>
             </div>
           </nav>
@@ -39,10 +44,7 @@ export default function App() {
             <Route exact path="/portfolio">
               <Portfolio />
             </Route>
-            <Route
-              exact
-              path="/coin-page/:coinId"
-            >
+            <Route exact path="/coin-page/:coinId">
               <CoinPage />
             </Route>
           </Switch>

@@ -1,14 +1,12 @@
-import React from 'react'
-import '../App.css'
+import React from "react";
+import "../App.css";
 
-export const ResultList = ({results}) => {
-  console.log(results)
+export const ResultList = ({ results }) => {
   return (
     <div className="result-list">
       {results.map((item) => (
         <div>{item.name}</div>
       ))}
     </div>
-    
-  )
-}
+  );
+};
