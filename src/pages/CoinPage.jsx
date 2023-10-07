@@ -7,9 +7,9 @@ import { CryptoContext } from "../contexts/cryptoContext";
 const CoinPage = () => {
   const coinId = useParams();
 
-  const { convertToBillion } = useContext(CryptoContext);
+  const { convertToBillion, getSingleCoinData, singleCoin } = useContext(CryptoContext);
 
-  const [singleCoin, setSingleCoin] = useState({});
+  /*const [singleCoin, setSingleCoin] = useState({});
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
@@ -28,7 +28,7 @@ const CoinPage = () => {
       setSingleCoinLoadingHasError(true);
       setSingleCoinIsLoading(false);
     }
-  };
+  };*/
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);

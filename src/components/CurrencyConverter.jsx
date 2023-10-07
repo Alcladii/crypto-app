@@ -1,15 +1,10 @@
-import { CryptoContext } from "../contexts/cryptoContext";
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-//import uid from "uid";
+import { CryptoContext } from "../contexts/cryptoContext";
 
 export const CurrencyConverter = () => {
-  const { useLocalState } =
+  const { useLocalState, getSingleCoinData, singleCoin } =
     useContext(CryptoContext);
-  const [singleCoin, setSingleCoin] = useState({});
-  const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
-  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
-    useState(false);
   const [inputValue, setInputValue] = useState("");
   const [reversed, setReversed] = useState(false);
   const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
@@ -27,22 +22,6 @@ export const CurrencyConverter = () => {
     1
   );
   const [convertedResult, setConvertedResult] = useState("");
-
-  const getSingleCoinData = async () => {
-    try {
-      setSingleCoin({});
-      setSingleCoinIsLoading(true);
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
-      setSingleCoinIsLoading(false);
-      setSingleCoin(singleCoinData.data);
-      setSingleCoinLoadingHasError(false);
-    } catch (err) {
-      setSingleCoinLoadingHasError(true);
-      setSingleCoinIsLoading(false);
-    }
-  };
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -87,19 +66,7 @@ export const CurrencyConverter = () => {
   };
 
   useEffect(() => {
-    console.log(
-      leftCurrency,
-      leftCurrencyValue,
-      rightCurrency,
-      rightCurrencyValue
-    );
-  }, []);
-
-  useEffect(() => {
-    getSingleCoinData();
-    handleConvert();
-    //handleLeftCurrencySelect("aed");
-    //handleRightCurrencySelect("aed");
+    getSingleCoinData("bitcoin");
   }, []);
 
   useEffect(() => {
@@ -112,12 +79,6 @@ export const CurrencyConverter = () => {
     rightCurrencyValue,
     inputValue,
   ]);
-
-  //singleCoin.market_data && console.log(Object.keys(singleCoin.market_data.current_price));
-  console.log("leftCurrency", leftCurrency, "rightCurrency", rightCurrency);
-
-  //const currencyList = singleCoin.market_data && Object.keys(singleCoin.market_data.current_price)
-  //console.log(currencyList)
 
   const currencyOptions = [
     singleCoin.market_data &&
@@ -132,7 +93,7 @@ export const CurrencyConverter = () => {
     <div className="App">
       <input onChange={handleChange} value={inputValue} />
       <select
-        value={/*reversed ? rightCurrency :*/ leftCurrency}
+        value={leftCurrency}
         onChange={(e) => {
           handleLeftCurrencySelect(e.target.value);
           handleConvert();
@@ -142,13 +103,11 @@ export const CurrencyConverter = () => {
       </select>
       <button onClick={handleClick}>reverse</button>
       <select
-        value={/*reversed ? leftCurrency :*/ rightCurrency}
+        value={rightCurrency}
         onChange={(e) => handleRightCurrencySelect(e.target.value)}
       >
         {currencyOptions}
       </select>
-      {/*<div>{leftCurrency}</div>
-      <div>{rightCurrency}</div>*/}
       {!leftCurrency || !rightCurrency || !inputValue ? (
         <div>Please put in a number and choose both currencies.</div>
       ) : (
