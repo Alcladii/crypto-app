@@ -4,6 +4,7 @@ import queryString from "query-string";
 import { SearchItemInput } from "./components/SearchInput";
 import { ResultList } from "./components/ResultList";
 import { CryptoProvider } from "./contexts/cryptoContext";
+import { CurrencyConverter} from "./components/CurrencyConverter";
 import Coins from "./pages/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
@@ -30,6 +31,7 @@ export default function App() {
                 <SearchItemInput setResults={setResults} />
                 <ResultList results={results} />
               </div>
+              <div><CurrencyConverter /></div>
             </div>
           </nav>
           <Switch>
