@@ -48,18 +48,15 @@ export const CurrencyConverter = () => {
     }
     const result = (inputValue / conversionRate).toFixed(6);
     setConvertedResult(result);
-    console.log("conversion rate", conversionRate, "converted result", result);
   };
 
   const handleLeftCurrencySelect = (value) => {
-    console.log("left currency", singleCoin.market_data.current_price[value]);
     setLeftCurrency(value);
     setLeftCurrencyBeforeReverse(value);
     setLeftCurrencyValue(singleCoin.market_data.current_price[value]);
   };
 
   const handleRightCurrencySelect = (value) => {
-    console.log("right currency", singleCoin.market_data.current_price[value]);
     setRightCurrency(value);
     setRightCurrencyBeforeReverse(value);
     setRightCurrencyValue(singleCoin.market_data.current_price[value]);
@@ -80,6 +77,7 @@ export const CurrencyConverter = () => {
     inputValue,
   ]);
 
+  //I did this because I use it twice at line 100 and 107, so that I make a variable to make the code look cleaner
   const currencyOptions = [
     singleCoin.market_data &&
       Object.keys(singleCoin.market_data.current_price).map((item) => (
