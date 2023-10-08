@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useHistory } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { CryptoProvider } from "../contexts/cryptoContext";
 import Coins from "./Coins";
@@ -9,20 +9,9 @@ import { CurrencyConverter } from "../components/CurrencyConverter";
 export const Home = () => {
   const [loadCoins, setLoadCoins] = useState(false);
 
-  const history = useHistory()
-
-  const handleClickCoins = () => {
-    history.push('Coins');
-  };
-
   return (
-    <div>
-        <button>
-
-        </button>
-    </div>
-    /*<Router>
-      <CryptoProvider>
+    <Router>
+      {/*<CryptoProvider>*/}
         <div>
           <nav>
             <div>
@@ -30,8 +19,8 @@ export const Home = () => {
                 <button>
                   <Link to="/coins">Coins</Link>
                 </button>
-                {/*I put the spaces here just to seperate the buttons before working on the CSS*/
-                /*&nbsp;&nbsp;
+                {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
+                 &nbsp;&nbsp;
                 <button>
                   <Link to="/currency-converter">Currency Converter</Link>
                 </button>
@@ -50,7 +39,7 @@ export const Home = () => {
             </Route>
           </Switch>
         </div>
-      </CryptoProvider>
-    </Router>*/
+      {/*</CryptoProvider>*/}
+    </Router>
   );
 };

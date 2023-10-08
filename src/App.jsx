@@ -48,6 +48,15 @@ export default function App() {
             <Route exact path="/portfolio">
               <Portfolio />
             </Route>
+            <Route exact path="/coins">
+              <Coins />
+            </Route>
+            <Route exact path="/currency-converter">
+              <CurrencyConverter />
+            </Route>
+            <Route exact path="/coin-page/:coinId">
+              <CoinPage />
+            </Route>
           </Switch>
         </div>
       </CryptoProvider>
