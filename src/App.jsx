@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Coins from "./pages/Coins";
-import Portfolio from "./pages/Portfolio";
-import CoinPage from "./pages/CoinPage";
 import queryString from "query-string";
 import { SearchItemInput } from "./components/SearchInput";
 import { ResultList } from "./components/ResultList";
 import { CurrencySelector } from "./components/CurrencySelector";
 import { CryptoProvider } from "./contexts/cryptoContext";
+import { CurrencyConverter} from "./components/CurrencyConverter";
+import Coins from "./pages/Coins";
+import Portfolio from "./pages/Portfolio";
+import CoinPage from "./pages/CoinPage";
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -33,8 +34,12 @@ export default function App() {
                 <ResultList results={results} />
               </div>
               <div>
+                <CurrencyConverter />
+              </div>
+              <div>
                 <CurrencySelector />
               </div>
+
             </div>
           </nav>
           <Switch>
