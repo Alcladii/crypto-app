@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import queryString from "query-string";
-import { SearchItemInput } from "./components/SearchInput";
-import { ResultList } from "./components/ResultList";
-import { CurrencySelector } from "./components/CurrencySelector";
-import { CryptoProvider } from "./contexts/cryptoContext";
-import { CurrencyConverter} from "./components/CurrencyConverter";
+import { Home } from "./pages/Homepage"
 import Coins from "./pages/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
+import { CryptoProvider } from "./contexts/cryptoContext";
+import { SearchItemInput } from "./components/SearchInput";
+import { ResultList } from "./components/ResultList";
+import { CurrencySelector } from "./components/CurrencySelector";
+import { CurrencyConverter } from "./components/CurrencyConverter"
+
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -21,7 +23,7 @@ export default function App() {
             <div>
               <ul>
                 <button>
-                  <Link to="/coins">Coins</Link>
+                  <Link to="/">Home</Link>
                 </button>
                 {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
                 &nbsp;&nbsp;
@@ -34,23 +36,17 @@ export default function App() {
                 <ResultList results={results} />
               </div>
               <div>
-                <CurrencyConverter />
-              </div>
-              <div>
                 <CurrencySelector />
               </div>
-
             </div>
           </nav>
           <Switch>
-            <Route exact path="/coins">
-              <Coins />
+            <Route exact path="/">
+              <Home />
+              {/*<Coins />*/}
             </Route>
             <Route exact path="/portfolio">
               <Portfolio />
-            </Route>
-            <Route exact path="/coin-page/:coinId">
-              <CoinPage />
             </Route>
           </Switch>
         </div>

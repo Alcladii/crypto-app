@@ -7,6 +7,8 @@ import { CryptoContext } from "../contexts/cryptoContext";
 const CoinPage = () => {
   const coinId = useParams();
 
+  console.log(coinId)
+
   const { convertToBillion, getSingleCoinData, singleCoin, singleCoinIsLoading, singleCoinLoadingHasError, displayCurrency, getCurrencyList, currencySymbol } = useContext(CryptoContext);
 
   useEffect(() => {
