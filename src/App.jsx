@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import queryString from "query-string";
 import { SearchItemInput } from "./components/SearchInput";
 import { ResultList } from "./components/ResultList";
+import { CurrencySelector } from "./components/CurrencySelector";
 import { CryptoProvider } from "./contexts/cryptoContext";
 import { CurrencyConverter} from "./components/CurrencyConverter";
 import Coins from "./pages/Coins";
@@ -22,6 +23,7 @@ export default function App() {
                 <button>
                   <Link to="/coins">Coins</Link>
                 </button>
+                {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
                 &nbsp;&nbsp;
                 <button>
                   <Link to="/portfolio">Portfolio</Link>
@@ -31,7 +33,13 @@ export default function App() {
                 <SearchItemInput setResults={setResults} />
                 <ResultList results={results} />
               </div>
-              <div><CurrencyConverter /></div>
+              <div>
+                <CurrencyConverter />
+              </div>
+              <div>
+                <CurrencySelector />
+              </div>
+
             </div>
           </nav>
           <Switch>
@@ -41,10 +49,7 @@ export default function App() {
             <Route exact path="/portfolio">
               <Portfolio />
             </Route>
-            <Route
-              exact
-              path="/coin-page/:coinId"
-            >
+            <Route exact path="/coin-page/:coinId">
               <CoinPage />
             </Route>
           </Switch>

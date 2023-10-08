@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import currencies from "../mocks/currencies.json";
+import { CryptoContext } from "../contexts/cryptoContext";
+import "../App.css";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
-import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
-import "../App.css";
 import api from "../api";
-import { CryptoContext } from "../contexts/cryptoContext";
+import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -36,11 +37,15 @@ const ProgressBarInner = styled.div`
   background: purple;
 `;
 
-console.clear();
-
 function Coins() {
-  const { useLocalState, convertToBillion, retainTwoDigits } =
-    useContext(CryptoContext);
+  const {
+    useLocalState,
+    convertToBillion,
+    retainTwoDigits,
+    displayCurrency,
+    currencySymbol,
+    getCurrencyList,
+  } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
@@ -52,9 +57,9 @@ function Coins() {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
-  const [priceList, setPriceList] = useState([]);
-  const [volumeList, setVolumeList] = useState([]);
+  const [priceVolumeList, setPriceVolumeList] = useState(null);
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
+  const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
 
   const getCoinList = async () => {
@@ -75,7 +80,7 @@ function Coins() {
       setCoinListIsLoading(true);
       const response = await api(
         "/coins/markets",
-        `vs_currency=usd&order=${order}&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+        `vs_currency=${displayCurrency}&order=${order}&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
       coins = response.data;
       setCoinList(coins);
@@ -104,9 +109,9 @@ function Coins() {
       setPriceVolumeChartIsLoading(false);
       setPriceVolumeChartIsLoadingHasError(false);
       setNumOfDays(numOfDays);
-      setPriceList(data.prices);
-      setVolumeList(data.total_volumes);
+      setPriceVolumeList(data);
     } catch (err) {
+      // one is for loading, the other is for error
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
@@ -143,16 +148,16 @@ function Coins() {
   };
 
   useEffect(() => {
-    getCoinList();
-  }, []);
-
-  useEffect(() => {
     getCoinPriceVolume(numOfDays);
   }, []);
 
   useEffect(() => {
     getCoinList();
   }, [coinListDsc]);
+
+  useEffect(() => {
+    getCurrencyList();
+  }, []);
 
   const history = useHistory();
 
@@ -180,6 +185,7 @@ function Coins() {
           {" "}
           7 Days{" "}
         </button>
+        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
         &nbsp;&nbsp;
         <button
           onClick={() => {
@@ -221,8 +227,12 @@ function Coins() {
         {priceVolumeChartIsLoading && (
           <div>Loading Price and Volumne Chart</div>
         )}
-        <LineChart priceList={priceList} />
-        <BarChart volumeList={volumeList} />
+        {priceVolumeList !== null && (
+          <LineChart priceList={priceVolumeList.prices} />
+        )}
+        {priceVolumeList !== null && (
+          <BarChart volumeList={priceVolumeList.total_volumes} />
+        )}
         {priceVolumeChartIsLoadingHasError && (
           <div>Error fetching Price and Volumne Chart</div>
         )}
@@ -231,8 +241,9 @@ function Coins() {
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
         <button onClick={setToAsc}> Bottom 50 </button>
         {coinListIsLoading && <div>Loading Coin List</div>}
-        {/*save for infiniate scroll when making real API call*/}
-        {/*<InfiniteScroll
+        {/*
+          save for infinite scroll when making real API call
+          <InfiniteScroll
             dataLength={coinList}
             next={getCoinList}
             hasMore={true}
@@ -252,7 +263,8 @@ function Coins() {
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
-              ${singleCoin && singleCoin.current_price.toLocaleString()}
+              {currencySymbol}
+              {singleCoin && singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
@@ -280,11 +292,16 @@ function Coins() {
               %
             </div>
             <div className="coin-column-width">
-              <span>
-                ${convertToBillion(singleCoin.market_cap_change_24h)}B
-              </span>
-              &nbsp;&nbsp;
-              <span>${convertToBillion(singleCoin.market_cap)}B</span>
+              <div className="market-cap-change-wrapper">
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.market_cap_change_24h)}B
+                </span>
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.market_cap)}B
+                </span>
+              </div>
               <ProgressBarOuter>
                 <ProgressBarInner
                   width={
@@ -293,6 +310,12 @@ function Coins() {
                   }
                 ></ProgressBarInner>
               </ProgressBarOuter>
+            </div>
+            <div className="coin-column-width">
+              <div className="total-circulating-supply-wrapper">
+                <span></span>
+                <span></span>
+              </div>
             </div>
             <div className="coin-column-width">
               <div className="individual-coin-chart">
@@ -304,7 +327,7 @@ function Coins() {
           </div>
         ))}
         {/*</InfiniteScroll>*/}
-        {coinListLoadingHasError && <div>Error in fetching Coin List</div>}
+        {coinListLoadingHasError && <div>Error in fetching Coins List</div>}
       </div>
     </div>
   );
