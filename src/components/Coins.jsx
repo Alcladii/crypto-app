@@ -6,10 +6,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
-import LineChart from "../components/LineChart";
-import BarChart from "../components/BarChart";
+import LineChart from "./LineChart";
+import BarChart from "./BarChart";
 import api from "../api";
-import LineChartIndividualCoin from "../components/LineChartIndividualCoin";
+import LineChartIndividualCoin from "./LineChartIndividualCoin";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -27,13 +27,13 @@ const ProgressBarOuter = styled.div`
   border-radius: 99px;
   background: #a505d0;
   height: 10px;
-  width: auto;
+  width: 150px;
 `;
 
 const ProgressBarInner = styled.div`
   border-radius: 99px;
   height: 10px;
-  width: ${(props) => props.width * 5.44}px;
+  width: ${(props) => props.width * 1.5}px;
   background: purple;
 `;
 
@@ -313,9 +313,16 @@ function Coins() {
             </div>
             <div className="coin-column-width">
               <div className="total-circulating-supply-wrapper">
-                <span></span>
-                <span></span>
+                <span>{currencySymbol}{convertToBillion(singleCoin.circulating_supply)}B</span>
+                <span>{currencySymbol}{convertToBillion(singleCoin.total_supply)}B</span>
               </div>
+              <ProgressBarOuter>
+                <ProgressBarInner
+                  width={
+                    (singleCoin.circulating_supply / singleCoin.total_supply) * 100
+                  }
+                ></ProgressBarInner>
+              </ProgressBarOuter>
             </div>
             <div className="coin-column-width">
               <div className="individual-coin-chart">

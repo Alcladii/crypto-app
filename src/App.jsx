@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import queryString from "query-string";
 import { Home } from "./pages/Homepage"
-import Coins from "./pages/Coins";
+import Coins from "./components/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
 import { CryptoProvider } from "./contexts/cryptoContext";
@@ -48,15 +48,10 @@ export default function App() {
             <Route exact path="/portfolio">
               <Portfolio />
             </Route>
-            <Route exact path="/coins">
-              <Coins />
-            </Route>
-            <Route exact path="/currency-converter">
-              <CurrencyConverter />
-            </Route>
             <Route exact path="/coin-page/:coinId">
               <CoinPage />
             </Route>
+
           </Switch>
         </div>
       </CryptoProvider>
