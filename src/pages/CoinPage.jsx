@@ -9,7 +9,8 @@ const CoinPage = () => {
   const coinId = useParams();
 
   const history = useHistory()
-
+  
+  //I used the "covertToBillion" function in lind 124 and 134
   const { convertToBillion, getSingleCoinData, singleCoin, singleCoinIsLoading, singleCoinLoadingHasError, displayCurrency, getCurrencyList, currencySymbol } = useContext(CryptoContext);
 
   useEffect(() => {
