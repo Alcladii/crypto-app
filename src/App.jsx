@@ -43,7 +43,6 @@ export default function App() {
           <Switch>
             <Route exact path="/">
               <Home />
-              {/*<Coins />*/}
             </Route>
             <Route exact path="/portfolio">
               <Portfolio />
