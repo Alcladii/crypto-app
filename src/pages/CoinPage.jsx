@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -7,6 +8,9 @@ import { CryptoContext } from "../contexts/cryptoContext";
 const CoinPage = () => {
   const coinId = useParams();
 
+  const history = useHistory()
+  
+  //I used the "covertToBillion" function in lind 124 and 134
   const { convertToBillion, getSingleCoinData, singleCoin, singleCoinIsLoading, singleCoinLoadingHasError, displayCurrency, getCurrencyList, currencySymbol } = useContext(CryptoContext);
 
   useEffect(() => {
@@ -17,8 +21,13 @@ const CoinPage = () => {
     getCurrencyList();
   }, []);
 
+  const handleClick = () => {
+    history.push('/');
+  };
+
   return (
     <div>
+      <button onClick={handleClick}>Back to Coins</button>
       {singleCoinIsLoading && <div>Loading Coin</div>}
       <div className="coin-page-columns">
         <div className="coin-page-column-1">

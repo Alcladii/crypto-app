@@ -23,7 +23,6 @@ export const CryptoProvider = ({ children }) => {
     "currentDisplayCurrency",
     "usd"
   );
-
   const [currencyList, setCurrencyList] = useState([]);
   const [currencyListIsLoading, setCurrencyListIsLoading] = useState(false);
   const [currencyLoadingHasError, setCurrencyLoadingHasError] = useState(false);
@@ -73,6 +72,8 @@ export const CryptoProvider = ({ children }) => {
       setCurrencyListIsLoading(false);
     }
   };
+
+  useEffect(() => { getCurrencyList() },[])
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol
 
