@@ -264,7 +264,7 @@ function Coins() {
             &nbsp;&nbsp;
             <div className="coin-data-width">
               {currencySymbol}
-              {singleCoin && singleCoin.current_price.toLocaleString()}
+              {singleCoin.current_price && singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
