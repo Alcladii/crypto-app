@@ -10,6 +10,7 @@ import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
+import { SlickCarousel } from "../components/SlickCarousel";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -167,6 +168,9 @@ function Coins() {
 
   return (
     <div className="App">
+      <div className="slick-carousel">
+        <SlickCarousel coinList={coinList} />
+      </div>
       <div>
         <button
           onClick={() => {
@@ -264,7 +268,8 @@ function Coins() {
             &nbsp;&nbsp;
             <div className="coin-data-width">
               {currencySymbol}
-              {singleCoin.current_price && singleCoin.current_price.toLocaleString()}
+              {singleCoin.current_price &&
+                singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
@@ -313,13 +318,20 @@ function Coins() {
             </div>
             <div className="coin-column-width">
               <div className="total-circulating-supply-wrapper">
-                <span>{currencySymbol}{convertToBillion(singleCoin.circulating_supply)}B</span>
-                <span>{currencySymbol}{convertToBillion(singleCoin.total_supply)}B</span>
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.circulating_supply)}B
+                </span>
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.total_supply)}B
+                </span>
               </div>
               <ProgressBarOuter>
                 <ProgressBarInner
                   width={
-                    (singleCoin.circulating_supply / singleCoin.total_supply) * 100
+                    (singleCoin.circulating_supply / singleCoin.total_supply) *
+                    100
                   }
                 ></ProgressBarInner>
               </ProgressBarOuter>

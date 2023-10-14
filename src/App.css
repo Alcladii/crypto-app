@@ -163,3 +163,36 @@
   border: 1px solid white;
   width: 50%;
 }
+
+.slick-carousel{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+
+.slick-list {
+  margin: 0 -10px;
+}
+
+.single-slide-style{
+  display: flex;
+  align-items: center;
+  background: grey;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.slide-icon-wrapper{
+  width: 25%;
+  padding-left: 10px;
+}
+
+.slide-content-wrapper{
+  width: 75%;
+  text-align: left;
+  font-size: 0.7em;
+}
+
