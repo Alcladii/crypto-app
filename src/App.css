@@ -54,6 +54,10 @@
   width: 500px;
 }
 
+.coin-list-title-container {
+  display: flex;
+}
+
 .individual-coin {
   display: flex;
   /*justify-content: center;*/
