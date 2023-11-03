@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LogarithmicScale, 
   PointElement,
   BarElement,
   Title,
@@ -14,6 +15,7 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  LogarithmicScale, 
   PointElement,
   BarElement,
   Title,
@@ -21,8 +23,10 @@ ChartJS.register(
   Filler,
   Legend
 );
+import { CryptoContext } from "../contexts/cryptoContext";
 
-const BarChart = ({ volumeList }) => {
+const BarChart = ({ priceVolumeList }) => {
+  const { selectedCoinId, setPriceVolumeList } = useContext(CryptoContext);
   const options = {
     responsive: true,
     plugins: {
@@ -40,6 +44,7 @@ const BarChart = ({ volumeList }) => {
         grid: {
           display: false,
           drawBorder: false,
+          type: "logarithmic"
         },
       },
       x: {
@@ -53,20 +58,32 @@ const BarChart = ({ volumeList }) => {
     tension: 0.5,
   };
 
+  const colors = ["blue", "purple", "green"];
+
   const volumeData = {
-    labels: volumeList.map((item) => new Date(item[0]).toLocaleDateString()),
-    datasets: [
-      {
-        label: "Trade volume",
-        data: volumeList.map((item) => item[1]),
-        backgroundColor: "blue",
-        borderColor: "blue",
-        borderWidth: 1,
-        borderRadius: 3,
+    labels:
+      priceVolumeList.length !== 0 &&
+      priceVolumeList[0].total_volumes.map((item) =>
+        new Date(item[0]).toLocaleDateString()
+      ),
+    datasets: priceVolumeList.map((item) => {
+      const borderColor = colors[priceVolumeList.indexOf(item)];
+      return {
+        label: `Trade Price`,
+        data: item.total_volumes.map((volume) => volume[1]),
+        borderColor,
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+          return gradient;
+        },
         pointRadius: 0,
+        borderWidth: 3,
         fill: true,
-      },
-    ],
+      };
+    }),
   };
 
   return <Bar data={volumeData} options={options} />;

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-//import "./styles.css";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,8 +9,24 @@ const CoinTag = styled.img`
   width: 30px;
 `;
 
+const SlidesContainer = styled.div`
+  background-color: ${(props) => (props.selected ? "purple" : "grey")};
+  cursor: pointer;
+`;
+
 export const SlickCarousel = ({ coinList }) => {
-  const { currencySymbol, retainTwoDigits } = useContext(CryptoContext);
+  const {
+    currencySymbol,
+    retainTwoDigits,
+    useLocalState,
+    numOfDays,
+    getCoinPriceVolume,
+    setPriceVolumeList,
+    slidesData,
+    setSlidesData,
+    selectedCoinData,
+    setSelectedCoinData,
+  } = useContext(CryptoContext);
 
   const settings = {
     dots: false,
@@ -21,14 +36,77 @@ export const SlickCarousel = ({ coinList }) => {
     slidesToScroll: 4,
   };
 
+  useEffect(() => {
+    if (coinList.length > 0) {
+      const coinIdsInSlidesData = slidesData.map((coin) => coin.id);
+      const coinsNotInSlidesData = coinList.filter(
+        (coin) => !coinIdsInSlidesData.includes(coin.id)
+      );
+      if (coinsNotInSlidesData.length > 0) {
+        const coinsInSlides = coinList.map((coin) => ({
+          ...coin,
+          selected: false,
+        }));
+        setSlidesData(coinsInSlides);
+        setSelectedCoinData([]);
+      }
+    }
+  }, [coinList]);
+
+  let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
+
+  //put the two setSelectedCoinData outside of the map, so they don't get executed everytime
+  const handleClick = (id) => {
+    const newSlides = slidesData.map((coin) => {
+      if (
+        id === coin.id &&
+        numOfSelectedSlides < 3 &&
+        coin.selected === false
+      ) {
+        coin.selected = true;
+      } else if (id === coin.id && coin.selected === true) {
+        coin.selected = false;
+      }
+      return coin;
+    });
+    const selectedCoin = slidesData.filter((coin) => coin.selected);
+    setSelectedCoinData(selectedCoin);
+    setSlidesData(newSlides);
+  };
+
+  //console.log("Coin Data", selectedCoinData);
+
+  useEffect(() => {
+    if (selectedCoinData.length === 0) {
+      setPriceVolumeList([]);
+    } else {
+      setPriceVolumeList([]);
+      const requests = selectedCoinData.map((item) => {
+        return getCoinPriceVolume(item.id, numOfDays);
+      });
+      Promise.all(requests).then((responses) => {
+        setPriceVolumeList(responses);
+      });
+      /*.catch((error) => {
+          //setPriceVolumeChartIsLoadingHasError(true);
+          //setPriceVolumeChartIsLoading(false);
+          console.log("error loading price volume")
+        });*/
+    }
+  }, [selectedCoinData, numOfDays]);
+
   return (
     <div className="App">
       <div className="slider-wrapper">
-        <Slider {...settings}>
-          {coinList &&
-            coinList.map((coin) => (
+        {slidesData && (
+          <Slider {...settings}>
+            {slidesData.map((coin) => (
               <div>
-                <div className="single-slide-style">
+                <SlidesContainer
+                  onClick={() => handleClick(coin.id)}
+                  selected={coin.selected}
+                  className="single-slide-style"
+                >
                   <div className="slide-icon-wrapper">
                     <CoinTag src={coin.image} />
                   </div>
@@ -44,10 +122,11 @@ export const SlickCarousel = ({ coinList }) => {
                       %
                     </div>
                   </div>
-                </div>
+                </SlidesContainer>
               </div>
             ))}
-        </Slider>
+          </Slider>
+        )}
       </div>
     </div>
   );

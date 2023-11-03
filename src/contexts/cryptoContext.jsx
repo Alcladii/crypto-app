@@ -1,12 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import api from "../api";
-import currencies from "../mocks/currencies.json"
+import currencies from "../mocks/currencies.json";
 
 export const CryptoContext = createContext();
 
 export const CryptoProvider = ({ children }) => {
-  
   const useLocalState = (key, initialValue) => {
     const storedValue = window.localStorage.getItem(key);
     const item = storedValue ? JSON.parse(storedValue) : initialValue;
@@ -26,6 +25,20 @@ export const CryptoProvider = ({ children }) => {
   const [currencyList, setCurrencyList] = useState([]);
   const [currencyListIsLoading, setCurrencyListIsLoading] = useState(false);
   const [currencyLoadingHasError, setCurrencyLoadingHasError] = useState(false);
+  const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
+    useState(false);
+  const [
+    priceVolumeChartIsLoadingHasError,
+    setPriceVolumeChartIsLoadingHasError,
+  ] = useState(false);
+  const [priceVolumeList, setPriceVolumeList] = useState([]);
+  const [priceVolumeList_2, setPriceVolumeList_2] = useState(null);
+  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
+  const [coinsInChart, setCoinsInChart] = useState([]);
+  //const [selectedCoinId, setSelectedCoinId] = useLocalState("selectedCoinId", []);
+  const [slidesData, setSlidesData] = useLocalState("slidesData", []);
+  const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])
+  
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -73,9 +86,36 @@ export const CryptoProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => { getCurrencyList() },[])
+  useEffect(() => {
+    getCurrencyList();
+  }, []);
 
-  const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol
+  const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
+  
+  //use promise all
+  const getCoinPriceVolume = async (coinId, numOfDays) => {
+    try {
+      setPriceVolumeChartIsLoading(true);
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${numOfDays}&interval=daily`
+      );
+      setPriceVolumeChartIsLoading(false);
+      setPriceVolumeChartIsLoadingHasError(false);
+      setNumOfDays(numOfDays);
+      //const newPriceVolumeList = [...priceVolumeList, data]
+      //setPriceVolumeList(newPriceVolumeList)
+      //setPriceVolumeList((prevPriceVolumeList) => [...prevPriceVolumeList, data]);       
+      return data
+    } catch (err) {
+      // one is for loading, the other is for error
+      setPriceVolumeChartIsLoadingHasError(true);
+      setPriceVolumeChartIsLoading(false);
+    }
+  };
+
+  //console.log("priceVolumeList", priceVolumeList);
+
+  /*useEffect(() => {getCoinPriceVolume(numOfDays)}, [numOfDays])*/
 
   return (
     <CryptoContext.Provider
@@ -91,10 +131,25 @@ export const CryptoProvider = ({ children }) => {
         currencyList,
         setCurrencyList,
         currencySymbol,
+        setNumOfDays,
+        priceVolumeChartIsLoading,
+        priceVolumeChartIsLoadingHasError,
+        setPriceVolumeList,
+        priceVolumeList,
+        coinsInChart,
+        setCoinsInChart,
+        numOfDays,
+        getCoinPriceVolume,
+        setPriceVolumeList,
+        //selectedCoinId,
+        //setSelectedCoinId,
+        slidesData,
+        setSlidesData,
+        selectedCoinData,
+        setSelectedCoinData
       }}
     >
       {children}
     </CryptoContext.Provider>
   );
 };
-

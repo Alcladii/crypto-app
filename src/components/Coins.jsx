@@ -38,6 +38,13 @@ const ProgressBarInner = styled.div`
   background: purple;
 `;
 
+const ColorIndicator = styled.div`
+  height: 10px;
+  width: 15px;
+  border: 1px solid white;
+  background: ${(props) => props.background};
+`;
+
 function Coins() {
   const {
     useLocalState,
@@ -46,20 +53,27 @@ function Coins() {
     displayCurrency,
     currencySymbol,
     getCurrencyList,
+    setNumOfDays,
+    priceVolumeChartIsLoading,
+    priceVolumeChartIsLoadingHasError,
+    priceVolumeList,
+    selectedCoinData,
+    slidesData,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  const [coinList, setCoinList] = useState([]);
-  const [coinListDsc, setCoinListDsc] = useState(true);
-  const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
+  const [coinList, setCoinList] = useLocalState("coinList", []);
+  const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
+  /*const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
     useState(false);
   const [
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
   const [priceVolumeList, setPriceVolumeList] = useState(null);
-  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
+  const [priceVolumeList_2, setPriceVolumeList_2] = useState(null);
+  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);*/
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
 
@@ -101,7 +115,7 @@ function Coins() {
     setCoinListDsc(false);
   };
 
-  const getCoinPriceVolume = async (numOfDays) => {
+  /*const getCoinPriceVolume = async (numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
       const { data } = await axios(
@@ -116,7 +130,7 @@ function Coins() {
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
-  };
+  };*/
 
   const options = {
     responsive: true,
@@ -148,9 +162,10 @@ function Coins() {
     tension: 0.5,
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     getCoinPriceVolume(numOfDays);
-  }, []);
+    //getCoinPriceVolume_2(numOfDays)
+  }, []);*/
 
   useEffect(() => {
     getCoinList();
@@ -166,6 +181,10 @@ function Coins() {
     history.push(`/coin-page/${item.id}`);
   };
 
+  //console.log(slidesData)
+
+  const colors = ["blue", "purple", "green"];
+
   return (
     <div className="App">
       <div className="slick-carousel">
@@ -174,7 +193,7 @@ function Coins() {
       <div>
         <button
           onClick={() => {
-            getCoinPriceVolume(0);
+            setNumOfDays(0);
           }}
         >
           {" "}
@@ -183,7 +202,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(6);
+            setNumOfDays(6);
           }}
         >
           {" "}
@@ -193,7 +212,8 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(30);
+            /*getCoinPriceVolume(30);*/
+            setNumOfDays(30);
           }}
         >
           {" "}
@@ -202,7 +222,8 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(89);
+            /*getCoinPriceVolume(89);*/
+            setNumOfDays(89);
           }}
         >
           {" "}
@@ -211,7 +232,8 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(179);
+            /*getCoinPriceVolume(179);*/
+            setNumOfDays(179);
           }}
         >
           {" "}
@@ -220,7 +242,8 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(364);
+            /*getCoinPriceVolume(364);*/
+            setNumOfDays(364);
           }}
         >
           {" "}
@@ -231,16 +254,45 @@ function Coins() {
         {priceVolumeChartIsLoading && (
           <div>Loading Price and Volumne Chart</div>
         )}
-        {priceVolumeList !== null && (
-          <LineChart priceList={priceVolumeList.prices} />
-        )}
-        {priceVolumeList !== null && (
-          <BarChart volumeList={priceVolumeList.total_volumes} />
-        )}
+        <div className="line-chart-wrapper">
+          {priceVolumeList !== null && (
+            <LineChart priceVolumeList={priceVolumeList} />
+          )}
+          <div className="charts-coins-container">
+            {selectedCoinData &&
+              selectedCoinData.map((coin) => (
+                <div className="coin-indicator-wrapper">
+                  <ColorIndicator
+                    background={colors[selectedCoinData.indexOf(coin)]}
+                  ></ColorIndicator>
+                  {coin.name}&nbsp;{currencySymbol}
+                  {coin.current_price.toLocaleString()}
+                </div>
+              ))}
+          </div>
+        </div>
+        <div className="bar-chart-wrapper">
+          {priceVolumeList !== null && (
+            <BarChart priceVolumeList={priceVolumeList} />
+          )}
+          <div className="charts-coins-container">
+            {selectedCoinData &&
+              selectedCoinData.map((coin) => (
+                <div className="coin-indicator-wrapper">
+                  <ColorIndicator
+                    background={colors[selectedCoinData.indexOf(coin)]}
+                  ></ColorIndicator>
+                  {coin.name}&nbsp;{currencySymbol}
+                  {convertToBillion(coin.total_volume)}B
+                </div>
+              ))}
+          </div>
+        </div>
         {priceVolumeChartIsLoadingHasError && (
           <div>Error fetching Price and Volumne Chart</div>
         )}
       </div>
+
       <div>
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
         <button onClick={setToAsc}> Bottom 50 </button>
@@ -253,8 +305,11 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
+        <div>Name</div>
+        <div></div>
         {coinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
+            <div>{singleCoin.index}</div>
             <div
               className="coin-column-width"
               onClick={() => handleClick(singleCoin)}
