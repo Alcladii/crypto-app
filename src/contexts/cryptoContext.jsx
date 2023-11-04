@@ -92,7 +92,7 @@ export const CryptoProvider = ({ children }) => {
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
   
-  //use promise all
+  //use promise all, move setNumOfDays to a seperate function
   const getCoinPriceVolume = async (coinId, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
@@ -101,7 +101,7 @@ export const CryptoProvider = ({ children }) => {
       );
       setPriceVolumeChartIsLoading(false);
       setPriceVolumeChartIsLoadingHasError(false);
-      setNumOfDays(numOfDays);
+      //setNumOfDays(numOfDays);
       //const newPriceVolumeList = [...priceVolumeList, data]
       //setPriceVolumeList(newPriceVolumeList)
       //setPriceVolumeList((prevPriceVolumeList) => [...prevPriceVolumeList, data]);       

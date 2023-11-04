@@ -57,6 +57,12 @@
   margin-bottom: 30px;
 }
 
+.please-select-coin-wrapper{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 1.5em;
+}
+
 .individual-coin {
   display: flex;
   /*justify-content: center;*/
