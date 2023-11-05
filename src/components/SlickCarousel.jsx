@@ -55,17 +55,12 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  //put the two setSelectedCoinData outside of the map, so they don't get executed everytime
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
-      if (
-        id === coin.id &&
-        numOfSelectedSlides < 3 &&
-        coin.selected === false
-      ) {
-        coin.selected = true;
-      } else if (id === coin.id && coin.selected === true) {
-        coin.selected = false;
+      const isSameCoin = id === coin.id;
+      if (isSameCoin) {
+        if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
+        else if (coin.selected) coin.selected = false;
       }
       return coin;
     });
@@ -73,8 +68,6 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData(selectedCoin);
     setSlidesData(newSlides);
   };
-
-  //console.log("Coin Data", selectedCoinData);
 
   useEffect(() => {
     if (selectedCoinData.length === 0) {
@@ -87,11 +80,6 @@ export const SlickCarousel = ({ coinList }) => {
       Promise.all(requests).then((responses) => {
         setPriceVolumeList(responses);
       });
-      /*.catch((error) => {
-          //setPriceVolumeChartIsLoadingHasError(true);
-          //setPriceVolumeChartIsLoading(false);
-          console.log("error loading price volume")
-        });*/
     }
   }, [selectedCoinData, numOfDays]);
 

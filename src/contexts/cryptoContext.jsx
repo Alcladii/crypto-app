@@ -32,10 +32,8 @@ export const CryptoProvider = ({ children }) => {
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
   const [priceVolumeList, setPriceVolumeList] = useState([]);
-  const [priceVolumeList_2, setPriceVolumeList_2] = useState(null);
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [coinsInChart, setCoinsInChart] = useState([]);
-  //const [selectedCoinId, setSelectedCoinId] = useLocalState("selectedCoinId", []);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])
   
@@ -92,7 +90,6 @@ export const CryptoProvider = ({ children }) => {
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
   
-  //use promise all, move setNumOfDays to a seperate function
   const getCoinPriceVolume = async (coinId, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
@@ -101,21 +98,13 @@ export const CryptoProvider = ({ children }) => {
       );
       setPriceVolumeChartIsLoading(false);
       setPriceVolumeChartIsLoadingHasError(false);
-      //setNumOfDays(numOfDays);
-      //const newPriceVolumeList = [...priceVolumeList, data]
-      //setPriceVolumeList(newPriceVolumeList)
-      //setPriceVolumeList((prevPriceVolumeList) => [...prevPriceVolumeList, data]);       
       return data
     } catch (err) {
-      // one is for loading, the other is for error
+      // one is for loading, the other is for error handling
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
   };
-
-  //console.log("priceVolumeList", priceVolumeList);
-
-  /*useEffect(() => {getCoinPriceVolume(numOfDays)}, [numOfDays])*/
 
   return (
     <CryptoContext.Provider
@@ -141,8 +130,6 @@ export const CryptoProvider = ({ children }) => {
         numOfDays,
         getCoinPriceVolume,
         setPriceVolumeList,
-        //selectedCoinId,
-        //setSelectedCoinId,
         slidesData,
         setSlidesData,
         selectedCoinData,

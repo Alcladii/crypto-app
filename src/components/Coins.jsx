@@ -65,15 +65,6 @@ function Coins() {
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinList, setCoinList] = useLocalState("coinList", []);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
-  /*const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
-    useState(false);
-  const [
-    priceVolumeChartIsLoadingHasError,
-    setPriceVolumeChartIsLoadingHasError,
-  ] = useState(false);
-  const [priceVolumeList, setPriceVolumeList] = useState(null);
-  const [priceVolumeList_2, setPriceVolumeList_2] = useState(null);
-  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);*/
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
 
@@ -115,23 +106,6 @@ function Coins() {
     setCoinListDsc(false);
   };
 
-  /*const getCoinPriceVolume = async (numOfDays) => {
-    try {
-      setPriceVolumeChartIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${numOfDays}&interval=daily`
-      );
-      setPriceVolumeChartIsLoading(false);
-      setPriceVolumeChartIsLoadingHasError(false);
-      setNumOfDays(numOfDays);
-      setPriceVolumeList(data);
-    } catch (err) {
-      // one is for loading, the other is for error
-      setPriceVolumeChartIsLoadingHasError(true);
-      setPriceVolumeChartIsLoading(false);
-    }
-  };*/
-
   const options = {
     responsive: true,
     plugins: {
@@ -162,11 +136,6 @@ function Coins() {
     tension: 0.5,
   };
 
-  /*useEffect(() => {
-    getCoinPriceVolume(numOfDays);
-    //getCoinPriceVolume_2(numOfDays)
-  }, []);*/
-
   useEffect(() => {
     getCoinList();
   }, [coinListDsc]);
@@ -180,8 +149,6 @@ function Coins() {
   const handleClick = (item) => {
     history.push(`/coin-page/${item.id}`);
   };
-
-  //console.log(slidesData)
 
   const colors = ["blue", "purple", "green"];
 
@@ -212,7 +179,6 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            /*getCoinPriceVolume(30);*/
             setNumOfDays(30);
           }}
         >
@@ -222,7 +188,6 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            /*getCoinPriceVolume(89);*/
             setNumOfDays(89);
           }}
         >
@@ -232,7 +197,6 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            /*getCoinPriceVolume(179);*/
             setNumOfDays(179);
           }}
         >
@@ -242,7 +206,6 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            /*getCoinPriceVolume(364);*/
             setNumOfDays(364);
           }}
         >
@@ -250,94 +213,55 @@ function Coins() {
           1 Year{" "}
         </button>
       </div>
-      {priceVolumeList.length === 0 ? <div className="please-select-coin-wrapper">Please select a coin to view chart</div> : 
+      {priceVolumeList.length === 0 ? (
+        <div className="please-select-coin-wrapper">
+          Please select a coin to view chart
+        </div>
+      ) : (
         <div className="chart">
-        {priceVolumeChartIsLoading && (
-          <div>Loading Price and Volumne Chart</div>
-        )}
-        
-        <div className="line-chart-wrapper">
-          {priceVolumeList !== null && (
-            <LineChart priceVolumeList={priceVolumeList} />
+          {priceVolumeChartIsLoading && (
+            <div>Loading Price and Volumne Chart</div>
           )}
-          <div className="charts-coins-container">
-            {selectedCoinData &&
-              selectedCoinData.map((coin) => (
-                <div className="coin-indicator-wrapper">
-                  <ColorIndicator
-                    background={colors[selectedCoinData.indexOf(coin)]}
-                  ></ColorIndicator>
-                  {coin.name}&nbsp;{currencySymbol}
-                  {coin.current_price.toLocaleString()}
-                </div>
-              ))}
+
+          <div className="line-chart-wrapper">
+            {priceVolumeList !== null && (
+              <LineChart priceVolumeList={priceVolumeList} />
+            )}
+            <div className="charts-coins-container">
+              {selectedCoinData &&
+                selectedCoinData.map((coin) => (
+                  <div className="coin-indicator-wrapper">
+                    <ColorIndicator
+                      background={colors[selectedCoinData.indexOf(coin)]}
+                    ></ColorIndicator>
+                    {coin.name}&nbsp;{currencySymbol}
+                    {coin.current_price.toLocaleString()}
+                  </div>
+                ))}
+            </div>
           </div>
-        </div>
-        <div className="bar-chart-wrapper">
-          {priceVolumeList !== null && (
-            <BarChart priceVolumeList={priceVolumeList} />
+          <div className="bar-chart-wrapper">
+            {priceVolumeList !== null && (
+              <BarChart priceVolumeList={priceVolumeList} />
+            )}
+            <div className="charts-coins-container">
+              {selectedCoinData &&
+                selectedCoinData.map((coin) => (
+                  <div className="coin-indicator-wrapper">
+                    <ColorIndicator
+                      background={colors[selectedCoinData.indexOf(coin)]}
+                    ></ColorIndicator>
+                    {coin.name}&nbsp;{currencySymbol}
+                    {convertToBillion(coin.total_volume)}B
+                  </div>
+                ))}
+            </div>
+          </div>
+          {priceVolumeChartIsLoadingHasError && (
+            <div>Error fetching Price and Volumne Chart</div>
           )}
-          <div className="charts-coins-container">
-            {selectedCoinData &&
-              selectedCoinData.map((coin) => (
-                <div className="coin-indicator-wrapper">
-                  <ColorIndicator
-                    background={colors[selectedCoinData.indexOf(coin)]}
-                  ></ColorIndicator>
-                  {coin.name}&nbsp;{currencySymbol}
-                  {convertToBillion(coin.total_volume)}B
-                </div>
-              ))}
-          </div>
         </div>
-        {priceVolumeChartIsLoadingHasError && (
-          <div>Error fetching Price and Volumne Chart</div>
-        )}
-      </div>
-      }
-      {/*<div className="chart">
-        {priceVolumeChartIsLoading && (
-          <div>Loading Price and Volumne Chart</div>
-        )}
-        
-        <div className="line-chart-wrapper">
-          {priceVolumeList !== null && (
-            <LineChart priceVolumeList={priceVolumeList} />
-          )}
-          <div className="charts-coins-container">
-            {selectedCoinData &&
-              selectedCoinData.map((coin) => (
-                <div className="coin-indicator-wrapper">
-                  <ColorIndicator
-                    background={colors[selectedCoinData.indexOf(coin)]}
-                  ></ColorIndicator>
-                  {coin.name}&nbsp;{currencySymbol}
-                  {coin.current_price.toLocaleString()}
-                </div>
-              ))}
-          </div>
-        </div>
-        <div className="bar-chart-wrapper">
-          {priceVolumeList !== null && (
-            <BarChart priceVolumeList={priceVolumeList} />
-          )}
-          <div className="charts-coins-container">
-            {selectedCoinData &&
-              selectedCoinData.map((coin) => (
-                <div className="coin-indicator-wrapper">
-                  <ColorIndicator
-                    background={colors[selectedCoinData.indexOf(coin)]}
-                  ></ColorIndicator>
-                  {coin.name}&nbsp;{currencySymbol}
-                  {convertToBillion(coin.total_volume)}B
-                </div>
-              ))}
-          </div>
-        </div>
-        {priceVolumeChartIsLoadingHasError && (
-          <div>Error fetching Price and Volumne Chart</div>
-        )}
-      </div>*/}
+      )}
 
       <div>
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;

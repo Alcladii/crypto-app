@@ -42,7 +42,7 @@ const LineChart = ({ priceVolumeList }) => {
     },
     scales: {
       y: {
-        display: false,
+        display: true,
         grid: {
           display: false,
           drawBorder: false,
@@ -59,9 +59,6 @@ const LineChart = ({ priceVolumeList }) => {
     },
     tension: 0.5,
   };
-
-  //console.log( selectedCoinId.length === 0 ? "please select a coin" : ("priceVolumeList in Chart", priceVolumeList))
-  //console.log(priceVolumeList.length !== 0 && priceVolumeList[0].prices.map((item)=>item[1]))
 
   const colors = ["blue", "purple", "green"]; 
 
@@ -88,24 +85,6 @@ const LineChart = ({ priceVolumeList }) => {
           fill: true,
         };
       }),
-      /*{
-        label: "Trade Price",
-        data: priceVolumeList.length !== 0 && priceVolumeList[0].prices.map((item) => item[1]),
-        //data: [],
-        borderColor: "blue",
-        //here is the part for the gradient fill
-        backgroundColor: (context) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-          gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
-          return gradient;
-        },
-        pointRadius: 0,
-        borderWidth: 3,
-        fill: true,
-      },*/
-    
   };
 
   return <Line data={priceData} options={options} />;
