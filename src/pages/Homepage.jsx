@@ -7,18 +7,18 @@ export const Home = () => {
   const { useLocalState } = useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState(false);
 
-  const hancleCoinsCurrencyClick = () => {
-    if (loadCoins === false) {
-      setLoadCoins(true);
-    } else {
-      setLoadCoins(false);
-    }
+  const hancleCoinsListClick = () => {  
+    setLoadCoins(true);
   };
+
+  const handleCurrencyConverterClick = () => {
+    setLoadCoins(false)
+  }
 
   return (
     <div>
-      <button onClick={hancleCoinsCurrencyClick}>Coins</button>
-      <button onClick={hancleCoinsCurrencyClick}>Currency Converter</button>
+      <button onClick={hancleCoinsListClick}>Coins</button>
+      <button onClick={handleCurrencyConverterClick}>Currency Converter</button>
       {loadCoins ? <Coins /> : <CurrencyConverter />}
     </div>
   );
