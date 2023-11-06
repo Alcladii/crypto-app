@@ -47,6 +47,10 @@
   color: #888;
 }
 
+.coin-Or-Converter-Selected {
+  background-color: purple;
+}
+
 .chart {
   display: flex;
   justify-content: center;
