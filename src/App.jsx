@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "./App.css";
 import queryString from "query-string";
 import { Home } from "./pages/Homepage"
 import Coins from "./components/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
 import { CryptoProvider } from "./contexts/cryptoContext";
+import { CryptoContext } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput";
 import { ResultList } from "./components/ResultList";
 import { CurrencySelector } from "./components/CurrencySelector";
@@ -13,7 +15,29 @@ import { CurrencyConverter } from "./components/CurrencyConverter"
 
 
 export default function App() {
+  //const { useLocalState } = useContext(CryptoContext);
+  const useLocalState = (key, initialValue) => {
+    const storedValue = window.localStorage.getItem(key);
+    const item = storedValue ? JSON.parse(storedValue) : initialValue;
+    const [state, setState] = useState(item);
+
+    const updateState = (value) => {
+      window.localStorage.setItem(key, JSON.stringify(value));
+      setState(value);
+    };
+    return [state, updateState];
+  };
+
   const [results, setResults] = useState([]);
+  const [loadHomePage, setLoadHomePage] = useLocalState("loadHomePage", true);
+
+  const handleHomePageClick = () => {  
+    setLoadHomePage(true);
+  };
+
+  const handlePortfolioPageClick = () => {
+    setLoadHomePage(false)
+  }
 
   return (
     <Router>
@@ -22,12 +46,12 @@ export default function App() {
           <nav>
             <div>
               <ul>
-                <button>
+                <button onClick={handleHomePageClick} className={`${loadHomePage? "home-Or-Portfolio-Selected" : ""}`}>
                   <Link to="/">Home</Link>
                 </button>
                 {/*I put the spaces here just to seperate the buttons before working on the CSS*/}
                 &nbsp;&nbsp;
-                <button>
+                <button onClick={handlePortfolioPageClick} className={`${!loadHomePage ? "home-Or-Portfolio-Selected" : ""}`}>
                   <Link to="/portfolio">Portfolio</Link>
                 </button>
               </ul>

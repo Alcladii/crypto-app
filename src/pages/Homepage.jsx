@@ -8,7 +8,7 @@ export const Home = () => {
   const { useLocalState } = useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState(false);
 
-  const hancleCoinsListClick = () => {  
+  const handleCoinsListClick = () => {  
     setLoadCoins(true);
   };
 
@@ -18,7 +18,7 @@ export const Home = () => {
 
   return (
     <div>
-      <button onClick={hancleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
+      <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       {loadCoins ? <Coins /> : <CurrencyConverter />}
     </div>
