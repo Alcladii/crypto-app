@@ -6,7 +6,6 @@ import { Home } from "./pages/Homepage"
 import Coins from "./components/Coins";
 import Portfolio from "./pages/Portfolio";
 import CoinPage from "./pages/CoinPage";
-import { CryptoProvider } from "./contexts/cryptoContext";
 import { CryptoContext } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput";
 import { ResultList } from "./components/ResultList";
@@ -15,19 +14,8 @@ import { CurrencyConverter } from "./components/CurrencyConverter"
 
 
 export default function App() {
-  //const { useLocalState } = useContext(CryptoContext);
-  const useLocalState = (key, initialValue) => {
-    const storedValue = window.localStorage.getItem(key);
-    const item = storedValue ? JSON.parse(storedValue) : initialValue;
-    const [state, setState] = useState(item);
-
-    const updateState = (value) => {
-      window.localStorage.setItem(key, JSON.stringify(value));
-      setState(value);
-    };
-    return [state, updateState];
-  };
-
+  
+  const { useLocalState } = useContext(CryptoContext);
   const [results, setResults] = useState([]);
   const [loadHomePage, setLoadHomePage] = useLocalState("loadHomePage", true);
 
@@ -41,7 +29,6 @@ export default function App() {
 
   return (
     <Router>
-      <CryptoProvider>
         <div>
           <nav>
             <div>
@@ -74,10 +61,8 @@ export default function App() {
             <Route exact path="/coin-page/:coinId">
               <CoinPage />
             </Route>
-
           </Switch>
         </div>
-      </CryptoProvider>
     </Router>
   );
 }
