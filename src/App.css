@@ -173,6 +173,25 @@
   width: 50%;
 }
 
+.comparison-button{
+  width: 120px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comparison-button-wrapper{
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin-bottom: 20px;
+}
+
+.comparison-button.comparison-on{
+  background-color: purple;
+}
+
 .slick-carousel {
   margin-top: 20px;
   margin-bottom: 20px;

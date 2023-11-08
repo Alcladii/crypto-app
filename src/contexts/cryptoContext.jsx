@@ -36,7 +36,6 @@ export const CryptoProvider = ({ children }) => {
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])
-  
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -105,6 +104,9 @@ export const CryptoProvider = ({ children }) => {
       setPriceVolumeChartIsLoading(false);
     }
   };
+
+  console.log(priceVolumeList)
+
 
   return (
     <CryptoContext.Provider
