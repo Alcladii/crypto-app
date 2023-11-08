@@ -10,6 +10,7 @@ import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
+import { SlickCarousel } from "../components/SlickCarousel";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -37,6 +38,13 @@ const ProgressBarInner = styled.div`
   background: purple;
 `;
 
+const ColorIndicator = styled.div`
+  height: 10px;
+  width: 15px;
+  border: 1px solid white;
+  background: ${(props) => props.background};
+`;
+
 function Coins() {
   const {
     useLocalState,
@@ -45,20 +53,18 @@ function Coins() {
     displayCurrency,
     currencySymbol,
     getCurrencyList,
+    setNumOfDays,
+    priceVolumeChartIsLoading,
+    priceVolumeChartIsLoadingHasError,
+    priceVolumeList,
+    selectedCoinData,
+    slidesData,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  const [coinList, setCoinList] = useState([]);
-  const [coinListDsc, setCoinListDsc] = useState(true);
-  const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
-    useState(false);
-  const [
-    priceVolumeChartIsLoadingHasError,
-    setPriceVolumeChartIsLoadingHasError,
-  ] = useState(false);
-  const [priceVolumeList, setPriceVolumeList] = useState(null);
-  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
+  const [coinList, setCoinList] = useLocalState("coinList", []);
+  const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
 
@@ -100,23 +106,6 @@ function Coins() {
     setCoinListDsc(false);
   };
 
-  const getCoinPriceVolume = async (numOfDays) => {
-    try {
-      setPriceVolumeChartIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${numOfDays}&interval=daily`
-      );
-      setPriceVolumeChartIsLoading(false);
-      setPriceVolumeChartIsLoadingHasError(false);
-      setNumOfDays(numOfDays);
-      setPriceVolumeList(data);
-    } catch (err) {
-      // one is for loading, the other is for error
-      setPriceVolumeChartIsLoadingHasError(true);
-      setPriceVolumeChartIsLoading(false);
-    }
-  };
-
   const options = {
     responsive: true,
     plugins: {
@@ -148,10 +137,6 @@ function Coins() {
   };
 
   useEffect(() => {
-    getCoinPriceVolume(numOfDays);
-  }, []);
-
-  useEffect(() => {
     getCoinList();
   }, [coinListDsc]);
 
@@ -165,12 +150,17 @@ function Coins() {
     history.push(`/coin-page/${item.id}`);
   };
 
+  const colors = ["blue", "purple", "green"];
+
   return (
     <div className="App">
+      <div className="slick-carousel">
+        <SlickCarousel coinList={coinList} />
+      </div>
       <div>
         <button
           onClick={() => {
-            getCoinPriceVolume(0);
+            setNumOfDays(0);
           }}
         >
           {" "}
@@ -179,7 +169,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(6);
+            setNumOfDays(6);
           }}
         >
           {" "}
@@ -189,7 +179,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(30);
+            setNumOfDays(30);
           }}
         >
           {" "}
@@ -198,7 +188,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(89);
+            setNumOfDays(89);
           }}
         >
           {" "}
@@ -207,7 +197,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(179);
+            setNumOfDays(179);
           }}
         >
           {" "}
@@ -216,27 +206,63 @@ function Coins() {
         &nbsp;&nbsp;
         <button
           onClick={() => {
-            getCoinPriceVolume(364);
+            setNumOfDays(364);
           }}
         >
           {" "}
           1 Year{" "}
         </button>
       </div>
-      <div className="chart">
-        {priceVolumeChartIsLoading && (
-          <div>Loading Price and Volumne Chart</div>
-        )}
-        {priceVolumeList !== null && (
-          <LineChart priceList={priceVolumeList.prices} />
-        )}
-        {priceVolumeList !== null && (
-          <BarChart volumeList={priceVolumeList.total_volumes} />
-        )}
-        {priceVolumeChartIsLoadingHasError && (
-          <div>Error fetching Price and Volumne Chart</div>
-        )}
-      </div>
+      {priceVolumeList.length === 0 ? (
+        <div className="please-select-coin-wrapper">
+          Please select a coin to view chart
+        </div>
+      ) : (
+        <div className="chart">
+          {priceVolumeChartIsLoading && (
+            <div>Loading Price and Volumne Chart</div>
+          )}
+
+          <div className="line-chart-wrapper">
+            {priceVolumeList !== null && (
+              <LineChart priceVolumeList={priceVolumeList} />
+            )}
+            <div className="charts-coins-container">
+              {selectedCoinData &&
+                selectedCoinData.map((coin) => (
+                  <div className="coin-indicator-wrapper">
+                    <ColorIndicator
+                      background={colors[selectedCoinData.indexOf(coin)]}
+                    ></ColorIndicator>
+                    {coin.name}&nbsp;{currencySymbol}
+                    {coin.current_price.toLocaleString()}
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div className="bar-chart-wrapper">
+            {priceVolumeList !== null && (
+              <BarChart priceVolumeList={priceVolumeList} />
+            )}
+            <div className="charts-coins-container">
+              {selectedCoinData &&
+                selectedCoinData.map((coin) => (
+                  <div className="coin-indicator-wrapper">
+                    <ColorIndicator
+                      background={colors[selectedCoinData.indexOf(coin)]}
+                    ></ColorIndicator>
+                    {coin.name}&nbsp;{currencySymbol}
+                    {convertToBillion(coin.total_volume)}B
+                  </div>
+                ))}
+            </div>
+          </div>
+          {priceVolumeChartIsLoadingHasError && (
+            <div>Error fetching Price and Volumne Chart</div>
+          )}
+        </div>
+      )}
+
       <div>
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
         <button onClick={setToAsc}> Bottom 50 </button>
@@ -249,8 +275,11 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
+        <div>Name</div>
+        <div></div>
         {coinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
+            <div>{singleCoin.index}</div>
             <div
               className="coin-column-width"
               onClick={() => handleClick(singleCoin)}
@@ -264,7 +293,8 @@ function Coins() {
             &nbsp;&nbsp;
             <div className="coin-data-width">
               {currencySymbol}
-              {singleCoin.current_price && singleCoin.current_price.toLocaleString()}
+              {singleCoin.current_price &&
+                singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
             <div className="coin-data-width">
@@ -313,13 +343,20 @@ function Coins() {
             </div>
             <div className="coin-column-width">
               <div className="total-circulating-supply-wrapper">
-                <span>{currencySymbol}{convertToBillion(singleCoin.circulating_supply)}B</span>
-                <span>{currencySymbol}{convertToBillion(singleCoin.total_supply)}B</span>
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.circulating_supply)}B
+                </span>
+                <span>
+                  {currencySymbol}
+                  {convertToBillion(singleCoin.total_supply)}B
+                </span>
               </div>
               <ProgressBarOuter>
                 <ProgressBarInner
                   width={
-                    (singleCoin.circulating_supply / singleCoin.total_supply) * 100
+                    (singleCoin.circulating_supply / singleCoin.total_supply) *
+                    100
                   }
                 ></ProgressBarInner>
               </ProgressBarOuter>
