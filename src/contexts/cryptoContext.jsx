@@ -105,9 +105,6 @@ export const CryptoProvider = ({ children }) => {
     }
   };
 
-  console.log(priceVolumeList)
-
-
   return (
     <CryptoContext.Provider
       value={{

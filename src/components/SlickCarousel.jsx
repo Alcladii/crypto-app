@@ -97,8 +97,6 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData([])
   }
 
-  console.log(selectedCoinData)
-
   return (
     <div className="App">
       <div className="comparison-button-wrapper">
