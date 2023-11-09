@@ -71,6 +71,14 @@
   margin-top: 10px;
 }
 
+.positive-num {
+  color: green;
+}
+
+.negative-num {
+  color: red;
+}
+
 .coin-name-icon-wrapper {
   display: flex;
   align-items: center;
