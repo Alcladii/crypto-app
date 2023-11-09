@@ -28,6 +28,8 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData,
   } = useContext(CryptoContext);
 
+  const [comparisonIsOn, setComparisonIsOn] = useLocalState("comparisonModeOn", false)
+
   const settings = {
     dots: false,
     infinite: false,
@@ -56,17 +58,23 @@ export const SlickCarousel = ({ coinList }) => {
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
   const handleClick = (id) => {
-    const newSlides = slidesData.map((coin) => {
-      const isSameCoin = id === coin.id;
-      if (isSameCoin) {
-        if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
-        else if (coin.selected) coin.selected = false;
-      }
-      return coin;
-    });
-    const selectedCoin = slidesData.filter((coin) => coin.selected);
-    setSelectedCoinData(selectedCoin);
-    setSlidesData(newSlides);
+      const newSlides = slidesData.map((coin) => {
+        const isSameCoin = id === coin.id;
+        if (isSameCoin) {
+          if(!comparisonIsOn){
+            coin.selected = true;
+          }else{
+            if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
+            else if (coin.selected) coin.selected = false;
+          }        
+        } else if (!comparisonIsOn) {
+          coin.selected = false
+        }
+        return coin;
+      });
+      const selectedCoin = slidesData.filter((coin) => coin.selected);
+      setSelectedCoinData(selectedCoin);
+      setSlidesData(newSlides);
   };
 
   useEffect(() => {
@@ -83,8 +91,18 @@ export const SlickCarousel = ({ coinList }) => {
     }
   }, [selectedCoinData, numOfDays]);
 
+  const handleComparison = () => {
+    setComparisonIsOn(!comparisonIsOn)
+    slidesData.forEach((slide)=>{slide.selected = false})
+    setSelectedCoinData([])
+  }
+
   return (
     <div className="App">
+      <div className="comparison-button-wrapper">
+        <button onClick={handleComparison} className={`comparison-button ${comparisonIsOn ? "comparison-on" : ""}`}>Comparison</button>
+      </div>
+      
       <div className="slider-wrapper">
         {slidesData && (
           <Slider {...settings}>
