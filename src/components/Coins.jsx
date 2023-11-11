@@ -297,29 +297,77 @@ function Coins() {
                 singleCoin.current_price.toLocaleString()}
             </div>
             &nbsp;&nbsp;
-            <div className={`coin-data-width ${singleCoin.price_change_percentage_1h_in_currency > 0 ? "positive-num" : "negative-num"}`}>
-              {singleCoin.price_change_percentage_1h_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_1h_in_currency
-                  )
-                : "N/A"}
-              %
+            <div className="change-percentage-wrapper">
+              <img
+                className="triangle-arrow"
+                src={
+                  singleCoin.price_change_percentage_1h_in_currency > 0
+                    ? "https://i.postimg.cc/dttpyy5D/icons8-triangle-96.png"
+                    : "https://i.postimg.cc/wxknMVcS/icons8-triangle-arrow-96.png"
+                }
+              />
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_1h_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_1h_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_1h_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
-            <div className={`coin-data-width ${singleCoin.price_change_percentage_24h_in_currency > 0 ? "positive-num" : "negative-num"}`}>
-              {singleCoin.price_change_percentage_24h_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_24h_in_currency
-                  )
-                : "N/A"}
-              %
+            <div className="change-percentage-wrapper">
+              <img
+                className="triangle-arrow"
+                src={
+                  singleCoin.price_change_percentage_24h_in_currency > 0
+                    ? "https://i.postimg.cc/dttpyy5D/icons8-triangle-96.png"
+                    : "https://i.postimg.cc/wxknMVcS/icons8-triangle-arrow-96.png"
+                }
+              />
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_24h_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_24h_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_24h_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
-            <div className={`coin-data-width ${singleCoin.price_change_percentage_7d_in_currency > 0 ? "positive-num" : "negative-num"}`}>
-              {singleCoin.price_change_percentage_7d_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_7d_in_currency
-                  )
-                : "N/A"}
-              %
+            <div className="change-percentage-wrapper">
+              <img
+                className="triangle-arrow"
+                src={
+                  singleCoin.price_change_percentage_7d_in_currency > 0
+                    ? "https://i.postimg.cc/dttpyy5D/icons8-triangle-96.png"
+                    : "https://i.postimg.cc/wxknMVcS/icons8-triangle-arrow-96.png"
+                }
+              />
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_7d_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_7d_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_7d_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
             <div className="coin-column-width">
               <div className="market-cap-change-wrapper">
