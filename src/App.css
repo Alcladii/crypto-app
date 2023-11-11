@@ -47,6 +47,14 @@
   color: #888;
 }
 
+.home-Or-Portfolio-Selected{
+  background-color: purple;
+}
+
+.coin-Or-Converter-Selected {
+  background-color: purple;
+}
+
 .chart {
   display: flex;
   justify-content: center;
