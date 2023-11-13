@@ -3,8 +3,14 @@ import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 
 export const CurrencyConverter = () => {
-  const { useLocalState, getSingleCoinData, singleCoin } =
-    useContext(CryptoContext);
+  const {
+    useLocalState,
+    getSingleCoinData,
+    singleCoin,
+    currencyConverterDays,
+    setCurrencyConverterDays,
+    getCoinPriceVolume,
+  } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
   const [reversed, setReversed] = useState(false);
   const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
@@ -22,6 +28,14 @@ export const CurrencyConverter = () => {
     1
   );
   const [convertedResult, setConvertedResult] = useState("");
+  const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
+    "leftCurrencyData",
+    []
+  );
+  const [rightCurrencyData, setRightCurrencyData] = useLocalState(
+    "rightCurrencyData",
+    []
+  );
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -50,6 +64,7 @@ export const CurrencyConverter = () => {
     setConvertedResult(result);
   };
 
+  //when select a coin, call getPriceVolumeData to get the price data for that coin
   const handleLeftCurrencySelect = (value) => {
     setLeftCurrency(value);
     setLeftCurrencyBeforeReverse(value);
@@ -61,6 +76,15 @@ export const CurrencyConverter = () => {
     setRightCurrencyBeforeReverse(value);
     setRightCurrencyValue(singleCoin.market_data.current_price[value]);
   };
+
+  useEffect(() => {
+    const data = getCoinPriceVolume(leftCurrency, currencyConverterDays);
+    setLeftCurrencyData(data)
+  }, [leftCurrency, currencyConverterDays]);
+
+  useEffect(() => {
+    getCoinPriceVolume(rightCurrency, currencyConverterDays);
+  }, [leftCurrency, currencyConverterDays]);
 
   useEffect(() => {
     getSingleCoinData("bitcoin");
@@ -114,6 +138,62 @@ export const CurrencyConverter = () => {
           &nbsp;is&nbsp;{convertedResult}
         </div>
       )}
+      <div>
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(0);
+          }}
+        >
+          {" "}
+          1 Day{" "}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(6);
+          }}
+        >
+          {" "}
+          7 Days{" "}
+        </button>
+        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
+        &nbsp;&nbsp;
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(30);
+          }}
+        >
+          {" "}
+          1 Month{" "}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(89);
+          }}
+        >
+          {" "}
+          90 Days{" "}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(179);
+          }}
+        >
+          {" "}
+          180 Days{" "}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          onClick={() => {
+            setCurrencyConverterDays(364);
+          }}
+        >
+          {" "}
+          1 Year{" "}
+        </button>
+      </div>
     </div>
   );
 };
