@@ -26,6 +26,7 @@ export const SlickCarousel = ({ coinList }) => {
     setSlidesData,
     selectedCoinData,
     setSelectedCoinData,
+    displayCurrency,
   } = useContext(CryptoContext);
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState("comparisonModeOn", false)
@@ -83,13 +84,13 @@ export const SlickCarousel = ({ coinList }) => {
     } else {
       setPriceVolumeList([]);
       const requests = selectedCoinData.map((item) => {
-        return getCoinPriceVolume(item.id, numOfDays);
+        return getCoinPriceVolume(item.id, displayCurrency, numOfDays);
       });
       Promise.all(requests).then((responses) => {
         setPriceVolumeList(responses);
       });
     }
-  }, [selectedCoinData, numOfDays]);
+  }, [selectedCoinData, displayCurrency, numOfDays]);
 
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn)
