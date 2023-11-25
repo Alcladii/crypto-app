@@ -1,6 +1,4 @@
-//Problem is if I select a new coin after reversed, the prev coin data on that side, won't update, 
-//so when I reverse it back, it showed the old coin, instead of the new selected coin
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
@@ -8,214 +6,200 @@ import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter
 export const CurrencyConverter = () => {
   const {
     useLocalState,
-    getSingleCoinData,
-    singleCoin,
     getCoinPriceVolume,
     displayCurrency,
     coinList,
+    currencySymbol,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
-  const [reversed, setReversed] = useState(false);
+  //const [reversed, setReversed] = useState(false);
   const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
   const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "");
-  const [leftCurrencyBeforeReverse, setLeftCurrencyBeforeReverse] =
-    useLocalState("leftCurrencyBeforeReverse", "");
-  const [rightCurrencyBeforeReverse, setRightCurrencyBeforeReverse] =
-    useLocalState("rightCurrencyBeforeReverse", "");
-  const [leftCurrencyValue, setLeftCurrencyValue] = useLocalState(
-    "leftCurrencyValue",
-    1
-  );
-  const [rightCurrencyValue, setRightCurrencyValue] = useLocalState(
-    "rightCurrencyValue",
-    1
-  );
-  const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
     "leftCurrencyData",
-    []
+    null
   );
+  const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
+  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
+    useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-    []
-  );
-  const [selectedCurrencies, setSelectedCurrencies] = useLocalState(
-    "selectedCurrenciesInConverter",
-    []
-  );
-  const [prevLeftCurrency, setPrevLeftCurrency] = useLocalState(
-    "prevLeftCurrency",
     null
   );
-  const [prevRightCurrency, setPrevRightCurrency] = useLocalState(
-    "prevRightCurrency",
-    null
+  const [convertedResult, setConvertedResult] = useState("");
+  const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
+    "leftCurrencyPriceVolume",
+    []
   );
+  const [rightCurrencyPriceVolume, setRightCurrencyPriceVolume] = useLocalState(
+    "rightCurrencyPriceVolume",
+    []
+  );
+  const [
+    getLeftCurrencyPriceVolumeHasError,
+    setGetLeftCurrencyPriceVolumeHasError,
+  ] = useState(false);
+  const [
+    getRightCurrencyPriceVolumeHasError,
+    setGetRightCurrencyPriceVolumeHasError,
+  ] = useState(false);
   const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
     "currencyConverterDays",
-    [7]
+    7
   );
-  const [prevCurrencyConverterDays, setPrevCurrencyConverterdays] =
-    useLocalState("prevCurrencyConverterDays", []);
-  //const [leftCurrencyDataBeforeReverse, setLeftCurrencyDataBeforeReverse] = useLocalState("leftCurrencyDataBeforeReverse", null)
-  //const [rightCurrencyDataBeforeReverse, setRightCurrencyDataBeforeReverse] = useLocalState("rightCurrencyDataBeforeReverse", null)
-
-  //make two hooks here for leftCurrencyData before reverse and rightCurrencyData before reverse 
+  const [selectLeftCurrency, setSelectLeftCurrency] = useState(false);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleClick = () => {
-    if (reversed === true) {
-      setReversed(false);
-      setLeftCurrency(rightCurrencyBeforeReverse);
-      setRightCurrency(leftCurrencyBeforeReverse);
-      //setLeftCurrencyData(rightCurrencyDataBeforeReverse)
-      //setRightCurrencyData(leftCurrencyDataBeforeReverse)
-    } else {
-      setReversed(true);
-      setRightCurrency(rightCurrencyBeforeReverse);
-      setLeftCurrency(leftCurrencyBeforeReverse);
-      //setRightCurrencyData(rightCurrencyDataBeforeReverse)
-      //setLeftCurrencyData(leftCurrencyDataBeforeReverse)     
-    }
+    setLeftCurrency(rightCurrency);
+    setRightCurrency(leftCurrency);
+    setLeftCurrencyData(rightCurrencyData);
+    setRightCurrencyData(leftCurrencyData);
   };
 
   const handleConvert = () => {
-    let conversionRate;
-    if (reversed === true) {
-      conversionRate = rightCurrencyValue / leftCurrencyValue;
-    } else {
-      conversionRate = leftCurrencyValue / rightCurrencyValue;
-    }
+    const conversionRate =
+      rightCurrencyData.market_data.current_price[displayCurrency] /
+      leftCurrencyData.market_data.current_price[displayCurrency];
     const result = (inputValue / conversionRate).toFixed(6);
     setConvertedResult(result);
   };
 
-  //maybe put a reversed flag inside handleLeftCurrencySelect, so when it's on, setRightCurrency(value) and setRightCurrencyBeforeReverse(value)?
-   //make different API call function for left and right currency
+  const getSelectedCurrencyData = async (item) => {
+    try {
+      setSingleCoinIsLoading(true);
+      setSingleCoinLoadingHasError(false);
+      const singleCoinData = await axios(
+        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+      );
+      setSingleCoinIsLoading(false);
+      if (!singleCoinData) {
+        setSingleCoinLoadingHasError(true);
+        return;
+      } else {
+        if (selectLeftCurrency) setLeftCurrencyData(singleCoinData.data);
+        if (!selectLeftCurrency) setRightCurrencyData(singleCoinData.data);
+      }
+    } catch (err) {
+      setSingleCoinLoadingHasError(true);
+      setSingleCoinIsLoading(false);
+    }
+  };
 
   const handleLeftCurrencySelect = (value) => {
-    getSingleCoinData(value);
     setLeftCurrency(value);
-    setLeftCurrencyBeforeReverse(value);
+    setSelectLeftCurrency(true);
   };
- 
+
   useEffect(() => {
-    if (singleCoin.market_data && leftCurrency !== prevLeftCurrency) {
-      setLeftCurrencyValue(
-        singleCoin.market_data.current_price[displayCurrency]
-      );
-      setPrevLeftCurrency(leftCurrency);
+    if (selectLeftCurrency) {
+      getSelectedCurrencyData(leftCurrency);
+    } else {
+      getSelectedCurrencyData(rightCurrency);
     }
-  }, [singleCoin.market_data]);
+  }, [leftCurrency, rightCurrency]);
 
   const handleRightCurrencySelect = (value) => {
-    getSingleCoinData(value);
     setRightCurrency(value);
-    setRightCurrencyBeforeReverse(value);
+    setSelectLeftCurrency(false);
   };
 
   useEffect(() => {
-    if (singleCoin.market_data && rightCurrency !== prevRightCurrency) {
-      setRightCurrencyValue(
-        singleCoin.market_data.current_price[displayCurrency]
-      );
-      setPrevRightCurrency(rightCurrency);
-    }
-  }, [singleCoin.market_data]);
+    setGetLeftCurrencyPriceVolumeHasError(false);
+    getCoinPriceVolume(leftCurrency, displayCurrency, currencyConverterDays)
+      .then((response) => {
+        if (!response) {
+          setGetLeftCurrencyPriceVolumeHasError(true);
+          return;
+        } else {
+          setLeftCurrencyPriceVolume(response);
+        }
+      })
+      .catch(() => setGetLeftCurrencyPriceVolumeHasError(true));
+  }, [leftCurrency, currencyConverterDays]);
 
-  //useEffect(() => {
-    //these conditions here prevent unecessary API calls when page refreshed and arguments don't change
-    /*if (
-      leftCurrencyData || leftCurrency !== prevLeftCurrency ||
-      currencyConverterDays !== prevCurrencyConverterDays
-    ) {*/
-      /*etCoinPriceVolume(leftCurrency, displayCurrency, currencyConverterDays)
-        .then((response) => {
-          //console.log("left currency data", leftCurrency, response)
-          setLeftCurrencyData(response);
-          //setLeftCurrencyDataBeforeReverse(response)
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-      setPrevCurrencyConverterdays(currencyConverterDays);
-    }*/
-  /*}*///, [leftCurrency, currencyConverterDays]);
+  useEffect(() => {
+    setGetRightCurrencyPriceVolumeHasError(false);
+    getCoinPriceVolume(rightCurrency, displayCurrency, currencyConverterDays)
+      .then((response) => {
+        if (!response) {
+          setGetRightCurrencyPriceVolumeHasError(true);
+          return;
+        } else {
+          setRightCurrencyPriceVolume(response);
+        }
+      })
+      .catch(() => setGetRightCurrencyPriceVolumeHasError(true));
+  }, [rightCurrency, currencyConverterDays]);
 
-  //useEffect(() => {
-    /*if (
-      !rightCurrencyData || rightCurrency !== prevRightCurrency ||
-      currencyConverterDays !== prevCurrencyConverterDays
-    ) {*/
-      /*getCoinPriceVolume(rightCurrency, displayCurrency, currencyConverterDays)
-        .then((response) => {
-          //console.log("right currency data", rightCurrency, response)
-          setRightCurrencyData(response);
-          //setRightCurrencyDataBeforeReverse(response)
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-      setPrevCurrencyConverterdays(currencyConverterDays);
-    }*/
-  /*}*///, [rightCurrency, currencyConverterDays]);
-
-  //reuse the line below
-  //const requests = (leftCurrencyData && rightCurrencyData) && reversed ? [leftCurrencyData, rightCurrencyData] : [rightCurrencyData, leftCurrencyData]
-  //const requests = (leftCurrencyData && rightCurrencyData) && [leftCurrencyData, rightCurrencyData] 
-
-  //console.log(requests)
+  const requests = leftCurrencyData &&
+    rightCurrencyData && [leftCurrencyPriceVolume, rightCurrencyPriceVolume];
 
   useEffect(() => {
     handleConvert();
   }, [
-    reversed,
     leftCurrency,
     rightCurrency,
-    leftCurrencyValue,
-    rightCurrencyValue,
+    leftCurrencyData,
+    rightCurrencyData,
     inputValue,
   ]);
 
-  const currencyOptions = [
+  const currencyOptions =
     coinList &&
-      coinList.map((item) => (
-        <option key={item.id} value={item.id}>
-          {item.name}
-        </option>
-      )),
-  ];
+    coinList.map((item) => (
+      <option key={item.id} value={item.id}>
+        {item.name}
+      </option>
+    ));
 
   return (
     <div className="App">
-      <input onChange={handleChange} value={inputValue} />
-      <select
-        value={leftCurrency}
-        onChange={(e) => {
-          handleLeftCurrencySelect(e.target.value);
-          handleConvert();
-        }}
-      >
-        {currencyOptions}
-      </select>
-      <button onClick={handleClick}>reverse</button>
-      <select
-        value={rightCurrency}
-        onChange={(e) => handleRightCurrencySelect(e.target.value)}
-      >
-        {currencyOptions}
-      </select>
-      {!leftCurrency || !rightCurrency || !inputValue ? (
-        <div>Please put in a number and choose both currencies.</div>
-      ) : (
-        <div>
-          {inputValue}&nbsp;{leftCurrency}&nbsp;to&nbsp;{rightCurrency}
-          &nbsp;is&nbsp;{convertedResult}
-        </div>
+      {singleCoinIsLoading && <div>Loading Single Coin</div>}
+      {singleCoinLoadingHasError && (
+        <div>Error in loading coin data, unable to update coin price</div>
       )}
+      <div>You sell</div>
+      <input onChange={handleChange} value={inputValue} />
+      <div className="currencySelectorWrapper">
+        <select
+          className="currencySelector"
+          value={leftCurrency}
+          onChange={(e) => {
+            handleLeftCurrencySelect(e.target.value);
+            handleConvert();
+          }}
+        >
+          {currencyOptions}
+        </select>
+        <div>
+          1&nbsp;{leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          {leftCurrencyData &&
+            leftCurrencyData.market_data.current_price[displayCurrency]}
+        </div>
+      </div>
+      <button onClick={handleClick}>reverse</button>
+      <div>You buy&nbsp; {convertedResult != 0 ? convertedResult : ""}</div>
+      <div className="currencySelectorWrapper">
+        <select
+          className="currencySelector"
+          value={rightCurrency}
+          onChange={(e) => {
+            handleRightCurrencySelect(e.target.value);
+            handleConvert();
+          }}
+        >
+          {currencyOptions}
+        </select>
+        <div>
+          1&nbsp;{rightCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          {rightCurrencyData &&
+            rightCurrencyData.market_data.current_price[displayCurrency]}
+        </div>
+      </div>
       <div>
         <button
           onClick={() => {
@@ -272,7 +256,14 @@ export const CurrencyConverter = () => {
           1 Year{" "}
         </button>
       </div>
-      { /*<LineChartCurrencyConverter priceVolumeList={requests} />*/}
+      <div>
+        {leftCurrencyData.name}&nbsp;to&nbsp;{rightCurrencyData.name}
+      </div>
+      {(getLeftCurrencyPriceVolumeHasError ||
+        getRightCurrencyPriceVolumeHasError) && (
+        <div>Error in getting price and volume data, can't update chart</div>
+      )}
+      <LineChartCurrencyConverter priceVolumeList={requests} />
     </div>
   );
 };

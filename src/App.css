@@ -258,3 +258,12 @@
   display: flex;
   align-items: center;
 }
+
+.currencySelector{
+  width: 400px;
+}
+
+.currencySelectorWrapper {
+  display: flex;
+  justify-content: space-between;
+}
