@@ -71,6 +71,10 @@
   font-size: 1.5em;
 }
 
+.coin-list-title-container {
+  display: flex;
+}
+
 .individual-coin {
   display: flex;
   /*justify-content: center;*/
@@ -84,10 +88,20 @@
   align-items: center;
 }
 
+.coin-number-column-width{
+  width: 30px;
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+}
+
 .coin-column-width {
   width: 150px;
   padding-left: 10px;
   padding-right: 10px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 .market-cap-change-wrapper {
@@ -104,6 +118,9 @@
 
 .coin-data-width {
   width: 80px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 .individual-coin-chart {
