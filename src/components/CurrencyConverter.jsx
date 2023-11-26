@@ -12,7 +12,6 @@ export const CurrencyConverter = () => {
     currencySymbol,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
-  //const [reversed, setReversed] = useState(false);
   const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
   const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "");
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
@@ -107,32 +106,40 @@ export const CurrencyConverter = () => {
     setSelectLeftCurrency(false);
   };
 
+  const getLeftCurrencyPriceVolume = async (leftCurrency, displayCurrency, currencyConverterDays) => {
+    try {
+      const response = await getCoinPriceVolume(leftCurrency, displayCurrency, currencyConverterDays);
+      if (!response) {
+        setGetLeftCurrencyPriceVolumeHasError(true);
+        return;
+      }
+      setLeftCurrencyPriceVolume(response);
+    } catch (error) {
+      setGetLeftCurrencyPriceVolumeHasError(true);
+    }
+  }
+
+  const getRightCurrencyPriceVolume = async (rightCurrency, displayCurrency, currencyConverterDays) => {
+    try {
+      const response = await getCoinPriceVolume(rightCurrency, displayCurrency, currencyConverterDays);
+      if (!response) {
+        setGetRightCurrencyPriceVolumeHasError(true);
+        return;
+      }
+      setRightCurrencyPriceVolume(response);
+    } catch (error) {
+      setGetRightCurrencyPriceVolumeHasError(true);
+    }
+  }
+
   useEffect(() => {
     setGetLeftCurrencyPriceVolumeHasError(false);
-    getCoinPriceVolume(leftCurrency, displayCurrency, currencyConverterDays)
-      .then((response) => {
-        if (!response) {
-          setGetLeftCurrencyPriceVolumeHasError(true);
-          return;
-        } else {
-          setLeftCurrencyPriceVolume(response);
-        }
-      })
-      .catch(() => setGetLeftCurrencyPriceVolumeHasError(true));
+    getLeftCurrencyPriceVolume (leftCurrency, displayCurrency, currencyConverterDays) 
   }, [leftCurrency, currencyConverterDays]);
 
   useEffect(() => {
     setGetRightCurrencyPriceVolumeHasError(false);
-    getCoinPriceVolume(rightCurrency, displayCurrency, currencyConverterDays)
-      .then((response) => {
-        if (!response) {
-          setGetRightCurrencyPriceVolumeHasError(true);
-          return;
-        } else {
-          setRightCurrencyPriceVolume(response);
-        }
-      })
-      .catch(() => setGetRightCurrencyPriceVolumeHasError(true));
+    getRightCurrencyPriceVolume (rightCurrency, displayCurrency, currencyConverterDays)
   }, [rightCurrency, currencyConverterDays]);
 
   const requests = leftCurrencyData &&

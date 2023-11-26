@@ -65,7 +65,6 @@ function Coins() {
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  //const [coinList, setCoinList] = useLocalState("coinList", []);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);

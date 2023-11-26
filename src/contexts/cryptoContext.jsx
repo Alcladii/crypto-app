@@ -39,10 +39,6 @@ export const CryptoProvider = ({ children }) => {
   
   const [coinList, setCoinList] = useLocalState("coinList", []);
 
-  //console.log(currencyConverterDays)
-  //console.log(priceVolumeList)
-  //console.log(coinList)
-
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
   };
@@ -139,8 +135,6 @@ export const CryptoProvider = ({ children }) => {
         setSlidesData,
         selectedCoinData,
         setSelectedCoinData,
-        //currencyConverterDays,
-        //setCurrencyConverterDays,
         coinList,
         setCoinList,
       }}
