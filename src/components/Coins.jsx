@@ -60,11 +60,12 @@ function Coins() {
     priceVolumeList,
     selectedCoinData,
     slidesData,
+    coinList,
+    setCoinList,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  const [coinList, setCoinList] = useLocalState("coinList", []);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
@@ -276,11 +277,20 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div>Name</div>
-        <div></div>
+        <div className="coin-list-title-container">
+          <div className="coin-number-column-width">#</div>
+          <div className="coin-column-width">Name</div>
+          <div className="coin-data-width">Price</div>
+          <div className="coin-data-width">1h%</div>
+          <div className="coin-data-width">24h%</div>
+          <div className="coin-data-width">7d%</div>
+          <div className="coin-column-width">24h volume/Market Cap</div>
+          <div className="coin-column-width">Circulating/Total supply</div>
+          <div className="coin-column-width">Last 7d</div>
+        </div>
         {coinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
-            <div>{singleCoin.index}</div>
+            <div className="coin-number-column-width">{coinList.indexOf(singleCoin)+1}</div>
             <div
               className="coin-column-width"
               onClick={() => handleClick(singleCoin)}
@@ -291,7 +301,7 @@ function Coins() {
                 <span>{singleCoin.name}</span>
               </div>
             </div>
-            &nbsp;&nbsp;
+            {/*&nbsp;&nbsp;*/}
             <div className="coin-data-width">
               {currencySymbol}
               {singleCoin.current_price &&
@@ -350,44 +360,50 @@ function Coins() {
               </div>
             </div>
             <div className="coin-column-width">
-              <div className="market-cap-change-wrapper">
-                <span>
-                  {currencySymbol}
-                  {convertToBillion(singleCoin.market_cap_change_24h)}B
-                </span>
-                <span>
-                  {currencySymbol}
-                  {convertToBillion(singleCoin.market_cap)}B
-                </span>
+              <div>
+                <div className="market-cap-change-wrapper">
+                  <span>
+                    {currencySymbol}
+                    {convertToBillion(singleCoin.market_cap_change_24h)}B
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {convertToBillion(singleCoin.market_cap)}B
+                  </span>
+                </div>
+                <ProgressBarOuter>
+                  <ProgressBarInner
+                    width={
+                      (singleCoin.market_cap_change_24h /
+                        singleCoin.market_cap) *
+                      100
+                    }
+                  ></ProgressBarInner>
+                </ProgressBarOuter>
               </div>
-              <ProgressBarOuter>
-                <ProgressBarInner
-                  width={
-                    (singleCoin.market_cap_change_24h / singleCoin.market_cap) *
-                    100
-                  }
-                ></ProgressBarInner>
-              </ProgressBarOuter>
             </div>
             <div className="coin-column-width">
-              <div className="total-circulating-supply-wrapper">
-                <span>
-                  {currencySymbol}
-                  {convertToBillion(singleCoin.circulating_supply)}B
-                </span>
-                <span>
-                  {currencySymbol}
-                  {convertToBillion(singleCoin.total_supply)}B
-                </span>
+              <div>
+                <div className="total-circulating-supply-wrapper">
+                  <span>
+                    {currencySymbol}
+                    {convertToBillion(singleCoin.circulating_supply)}B
+                  </span>
+                  <span>
+                    {currencySymbol}
+                    {convertToBillion(singleCoin.total_supply)}B
+                  </span>
+                </div>
+                <ProgressBarOuter>
+                  <ProgressBarInner
+                    width={
+                      (singleCoin.circulating_supply /
+                        singleCoin.total_supply) *
+                      100
+                    }
+                  ></ProgressBarInner>
+                </ProgressBarOuter>
               </div>
-              <ProgressBarOuter>
-                <ProgressBarInner
-                  width={
-                    (singleCoin.circulating_supply / singleCoin.total_supply) *
-                    100
-                  }
-                ></ProgressBarInner>
-              </ProgressBarOuter>
             </div>
             <div className="coin-column-width">
               <div className="individual-coin-chart">

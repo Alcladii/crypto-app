@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
@@ -7,18 +8,18 @@ export const Home = () => {
   const { useLocalState } = useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState(false);
 
-  const hancleCoinsCurrencyClick = () => {
-    if (loadCoins === false) {
-      setLoadCoins(true);
-    } else {
-      setLoadCoins(false);
-    }
+  const handleCoinsListClick = () => {  
+    setLoadCoins(true);
   };
+
+  const handleCurrencyConverterClick = () => {
+    setLoadCoins(false)
+  }
 
   return (
     <div>
-      <button onClick={hancleCoinsCurrencyClick}>Coins</button>
-      <button onClick={hancleCoinsCurrencyClick}>Currency Converter</button>
+      <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
+      <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       {loadCoins ? <Coins /> : <CurrencyConverter />}
     </div>
   );
