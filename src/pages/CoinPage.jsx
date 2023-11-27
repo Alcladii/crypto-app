@@ -35,10 +35,6 @@ const CoinPage = () => {
   };
 
   return (
-    /*<div>
-      <div>coin page loaded</div>
-    </div>*/
-
     <div>
       <button onClick={handleClick}>Back to Coins</button>
       {singleCoinIsLoading && <div>Loading Coin</div>}

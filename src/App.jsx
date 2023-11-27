@@ -19,8 +19,6 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [loadHomePage, setLoadHomePage] = useLocalState("loadHomePage", true);
 
-  //console.log(results)
-
   const handleHomePageClick = () => {  
     setLoadHomePage(true);
   };
