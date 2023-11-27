@@ -11,6 +11,7 @@ import BarChart from "./BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
+import { Arrow } from "../components/Arrow"
 
 const CoinTag = styled.img`
   width: 30px;
@@ -306,30 +307,57 @@ function Coins() {
               {singleCoin.current_price &&
                 singleCoin.current_price.toLocaleString()}
             </div>
-            {/*&nbsp;&nbsp;*/}
-            <div className="coin-data-width">
-              {singleCoin.price_change_percentage_1h_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_1h_in_currency
-                  )
-                : "N/A"}
-              %
+            &nbsp;&nbsp;
+            <div className="change-percentage-wrapper">
+              {<Arrow priceChange={singleCoin.price_change_percentage_1h_in_currency}/>}
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_1h_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_1h_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_1h_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
-            <div className="coin-data-width">
-              {singleCoin.price_change_percentage_24h_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_24h_in_currency
-                  )
-                : "N/A"}
-              %
+            <div className="change-percentage-wrapper">
+              {<Arrow priceChange={singleCoin.price_change_percentage_24h_in_currency}/>}
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_24h_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_24h_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_24h_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
-            <div className="coin-data-width">
-              {singleCoin.price_change_percentage_7d_in_currency !== null
-                ? retainTwoDigits(
-                    singleCoin.price_change_percentage_7d_in_currency
-                  )
-                : "N/A"}
-              %
+            <div className="change-percentage-wrapper">
+              {<Arrow priceChange={singleCoin.price_change_percentage_7d_in_currency}/>}
+              <div
+                className={`coin-data-width ${
+                  singleCoin.price_change_percentage_7d_in_currency > 0
+                    ? "positive-num"
+                    : "negative-num"
+                }`}
+              >
+                {singleCoin.price_change_percentage_7d_in_currency !== null
+                  ? retainTwoDigits(
+                      singleCoin.price_change_percentage_7d_in_currency
+                    )
+                  : "N/A"}
+                %
+              </div>
             </div>
             <div className="coin-column-width">
               <div>
