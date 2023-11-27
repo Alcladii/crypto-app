@@ -8,24 +8,37 @@ import { CryptoContext } from "../contexts/cryptoContext";
 const CoinPage = () => {
   const coinId = useParams();
 
-  const history = useHistory()
-  
+  const history = useHistory();
+
   //I used the "covertToBillion" function in lind 124 and 134
-  const { convertToBillion, getSingleCoinData, singleCoin, singleCoinIsLoading, singleCoinLoadingHasError, displayCurrency, getCurrencyList, currencySymbol } = useContext(CryptoContext);
+  const {
+    convertToBillion,
+    getSingleCoinData,
+    singleCoin,
+    singleCoinIsLoading,
+    singleCoinLoadingHasError,
+    displayCurrency,
+    getCurrencyList,
+    currencySymbol,
+  } = useContext(CryptoContext);
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);
-  }, [coinId]);
+  }, [coinId.coinId]);
 
   useEffect(() => {
     getCurrencyList();
   }, []);
 
   const handleClick = () => {
-    history.push('/');
+    history.push("/");
   };
 
   return (
+    /*<div>
+      <div>coin page loaded</div>
+    </div>*/
+
     <div>
       <button onClick={handleClick}>Back to Coins</button>
       {singleCoinIsLoading && <div>Loading Coin</div>}
