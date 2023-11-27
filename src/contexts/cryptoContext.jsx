@@ -36,6 +36,8 @@ export const CryptoProvider = ({ children }) => {
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])
+  
+  const [coinList, setCoinList] = useLocalState("coinList", []);
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -45,7 +47,7 @@ export const CryptoProvider = ({ children }) => {
     return number.toFixed(2);
   };
 
-  const [singleCoin, setSingleCoin] = useState({});
+  const [singleCoin, setSingleCoin] = useLocalState("singleCoin", null);
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
@@ -89,11 +91,11 @@ export const CryptoProvider = ({ children }) => {
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
   
-  const getCoinPriceVolume = async (coinId, numOfDays) => {
+  const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${numOfDays}&interval=daily`
+        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`
       );
       setPriceVolumeChartIsLoading(false);
       setPriceVolumeChartIsLoadingHasError(false);
@@ -132,7 +134,9 @@ export const CryptoProvider = ({ children }) => {
         slidesData,
         setSlidesData,
         selectedCoinData,
-        setSelectedCoinData
+        setSelectedCoinData,
+        coinList,
+        setCoinList,
       }}
     >
       {children}
