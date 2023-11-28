@@ -15,7 +15,7 @@ const CoinPage = () => {
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);
-  }, [coinId]);
+  }, [coinId.coinId]);
 
   useEffect(() => {
     getCurrencyList();
