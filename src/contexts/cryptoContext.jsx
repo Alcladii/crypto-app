@@ -35,9 +35,10 @@ export const CryptoProvider = ({ children }) => {
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
-  const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])
-  
+  const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])  
   const [coinList, setCoinList] = useLocalState("coinList", []);
+
+  //console.log(portfolioList)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -130,7 +131,6 @@ export const CryptoProvider = ({ children }) => {
         setCoinsInChart,
         numOfDays,
         getCoinPriceVolume,
-        setPriceVolumeList,
         slidesData,
         setSlidesData,
         selectedCoinData,

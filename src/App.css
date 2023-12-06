@@ -303,3 +303,30 @@
   display: flex;
   justify-content: space-between;
 }
+
+.popup {
+  color: black;
+  height: 200px;
+  width: 200px;
+  position: fixed;
+  top: calc(
+    50% - 75px
+  );
+  right: calc(
+    50% - 100px
+  );
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.selected-style {
+  width: 200px;
+  color: black;
+}
+
+.purchase-amount-input {
+  background: white;
+  color: black;
+}
