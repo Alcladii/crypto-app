@@ -52,8 +52,6 @@ const CoinPage = () => {
 
   const htmlContent = singleCoin.description && singleCoin.description.en;
 
-  console.log(htmlContent);
-
   const createMarkup = (htmlContent) => {
     return {
       __html:
@@ -246,7 +244,6 @@ const CoinPage = () => {
           )}
         </div>
       </div>
-      {/*<div>{singleCoin && <div>{singleCoin.description.en}</div>}</div>*/}
       <div>
         {singleCoin && (
           <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
