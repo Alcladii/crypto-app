@@ -306,7 +306,8 @@
 
 .popup {
   color: black;
-  height: 200px;
+  padding: 20px;
+  height: auto;
   width: 200px;
   position: fixed;
   top: calc(

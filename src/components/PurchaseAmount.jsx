@@ -2,7 +2,13 @@ import React, { useState, useContext } from "react";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 
-export const PurchaseAmount = () => {
+export const PurchaseAmount = ({passPurchasedAmount}) => {
+  const {
+    useLocalState,
+    purchasedAmount,
+    setPurchasedAmount
+  } = useContext(CryptoContext);
+  
   const [inputValue, setInputValue] = useState("");
   const [isNumber, setIsNumber] = useState(true)
   const [isEmpty, setIsEmpty] = useState(false);
@@ -20,6 +26,7 @@ export const PurchaseAmount = () => {
       } else {
         setIsNumber(true);
         setInputValue(value);
+        setPurchasedAmount(value)
       }
     }
   };

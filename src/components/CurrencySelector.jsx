@@ -11,8 +11,6 @@ export const CurrencySelector = () => {
     setDisplayCurrency(e.target.value);
   };
 
-  console.log(typeof(displayCurrency))
-
   return (
     <div>
       <select

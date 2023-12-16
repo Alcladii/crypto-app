@@ -37,8 +37,13 @@ export const CryptoProvider = ({ children }) => {
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])  
   const [coinList, setCoinList] = useLocalState("coinList", []);
+  const [portfolioList, setPortfolioList] = useLocalState("portfolioList",[]);
+  const [purchasedAmount, setPurchasedAmount] = useState(null)
+  const [purchaseDate, setPurchaseDate] = useState(null)
+  const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] = useState(null)
 
-  //console.log(portfolioList)
+  //console.log("purchasedAmount", typeof(purchasedAmount), purchasedAmount)
+  console.log("portfolioList", portfolioList)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -137,6 +142,14 @@ export const CryptoProvider = ({ children }) => {
         setSelectedCoinData,
         coinList,
         setCoinList,
+        portfolioList,
+        setPortfolioList,
+        purchasedAmount,
+        setPurchasedAmount,
+        purchaseDate,
+        setPurchaseDate,
+        formattedDateForHistoryApiCall,
+        setFormattedDateForHistoryApiCall,
       }}
     >
       {children}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+//import { uid } from "uid";
 import { useParams } from "react-router-dom";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
@@ -23,10 +24,31 @@ function Portfolio() {
     currencySymbol,
     retainTwoDigits,
     useLocalState,
+    purchasedAmount, 
+    setPurchasedAmount,
+    portfolioList,
+    setPortfolioList,
   } = useContext(CryptoContext);
 
-  //const [ portfolioList, setPortfolioList ] = useLocalState("portfolioList", []);
-  const [portfolioList, setPortfolioList] = useLocalState("portfolioList",["start"]);
+  //const [portfolioList, setPortfolioList] = useLocalState("portfolioList",[]);
+  //const [purchasedAmount, setPurchasedAmount] = useLocalState("")
+
+  const addCoin= (
+    coin,
+    purchaseAmount,
+    purchaseDate,
+  ) => {
+    const newPortfolioList = [
+      ...portfolioList,
+      {
+        id: uid(),
+        coinData: coin,
+        purchaseAmount1: purchaseAmount,
+        purchaseDate1: purchaseDate,
+      }
+    ];
+    setPortfolioList(newPortfolioList);
+  };
 
   return (
     <div>
@@ -34,7 +56,9 @@ function Portfolio() {
       <AddAsset
         portfolioList={portfolioList}
         setPortfolioList={setPortfolioList}
+        addCoin={addCoin}
       />
+      {/*<DeleteAsset />*/}
     </div>
   );
 }
