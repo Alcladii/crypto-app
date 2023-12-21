@@ -8,10 +8,19 @@ import { CryptoContext } from "../contexts/cryptoContext";
 const CoinPage = () => {
   const coinId = useParams();
 
-  const history = useHistory()
-  
+  const history = useHistory();
+
   //I used the "covertToBillion" function in lind 124 and 134
-  const { convertToBillion, getSingleCoinData, singleCoin, singleCoinIsLoading, singleCoinLoadingHasError, displayCurrency, getCurrencyList, currencySymbol } = useContext(CryptoContext);
+  const {
+    convertToBillion,
+    getSingleCoinData,
+    singleCoin,
+    singleCoinIsLoading,
+    singleCoinLoadingHasError,
+    displayCurrency,
+    getCurrencyList,
+    currencySymbol,
+  } = useContext(CryptoContext);
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);
@@ -22,7 +31,7 @@ const CoinPage = () => {
   }, []);
 
   const handleClick = () => {
-    history.push('/');
+    history.push("/");
   };
 
   return (
