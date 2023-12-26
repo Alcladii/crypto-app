@@ -36,14 +36,15 @@ export const CryptoProvider = ({ children }) => {
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])  
+  const [singleCoin, setSingleCoin] = useLocalState("singleCoin", null);
+  const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
+  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
+    useState(false);
   const [coinList, setCoinList] = useLocalState("coinList", []);
   const [portfolioList, setPortfolioList] = useLocalState("portfolioList",[]);
   const [purchasedAmount, setPurchasedAmount] = useState(null)
   const [purchaseDate, setPurchaseDate] = useState(null)
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] = useState(null)
-
-  //console.log("purchasedAmount", typeof(purchasedAmount), purchasedAmount)
-  console.log("portfolioList", portfolioList)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -53,14 +54,8 @@ export const CryptoProvider = ({ children }) => {
     return number.toFixed(2);
   };
 
-  const [singleCoin, setSingleCoin] = useLocalState("singleCoin", null);
-  const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
-  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
-    useState(false);
-
   const getSingleCoinData = async (item) => {
     try {
-      setSingleCoin({});
       setSingleCoinIsLoading(true);
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
@@ -104,8 +99,13 @@ export const CryptoProvider = ({ children }) => {
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`
       );
       setPriceVolumeChartIsLoading(false);
-      setPriceVolumeChartIsLoadingHasError(false);
-      return data
+      if (!data) {
+        setPriceVolumeChartIsLoadingHasError(true);
+        return;
+      } else {
+        setPriceVolumeChartIsLoadingHasError(false);
+        return data
+      }     
     } catch (err) {
       // one is for loading, the other is for error handling
       setPriceVolumeChartIsLoadingHasError(true);
@@ -121,6 +121,7 @@ export const CryptoProvider = ({ children }) => {
         retainTwoDigits,
         getSingleCoinData,
         singleCoin,
+        setSingleCoin,
         displayCurrency,
         getCurrencyList,
         setDisplayCurrency,

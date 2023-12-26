@@ -6,21 +6,12 @@ import { PurchaseAmount} from "../components/PurchaseAmount"
 import { PurchaseDate } from "../components/PurchaseDate"
 
 
-export const AddAsset = ({ portfolioList, setPortfolioList, addCoin }) => {
+export const AddAsset = ({ addCoin }) => {
   const {
     coinList,
-    convertToBillion,
-    getSingleCoinData,
-    singleCoin,
-    singleCoinIsLoading,
-    singleCoinLoadingHasError,
-    displayCurrency,
-    getCurrencyList,
-    currencySymbol,
-    retainTwoDigits,
-    useLocalState,
     purchasedAmount,
     purchaseDate,
+    formattedDateForHistoryApiCall,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -28,9 +19,6 @@ export const AddAsset = ({ portfolioList, setPortfolioList, addCoin }) => {
   const [selectedAmount, setSelectedAmount] = useState("");
   const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false)
   const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false)
-  const [selectedCoinData, setSelectedCoinData] = useState({})
-
-  //console.log(selectedCoin)
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -50,19 +38,17 @@ export const AddAsset = ({ portfolioList, setPortfolioList, addCoin }) => {
     setSelectedCoin(value);
   };
 
-  //don't have to make selectedCoinData state, can set the data into coin in portfolioList
   const getSelectedCoinData = async (coin) => {
-    try {
-        
-        //setSelectedCoin({});
+    try {      
         setSelectedCoinIsLoading(true);
         const singleCoinData = await axios(
           `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
         );
-        //console.log(singleCoinData.data, purchasedAmount, purchaseDate)
-        addCoin(singleCoinData.data, purchasedAmount, purchaseDate)
+        const singleCoinHistory = await axios(
+           `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
+        )
+        addCoin(singleCoinData.data, purchasedAmount, purchaseDate, singleCoinHistory.data)
         setSelectedCoinIsLoading(false);
-        //setSelectedCoinData(singleCoinData.data);
         setSelectedCoinLoadingHasError(false);
       } catch (err) {
         setSelectedCoinLoadingHasError(true);
@@ -70,16 +56,10 @@ export const AddAsset = ({ portfolioList, setPortfolioList, addCoin }) => {
       }
   }
 
-  
-
-  //when you click Add, it's gonna check if the current coin is in the portfolioList
   const handleClick = (coin) => {
     getSelectedCoinData(coin)
+    setShowPopup(false)
   };
-
-  const handleChange = (value) => {
-    setInputValue(value)
-  }
 
   return (
     <div>

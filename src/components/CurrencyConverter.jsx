@@ -183,7 +183,7 @@ export const CurrencyConverter = () => {
           {currencyOptions}
         </select>
         <div>
-          1&nbsp;{leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          1&nbsp;{leftCurrencyData !== null  && leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
           {leftCurrencyData &&
             leftCurrencyData.market_data.current_price[displayCurrency]}
         </div>
@@ -202,7 +202,7 @@ export const CurrencyConverter = () => {
           {currencyOptions}
         </select>
         <div>
-          1&nbsp;{rightCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
           {rightCurrencyData &&
             rightCurrencyData.market_data.current_price[displayCurrency]}
         </div>
