@@ -244,7 +244,7 @@ const CoinPage = () => {
             </ProgressBarOuter>
           )}
         </div>
-              </div>
+      </div>
       <div>
         {singleCoin && (
           <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
@@ -258,16 +258,8 @@ const CoinPage = () => {
             }
           })}
       </div>
-      <div>{singleCoin.links && singleCoin.links.blockchain_site.map((item) => {
-        if (item.includes("blockchair")){
-          return <div>{item}</div>
-        }
-      })}</div>
-      <div>{singleCoin.links && singleCoin.links.blockchain_site.map((item) => {
-        if (item.includes("tokenview")){
-          return <div>{item}</div>
-        }
-      })}</div>
+      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("blockchair")).map(item => <div>{item}</div>)}
+      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("tokenview")).map(item => <div>{item}</div>)}
       {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
     </div>
     
