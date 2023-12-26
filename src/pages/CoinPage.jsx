@@ -5,6 +5,21 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { CryptoContext } from "../contexts/cryptoContext";
 
+const ProgressBarOuter = styled.div`
+  border: 1px solid black;
+  border-radius: 99px;
+  background: #a505d0;
+  height: 10px;
+  width: 150px;
+`;
+
+const ProgressBarInner = styled.div`
+  border-radius: 99px;
+  height: 10px;
+  width: ${(props) => props.width * 1.5}px;
+  background: purple;
+`;
+
 const CoinPage = () => {
   const coinId = useParams();
 
@@ -20,6 +35,7 @@ const CoinPage = () => {
     displayCurrency,
     getCurrencyList,
     currencySymbol,
+    retainTwoDigits,
   } = useContext(CryptoContext);
 
   useEffect(() => {
@@ -32,6 +48,19 @@ const CoinPage = () => {
 
   const handleClick = () => {
     history.push("/");
+  };
+
+  const htmlContent = singleCoin.description && singleCoin.description.en;
+
+  const createMarkup = (htmlContent) => {
+    return {
+      __html:
+        htmlContent &&
+        htmlContent.replace(
+          /<a href="(.*?)">(.*?)<\/a>/g,
+          '<a href="$1" target="_blank">$2</a>'
+        ),
+    };
   };
 
   return (
@@ -146,13 +175,90 @@ const CoinPage = () => {
               B
             </div>
           )}
-          <div>Volume 24h: </div>
-          <div>Volume/Market: </div>
-          <div>Total Volume: </div>
-          <div>Circulating Supply: </div>
-          <div>Max Supply: </div>
+          {singleCoin.market_data && (
+            <div>
+              Volume 24h: {currencySymbol}
+              {convertToBillion(
+                singleCoin.market_data.market_cap_change_24h_in_currency[
+                  displayCurrency
+                ]
+              )}
+              B
+            </div>
+          )}
+          {singleCoin.market_data && (
+            <div>
+              Volume/Market:{" "}
+              {(
+                singleCoin.market_data.total_volume[displayCurrency] /
+                singleCoin.market_data.market_cap[displayCurrency]
+              ).toFixed(5)}
+            </div>
+          )}
+
+          {singleCoin.market_data && (
+            <div>
+              Total Volume:{" "}
+              {singleCoin.market_data.total_volume[
+                displayCurrency
+              ].toLocaleString()}
+              BTC
+            </div>
+          )}
+          {singleCoin.market_data && (
+            <div>
+              Circulating Supply:{" "}
+              {singleCoin.market_data.circulating_supply.toLocaleString()}
+              BTC
+            </div>
+          )}
+          {singleCoin.market_data &&
+            (singleCoin.market_data.max_supply !== null ? (
+              <div>
+                Max Supply: {singleCoin.market_data.max_supply.toLocaleString()}
+                BTC
+              </div>
+            ) : (
+              <div> Max Supply: N/A</div>
+            ))}
+          {singleCoin.market_data && (
+            <div>
+              {retainTwoDigits(
+                (singleCoin.market_data.total_volume[displayCurrency] /
+                  singleCoin.market_data.market_cap[displayCurrency]) *
+                  100
+              )}
+              %
+            </div>
+          )}
+          {singleCoin.market_data && (
+            <ProgressBarOuter>
+              <ProgressBarInner
+                width={
+                  (singleCoin.market_data.total_volume[displayCurrency] /
+                    singleCoin.market_data.market_cap[displayCurrency]) *
+                  100
+                }
+              ></ProgressBarInner>
+            </ProgressBarOuter>
+          )}
         </div>
       </div>
+      <div>
+        {singleCoin && (
+          <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
+        )}
+      </div>
+      <div>
+        {singleCoin.links &&
+          singleCoin.links.homepage.map((item) => {
+            if (item !== "") {
+              return <div>{item}</div>;
+            }
+          })}
+      </div>
+      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("blockchair")).map(item => <div>{item}</div>)}
+      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("tokenview")).map(item => <div>{item}</div>)}
       {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
     </div>
   );
