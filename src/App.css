@@ -306,7 +306,8 @@
 
 .popup {
   color: black;
-  height: 200px;
+  padding: 20px;
+  height: auto;
   width: 200px;
   position: fixed;
   top: calc(
@@ -329,4 +330,38 @@
 .purchase-amount-input {
   background: white;
   color: black;
+}
+
+.portfolio-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.portfolio-item-column-1{
+  border: 1px solid white;
+  width: 200px;
+}
+
+.portfolio-item-coin-name-wrapper {
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+}
+
+.portfolio-item-column-2{
+  border: 1px solid white;
+  display: flex;
+}
+
+.portfolio-item-column-2-child{
+  width: 200px;
+  padding: 15px;
+  border: 1px solid white;
+}
+
+.portfolio-item-market-cap-volume-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

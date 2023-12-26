@@ -11,7 +11,7 @@ import BarChart from "./BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
-import { Arrow } from "../components/Arrow"
+import { Arrow } from "../components/Arrow";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -35,7 +35,7 @@ const ProgressBarOuter = styled.div`
 const ProgressBarInner = styled.div`
   border-radius: 99px;
   height: 10px;
-  width: ${(props) => props.width * 1.5}px;
+  width: ${(props) => props.width * 150}px;
   background: purple;
 `;
 
@@ -226,7 +226,7 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {priceVolumeList !== null && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -243,7 +243,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {priceVolumeList !== null && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -290,7 +290,9 @@ function Coins() {
         </div>
         {coinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
-            <div className="coin-number-column-width">{coinList.indexOf(singleCoin)+1}</div>
+            <div className="coin-number-column-width">
+              {coinList.indexOf(singleCoin) + 1}
+            </div>
             <div
               className="coin-column-width"
               onClick={() => handleClick(singleCoin)}
@@ -309,7 +311,13 @@ function Coins() {
             </div>
             &nbsp;&nbsp;
             <div className="change-percentage-wrapper">
-              {<Arrow priceChange={singleCoin.price_change_percentage_1h_in_currency}/>}
+              {
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_1h_in_currency
+                  }
+                />
+              }
               <div
                 className={`coin-data-width ${
                   singleCoin.price_change_percentage_1h_in_currency > 0
@@ -326,7 +334,13 @@ function Coins() {
               </div>
             </div>
             <div className="change-percentage-wrapper">
-              {<Arrow priceChange={singleCoin.price_change_percentage_24h_in_currency}/>}
+              {
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_24h_in_currency
+                  }
+                />
+              }
               <div
                 className={`coin-data-width ${
                   singleCoin.price_change_percentage_24h_in_currency > 0
@@ -343,7 +357,13 @@ function Coins() {
               </div>
             </div>
             <div className="change-percentage-wrapper">
-              {<Arrow priceChange={singleCoin.price_change_percentage_7d_in_currency}/>}
+              {
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_7d_in_currency
+                  }
+                />
+              }
               <div
                 className={`coin-data-width ${
                   singleCoin.price_change_percentage_7d_in_currency > 0
@@ -374,9 +394,8 @@ function Coins() {
                 <ProgressBarOuter>
                   <ProgressBarInner
                     width={
-                      (singleCoin.market_cap_change_24h /
-                        singleCoin.market_cap) *
-                      100
+                      singleCoin.market_cap_change_24h /
+                        singleCoin.market_cap
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
@@ -397,9 +416,8 @@ function Coins() {
                 <ProgressBarOuter>
                   <ProgressBarInner
                     width={
-                      (singleCoin.circulating_supply /
-                        singleCoin.total_supply) *
-                      100
+                      singleCoin.circulating_supply /
+                        singleCoin.total_supply
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
