@@ -24,8 +24,7 @@ const CoinPage = () => {
   const coinId = useParams();
 
   const history = useHistory();
-
-  //I used the "covertToBillion" function in lind 124 and 134
+  
   const {
     convertToBillion,
     getSingleCoinData,
@@ -36,6 +35,7 @@ const CoinPage = () => {
     getCurrencyList,
     currencySymbol,
     retainTwoDigits,
+    setSingleCoin,
   } = useContext(CryptoContext);
 
   useEffect(() => {
@@ -47,7 +47,8 @@ const CoinPage = () => {
   }, []);
 
   const handleClick = () => {
-    history.push("/");
+    setSingleCoin({})
+    history.push("/");    
   };
 
   const htmlContent = singleCoin.description && singleCoin.description.en;
@@ -248,7 +249,7 @@ const CoinPage = () => {
         {singleCoin && (
           <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
         )}
-      </div>
+        </div>
       <div>
         {singleCoin.links &&
           singleCoin.links.homepage.map((item) => {
@@ -261,6 +262,7 @@ const CoinPage = () => {
       {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("tokenview")).map(item => <div>{item}</div>)}
       {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
     </div>
+    
   );
 };
 

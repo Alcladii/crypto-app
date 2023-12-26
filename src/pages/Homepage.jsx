@@ -20,7 +20,7 @@ export const Home = () => {
     <div>
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
-      {loadCoins ? <Coins /> : <CurrencyConverter />}
+     {loadCoins ? <Coins /> : <CurrencyConverter />}
     </div>
   );
 };
