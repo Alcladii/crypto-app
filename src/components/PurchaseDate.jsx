@@ -1,12 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 
-export const PurchaseDate = () => {
-  const {
-    setPurchaseDate,
-    setFormattedDateForHistoryApiCall,
-  } = useContext(CryptoContext);
+export const PurchaseDate = ({ date }) => {
+  const [localDate, setLocalDate] = useState(date);
+
+  const { setPurchaseDate, setFormattedDateForHistoryApiCall } =
+    useContext(CryptoContext);
+
+    /*useEffect(() => {
+      setLocalDate(date); 
+    }, [date]);*/
 
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
@@ -18,13 +22,17 @@ export const PurchaseDate = () => {
 
   const handleInput = (value) => {
     formatDate(value);
-
+    setLocalDate(value); 
     setPurchaseDate(value);
   };
 
   return (
     <div>
-      <input type="date" onChange={(e) => handleInput(e.target.value)} />
+      <input
+        type="date"
+        value={localDate || ""}
+        onChange={(e) => handleInput(e.target.value)}
+      />
     </div>
   );
 };

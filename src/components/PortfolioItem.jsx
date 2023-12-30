@@ -1,7 +1,8 @@
 import react, { useContext, useEffect } from "react";
 import styled from "styled-components";
-import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
+import { CryptoContext } from "../contexts/cryptoContext";
+import { EditAsset } from "../components/EditAsset"
 
 const CoinTag = styled.img`
   width: 30px;
@@ -34,6 +35,8 @@ export const PortfolioItem = () => {
     setPortfolioList,
   } = useContext(CryptoContext);
 
+  console.log(portfolioList)
+
   const handleClick = (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
@@ -46,6 +49,10 @@ export const PortfolioItem = () => {
         item.historyData.market_data.current_price[displayCurrency]) * 100
     );
   };
+
+  const handleEditClick = (id) => {
+    console.log(id)
+  }
 
   return (
     <div>
@@ -130,6 +137,9 @@ export const PortfolioItem = () => {
             </div>
             &nbsp;&nbsp;
             <button onClick={() => handleClick(item.id)}>Remove</button>
+            &nbsp;&nbsp;
+            {/*<button onClick={()=>handleEditClick(item.id)}>Edit</button>*/}
+            {/*<EditAsset id={(item.id)}/>*/}
           </div>
         ))}
     </div>
