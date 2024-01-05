@@ -13,18 +13,15 @@ export const AddAsset = ({ addCoin }) => {
     setPurchasedAmount,
     purchaseDate,
     formattedDateForHistoryApiCall,
+    isNumber,
+    setIsNumber,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState("");
   const [selectedAmount, setSelectedAmount] = useState("");
   const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
-  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false);
-  const [isNumber, setIsNumber] = useState(true)
-  //const [passedPurchasedAmount, setPassedPurchasedAmount] = useState ("")
-
-  //console.log(purchasedAmount)
-  
+  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false);  
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -52,15 +49,8 @@ export const AddAsset = ({ addCoin }) => {
         );
         const singleCoinHistory = await axios(
            `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
-        )
-        const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount);
-        if(!isValidNumber){
-          setIsNumber(false)
-        } else {      
-          addCoin(singleCoinData.data, purchasedAmount, purchaseDate, singleCoinHistory.data)
-          setIsNumber(true)
-        }
-        //addCoin(singleCoinData.data, purchasedAmount, purchaseDate, singleCoinHistory.data)
+        )      
+        addCoin(singleCoinData.data, purchasedAmount, purchaseDate, singleCoinHistory.data)
         setSelectedCoinIsLoading(false);
         setSelectedCoinLoadingHasError(false);
       } catch (err) {
@@ -69,19 +59,17 @@ export const AddAsset = ({ addCoin }) => {
       }
   }
 
-  const handleClick = (coin) => {
-    getSelectedCoinData(coin)
-    if(isNumber){
-      setShowPopup(false)
-    } else {
+  const handleAddClick = (coin) => {
+    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount);
+    if(!isValidNumber){
+      setIsNumber(false)
       setShowPopup(true)
+    } else {         
+      setShowPopup(false)
+      getSelectedCoinData(coin)
+      setIsNumber(true)        
     }
-    //setShowPopup(false)
   };
-
-  {/*const passPurchasedAmountInput = (amount) => {
-    setPurchasedAmount(amount)
-  }*/}
 
   return (
     <div>
@@ -103,10 +91,10 @@ export const AddAsset = ({ addCoin }) => {
               </option>
               {coinsOptions}
             </select>
-            <PurchaseAmount /*passPurchasedAmountInput={passPurchasedAmountInput}*//>
+            <PurchaseAmount />
             {!isNumber && <div>Put in a number</div>}
             <PurchaseDate />
-            <button onClick={()=> {handleClick(selectedCoin)}}>Add</button>
+            <button onClick={()=> {handleAddClick(selectedCoin)}}>Add</button>
             <button onClick={togglePopup}>Close</button>
           </div>
         </div>

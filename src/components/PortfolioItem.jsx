@@ -35,8 +35,6 @@ export const PortfolioItem = () => {
     setPortfolioList,
   } = useContext(CryptoContext);
 
-  console.log(portfolioList)
-
   const handleClick = (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
@@ -49,10 +47,6 @@ export const PortfolioItem = () => {
         item.historyData.market_data.current_price[displayCurrency]) * 100
     );
   };
-
-  const handleEditClick = (id) => {
-    console.log(id)
-  }
 
   return (
     <div>
@@ -72,6 +66,7 @@ export const PortfolioItem = () => {
                 <div>{currencySymbol}{ retainTwoDigits(item.coinData.market_data.current_price[displayCurrency] * Number(item.purchaseAmount1)) }&nbsp;&nbsp;{profitPercentage(item)}%</div>
               </div>
               <div>Purchased&nbsp;{item.purchaseDate1}</div>
+              <div>Last Updated&nbsp;{item.coinData.last_updated}</div>
             </div>
             <div className="portfolio-item-column-2">
               <div className="portfolio-item-column-2-child">
@@ -138,8 +133,7 @@ export const PortfolioItem = () => {
             &nbsp;&nbsp;
             <button onClick={() => handleClick(item.id)}>Remove</button>
             &nbsp;&nbsp;
-            {/*<button onClick={()=>handleEditClick(item.id)}>Edit</button>*/}
-            {/*<EditAsset id={(item.id)}/>*/}
+            <EditAsset id={(item.id)}/>
           </div>
         ))}
     </div>
