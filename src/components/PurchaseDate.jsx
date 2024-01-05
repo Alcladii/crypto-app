@@ -8,10 +8,6 @@ export const PurchaseDate = ({ date }) => {
   const { setPurchaseDate, setFormattedDateForHistoryApiCall } =
     useContext(CryptoContext);
 
-    /*useEffect(() => {
-      setLocalDate(date); 
-    }, [date]);*/
-
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
     const formattedDate = `${dateObject.getDate()}-${

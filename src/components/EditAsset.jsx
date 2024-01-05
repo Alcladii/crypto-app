@@ -13,12 +13,13 @@ export const EditAsset = ({ id }) => {
     purchaseDate,
     isNumber,
     setIsNumber,
-    formattedDateForHistoryApiCall
+    formattedDateForHistoryApiCall,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false)
-  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false)
+  const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
+  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] =
+    useState(false);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -45,44 +46,48 @@ export const EditAsset = ({ id }) => {
   };
 
   const updateSelectedCoinData = async (coin) => {
-    try {      
-        setSelectedCoinIsLoading(true);
-        const updatedSingleCoinData = await axios(
-          `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-        );
-        const updatedSingleCoinHistoryData = await axios(
-           `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
-        )     
-        editItem(updatedSingleCoinData.data, purchasedAmount, purchaseDate, updatedSingleCoinHistoryData.data)
-        setSelectedCoinIsLoading(false);
-        setSelectedCoinLoadingHasError(false);
-      } catch (err) {
-        setSelectedCoinLoadingHasError(true);
-        setSelectedCoinIsLoading(false);
-      }
-  }
+    try {
+      setSelectedCoinIsLoading(true);
+      const updatedSingleCoinData = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+      );
+      const updatedSingleCoinHistoryData = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
+      );
+      editItem(
+        updatedSingleCoinData.data,
+        purchasedAmount,
+        purchaseDate,
+        updatedSingleCoinHistoryData.data
+      );
+      setSelectedCoinIsLoading(false);
+      setSelectedCoinLoadingHasError(false);
+    } catch (err) {
+      setSelectedCoinLoadingHasError(true);
+      setSelectedCoinIsLoading(false);
+    }
+  };
 
   const handleSaveClick = (coin) => {
     const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount);
     if (!isValidNumber) {
       setShowPopup(true);
-      setIsNumber(false);      
+      setIsNumber(false);
     } else {
       setShowPopup(false);
-      updateSelectedCoinData (coin)
+      updateSelectedCoinData(coin);
       setIsNumber(true);
     }
   };
 
+  const handleEdit = () => {
+    handleEditClick(id);
+    togglePopup();
+  };
+
   return (
     <div>
-      <button
-        onClick={() => {
-          handleEditClick(id), togglePopup();
-        }}
-      >
-        Edit
-      </button>
+      <button onClick={handleEdit}>Edit</button>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
