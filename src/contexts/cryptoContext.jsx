@@ -45,6 +45,7 @@ export const CryptoProvider = ({ children }) => {
   const [purchasedAmount, setPurchasedAmount] = useState(null)
   const [purchaseDate, setPurchaseDate] = useState(null)
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] = useState(null)
+  const [isNumber, setIsNumber] = useState(true)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -151,6 +152,8 @@ export const CryptoProvider = ({ children }) => {
         setPurchaseDate,
         formattedDateForHistoryApiCall,
         setFormattedDateForHistoryApiCall,
+        isNumber,
+        setIsNumber,
       }}
     >
       {children}

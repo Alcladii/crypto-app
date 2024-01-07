@@ -10,15 +10,18 @@ export const AddAsset = ({ addCoin }) => {
   const {
     coinList,
     purchasedAmount,
+    setPurchasedAmount,
     purchaseDate,
     formattedDateForHistoryApiCall,
+    isNumber,
+    setIsNumber,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState("");
   const [selectedAmount, setSelectedAmount] = useState("");
-  const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false)
-  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false)
+  const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
+  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false);  
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -46,7 +49,7 @@ export const AddAsset = ({ addCoin }) => {
         );
         const singleCoinHistory = await axios(
            `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
-        )
+        )      
         addCoin(singleCoinData.data, purchasedAmount, purchaseDate, singleCoinHistory.data)
         setSelectedCoinIsLoading(false);
         setSelectedCoinLoadingHasError(false);
@@ -56,9 +59,16 @@ export const AddAsset = ({ addCoin }) => {
       }
   }
 
-  const handleClick = (coin) => {
-    getSelectedCoinData(coin)
-    setShowPopup(false)
+  const handleAddClick = (coin) => {
+    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount);
+    if(!isValidNumber){
+      setIsNumber(false)
+      setShowPopup(true)
+    } else {         
+      setShowPopup(false)
+      getSelectedCoinData(coin)
+      setIsNumber(true)        
+    }
   };
 
   return (
@@ -82,8 +92,9 @@ export const AddAsset = ({ addCoin }) => {
               {coinsOptions}
             </select>
             <PurchaseAmount />
+            {!isNumber && <div>Put in a number</div>}
             <PurchaseDate />
-            <button onClick={()=> {handleClick(selectedCoin)}}>Add</button>
+            <button onClick={()=> {handleAddClick(selectedCoin)}}>Add</button>
             <button onClick={togglePopup}>Close</button>
           </div>
         </div>

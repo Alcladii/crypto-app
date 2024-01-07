@@ -1,7 +1,8 @@
 import react, { useContext, useEffect } from "react";
 import styled from "styled-components";
-import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
+import { CryptoContext } from "../contexts/cryptoContext";
+import { EditAsset } from "../components/EditAsset"
 
 const CoinTag = styled.img`
   width: 30px;
@@ -65,6 +66,7 @@ export const PortfolioItem = () => {
                 <div>{currencySymbol}{ retainTwoDigits(item.coinData.market_data.current_price[displayCurrency] * Number(item.purchaseAmount1)) }&nbsp;&nbsp;{profitPercentage(item)}%</div>
               </div>
               <div>Purchased&nbsp;{item.purchaseDate1}</div>
+              <div>Last Updated&nbsp;{item.coinData.last_updated}</div>
             </div>
             <div className="portfolio-item-column-2">
               <div className="portfolio-item-column-2-child">
@@ -130,6 +132,8 @@ export const PortfolioItem = () => {
             </div>
             &nbsp;&nbsp;
             <button onClick={() => handleClick(item.id)}>Remove</button>
+            &nbsp;&nbsp;
+            <EditAsset id={(item.id)}/>
           </div>
         ))}
     </div>

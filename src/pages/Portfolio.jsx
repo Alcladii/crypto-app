@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 
 function Portfolio() {
-  const {
-    portfolioList,
-    setPortfolioList,
-  } = useContext(CryptoContext);
+  const { portfolioList, setPortfolioList } = useContext(CryptoContext);
+  const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
+  const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
+    useState(false);
 
   const addCoin = (coin, purchaseAmount, purchaseDate, history) => {
     const newPortfolioList = [
@@ -23,12 +24,48 @@ function Portfolio() {
     setPortfolioList(newPortfolioList);
   };
 
+  //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
+  //So it gives the accurate profit
+
+  const getLatestCoinDataOnLoad = async () => {
+    try {
+      setFetchingLatestCoinData(true);
+      const promises = portfolioList.map((coin) =>
+        axios(
+          `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        )
+      );
+      const updatedCoinData = await Promise.all(promises);
+      updateToLatestCoinDataOnLoad(updatedCoinData);
+      setFetchingLatestCoinData(false);
+      setFetchingLatestCoinDataHasError(false);
+    } catch (err) {
+      setFetchingLatestCoinDataHasError(true);
+      setFetchingLatestCoinData(false);
+    }
+  };
+
+  const updateToLatestCoinDataOnLoad = (coinData) => {
+    const newPortfolioList = portfolioList.map((item) => {
+      coinData.forEach((item1) => {
+        if (item.coinData.id === item1.data.id) {
+          item.coinData = item1.data;
+        }
+      });
+      return item;
+    });
+    setPortfolioList(newPortfolioList);
+  };
+
+  useEffect(() => {
+    getLatestCoinDataOnLoad();
+  }, []);
+
   return (
     <div>
       <h2>Portfolio</h2>
-      <AddAsset
-        addCoin={addCoin}
-      />
+      <AddAsset addCoin={addCoin} />
+      {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
       <PortfolioItem />
     </div>
   );
