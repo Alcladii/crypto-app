@@ -59,6 +59,12 @@ function Portfolio() {
 
   useEffect(() => {
     getLatestCoinDataOnLoad();
+
+    const intervalId = setInterval(() => {
+      getLatestCoinDataOnLoad();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
