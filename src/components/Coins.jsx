@@ -140,6 +140,12 @@ function Coins() {
 
   useEffect(() => {
     getCoinList();
+
+    const intervalId = setInterval(() => {
+      getCoinList();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, [coinListDsc]);
 
   useEffect(() => {
