@@ -142,7 +142,6 @@ function Coins() {
     getCoinList();
 
     const intervalId = setInterval(() => {
-      console.log("coin list updated")
       getCoinList();
     }, 60000);
 
