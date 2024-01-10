@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,6 +12,12 @@ import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
+import queryString from 'query-string'
+
+//const parsed = queryString.parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
+//console.log(parsed)
+
+//Make query string, change the URL while clicking on the button, and use useEffect to make API call whenever the URL changes
 
 const CoinTag = styled.img`
   width: 30px;
@@ -69,6 +75,33 @@ function Coins() {
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
+
+  const location = useLocation();
+  const historyURL = useHistory();
+  const queryParams = queryString.parse(location.search);
+
+  const fetchData = (conditions) => { 
+    console.log("API called with parameters:", queryString.stringify(conditions));
+  };
+
+  useEffect(() => {
+    fetchData(queryParams);
+  }, [location.search]);
+
+  const handleSearchParams = (conditionKey, conditionValue) => {
+    if (!conditionKey in queryParams){
+      const updatedParams = { ...queryParams, [conditionKey]: conditionValue };
+      history.push(`?${queryString.stringify(updatedParams)}`);
+    } else { 
+      queryParams[conditionKey] = conditionValue
+      history.push(`?${queryString.stringify(queryParams)}`)
+    }  
+  };
+
+  const clearSearchParams = () => {
+    const updatedParams = {}
+    history.push(`?${queryString.stringify(updatedParams)}`)
+  }
 
   const getCoinList = async () => {
     try {
@@ -188,6 +221,7 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(30);
+            handleSearchParams ('days', '30')
           }}
         >
           {" "}
@@ -197,6 +231,7 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(89);
+            handleSearchParams ('days', '90')
           }}
         >
           {" "}
@@ -219,6 +254,10 @@ function Coins() {
         >
           {" "}
           1 Year{" "}
+        </button>
+        &nbsp;&nbsp;
+        <button onClick={clearSearchParams}>
+          Clear Search Criteria
         </button>
       </div>
       {priceVolumeList.length === 0 ? (
