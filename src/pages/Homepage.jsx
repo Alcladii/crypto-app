@@ -21,6 +21,7 @@ export const Home = () => {
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
      {loadCoins ? <Coins /> : <CurrencyConverter />}
+     {/*<Coins />*/}
     </div>
   );
 };

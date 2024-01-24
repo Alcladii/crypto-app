@@ -3,6 +3,8 @@ import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
 
+//add an error control that controls when leftCurrencyData and rightCurrencyData is null?
+
 export const CurrencyConverter = () => {
   const {
     useLocalState,
@@ -12,18 +14,18 @@ export const CurrencyConverter = () => {
     currencySymbol,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
-  const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
-  const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "");
+  const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "bitcoin");
+  const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "bitcoin");
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
     "leftCurrencyData",
-    null
+    /*{}*/ null
   );
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-    null
+    /*{}*/ null
   );
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
@@ -46,7 +48,7 @@ export const CurrencyConverter = () => {
     "currencyConverterDays",
     7
   );
-  const [selectLeftCurrency, setSelectLeftCurrency] = useState(false);
+  const [selectLeftCurrency, setSelectLeftCurrency] = useState(null);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -67,8 +69,10 @@ export const CurrencyConverter = () => {
     setConvertedResult(result);
   };
 
+  //revise this shit move selectedLeftCurrency outside of the function
   const getSelectedCurrencyData = async (item) => {
     try {
+      console.log("item", item)
       setSingleCoinIsLoading(true);
       setSingleCoinLoadingHasError(false);
       const singleCoinData = await axios(
@@ -92,6 +96,17 @@ export const CurrencyConverter = () => {
     setLeftCurrency(value);
     setSelectLeftCurrency(true);
   };
+
+  /*useEffect(()=>{
+   if(leftCurrencyData === null || rightCurrencyData === null) {
+    getSelectedCurrencyData(rightCurrency)
+    setSelectLeftCurrency(true)
+    getSelectedCurrencyData(leftCurrency)
+   }
+  })*/
+
+  // problem is selectLeftCurrency is set to false or true by default, so either left or right currencyData can't be pulled, set selectLeftCurrency to default, and
+  // when it's default, load both sides of currencyData within the useEffect below
 
   useEffect(() => {
     if (selectLeftCurrency) {
@@ -184,7 +199,7 @@ export const CurrencyConverter = () => {
         </select>
         <div>
           1&nbsp;{leftCurrencyData !== null  && leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
-          {leftCurrencyData &&
+          {leftCurrencyData !== null &&
             leftCurrencyData.market_data.current_price[displayCurrency]}
         </div>
       </div>
@@ -270,7 +285,7 @@ export const CurrencyConverter = () => {
         getRightCurrencyPriceVolumeHasError) && (
         <div>Error in getting price and volume data, can't update chart</div>
       )}
-      <LineChartCurrencyConverter priceVolumeList={requests} />
+     <LineChartCurrencyConverter priceVolumeList={requests} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ import { ResultList } from "./components/ResultList";
 import { CurrencySelector } from "./components/CurrencySelector";
 import { CurrencyConverter } from "./components/CurrencyConverter"
 
-
+//google how to make a query string state custom hook
 export default function App() {
   
   const { useLocalState } = useContext(CryptoContext);
@@ -28,7 +28,7 @@ export default function App() {
   }
 
   return (
-    <Router>
+    //<Router>
         <div>
           <nav>
             <div>
@@ -63,6 +63,6 @@ export default function App() {
             </Route>
           </Switch>
         </div>
-    </Router>
+    //</Router>
   );
 }
