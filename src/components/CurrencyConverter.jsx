@@ -12,8 +12,14 @@ export const CurrencyConverter = () => {
     currencySymbol,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
-  const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "bitcoin");
-  const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "bitcoin");
+  const [leftCurrency, setLeftCurrency] = useLocalState(
+    "leftCurrency",
+    "bitcoin"
+  );
+  const [rightCurrency, setRightCurrency] = useLocalState(
+    "rightCurrency",
+    "bitcoin"
+  );
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
     "leftCurrencyData",
     null
@@ -46,7 +52,6 @@ export const CurrencyConverter = () => {
     "currencyConverterDays",
     7
   );
-  //const [selectLeftCurrency, setSelectLeftCurrency] = useState(false);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -79,9 +84,7 @@ export const CurrencyConverter = () => {
         setSingleCoinLoadingHasError(true);
         return;
       } else {
-        //if (selectLeftCurrency) 
         setLeftCurrencyData(singleCoinData.data);
-        //if (!selectLeftCurrency) setRightCurrencyData(singleCoinData.data);
       }
     } catch (err) {
       setSingleCoinLoadingHasError(true);
@@ -101,8 +104,6 @@ export const CurrencyConverter = () => {
         setSingleCoinLoadingHasError(true);
         return;
       } else {
-        //if (selectLeftCurrency) setLeftCurrencyData(singleCoinData.data);
-        //if (!selectLeftCurrency) 
         setRightCurrencyData(singleCoinData.data);
       }
     } catch (err) {
@@ -113,43 +114,31 @@ export const CurrencyConverter = () => {
 
   const handleLeftCurrencySelect = (value) => {
     setLeftCurrency(value);
-    //setSelectLeftCurrency(true);
   };
-
- /* useEffect(() => {
-    if (leftCurrencyData === null) {
-      setSelectLeftCurrency(true)
-    }
-    if (rightCurrencyData === null) {
-      console.log("run")
-      setSelectLeftCurrency(false)
-    }
-  },[]);*/
-
-
-  useEffect(() => {
-    //if (selectLeftCurrency) {
-    getSelectedLeftCurrencyData(leftCurrency);
-      //setLeftCurrencyData(seletedCurrencyData)
-    //} else {
-   //getSelectedRightCurrencyData(rightCurrency);
-      //setRightCurrencyData(seletedCurrencyData)
-    //}
-  }, [leftCurrency/*, rightCurrency*/]);
-
-  useEffect (() => {
-    getSelectedRightCurrencyData(rightCurrency);
-  }, [rightCurrency])
-
 
   const handleRightCurrencySelect = (value) => {
     setRightCurrency(value);
-    //setSelectLeftCurrency(false);
   };
 
-  const getLeftCurrencyPriceVolume = async (leftCurrency, displayCurrency, currencyConverterDays) => {
+  useEffect(() => {
+    getSelectedLeftCurrencyData(leftCurrency);
+  }, [leftCurrency]);
+
+  useEffect(() => {
+    getSelectedRightCurrencyData(rightCurrency);
+  }, [rightCurrency]);
+
+  const getLeftCurrencyPriceVolume = async (
+    leftCurrency,
+    displayCurrency,
+    currencyConverterDays
+  ) => {
     try {
-      const response = await getCoinPriceVolume(leftCurrency, displayCurrency, currencyConverterDays);
+      const response = await getCoinPriceVolume(
+        leftCurrency,
+        displayCurrency,
+        currencyConverterDays
+      );
       if (!response) {
         setGetLeftCurrencyPriceVolumeHasError(true);
         return;
@@ -158,11 +147,19 @@ export const CurrencyConverter = () => {
     } catch (error) {
       setGetLeftCurrencyPriceVolumeHasError(true);
     }
-  }
+  };
 
-  const getRightCurrencyPriceVolume = async (rightCurrency, displayCurrency, currencyConverterDays) => {
+  const getRightCurrencyPriceVolume = async (
+    rightCurrency,
+    displayCurrency,
+    currencyConverterDays
+  ) => {
     try {
-      const response = await getCoinPriceVolume(rightCurrency, displayCurrency, currencyConverterDays);
+      const response = await getCoinPriceVolume(
+        rightCurrency,
+        displayCurrency,
+        currencyConverterDays
+      );
       if (!response) {
         setGetRightCurrencyPriceVolumeHasError(true);
         return;
@@ -171,20 +168,30 @@ export const CurrencyConverter = () => {
     } catch (error) {
       setGetRightCurrencyPriceVolumeHasError(true);
     }
-  }
+  };
 
   useEffect(() => {
     setGetLeftCurrencyPriceVolumeHasError(false);
-    getLeftCurrencyPriceVolume (leftCurrency, displayCurrency, currencyConverterDays) 
+    getLeftCurrencyPriceVolume(
+      leftCurrency,
+      displayCurrency,
+      currencyConverterDays
+    );
   }, [leftCurrency, currencyConverterDays]);
 
   useEffect(() => {
     setGetRightCurrencyPriceVolumeHasError(false);
-    getRightCurrencyPriceVolume (rightCurrency, displayCurrency, currencyConverterDays)
+    getRightCurrencyPriceVolume(
+      rightCurrency,
+      displayCurrency,
+      currencyConverterDays
+    );
   }, [rightCurrency, currencyConverterDays]);
 
-  const requests = leftCurrencyData &&
-    rightCurrencyData && [leftCurrencyPriceVolume, rightCurrencyPriceVolume];
+  const requests =
+    leftCurrencyData && rightCurrencyData
+      ? [leftCurrencyPriceVolume, rightCurrencyPriceVolume]
+      : null;
 
   useEffect(() => {
     handleConvert();
@@ -224,7 +231,8 @@ export const CurrencyConverter = () => {
           {currencyOptions}
         </select>
         <div>
-          1&nbsp;{leftCurrencyData !== null  && leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
+          &nbsp;=&nbsp;{currencySymbol}
           {leftCurrencyData &&
             leftCurrencyData.market_data.current_price[displayCurrency]}
         </div>
@@ -243,7 +251,8 @@ export const CurrencyConverter = () => {
           {currencyOptions}
         </select>
         <div>
-          1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
+          1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
+          &nbsp;=&nbsp;{currencySymbol}
           {rightCurrencyData &&
             rightCurrencyData.market_data.current_price[displayCurrency]}
         </div>
@@ -305,13 +314,17 @@ export const CurrencyConverter = () => {
         </button>
       </div>
       <div>
-        {leftCurrencyData !== null && leftCurrencyData.name}&nbsp;to&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
+        {leftCurrencyData !== null && leftCurrencyData.name}&nbsp;to&nbsp;
+        {rightCurrencyData !== null && rightCurrencyData.name}
       </div>
-      {(getLeftCurrencyPriceVolumeHasError ||
-        getRightCurrencyPriceVolumeHasError) ? (
+      {getLeftCurrencyPriceVolumeHasError ||
+      getRightCurrencyPriceVolumeHasError ? (
         <div>Error in getting price and volume data, can't update chart</div>
-      ) :
-      <LineChartCurrencyConverter priceVolumeList={requests} />}
+      ) : (
+        requests !== null && (
+          <LineChartCurrencyConverter priceVolumeList={requests} />
+        )
+      )}
     </div>
   );
 };
