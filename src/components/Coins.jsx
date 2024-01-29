@@ -14,8 +14,6 @@ import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import queryString from "query-string";
 
-//Make query string, change the URL while clicking on the button, and use useEffect to make API call whenever the URL changes
-
 const CoinTag = styled.img`
   width: 30px;
   display: flex;
@@ -91,60 +89,6 @@ function Coins() {
     "displayCoinList",
     []
   );
-  //const sortedCoinList = [...coinList]
-
-  //console.log(sortByNameDirection)
-  //console.log(sortByOneHourDirection);
-
-  //put API call into fetchData
-  // put selectedCoins to cryptoContext, and currency(maybe already in Context, and call getCoinPriceVolume from fetchData)
-  /*const fetchData = (conditions) => { 
-    //console.log("API called with parameters:", 
-    //queryString.stringify(conditions),
-    //conditions);
-    if (selectedCoinData.length === 0) {
-      setPriceVolumeList([]);
-    } else {
-      setPriceVolumeList([]);
-      const requests = selectedCoinData.map((item) => {
-        return getCoinPriceVolume(item.id, displayCurrency, numOfDays);
-      });
-      Promise.all(requests).then((responses) => {
-        setPriceVolumeList(responses);
-      });
-    }
-  };*/
-
-  const fetchData = (conditions) => {
-    if (Object.keys(conditions).length === 0) {
-      setPriceVolumeList([]);
-    } else {
-      setPriceVolumeList([]);
-      const requests = Object.keys(conditions)
-        .map((key) => {
-          if (
-            key.includes("selectedcoin")
-          ) {
-             return getCoinPriceVolume(
-              conditions[key],
-              conditions.displaycurrency,
-              conditions.days
-            );
-          }
-          return null;
-        })
-        .filter((request) => request !== null);
-
-      Promise.all(requests).then((responses) => {
-        //console.log(responses)
-        setPriceVolumeList(responses);
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchData(queryParams);
-  }, [location.search]);
 
   const getCoinList = async () => {
     try {
@@ -170,12 +114,6 @@ function Coins() {
       setCoinList(coins);
       setDisplayCoinList(coins)
       handleSearchParams("sort_order", "default")
-      //set the sort_order to "default"
-      /*setSortByNameDirection("default");
-      setSortByPriceDirection("default");
-      setSortByOneHourDirection("default");
-      setSortByTwentyFourHoursDirection("default");
-      setSortBySevenDaysDirection("default");*/
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -224,12 +162,12 @@ function Coins() {
 
   useEffect(() => {
     getCoinList();
-
-    const intervalId = setInterval(() => {
+    //save for automatic refresh, but it causes abnormal behavior when use with queryString, requires further debugging
+    /*const intervalId = setInterval(() => {
       getCoinList();
     }, 60000);
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);*/
   }, [coinListDsc]);
 
   useEffect(() => {
@@ -243,8 +181,6 @@ function Coins() {
   };
 
   const colors = ["blue", "purple", "green"];
-
-  console.log(queryParams);
 
   const handleSortByName = () => {
     if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
@@ -311,12 +247,10 @@ function Coins() {
     }
   };
 
-  //modify this sort by to make it more universal
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
     const sortBy = queryParams.sort_by;
     const sortOrder = queryParams.sort_order;
-    //const property = `price_change_percentage_${sortBy}_in_currency`
     if (sortBy === "name" && sortOrder === "ascent") {
       sortedCoinList.sort((value1, value2) =>
         value1.name.localeCompare(value2.name)
@@ -336,7 +270,6 @@ function Coins() {
         sortBy === "price_change_percentage_7d_in_currency") &&
       sortOrder === "ascent"
     ) {
-      //const property = `price_change_percentage_${sortBy}_in_currency`
       sortedCoinList.sort((value1, value2) => value1[sortBy] - value2[sortBy]);
       setDisplayCoinList(sortedCoinList);
     }
@@ -347,7 +280,6 @@ function Coins() {
         sortBy === "price_change_percentage_7d_in_currency") &&
       sortOrder === "descent"
     ) {
-      //const property = `price_change_percentage_${sortBy}_in_currency`
       sortedCoinList.sort((value1, value2) => value2[sortBy] - value1[sortBy]);
       setDisplayCoinList(sortedCoinList);
     }
@@ -363,138 +295,9 @@ function Coins() {
     }
   };
 
-  /*const sortByName = () => {
-    const sortedCoinList = [...coinList];
-    if (sortByNameDirection === "default") {
-      setDisplayCoinList(coinList);
-    }
-    if (sortByNameDirection === "name ascent") {
-      sortedCoinList.sort((value1, value2) =>
-        value1.name.localeCompare(value2.name)
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortByNameDirection === "name descent") {
-      sortedCoinList.sort((value1, value2) =>
-        value2.name.localeCompare(value1.name)
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-  };
-
-  const sortByPrice = () => {
-    const sortedCoinList = [...coinList];
-    if (sortByPriceDirection === "default") {
-      setDisplayCoinList(coinList);
-    }
-    if (sortByPriceDirection === "price ascent") {
-      sortedCoinList.sort(
-        (value1, value2) => value1.current_price - value2.current_price
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortByPriceDirection === "price descent") {
-      sortedCoinList.sort(
-        (value1, value2) => value2.current_price - value1.current_price
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-  };
-
-  const sortByOneHour = () => {
-    const sortedCoinList = [...coinList];
-    if (sortByOneHourDirection === "default") {
-      setDisplayCoinList(coinList);
-    }
-    if (sortByOneHourDirection === "1h ascent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value1.price_change_percentage_1h_in_currency -
-          value2.price_change_percentage_1h_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortByOneHourDirection === "1h descent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value2.price_change_percentage_1h_in_currency -
-          value1.price_change_percentage_1h_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-  };
-
-  const sortByTwentyFourHours = () => {
-    const sortedCoinList = [...coinList];
-    if (sortByTwentyFourHoursDirection === "default") {
-      setDisplayCoinList(coinList);
-    }
-    if (sortByTwentyFourHoursDirection === "24h ascent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value1.price_change_percentage_24h_in_currency -
-          value2.price_change_percentage_24h_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortByTwentyFourHoursDirection === "24h descent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value2.price_change_percentage_24h_in_currency -
-          value1.price_change_percentage_24h_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-  };
-
-  const sortBySevenDays = () => {
-    const sortedCoinList = [...coinList];
-    if (sortBySevenDaysDirection === "default") {
-      setDisplayCoinList(coinList);
-    }
-    if (sortBySevenDaysDirection === "7d ascent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value1.price_change_percentage_7d_in_currency -
-          value2.price_change_percentage_7d_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortBySevenDaysDirection === "7d descent") {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value2.price_change_percentage_7d_in_currency -
-          value1.price_change_percentage_7d_in_currency
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-  };*/
-
-  //console.log("displayCoinList", displayCoinList);
-
   useEffect(() => {
     sortCoinList();
   }, [queryParams.sort_order]);
-
-  /*useEffect(() => {
-    sortByName();
-  }, [sortByNameDirection, coinList]);
-
-  useEffect(() => {
-    sortByPrice();
-  }, [sortByPriceDirection, coinList]);
-
-  useEffect(() => {
-    sortByOneHour();
-  }, [sortByOneHourDirection, coinList]);
-
-  useEffect(() => {
-    sortByTwentyFourHours();
-  }, [sortByTwentyFourHoursDirection, coinList]);
-
-  useEffect(() => {
-    sortBySevenDays();
-  }, [sortBySevenDaysDirection, coinList]);*/
 
   useEffect(()=> {
     handleSearchParams("days", numOfDays)
@@ -509,7 +312,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(0);
-            //handleSearchParams("days", "0");
           }}
         >
           {" "}
@@ -519,7 +321,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(6);
-            //handleSearchParams("days", "6");
           }}
         >
           {" "}
@@ -530,7 +331,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(30);
-            //handleSearchParams("days", "30");
           }}
         >
           {" "}
@@ -540,7 +340,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(89);
-            //handleSearchParams("days", "90");
           }}
         >
           {" "}
@@ -550,7 +349,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(179);
-            //handleSearchParams("days", "179");
           }}
         >
           {" "}
@@ -560,7 +358,6 @@ function Coins() {
         <button
           onClick={() => {
             setNumOfDays(364);
-            //handleSearchParams("days", "364");
           }}
         >
           {" "}
@@ -582,7 +379,7 @@ function Coins() {
           <div className="line-chart-wrapper">
             {priceVolumeChartIsLoadingHasError === false && (
               <LineChart priceVolumeList={priceVolumeList} />
-           )}
+            )}
             <div className="charts-coins-container">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (
@@ -672,7 +469,6 @@ function Coins() {
                 <span>{singleCoin.name}</span>
               </div>
             </div>
-            {/*&nbsp;&nbsp;*/}
             <div className="coin-data-width">
               {currencySymbol}
               {singleCoin.current_price &&

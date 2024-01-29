@@ -3,8 +3,6 @@ import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
 
-//add an error control that controls when leftCurrencyData and rightCurrencyData is null?
-
 export const CurrencyConverter = () => {
   const {
     useLocalState,
@@ -18,14 +16,14 @@ export const CurrencyConverter = () => {
   const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "bitcoin");
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
     "leftCurrencyData",
-    /*{}*/ null
+    null
   );
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-    /*{}*/ null
+     null
   );
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
@@ -69,10 +67,8 @@ export const CurrencyConverter = () => {
     setConvertedResult(result);
   };
 
-  //revise this shit move selectedLeftCurrency outside of the function
   const getSelectedCurrencyData = async (item) => {
     try {
-      console.log("item", item)
       setSingleCoinIsLoading(true);
       setSingleCoinLoadingHasError(false);
       const singleCoinData = await axios(
@@ -96,17 +92,6 @@ export const CurrencyConverter = () => {
     setLeftCurrency(value);
     setSelectLeftCurrency(true);
   };
-
-  /*useEffect(()=>{
-   if(leftCurrencyData === null || rightCurrencyData === null) {
-    getSelectedCurrencyData(rightCurrency)
-    setSelectLeftCurrency(true)
-    getSelectedCurrencyData(leftCurrency)
-   }
-  })*/
-
-  // problem is selectLeftCurrency is set to false or true by default, so either left or right currencyData can't be pulled, set selectLeftCurrency to default, and
-  // when it's default, load both sides of currencyData within the useEffect below
 
   useEffect(() => {
     if (selectLeftCurrency) {

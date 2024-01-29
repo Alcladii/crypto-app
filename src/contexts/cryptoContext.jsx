@@ -102,7 +102,6 @@ export const CryptoProvider = ({ children }) => {
   const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
-      console.log(coinId, currency, numOfDays)
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`
       );
@@ -124,18 +123,6 @@ export const CryptoProvider = ({ children }) => {
   const location = useLocation();
   const historyURL = useHistory();
   const queryParams = queryString.parse(location.search);
-
-  /*//put API call into fetchData
-  // put selectedCoins to cryptoContext, and currency(maybe already in Context, and call getCoinPriceVolume from fetchData)
-  const fetchData = (conditions) => { 
-    console.log("API called with parameters:", 
-    //queryString.stringify(conditions)
-    conditions);
-  };
-
-  useEffect(() => {
-    fetchData(queryParams);
-  }, [location.search]);*/
 
   const handleSearchParams = (conditionKey, conditionValue) => {
     if (!conditionKey in queryParams) {

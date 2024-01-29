@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import Slider from "react-slick";
+//save till deploying succesfully on Vecel
 //import "slick-carousel/slick/slick.css";
 //import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
@@ -55,10 +56,10 @@ export const SlickCarousel = ({ coinList }) => {
         (coin) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => ({
-          ...coin,
-          selected: false,
-        }));
+        const coinsInSlides = coinList.map((coin) => {
+          const isSelected = searchParams.includes(coin.id);
+          return { ...coin, selected: isSelected };
+        });
         setSlidesData(coinsInSlides);
         setSelectedCoinData([]);
       }
@@ -66,8 +67,6 @@ export const SlickCarousel = ({ coinList }) => {
   }, [coinList]);
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
-
-  // you need to clear the selectedcoins portion in searchParams, but not the whole thing
 
   const updateSearchParams = () => {
     for (let property in queryParams) {
@@ -90,8 +89,7 @@ export const SlickCarousel = ({ coinList }) => {
   useEffect(() => {
     updateSearchParams()
   }, [selectedCoinData]);
-
-  //pull the comparisonIsOn status from the URL instead of local state
+ 
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
@@ -112,23 +110,6 @@ export const SlickCarousel = ({ coinList }) => {
     setSlidesData(newSlides);
   };
 
-
-  //use query string here to add selected coin to URL
-
-  /*useEffect(() => {
-    if (selectedCoinData.length === 0) {
-      setPriceVolumeList([]);
-    } else {
-      setPriceVolumeList([]);
-      const requests = selectedCoinData.map((item) => {
-        return getCoinPriceVolume(item.id, displayCurrency, numOfDays);
-      });
-      Promise.all(requests).then((responses) => {
-        setPriceVolumeList(responses);
-      });
-    }
-  }, [selectedCoinData, displayCurrency, numOfDays]);*/
-
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn);
     slidesData.forEach((slide) => {
@@ -140,6 +121,36 @@ export const SlickCarousel = ({ coinList }) => {
   useEffect(()=>{
     handleSearchParams("comparison_is_on", comparisonIsOn)
   },[comparisonIsOn])
+
+  const getPriceVolumeDataForSelectedCoins = (conditions) => {
+    if (Object.keys(conditions).length === 0) {
+      setPriceVolumeList([]);
+    } else {
+      setPriceVolumeList([]);
+      const requests = Object.keys(conditions)
+        .map((key) => {
+          if (
+            key.includes("selectedcoin")
+          ) {
+             return getCoinPriceVolume(
+              conditions[key],
+              conditions.displaycurrency,
+              conditions.days
+            );
+          }
+          return null;
+        })
+        .filter((request) => request !== null);
+
+      Promise.all(requests).then((responses) => {
+        setPriceVolumeList(responses);
+      });
+    }
+  };
+
+  useEffect(() => {
+    getPriceVolumeDataForSelectedCoins (queryParams);
+  }, [location.search]);
 
   return (
     <div className="App">

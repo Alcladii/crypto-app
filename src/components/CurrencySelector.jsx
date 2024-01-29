@@ -17,7 +17,6 @@ export const CurrencySelector = () => {
 
   const handleChange = (e) => {
     setDisplayCurrency(e.target.value);
-    //handleSearchParams("displaycurrency", e.target.value)
   };
 
   useEffect(() => {
