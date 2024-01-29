@@ -1,9 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import Slider from "react-slick";
-//save till deploying succesfully on Vecel
-//import "slick-carousel/slick/slick.css";
-//import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
 import queryString from "query-string";
