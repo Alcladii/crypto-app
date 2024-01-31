@@ -3,6 +3,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import _isEqual from 'lodash/isEqual';
 import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
@@ -105,11 +106,9 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
-      //move this out to an useEffect, so setDisplayCoinList to coins when displayCoinList.length === 0 and setDisplayCoinList to coins when coins changes
-      /*if (displayCoinList.length === 0 || displayCoinList !== coins) {
+      if (displayCoinList.length === 0) {
         setDisplayCoinList(coins);
-      }*/
-      setDisplayCoinList(coins)
+      }
       if (sortOrder === "") {
         setSortOrder("default");
       }
@@ -121,9 +120,13 @@ function Coins() {
     }
   };
 
-  /*useEffect(()=>{
-    setDisplayCoinList(coinList)
-  },[coinList])*/
+  useEffect(()=>{
+    const allIdsMatch = coinList.every(coin => displayCoinList.some(displayCoin => coin.id === displayCoin.id))
+    if (!allIdsMatch){
+      setDisplayCoinList(coinList)
+      setSortOrder("default")
+    }
+  },[coinList])
 
   const setToDsc = () => {
     setCoinListDsc(true);
