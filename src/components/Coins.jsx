@@ -106,7 +106,9 @@ function Coins() {
       coins = response.data;
       setCoinList(coins);
       //setDisplayCoinList(coins)
-      handleSearchParams("sort_order", "default")
+      if (sortOrder === "") {
+        setSortOrder("default");
+      }
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
