@@ -48,13 +48,14 @@ export const SlickCarousel = ({ coinList }) => {
 
   useEffect(() => {
     if (coinList.length > 0) {
+      //prevents coins being repetitavely added to the coinSlides
       const coinIdsInSlidesData = slidesData.map((coin) => coin.id);
       const coinsNotInSlidesData = coinList.filter(
         (coin) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
         const coinsInSlides = coinList.map((coin) => {
-          const isSelected = queryParams.includes(coin.id);
+          const isSelected = Object.values(queryParams).includes(coin.id);
           return { ...coin, selected: isSelected };
         });
         setSlidesData(coinsInSlides);
