@@ -105,7 +105,6 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
-      //setDisplayCoinList(coins)
       if (sortOrder === "") {
         setSortOrder("default");
       }
@@ -282,119 +281,6 @@ function Coins() {
       setDisplayCoinList(coinList);
     }
   };
-
-  /*const handleSortByName = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "ascent");
-    }
-  };
-
-  const handleSortByPrice = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "ascent");
-    }
-  };
-
-  const handleSortByOneHour = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "ascent");
-    }
-  };
-
-  const handleSortByTwentyFourHours = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "ascent");
-    }
-  };
-
-  const handleSortBySevenDays= () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "ascent");
-    }
-  };
-
-  const sortCoinList = () => {
-    const sortedCoinList = [...coinList];
-    const sortBy = queryParams.sort_by;
-    const sortOrder = queryParams.sort_order;
-    if (sortBy === "name" && sortOrder === "ascent") {
-      sortedCoinList.sort((value1, value2) =>
-        value1.name.localeCompare(value2.name)
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (sortBy === "name" && sortOrder === "descent") {
-      sortedCoinList.sort((value1, value2) =>
-        value2.name.localeCompare(value1.name)
-      );
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (
-      (sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "ascent"
-    ) {
-      sortedCoinList.sort((value1, value2) => value1[sortBy] - value2[sortBy]);
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (
-      (sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "descent"
-    ) {
-      sortedCoinList.sort((value1, value2) => value2[sortBy] - value1[sortBy]);
-      setDisplayCoinList(sortedCoinList);
-    }
-    if (
-      (sortBy === "name" ||
-        sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "default"
-    ) {
-      setDisplayCoinList(coinList);
-    }
-  };*/
 
   useEffect(() => {
     sortCoinList();
