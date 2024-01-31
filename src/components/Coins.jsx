@@ -76,19 +76,12 @@ function Coins() {
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
-  const [coinPage, setCoinPage] = useState(1);
-  const [sortByNameDirection, setSortByNameDirection] = useState("default");
-  const [sortByPriceDirection, setSortByPriceDirection] = useState("default");
-  const [sortByOneHourDirection, setSortByOneHourDirection] =
-    useState("default");
-  const [sortByTwentyFourHoursDirection, setSortByTwentyFourHoursDirection] =
-    useState("default");
-  const [sortBySevenDaysDirection, setSortBySevenDaysDirection] =
-    useState("default");
   const [displayCoinList, setDisplayCoinList] = useLocalState(
     "displayCoinList",
     []
   );
+  const [sortBy, setSortBy] = useLocalState("sortBy", "");
+  const [sortOrder, setSortOrder] = useLocalState("sortOrder", "");
 
   const getCoinList = async () => {
     try {
@@ -112,8 +105,14 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
+      //move this out to an useEffect, so setDisplayCoinList to coins when displayCoinList.length === 0 and setDisplayCoinList to coins when coins changes
+      /*if (displayCoinList.length === 0 || displayCoinList !== coins) {
+        setDisplayCoinList(coins);
+      }*/
       setDisplayCoinList(coins)
-      handleSearchParams("sort_order", "default")
+      if (sortOrder === "") {
+        setSortOrder("default");
+      }
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -121,6 +120,10 @@ function Coins() {
       setCoinListIsLoading(false);
     }
   };
+
+  /*useEffect(()=>{
+    setDisplayCoinList(coinList)
+  },[coinList])*/
 
   const setToDsc = () => {
     setCoinListDsc(true);
@@ -162,12 +165,6 @@ function Coins() {
 
   useEffect(() => {
     getCoinList();
-    //save for automatic refresh, but it causes abnormal behavior when use with queryString, requires further debugging
-    /*const intervalId = setInterval(() => {
-      getCoinList();
-    }, 60000);
-
-    return () => clearInterval(intervalId);*/
   }, [coinListDsc]);
 
   useEffect(() => {
@@ -182,114 +179,107 @@ function Coins() {
 
   const colors = ["blue", "purple", "green"];
 
-  const handleSortByName = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "name");
-      handleSearchParams("sort_order", "ascent");
+  const handleSortOrder = () => {
+    if (sortOrder === "default") {
+      setSortOrder("ascent");
     }
+    if (sortOrder === "ascent") {
+      setSortOrder("descent");
+    }
+    if (sortOrder === "descent") {
+      setSortOrder("default");
+    }
+  };
+
+  const handleSortByName = () => {
+    if (sortBy !== "name") {
+      setSortBy("name");
+    }
+    handleSortOrder();
   };
 
   const handleSortByPrice = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "current_price");
-      handleSearchParams("sort_order", "ascent");
+    if (sortBy !== "current_price") {
+      setSortBy("current_price");
     }
+    handleSortOrder();
   };
 
   const handleSortByOneHour = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-      handleSearchParams("sort_order", "ascent");
+    if (sortBy !== "price_change_percentage_1h_in_currency") {
+      setSortBy("price_change_percentage_1h_in_currency");
     }
+    handleSortOrder();
   };
 
   const handleSortByTwentyFourHours = () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-      handleSearchParams("sort_order", "ascent");
+    if (sortBy !== "price_change_percentage_24h_in_currency") {
+      setSortBy("price_change_percentage_24h_in_currency");
     }
+    handleSortOrder();
   };
 
-  const handleSortBySevenDays= () => {
-    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "descent");
-    } else if (queryParams.sort_order === "descent") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "default");
-    } else if (queryParams.sort_order === "default") {
-      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-      handleSearchParams("sort_order", "ascent");
+  const handleSortBySevenDays = () => {
+    if (sortBy !== "price_change_percentage_7d_in_currency") {
+      setSortBy("price_change_percentage_7d_in_currency");
     }
+    handleSortOrder();
   };
+
+  useEffect(() => {
+    handleSearchParams("sort_by", sortBy);
+  }, [sortBy]);
+
+  useEffect(() => {
+    handleSearchParams("sort_order", sortOrder);
+  }, [sortOrder]);
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
-    const sortBy = queryParams.sort_by;
-    const sortOrder = queryParams.sort_order;
-    if (sortBy === "name" && sortOrder === "ascent") {
+    const sortByInQueryParams = queryParams.sort_by;
+    const sortOrderInQueryParams = queryParams.sort_order;
+    if (sortByInQueryParams === "name" && sortOrderInQueryParams === "ascent") {
       sortedCoinList.sort((value1, value2) =>
         value1.name.localeCompare(value2.name)
       );
       setDisplayCoinList(sortedCoinList);
     }
-    if (sortBy === "name" && sortOrder === "descent") {
+    if (
+      sortByInQueryParams === "name" &&
+      sortOrderInQueryParams === "descent"
+    ) {
       sortedCoinList.sort((value1, value2) =>
         value2.name.localeCompare(value1.name)
       );
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "ascent"
+      (sortByInQueryParams === "current_price" ||
+        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
+      sortOrderInQueryParams === "ascent"
     ) {
       sortedCoinList.sort((value1, value2) => value1[sortBy] - value2[sortBy]);
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "descent"
+      (sortByInQueryParams === "current_price" ||
+        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
+      sortOrderInQueryParams === "descent"
     ) {
       sortedCoinList.sort((value1, value2) => value2[sortBy] - value1[sortBy]);
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortBy === "name" ||
-        sortBy === "current_price" ||
-        sortBy === "price_change_percentage_1h_in_currency" ||
-        sortBy === "price_change_percentage_24h_in_currency" ||
-        sortBy === "price_change_percentage_7d_in_currency") &&
-      sortOrder === "default"
+      (sortByInQueryParams === "name" ||
+        sortByInQueryParams === "current_price" ||
+        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
+        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
+      sortOrderInQueryParams === "default"
     ) {
       setDisplayCoinList(coinList);
     }
@@ -299,9 +289,9 @@ function Coins() {
     sortCoinList();
   }, [queryParams.sort_order]);
 
-  useEffect(()=> {
-    handleSearchParams("days", numOfDays)
-  }, [numOfDays])
+  useEffect(() => {
+    handleSearchParams("days", numOfDays);
+  }, [numOfDays]);
 
   return (
     <div className="App">
