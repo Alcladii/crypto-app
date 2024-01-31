@@ -26,7 +26,6 @@ export const Home = () => {
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       {/*some issues with CurrencyConverter causing the app to crash, save the line below until currencyConverter is fixed*/}
      {queryParams.load_coins_page === "true" ? <Coins /> : <CurrencyConverter />}
-     {/*<Coins />*/}
     </div>
   );
 };
