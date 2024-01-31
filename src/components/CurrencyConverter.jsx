@@ -12,8 +12,8 @@ export const CurrencyConverter = () => {
     currencySymbol,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
-  const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "");
-  const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "");
+  const [leftCurrency, setLeftCurrency] = useLocalState("leftCurrency", "bitcoin");
+  const [rightCurrency, setRightCurrency] = useLocalState("rightCurrency", "bitcoin");
   const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
     "leftCurrencyData",
     null
@@ -23,7 +23,7 @@ export const CurrencyConverter = () => {
     useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-    null
+     null
   );
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
@@ -46,7 +46,7 @@ export const CurrencyConverter = () => {
     "currencyConverterDays",
     7
   );
-  const [selectLeftCurrency, setSelectLeftCurrency] = useState(false);
+  const [selectLeftCurrency, setSelectLeftCurrency] = useState(null);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -184,7 +184,7 @@ export const CurrencyConverter = () => {
         </select>
         <div>
           1&nbsp;{leftCurrencyData !== null  && leftCurrencyData.name}&nbsp;=&nbsp;{currencySymbol}
-          {leftCurrencyData &&
+          {leftCurrencyData !== null &&
             leftCurrencyData.market_data.current_price[displayCurrency]}
         </div>
       </div>
@@ -270,7 +270,7 @@ export const CurrencyConverter = () => {
         getRightCurrencyPriceVolumeHasError) && (
         <div>Error in getting price and volume data, can't update chart</div>
       )}
-      <LineChartCurrencyConverter priceVolumeList={requests} />
+     <LineChartCurrencyConverter priceVolumeList={requests} />
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
+import queryString from "query-string";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -27,9 +27,16 @@ export const SlickCarousel = ({ coinList }) => {
     selectedCoinData,
     setSelectedCoinData,
     displayCurrency,
+    handleSearchParams,
+    location, 
+    queryParams,
+    historyURL,
   } = useContext(CryptoContext);
 
-  const [comparisonIsOn, setComparisonIsOn] = useLocalState("comparisonModeOn", false)
+  const [comparisonIsOn, setComparisonIsOn] = useLocalState(
+    "comparisonModeOn",
+    false
+  );
 
   const settings = {
     dots: false,
@@ -46,10 +53,10 @@ export const SlickCarousel = ({ coinList }) => {
         (coin) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => ({
-          ...coin,
-          selected: false,
-        }));
+        const coinsInSlides = coinList.map((coin) => {
+          const isSelected = searchParams.includes(coin.id);
+          return { ...coin, selected: isSelected };
+        });
         setSlidesData(coinsInSlides);
         setSelectedCoinData([]);
       }
@@ -58,52 +65,103 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  const handleClick = (id) => {
-      const newSlides = slidesData.map((coin) => {
-        const isSameCoin = id === coin.id;
-        if (isSameCoin) {
-          if(!comparisonIsOn){
-            coin.selected = true;
-          }else{
-            if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
-            else if (coin.selected) coin.selected = false;
-          }        
-        } else if (!comparisonIsOn) {
-          coin.selected = false
+  const updateSearchParams = () => {
+    for (let property in queryParams) {
+      if (property.includes("selectedcoin")) {
+        delete queryParams[property];
+      }
+    }
+    if (selectedCoinData.length === 0) {
+      historyURL.push(`?${queryString.stringify(queryParams)}`);
+    } else {
+      let num = 1;
+      selectedCoinData.forEach((item) => {
+        if (item.selected === true) {
+          handleSearchParams(`selectedcoin_${num++}`, item.id);
         }
-        return coin;
       });
-      const selectedCoin = slidesData.filter((coin) => coin.selected);
-      setSelectedCoinData(selectedCoin);
-      setSlidesData(newSlides);
-  };
+    }
+  }
 
   useEffect(() => {
-    if (selectedCoinData.length === 0) {
+    updateSearchParams()
+  }, [selectedCoinData]);
+ 
+  const handleClick = (id) => {
+    const newSlides = slidesData.map((coin) => {
+      const isSameCoin = id === coin.id;
+      if (isSameCoin) {
+        if (queryParams.comparison_is_on === "false") {
+          coin.selected = true;
+        } else {
+          if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
+          else if (coin.selected) coin.selected = false;
+        }
+      } else if (queryParams.comparison_is_on === "false") {
+        coin.selected = false;
+      }
+      return coin;
+    });
+    const selectedCoin = slidesData.filter((coin) => coin.selected);
+    setSelectedCoinData(selectedCoin);
+    setSlidesData(newSlides);
+  };
+
+  const handleComparison = () => {
+    setComparisonIsOn(!comparisonIsOn);
+    slidesData.forEach((slide) => {
+      slide.selected = false;
+    });
+    setSelectedCoinData([]);
+  };
+
+  useEffect(()=>{
+    handleSearchParams("comparison_is_on", comparisonIsOn)
+  },[comparisonIsOn])
+
+  const getPriceVolumeDataForSelectedCoins = (conditions) => {
+    if (Object.keys(conditions).length === 0) {
       setPriceVolumeList([]);
     } else {
       setPriceVolumeList([]);
-      const requests = selectedCoinData.map((item) => {
-        return getCoinPriceVolume(item.id, displayCurrency, numOfDays);
-      });
+      const requests = Object.keys(conditions)
+        .map((key) => {
+          if (
+            key.includes("selectedcoin")
+          ) {
+             return getCoinPriceVolume(
+              conditions[key],
+              conditions.displaycurrency,
+              conditions.days
+            );
+          }
+          return null;
+        })
+        .filter((request) => request !== null);
+
       Promise.all(requests).then((responses) => {
         setPriceVolumeList(responses);
       });
     }
-  }, [selectedCoinData, displayCurrency, numOfDays]);
+  };
 
-  const handleComparison = () => {
-    setComparisonIsOn(!comparisonIsOn)
-    slidesData.forEach((slide)=>{slide.selected = false})
-    setSelectedCoinData([])
-  }
+  useEffect(() => {
+    getPriceVolumeDataForSelectedCoins (queryParams);
+  }, [location.search]);
 
   return (
     <div className="App">
       <div className="comparison-button-wrapper">
-        <button onClick={handleComparison} className={`comparison-button ${comparisonIsOn ? "comparison-on" : ""}`}>Comparison</button>
+        <button
+          onClick={handleComparison}
+          className={`comparison-button ${
+            comparisonIsOn ? "comparison-on" : ""
+          }`}
+        >
+          Comparison
+        </button>
       </div>
-      
+
       <div className="slider-wrapper">
         {slidesData && (
           <Slider {...settings}>

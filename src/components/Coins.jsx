@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,6 +12,7 @@ import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
+import queryString from "query-string";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -54,6 +55,7 @@ function Coins() {
     displayCurrency,
     currencySymbol,
     getCurrencyList,
+    numOfDays,
     setNumOfDays,
     priceVolumeChartIsLoading,
     priceVolumeChartIsLoadingHasError,
@@ -62,13 +64,31 @@ function Coins() {
     slidesData,
     coinList,
     setCoinList,
+    setPriceVolumeList,
+    getCoinPriceVolume,
+    handleSearchParams,
+    clearSearchParams,
+    location,
+    queryParams,
+    historyURL,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
-  const [sortByPriceDirection, setSortByPriceDirection] = useState(false);
   const [coinPage, setCoinPage] = useState(1);
+  const [sortByNameDirection, setSortByNameDirection] = useState("default");
+  const [sortByPriceDirection, setSortByPriceDirection] = useState("default");
+  const [sortByOneHourDirection, setSortByOneHourDirection] =
+    useState("default");
+  const [sortByTwentyFourHoursDirection, setSortByTwentyFourHoursDirection] =
+    useState("default");
+  const [sortBySevenDaysDirection, setSortBySevenDaysDirection] =
+    useState("default");
+  const [displayCoinList, setDisplayCoinList] = useLocalState(
+    "displayCoinList",
+    []
+  );
 
   const getCoinList = async () => {
     try {
@@ -92,6 +112,8 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
+      setDisplayCoinList(coins)
+      handleSearchParams("sort_order", "default")
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -140,6 +162,12 @@ function Coins() {
 
   useEffect(() => {
     getCoinList();
+    //save for automatic refresh, but it causes abnormal behavior when use with queryString, requires further debugging
+    /*const intervalId = setInterval(() => {
+      getCoinList();
+    }, 60000);
+
+    return () => clearInterval(intervalId);*/
   }, [coinListDsc]);
 
   useEffect(() => {
@@ -153,6 +181,127 @@ function Coins() {
   };
 
   const colors = ["blue", "purple", "green"];
+
+  const handleSortByName = () => {
+    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
+      handleSearchParams("sort_by", "name");
+      handleSearchParams("sort_order", "descent");
+    } else if (queryParams.sort_order === "descent") {
+      handleSearchParams("sort_by", "name");
+      handleSearchParams("sort_order", "default");
+    } else if (queryParams.sort_order === "default") {
+      handleSearchParams("sort_by", "name");
+      handleSearchParams("sort_order", "ascent");
+    }
+  };
+
+  const handleSortByPrice = () => {
+    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
+      handleSearchParams("sort_by", "current_price");
+      handleSearchParams("sort_order", "descent");
+    } else if (queryParams.sort_order === "descent") {
+      handleSearchParams("sort_by", "current_price");
+      handleSearchParams("sort_order", "default");
+    } else if (queryParams.sort_order === "default") {
+      handleSearchParams("sort_by", "current_price");
+      handleSearchParams("sort_order", "ascent");
+    }
+  };
+
+  const handleSortByOneHour = () => {
+    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
+      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
+      handleSearchParams("sort_order", "descent");
+    } else if (queryParams.sort_order === "descent") {
+      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
+      handleSearchParams("sort_order", "default");
+    } else if (queryParams.sort_order === "default") {
+      handleSearchParams("sort_by", "price_change_percentage_1h_in_currency");
+      handleSearchParams("sort_order", "ascent");
+    }
+  };
+
+  const handleSortByTwentyFourHours = () => {
+    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
+      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
+      handleSearchParams("sort_order", "descent");
+    } else if (queryParams.sort_order === "descent") {
+      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
+      handleSearchParams("sort_order", "default");
+    } else if (queryParams.sort_order === "default") {
+      handleSearchParams("sort_by", "price_change_percentage_24h_in_currency");
+      handleSearchParams("sort_order", "ascent");
+    }
+  };
+
+  const handleSortBySevenDays= () => {
+    if (!("sort_by" in queryParams) || queryParams.sort_order === "ascent") {
+      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
+      handleSearchParams("sort_order", "descent");
+    } else if (queryParams.sort_order === "descent") {
+      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
+      handleSearchParams("sort_order", "default");
+    } else if (queryParams.sort_order === "default") {
+      handleSearchParams("sort_by", "price_change_percentage_7d_in_currency");
+      handleSearchParams("sort_order", "ascent");
+    }
+  };
+
+  const sortCoinList = () => {
+    const sortedCoinList = [...coinList];
+    const sortBy = queryParams.sort_by;
+    const sortOrder = queryParams.sort_order;
+    if (sortBy === "name" && sortOrder === "ascent") {
+      sortedCoinList.sort((value1, value2) =>
+        value1.name.localeCompare(value2.name)
+      );
+      setDisplayCoinList(sortedCoinList);
+    }
+    if (sortBy === "name" && sortOrder === "descent") {
+      sortedCoinList.sort((value1, value2) =>
+        value2.name.localeCompare(value1.name)
+      );
+      setDisplayCoinList(sortedCoinList);
+    }
+    if (
+      (sortBy === "current_price" ||
+        sortBy === "price_change_percentage_1h_in_currency" ||
+        sortBy === "price_change_percentage_24h_in_currency" ||
+        sortBy === "price_change_percentage_7d_in_currency") &&
+      sortOrder === "ascent"
+    ) {
+      sortedCoinList.sort((value1, value2) => value1[sortBy] - value2[sortBy]);
+      setDisplayCoinList(sortedCoinList);
+    }
+    if (
+      (sortBy === "current_price" ||
+        sortBy === "price_change_percentage_1h_in_currency" ||
+        sortBy === "price_change_percentage_24h_in_currency" ||
+        sortBy === "price_change_percentage_7d_in_currency") &&
+      sortOrder === "descent"
+    ) {
+      sortedCoinList.sort((value1, value2) => value2[sortBy] - value1[sortBy]);
+      setDisplayCoinList(sortedCoinList);
+    }
+    if (
+      (sortBy === "name" ||
+        sortBy === "current_price" ||
+        sortBy === "price_change_percentage_1h_in_currency" ||
+        sortBy === "price_change_percentage_24h_in_currency" ||
+        sortBy === "price_change_percentage_7d_in_currency") &&
+      sortOrder === "default"
+    ) {
+      setDisplayCoinList(coinList);
+    }
+  };
+
+  useEffect(() => {
+    sortCoinList();
+  }, [queryParams.sort_order]);
+
+  useEffect(()=> {
+    handleSearchParams("days", numOfDays)
+  }, [numOfDays])
 
   return (
     <div className="App">
@@ -214,6 +363,8 @@ function Coins() {
           {" "}
           1 Year{" "}
         </button>
+        &nbsp;&nbsp;
+        <button onClick={clearSearchParams}>Clear Search Criteria</button>
       </div>
       {priceVolumeList.length === 0 ? (
         <div className="please-select-coin-wrapper">
@@ -279,19 +430,34 @@ function Coins() {
           >*/}
         <div className="coin-list-title-container">
           <div className="coin-number-column-width">#</div>
-          <div className="coin-column-width">Name</div>
-          <div className="coin-data-width">Price</div>
-          <div className="coin-data-width">1h%</div>
-          <div className="coin-data-width">24h%</div>
-          <div className="coin-data-width">7d%</div>
+          <div className="coin-column-width">
+            <div>Name</div>&nbsp;
+            <button onClick={handleSortByName}>sort</button>
+          </div>
+          <div className="coin-data-width">
+            <div>Price</div>
+            <button onClick={handleSortByPrice}>sort</button>
+          </div>
+          <div className="coin-data-width">
+            <div>1h%</div>
+            <button onClick={handleSortByOneHour}>sort</button>
+          </div>
+          <div className="coin-data-width">
+            <div>24h%</div>
+            <button onClick={handleSortByTwentyFourHours}>sort</button>
+          </div>
+          <div className="coin-data-width">
+            <div>7d%</div>
+            <button onClick={handleSortBySevenDays}>sort</button>
+          </div>
           <div className="coin-column-width">24h volume/Market Cap</div>
           <div className="coin-column-width">Circulating/Total supply</div>
           <div className="coin-column-width">Last 7d</div>
         </div>
-        {coinList.map((singleCoin) => (
+        {displayCoinList.map((singleCoin) => (
           <div key={singleCoin.id} className="individual-coin">
             <div className="coin-number-column-width">
-              {coinList.indexOf(singleCoin) + 1}
+              {displayCoinList.indexOf(singleCoin) + 1}
             </div>
             <div
               className="coin-column-width"
@@ -303,7 +469,6 @@ function Coins() {
                 <span>{singleCoin.name}</span>
               </div>
             </div>
-            {/*&nbsp;&nbsp;*/}
             <div className="coin-data-width">
               {currencySymbol}
               {singleCoin.current_price &&
@@ -394,8 +559,7 @@ function Coins() {
                 <ProgressBarOuter>
                   <ProgressBarInner
                     width={
-                      singleCoin.market_cap_change_24h /
-                        singleCoin.market_cap
+                      singleCoin.market_cap_change_24h / singleCoin.market_cap
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
@@ -416,8 +580,7 @@ function Coins() {
                 <ProgressBarOuter>
                   <ProgressBarInner
                     width={
-                      singleCoin.circulating_supply /
-                        singleCoin.total_supply
+                      singleCoin.circulating_supply / singleCoin.total_supply
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
