@@ -1,7 +1,9 @@
 import { createContext, useState, useEffect } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import api from "../api";
 import currencies from "../mocks/currencies.json";
+import queryString from "query-string";
 
 export const CryptoContext = createContext();
 
@@ -35,17 +37,21 @@ export const CryptoProvider = ({ children }) => {
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
-  const [selectedCoinData, setSelectedCoinData] = useLocalState("selectedCoinData", [])  
+  const [selectedCoinData, setSelectedCoinData] = useLocalState(
+    "selectedCoinData",
+    []
+  );
   const [singleCoin, setSingleCoin] = useLocalState("singleCoin", null);
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
   const [coinList, setCoinList] = useLocalState("coinList", []);
-  const [portfolioList, setPortfolioList] = useLocalState("portfolioList",[]);
-  const [purchasedAmount, setPurchasedAmount] = useState(null)
-  const [purchaseDate, setPurchaseDate] = useState(null)
-  const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] = useState(null)
-  const [isNumber, setIsNumber] = useState(true)
+  const [portfolioList, setPortfolioList] = useLocalState("portfolioList", []);
+  const [purchasedAmount, setPurchasedAmount] = useState(null);
+  const [purchaseDate, setPurchaseDate] = useState(null);
+  const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] =
+    useState(null);
+  const [isNumber, setIsNumber] = useState(true);
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -92,7 +98,7 @@ export const CryptoProvider = ({ children }) => {
   }, []);
 
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
-  
+
   const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
@@ -105,14 +111,36 @@ export const CryptoProvider = ({ children }) => {
         return;
       } else {
         setPriceVolumeChartIsLoadingHasError(false);
-        return data
-      }     
+        return data;
+      }
     } catch (err) {
       // one is for loading, the other is for error handling
       setPriceVolumeChartIsLoadingHasError(true);
       setPriceVolumeChartIsLoading(false);
     }
   };
+
+  const location = useLocation();
+  const historyURL = useHistory();
+  const queryParams = queryString.parse(location.search);
+
+
+//google how to make a query string state custom hook
+
+  const handleSearchParams = (conditionKey, conditionValue) => {
+    if (!conditionKey in queryParams) {
+      const updatedParams = { ...queryParams, [conditionKey]: conditionValue };
+      historyURL.push(`?${queryString.stringify(updatedParams)}`);
+    } else {
+      queryParams[conditionKey] = conditionValue;
+      historyURL.push(`?${queryString.stringify(queryParams)}`);
+    }
+  };
+
+  const clearSearchParams = () => {
+    const updatedParams = {}
+    historyURL.push(`?${queryString.stringify(updatedParams)}`)
+  }
 
   return (
     <CryptoContext.Provider
@@ -154,6 +182,11 @@ export const CryptoProvider = ({ children }) => {
         setFormattedDateForHistoryApiCall,
         isNumber,
         setIsNumber,
+        handleSearchParams,
+        clearSearchParams,
+        location,
+        queryParams,
+        historyURL,
       }}
     >
       {children}

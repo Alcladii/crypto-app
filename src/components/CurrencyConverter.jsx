@@ -29,7 +29,7 @@ export const CurrencyConverter = () => {
     useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-    null
+     null
   );
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
@@ -52,7 +52,6 @@ export const CurrencyConverter = () => {
     "currencyConverterDays",
     7
   );
-
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
