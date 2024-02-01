@@ -60,12 +60,11 @@ function Portfolio() {
   useEffect(() => {
     getLatestCoinDataOnLoad();
 
-    const minute = 60;
-    const refresh = minute * 5;
+    const minute = 60000;
 
     const intervalId = setInterval(() => {
       getLatestCoinDataOnLoad();
-    }, refresh);
+    }, minute);
 
     return () => clearInterval(intervalId);
   }, []);
