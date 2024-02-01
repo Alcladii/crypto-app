@@ -124,7 +124,7 @@ function Coins() {
     const allIdsMatch = coinList.every(coin => displayCoinList.some(displayCoin => coin.id === displayCoin.id))
     if (!allIdsMatch){
       setDisplayCoinList(coinList)
-      setSortOrder("default")
+      //setSortOrder("default")
     }
   },[coinList])
 
@@ -290,11 +290,13 @@ function Coins() {
 
   useEffect(() => {
     sortCoinList();
-  }, [queryParams.sort_order]);
+  }, [queryParams.sort_order, coinList]);
 
   useEffect(() => {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
+
+  
 
   return (
     <div className="App">
