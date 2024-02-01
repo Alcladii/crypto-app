@@ -3,7 +3,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
-import _isEqual from 'lodash/isEqual';
 import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
 import "../App.css";
@@ -119,14 +118,6 @@ function Coins() {
       setCoinListIsLoading(false);
     }
   };
-
-  useEffect(()=>{
-    const allIdsMatch = coinList.every(coin => displayCoinList.some(displayCoin => coin.id === displayCoin.id))
-    if (!allIdsMatch){
-      setDisplayCoinList(coinList)
-      //setSortOrder("default")
-    }
-  },[coinList])
 
   const setToDsc = () => {
     setCoinListDsc(true);
