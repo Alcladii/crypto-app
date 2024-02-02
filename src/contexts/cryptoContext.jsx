@@ -123,9 +123,6 @@ export const CryptoProvider = ({ children }) => {
   const location = useLocation();
   const historyURL = useHistory();
   const queryParams = queryString.parse(location.search);
-  
-  console.log(queryParams)
-
 
 //google how to make a query string state custom hook
 
