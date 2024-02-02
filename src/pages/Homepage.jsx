@@ -20,7 +20,7 @@ export const Home = () => {
     handleSearchParams("load_coins_page", loadCoins)
   }, [loadCoins])
 
-  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true" ? true : false
+  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true" ? true : false;
 
   return (
     <div>
