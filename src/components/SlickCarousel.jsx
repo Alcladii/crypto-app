@@ -54,7 +54,7 @@ export const SlickCarousel = ({ coinList }) => {
       );
       if (coinsNotInSlidesData.length > 0) {
         const coinsInSlides = coinList.map((coin) => {
-          const isSelected = queryParams.includes(coin.id);
+          const isSelected = Object.values(queryParams).includes(coin.id);
           return { ...coin, selected: isSelected };
         });
         setSlidesData(coinsInSlides);
