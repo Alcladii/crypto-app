@@ -373,9 +373,9 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
+            {/*{(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
               <LineChart priceVolumeList={priceVolumeList} />
-            )}
+            )}*/}
             <div className="charts-coins-container">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (
@@ -390,9 +390,9 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
+            {/*{(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
               <BarChart priceVolumeList={priceVolumeList} />
-            )}
+            )}*/}
             <div className="charts-coins-container">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (
