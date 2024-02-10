@@ -24,9 +24,14 @@ export const CurrencySelector = () => {
   },[displayCurrency])
 
   return (
-    <div>
+    <div className="relative flex justify-center h-10 w-32">
+      <div className="h-full w-auto flex items-center justify-center bg-button-unselected-search-bar-background rounded-l-md">
+        <img src="https://i.ibb.co/Fb93WxY/icons8-dollar-50-2.png" className="w-16 h-10"/>
+      </div>
       <select
-        className="currency-selector"
+        //className = "currency-selector"
+        className="pl-2 w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-s-none"
+        // original className currency-selector
         value={displayCurrency}
         onChange={handleChange}
       >
@@ -36,6 +41,9 @@ export const CurrencySelector = () => {
           </option>
         ))}
       </select>
+      <div className="h-full w-auto absolute right-0 flex items-center justify-center pointer-events-none">
+        <img src="https://i.ibb.co/kKv94Sz/icons8-expand-arrow-48.png" className="w-5 h-5"/>
+      </div>
     </div>
   );
 };

@@ -21,7 +21,8 @@ export const Home = () => {
   }, [loadCoins])
 
   return (
-    <div>
+    
+    <div className="page-max-width bg-crpyto-background-dark px-10 py-8" >
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       {/*some issues with CurrencyConverter causing the app to crash, save the line below until currencyConverter is fixed*/}
