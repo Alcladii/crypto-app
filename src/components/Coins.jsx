@@ -82,8 +82,6 @@ function Coins() {
     "displayCoinList",
     []
   );
-  const [sortBy, setSortBy] = useLocalState("sortBy", "");
-  const [sortOrder, setSortOrder] = useLocalState("sortOrder", "");
 
   const getCoinList = async () => {
     try {
