@@ -82,6 +82,8 @@ function Coins() {
     "displayCoinList",
     []
   );
+  const [sortBy, setSortBy] = useLocalState("sortBy", "");
+  const [sortOrder, setSortOrder] = useLocalState("sortOrder", "");
 
   const getCoinList = async () => {
     try {
@@ -156,12 +158,14 @@ function Coins() {
 
   useEffect(() => {
     getCoinList();
-    //save for automatic refresh, but it causes abnormal behavior when use with queryString, requires further debugging
-    /*const intervalId = setInterval(() => {
-      getCoinList();
-    }, 60000);
 
-    return () => clearInterval(intervalId);*/
+    const minute = 60000; 
+
+    const intervalId = setInterval(() => {     
+      getCoinList();
+    }, minute);
+
+    return () => clearInterval(intervalId);
   }, [coinListDsc]);
 
   useEffect(() => {
@@ -284,11 +288,13 @@ function Coins() {
 
   useEffect(() => {
     sortCoinList();
-  }, [queryParams.sort_order]);
+  }, [queryParams.sort_order, coinList]);
 
-  useEffect(()=> {
-    handleSearchParams("days", numOfDays)
-  }, [numOfDays])
+  useEffect(() => {
+    handleSearchParams("days", numOfDays);
+  }, [numOfDays]);
+
+  
 
   return (
     <div className="App">
