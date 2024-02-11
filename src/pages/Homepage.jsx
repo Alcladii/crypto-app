@@ -20,12 +20,13 @@ export const Home = () => {
     handleSearchParams("load_coins_page", loadCoins)
   }, [loadCoins])
 
+  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true"
+
   return (
     <div>
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
-      {/*some issues with CurrencyConverter causing the app to crash, save the line below until currencyConverter is fixed*/}
-     {queryParams.load_coins_page === "true" ? <Coins /> : <CurrencyConverter />}
+      { loadCoinsPageFromUrl  ? <Coins /> : <CurrencyConverter />}
     </div>
   );
 };
