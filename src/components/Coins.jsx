@@ -301,7 +301,7 @@ function Coins() {
 
   return (
     <div className="App">
-      <div className="slick-carousel">
+      <div className="my-[20px]">
         <SlickCarousel coinList={coinList} />
       </div>
       <div>

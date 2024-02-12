@@ -1,13 +1,13 @@
-.App {
+/*.App {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
@@ -45,7 +45,7 @@
 
 .read-the-docs {
   color: #888;
-}
+}*/
 
 .home-Or-Portfolio-Selected{
   background-color: purple;
@@ -387,5 +387,5 @@
 }
 
 .page-max-width {
-  max-width: 1600px;
+  max-width: 1440px;
 }
