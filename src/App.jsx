@@ -27,8 +27,8 @@ export default function App() {
 
   return (
     <div>
-      <nav>
-        <div className="max-w-[1440px] bg-crpyto-background-dark flex items-center justify-between px-10 py-8">
+      <div className="bg-crpyto-background-dark w-screen" >
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between px-10 py-8">
           <div className="font-sans font-bold text-2xl">
             CryptoFun
           </div>
@@ -65,7 +65,7 @@ export default function App() {
             </div>
           </div>
         </div>
-      </nav>
+      </div>
       <Switch>
         <Route exact path="/">
           <Home />
