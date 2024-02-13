@@ -73,8 +73,6 @@ function Coins() {
     historyURL,
   } = useContext(CryptoContext);
 
-  console.log(priceVolumeList)
-
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
@@ -373,9 +371,10 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {/*{(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
+            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
+            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) && (
               <LineChart priceVolumeList={priceVolumeList} />
-            )}*/}
+            )}
             <div className="charts-coins-container">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (
@@ -390,9 +389,10 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {/*{(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
+            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
+            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) &&(
               <BarChart priceVolumeList={priceVolumeList} />
-            )}*/}
+            )}
             <div className="charts-coins-container">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (

@@ -36,7 +36,6 @@ export default function App() {
             <div
               onClick={handleHomePageClick}
               className="flex items-center justify-center h-10 w-1/2"
-              //{`${loadHomePage ? "bg-background-selected" : "bg-background-unselected"}`}
             >
               <Link to="/" className={`${loadHomePage ? "text-white" : "text-slate-600"} flex items-center justify-center`}>                
                 <img src={`${loadHomePage ? "https://i.ibb.co/grDz009/icons8-home-50-white.png" : "https://i.ibb.co/tsFhRqS/icons8-home-50.png"}`} className="h-6"/>
