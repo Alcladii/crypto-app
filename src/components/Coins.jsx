@@ -73,8 +73,6 @@ function Coins() {
     historyURL,
   } = useContext(CryptoContext);
 
-  console.log(priceVolumeList)
-
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
