@@ -23,7 +23,8 @@ export const Home = () => {
   const loadCoinsPageFromUrl = queryParams.load_coins_page === "true"
 
   return (
-    <div>
+    
+    <div className="page-max-width bg-crpyto-background-dark px-10 py-8" >
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       { loadCoinsPageFromUrl  ? <Coins /> : <CurrencyConverter />}

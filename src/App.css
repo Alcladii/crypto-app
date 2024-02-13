@@ -1,4 +1,4 @@
-.App {
+/*.App {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,7 +45,7 @@
 
 .read-the-docs {
   color: #888;
-}
+}*/
 
 .home-Or-Portfolio-Selected{
   background-color: purple;
@@ -305,8 +305,10 @@
   align-items: center;
 }
 
-.currencySelector{
+.currency-selector{
   width: 400px;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .currencySelectorWrapper {
@@ -374,4 +376,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.app-background {
+  background-color: #13121A;
+}
+
+.button-text-color {
+  color: white;
+}
+
+.page-max-width {
+  max-width: 1600px;
 }

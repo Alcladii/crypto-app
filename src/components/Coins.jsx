@@ -73,6 +73,8 @@ function Coins() {
     historyURL,
   } = useContext(CryptoContext);
 
+  console.log(priceVolumeList)
+
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
@@ -357,7 +359,7 @@ function Coins() {
         &nbsp;&nbsp;
         <button onClick={clearSearchParams}>Clear Search Criteria</button>
       </div>
-      {priceVolumeList.length === 0 ? (
+      {(priceVolumeList.length === 0 ) ? (
         <div className="please-select-coin-wrapper">
           Please select a coin to view chart
         </div>
@@ -368,7 +370,7 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
+            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -385,7 +387,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
+            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">

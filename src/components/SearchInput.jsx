@@ -39,6 +39,7 @@ export const SearchItemInput = ({ setResults }) => {
       placeholder="Search for coin"
       onChange={handleChange}
       value={inputValue}
+      className="h-10 w-80 px-5 outline-none bg-button-unselected-search-bar-background rounded-md"
     />
   );
 };
