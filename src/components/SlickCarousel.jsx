@@ -31,6 +31,7 @@ export const SlickCarousel = ({ coinList }) => {
     location, 
     queryParams,
     historyURL,
+    setPriceVolumeChartIsLoadingHasError,
   } = useContext(CryptoContext);
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState(
@@ -124,12 +125,11 @@ export const SlickCarousel = ({ coinList }) => {
     if (Object.keys(conditions).length === 0) {
       setPriceVolumeList([]);
     } else {
-      setPriceVolumeList([]);
       const requests = Object.keys(conditions)
         .map((key) => {
           if (
             key.includes("selectedcoin")
-          ) {
+          ) {           
              return getCoinPriceVolume(
               conditions[key],
               conditions.displaycurrency,
@@ -141,7 +141,12 @@ export const SlickCarousel = ({ coinList }) => {
         .filter((request) => request !== null);
 
       Promise.all(requests).then((responses) => {
-        setPriceVolumeList(responses);
+        if(responses.includes(undefined)) {
+          setPriceVolumeChartIsLoadingHasError(true)
+        } else {
+          setPriceVolumeList(responses);
+          setPriceVolumeChartIsLoadingHasError(false)
+        }   
       });
     }
   };

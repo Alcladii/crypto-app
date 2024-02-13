@@ -368,7 +368,7 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
+            {(priceVolumeChartIsLoadingHasError === false) && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -385,7 +385,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
+            {(priceVolumeChartIsLoadingHasError === false) && (
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
