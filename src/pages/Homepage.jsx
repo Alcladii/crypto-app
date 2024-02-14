@@ -21,6 +21,8 @@ export const Home = () => {
     handleSearchParams("load_coins_page", loadCoins);
   }, [loadCoins]);
 
+  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true"
+
   return (
     <div className="bg-crpyto-background-dark w-screen">
       <div className="max-w-[1440px] mx-auto px-10 py-8">
@@ -46,7 +48,6 @@ export const Home = () => {
             Currency Converter
           </div>
         </div>
-        {/*some issues with CurrencyConverter causing the app to crash, save the line below until currencyConverter is fixed*/}
         {queryParams.load_coins_page === "true" ? (
           <Coins />
         ) : (
