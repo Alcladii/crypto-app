@@ -29,9 +29,7 @@ export const CurrencySelector = () => {
         <img src="https://i.ibb.co/Fb93WxY/icons8-dollar-50-2.png" className="w-16 h-10"/>
       </div>
       <select
-        //className = "currency-selector"
         className="pl-2 w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-s-none"
-        // original className currency-selector
         value={displayCurrency}
         onChange={handleChange}
       >

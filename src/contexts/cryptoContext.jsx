@@ -33,7 +33,7 @@ export const CryptoProvider = ({ children }) => {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
-  const [priceVolumeList, setPriceVolumeList] = useState([]);
+  const [priceVolumeList, setPriceVolumeList] = useLocalState("priceVolumeList",[]);
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
@@ -106,13 +106,7 @@ export const CryptoProvider = ({ children }) => {
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`
       );
       setPriceVolumeChartIsLoading(false);
-      if (!data) {
-        setPriceVolumeChartIsLoadingHasError(true);
-        return;
-      } else {
-        setPriceVolumeChartIsLoadingHasError(false);
-        return data;
-      }
+      return data;    
     } catch (err) {
       // one is for loading, the other is for error handling
       setPriceVolumeChartIsLoadingHasError(true);
@@ -186,6 +180,7 @@ export const CryptoProvider = ({ children }) => {
         location,
         queryParams,
         historyURL,
+        setPriceVolumeChartIsLoadingHasError,
       }}
     >
       {children}

@@ -32,7 +32,6 @@
 
 .individual-coin {
   display: flex;
-  /*justify-content: center;*/
   align-items: center;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -61,7 +60,6 @@
 .coin-number-column-width{
   width: 40px;
   display: flex;
-  /*justify-content: center;*/
   align-items: center;
 }
 
@@ -213,7 +211,6 @@
 .single-slide-style {
   display: flex;
   align-items: center;
-  /*background: grey;*/
   border-radius: 8px;
   padding: 8px;
 }

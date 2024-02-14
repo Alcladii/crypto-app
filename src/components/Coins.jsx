@@ -368,8 +368,7 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
-            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) && (
+            {(priceVolumeChartIsLoadingHasError === false) && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -386,8 +385,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
-            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) &&(
+            {(priceVolumeChartIsLoadingHasError === false) && (
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
