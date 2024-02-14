@@ -28,7 +28,7 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData,
     displayCurrency,
     handleSearchParams,
-    location, 
+    location,
     queryParams,
     historyURL,
   } = useContext(CryptoContext);
@@ -82,12 +82,12 @@ export const SlickCarousel = ({ coinList }) => {
         }
       });
     }
-  }
+  };
 
   useEffect(() => {
-    updateSearchParams()
+    updateSearchParams();
   }, [selectedCoinData]);
- 
+
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
@@ -116,9 +116,9 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData([]);
   };
 
-  useEffect(()=>{
-    handleSearchParams("comparison_is_on", comparisonIsOn)
-  },[comparisonIsOn])
+  useEffect(() => {
+    handleSearchParams("comparison_is_on", comparisonIsOn);
+  }, [comparisonIsOn]);
 
   const getPriceVolumeDataForSelectedCoins = (conditions) => {
     if (Object.keys(conditions).length === 0) {
@@ -127,10 +127,8 @@ export const SlickCarousel = ({ coinList }) => {
       setPriceVolumeList([]);
       const requests = Object.keys(conditions)
         .map((key) => {
-          if (
-            key.includes("selectedcoin")
-          ) {
-             return getCoinPriceVolume(
+          if (key.includes("selectedcoin")) {
+            return getCoinPriceVolume(
               conditions[key],
               conditions.displaycurrency,
               conditions.days
@@ -147,52 +145,54 @@ export const SlickCarousel = ({ coinList }) => {
   };
 
   useEffect(() => {
-    getPriceVolumeDataForSelectedCoins (queryParams);
+    getPriceVolumeDataForSelectedCoins(queryParams);
   }, [location.search]);
 
   return (
-    <div className="App">
-      <div className="comparison-button-wrapper">
-        <button
-          onClick={handleComparison}
-          className={`comparison-button ${
-            comparisonIsOn ? "comparison-on" : ""
-          }`}
-        >
-          Comparison
-        </button>
-      </div>
+    <div className="bg-crpyto-background-dark w-screen border white">
+      <div className="max-w-[1440px] mx-auto px-10 py-8 border white">
+        <div className="comparison-button-wrapper">
+          <button
+            onClick={handleComparison}
+            className={`comparison-button ${
+              comparisonIsOn ? "comparison-on" : ""
+            }`}
+          >
+            Comparison
+          </button>
+        </div>
 
-      <div className="slider-wrapper">
-        {slidesData && (
-          <Slider {...settings}>
-            {slidesData.map((coin) => (
-              <div>
-                <SlidesContainer
-                  onClick={() => handleClick(coin.id)}
-                  selected={coin.selected}
-                  className="single-slide-style"
-                >
-                  <div className="slide-icon-wrapper">
-                    <CoinTag src={coin.image} />
-                  </div>
-                  <div className="slide-content-wrapper">
-                    <div>{coin.id}</div>
-                    <div>
-                      {currencySymbol}
-                      {coin.current_price}&nbsp;&nbsp;
-                      {coin.price_change_percentage_24h_in_currency &&
-                        retainTwoDigits(
-                          coin.price_change_percentage_24h_in_currency
-                        )}
-                      %
+        <div className="">
+          {slidesData && (
+            <Slider {...settings}>
+              {slidesData.map((coin) => (
+                <div>
+                  <SlidesContainer
+                    onClick={() => handleClick(coin.id)}
+                    selected={coin.selected}
+                    className="single-slide-style"
+                  >
+                    <div className="slide-icon-wrapper">
+                      <CoinTag src={coin.image} />
                     </div>
-                  </div>
-                </SlidesContainer>
-              </div>
-            ))}
-          </Slider>
-        )}
+                    <div className="slide-content-wrapper">
+                      <div>{coin.id}</div>
+                      <div>
+                        {currencySymbol}
+                        {coin.current_price}&nbsp;&nbsp;
+                        {coin.price_change_percentage_24h_in_currency &&
+                          retainTwoDigits(
+                            coin.price_change_percentage_24h_in_currency
+                          )}
+                        %
+                      </div>
+                    </div>
+                  </SlidesContainer>
+                </div>
+              ))}
+            </Slider>
+          )}
+        </div>
       </div>
     </div>
   );

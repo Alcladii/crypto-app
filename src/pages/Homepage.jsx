@@ -24,7 +24,7 @@ export const Home = () => {
 
   return (
     
-    <div className="page-max-width bg-crpyto-background-dark px-10 py-8" >
+    <div className="max-w-[1440px] bg-crpyto-background-dark" >
       <button onClick={handleCoinsListClick} className={`${loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Coins</button>
       <button onClick={handleCurrencyConverterClick} className={`${!loadCoins ? "coin-Or-Converter-Selected" : ""}`}>Currency Converter</button>
       { loadCoinsPageFromUrl  ? <Coins /> : <CurrencyConverter />}
