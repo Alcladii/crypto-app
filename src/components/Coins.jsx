@@ -296,7 +296,7 @@ function Coins() {
 
   return (
     <div className="App">
-      <div className="slick-carousel">
+      <div className="my-[20px]">
         <SlickCarousel coinList={coinList} />
       </div>
       <div>
@@ -368,7 +368,8 @@ function Coins() {
           )}
 
           <div className="line-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) && (
+            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
+            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -385,7 +386,8 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false && priceVolumeList !== undefined) &&(
+            {/*I put !priceVolumeList.includes(undefined) here to prevent the App from crashing from the API call exceeding maximum allowance and returning undefined */}
+            {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(undefined)) &&(
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
