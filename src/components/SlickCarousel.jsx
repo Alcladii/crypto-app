@@ -12,6 +12,7 @@ const CoinTag = styled.img`
 const SlidesContainer = styled.div`
   background-color: ${(props) => (props.selected ? "purple" : "grey")};
   cursor: pointer;
+  height: 70px;
 `;
 
 export const SlickCarousel = ({ coinList }) => {
@@ -151,31 +152,36 @@ export const SlickCarousel = ({ coinList }) => {
 
   return (
     <div>
-      {/*<div className="flex justify-end items-center py-8">
+      <div className="flex justify-end items-center py-8 ">
         {comparisonIsOn ? <div
           onClick={handleComparison}
-          className="bg-button-selected w-44 h-12 flex justify-center items-center rounded-md font-sans"
+          className="bg-button-selected w-44 h-10 flex justify-center items-center rounded-md font-sans"
         >
           <img src="https://i.ibb.co/1mN5KGj/icons8-cross-50.png" className="w-7 mr-1.5"/>
           Exit Comparison
         </div> : <div
           onClick={handleComparison}
-          className="bg-button-unselected-search-bar-background w-32 h-12 flex justify-center items-center rounded-md font-sans"
+          className="bg-button-unselected-search-bar-background w-32 h-10 flex justify-center items-center rounded-md font-sans"
         >
-          <img src="https://i.ibb.co/yPvmz1f/icons8-charts-64.png" className="w-5 mr-1.5"/>
+          <img src="https://i.ibb.co/yPvmz1f/icons8-charts-64.png" className="w-5 mr-2.5"/>
           Compare
         </div> }  
         
-        </div>*/}
+        </div>
       <div className="slider-wrapper">
         {slidesData && (
           <Slider {...settings}>
             {slidesData.map((coin) => (
               <div>
-                <SlidesContainer
+                {/*const SlidesContainer = styled.div`
+                     background-color: ${(props) => (props.selected ? "purple" : "grey")};
+                     cursor: pointer;
+                     height: 70px;
+                  `;*/}
+                <div
                   onClick={() => handleClick(coin.id)}
                   selected={coin.selected}
-                  className="single-slide-style"
+                  className={`single-slide-style ${coin.selected ? "bg-button-selected" : "bg-button-unselected-search-bar-background"} cursor-pointer h-16`}
                 >
                   <div className="slide-icon-wrapper">
                     <CoinTag src={coin.image} />
@@ -192,7 +198,7 @@ export const SlickCarousel = ({ coinList }) => {
                       %
                     </div>
                   </div>
-                </SlidesContainer>
+                </div>
               </div>
             ))}
           </Slider>
