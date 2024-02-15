@@ -150,18 +150,23 @@ export const SlickCarousel = ({ coinList }) => {
   }, [location.search]);
 
   return (
-    <div className="App">
-      <div className="comparison-button-wrapper">
-        <button
+    <div>
+      {/*<div className="flex justify-end items-center py-8">
+        {comparisonIsOn ? <div
           onClick={handleComparison}
-          className={`comparison-button ${
-            comparisonIsOn ? "comparison-on" : ""
-          }`}
+          className="bg-button-selected w-44 h-12 flex justify-center items-center rounded-md font-sans"
         >
-          Comparison
-        </button>
-      </div>
-
+          <img src="https://i.ibb.co/1mN5KGj/icons8-cross-50.png" className="w-7 mr-1.5"/>
+          Exit Comparison
+        </div> : <div
+          onClick={handleComparison}
+          className="bg-button-unselected-search-bar-background w-32 h-12 flex justify-center items-center rounded-md font-sans"
+        >
+          <img src="https://i.ibb.co/yPvmz1f/icons8-charts-64.png" className="w-5 mr-1.5"/>
+          Compare
+        </div> }  
+        
+        </div>*/}
       <div className="slider-wrapper">
         {slidesData && (
           <Slider {...settings}>
