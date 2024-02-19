@@ -157,9 +157,9 @@ function Coins() {
   useEffect(() => {
     getCoinList();
 
-    const minute = 60000; 
+    const minute = 60000;
 
-    const intervalId = setInterval(() => {     
+    const intervalId = setInterval(() => {
       getCoinList();
     }, minute);
 
@@ -292,83 +292,24 @@ function Coins() {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
 
-  
-
   return (
     <div className="App">
       <div className="my-[20px]">
         <SlickCarousel coinList={coinList} />
       </div>
-      <div>
-        <button
-          onClick={() => {
-            setNumOfDays(0);
-          }}
-        >
-          {" "}
-          1 Day{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(6);
-          }}
-        >
-          {" "}
-          7 Days{" "}
-        </button>
-        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(30);
-          }}
-        >
-          {" "}
-          1 Month{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(89);
-          }}
-        >
-          {" "}
-          90 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(179);
-          }}
-        >
-          {" "}
-          180 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(364);
-          }}
-        >
-          {" "}
-          1 Year{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button onClick={clearSearchParams}>Clear Search Criteria</button>
-      </div>
-      {(priceVolumeList.length === 0 ) ? (
+
+      {priceVolumeList.length === 0 ? (
         <div className="please-select-coin-wrapper">
           Please select a coin to view chart
         </div>
       ) : (
-        <div className="chart">
+        <div className="flex justify-center items-center max-w-[1440px] h-96 my-7">
           {priceVolumeChartIsLoading && (
             <div>Loading Price and Volumne Chart</div>
           )}
 
           <div className="line-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false) && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -385,7 +326,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false) && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -406,6 +347,74 @@ function Coins() {
           )}
         </div>
       )}
+      <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
+        <div
+          className={`${
+            numOfDays === 0 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(0);
+          }}
+        >
+          1D
+        </div>
+        <div
+          className={`${
+            numOfDays === 6 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(6);
+          }}
+        >
+          7D
+        </div>
+        <div
+          className={`${
+            numOfDays === 30 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(30);
+          }}
+        >
+          1M
+        </div>
+        <div
+          className={`${
+            numOfDays === 89 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(89);
+          }}
+        >
+          90D
+        </div>
+        <div
+          className={`${
+            numOfDays === 179 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(179);
+          }}
+        >
+          180D
+        </div>
+        <div
+          className={`${
+            numOfDays === 364 ? "bg-button-selected" : "bg-transparent"
+          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
+          onClick={() => {
+            setNumOfDays(364);
+          }}
+        >
+          1Y
+        </div>
+      </div>
+      <div
+        className="bg-button-unselected-search-bar-background w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer"
+        onClick={clearSearchParams}
+      >
+        Clear Search Criteria
+      </div>
 
       <div>
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
