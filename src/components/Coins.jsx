@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import queryString from "query-string";
 import InfiniteScroll from "react-infinite-scroll-component";
 import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
@@ -12,7 +13,7 @@ import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
-import queryString from "query-string";
+import { DaysButton } from "../components/DaysButton";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -348,66 +349,12 @@ function Coins() {
         </div>
       )}
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
-        <div
-          className={`${
-            numOfDays === 0 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(0);
-          }}
-        >
-          1D
-        </div>
-        <div
-          className={`${
-            numOfDays === 6 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(6);
-          }}
-        >
-          7D
-        </div>
-        <div
-          className={`${
-            numOfDays === 30 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(30);
-          }}
-        >
-          1M
-        </div>
-        <div
-          className={`${
-            numOfDays === 89 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(89);
-          }}
-        >
-          90D
-        </div>
-        <div
-          className={`${
-            numOfDays === 179 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(179);
-          }}
-        >
-          180D
-        </div>
-        <div
-          className={`${
-            numOfDays === 364 ? "bg-button-selected" : "bg-transparent"
-          } w-16 h-10 mx-1 my-1 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer`}
-          onClick={() => {
-            setNumOfDays(364);
-          }}
-        >
-          1Y
-        </div>
+        <DaysButton days="1" buttonText="1D" />
+        <DaysButton days="7" buttonText="7D" />
+        <DaysButton days="30" buttonText="1M" />
+        <DaysButton days="90" buttonText="90D" />
+        <DaysButton days="180" buttonText="180D" />
+        <DaysButton days="365" buttonText="1Y" />
       </div>
       <div
         className="bg-button-unselected-search-bar-background w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer"
