@@ -28,7 +28,7 @@ export default function App() {
   return (
     <div>
       <div className="bg-crpyto-background-dark w-screen" >
-        <div className="max-w-[1440px] mx-auto flex items-center justify-between px-10 py-8">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
           <div className="font-sans font-bold text-2xl">
             CryptoFun
           </div>

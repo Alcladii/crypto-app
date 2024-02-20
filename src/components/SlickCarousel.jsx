@@ -12,6 +12,7 @@ const CoinTag = styled.img`
 const SlidesContainer = styled.div`
   background-color: ${(props) => (props.selected ? "purple" : "grey")};
   cursor: pointer;
+  height: 70px;
 `;
 
 export const SlickCarousel = ({ coinList }) => {
@@ -28,7 +29,7 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData,
     displayCurrency,
     handleSearchParams,
-    location, 
+    location,
     queryParams,
     historyURL,
     setPriceVolumeChartIsLoadingHasError,
@@ -49,7 +50,6 @@ export const SlickCarousel = ({ coinList }) => {
 
   useEffect(() => {
     if (coinList.length > 0) {
-      //prevents coins being repetitavely added to the coinSlides
       const coinIdsInSlidesData = slidesData.map((coin) => coin.id);
       const coinsNotInSlidesData = coinList.filter(
         (coin) => !coinIdsInSlidesData.includes(coin.id)
@@ -83,12 +83,12 @@ export const SlickCarousel = ({ coinList }) => {
         }
       });
     }
-  }
+  };
 
   useEffect(() => {
-    updateSearchParams()
+    updateSearchParams();
   }, [selectedCoinData]);
- 
+
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
@@ -117,9 +117,9 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData([]);
   };
 
-  useEffect(()=>{
-    handleSearchParams("comparison_is_on", comparisonIsOn)
-  },[comparisonIsOn])
+  useEffect(() => {
+    handleSearchParams("comparison_is_on", comparisonIsOn);
+  }, [comparisonIsOn]);
 
   const getPriceVolumeDataForSelectedCoins = (conditions) => {
     if (Object.keys(conditions).length === 0) {
@@ -127,7 +127,7 @@ export const SlickCarousel = ({ coinList }) => {
     } else {
       const requests = Object.keys(conditions)
         .map((key) => {
-          if (
+         if (
             key.includes("selectedcoin")
           ) {           
              return getCoinPriceVolume(
@@ -152,48 +152,89 @@ export const SlickCarousel = ({ coinList }) => {
   };
 
   useEffect(() => {
-    getPriceVolumeDataForSelectedCoins (queryParams);
+    getPriceVolumeDataForSelectedCoins(queryParams);
   }, [location.search]);
 
   return (
-    <div className="App">
-      <div className="comparison-button-wrapper">
-        <button
-          onClick={handleComparison}
-          className={`comparison-button ${
-            comparisonIsOn ? "comparison-on" : ""
-          }`}
-        >
-          Comparison
-        </button>
+    <div>
+      <div className="flex justify-end items-center py-8 ">
+        {comparisonIsOn ? (
+          <div
+            onClick={handleComparison}
+            className="bg-button-selected w-44 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
+          >
+            <img
+              src="https://i.ibb.co/1mN5KGj/icons8-cross-50.png"
+              className="w-7 mr-1.5"
+            />
+            Exit Comparison
+          </div>
+        ) : (
+          <div
+            onClick={handleComparison}
+            className="bg-button-unselected-search-bar-background w-32 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
+          >
+            <img
+              src="https://i.ibb.co/yPvmz1f/icons8-charts-64.png"
+              className="w-5 mr-2.5"
+            />
+            Compare
+          </div>
+        )}
       </div>
-
-      <div className="slider-wrapper">
+      <div>
         {slidesData && (
           <Slider {...settings}>
             {slidesData.map((coin) => (
               <div>
-                <SlidesContainer
+                <div 
+                  key={coin.id}               
                   onClick={() => handleClick(coin.id)}
                   selected={coin.selected}
-                  className="single-slide-style"
+                  className={`${
+                    coin.selected
+                      ? "bg-button-selected"
+                      : "bg-button-unselected-search-bar-background"
+                  } cursor-pointer h-16 flex items-center rounded-md px-1 py-1`}
                 >
                   <div className="slide-icon-wrapper">
                     <CoinTag src={coin.image} />
                   </div>
                   <div className="slide-content-wrapper">
-                    <div>{coin.id}</div>
-                    <div>
+                    <div className="flex items-center font-space-grotesk text-sm">
+                      <div>{coin.name}</div>
+                      <div className="ml-0.5">
+                        ({coin.symbol.toUpperCase()})
+                      </div>
+                    </div>
+                    <div className="font-space-grotesk text-sm flex items-center">
                       {currencySymbol}
-                      {coin.current_price}&nbsp;&nbsp;
-                      {coin.price_change_percentage_24h_in_currency &&
-                        retainTwoDigits(
-                          coin.price_change_percentage_24h_in_currency
-                        )}
-                      %
+                      {coin.current_price}
+
+                      <img
+                        src={`${
+                          coin.price_change_percentage_24h_in_currency > 0
+                            ? "https://i.ibb.co/zbDF1N6/icons8-triangle-48.png"
+                            : "https://i.ibb.co/DzMdxQ0/icons8-triangle-48-2.png"
+                        }`}
+                        className="h-2 ml-2.5 mr-1.5"
+                      />
+                      <span
+                        className={`${
+                          coin.price_change_percentage_24h_in_currency > 0
+                            ? "text-go-up"
+                            : "text-go-down"
+                        }`}
+                      >
+                        {coin.price_change_percentage_24h_in_currency &&
+                          retainTwoDigits(
+                            coin.price_change_percentage_24h_in_currency
+                          )}
+                        %
+                      </span>
                     </div>
                   </div>
-                </SlidesContainer>
+                </div>
               </div>
             ))}
           </Slider>
