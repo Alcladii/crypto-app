@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import queryString from "query-string";
 import InfiniteScroll from "react-infinite-scroll-component";
 import currencies from "../mocks/currencies.json";
 import { CryptoContext } from "../contexts/cryptoContext";
@@ -12,7 +13,7 @@ import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
-import queryString from "query-string";
+import { DaysButton } from "../components/DaysButton";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -157,9 +158,9 @@ function Coins() {
   useEffect(() => {
     getCoinList();
 
-    const minute = 60000; 
+    const minute = 60000;
 
-    const intervalId = setInterval(() => {     
+    const intervalId = setInterval(() => {
       getCoinList();
     }, minute);
 
@@ -292,83 +293,24 @@ function Coins() {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
 
-  
-
   return (
     <div className="App">
       <div className="my-[20px]">
         <SlickCarousel coinList={coinList} />
       </div>
-      <div>
-        <button
-          onClick={() => {
-            setNumOfDays(0);
-          }}
-        >
-          {" "}
-          1 Day{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(6);
-          }}
-        >
-          {" "}
-          7 Days{" "}
-        </button>
-        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(30);
-          }}
-        >
-          {" "}
-          1 Month{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(89);
-          }}
-        >
-          {" "}
-          90 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(179);
-          }}
-        >
-          {" "}
-          180 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setNumOfDays(364);
-          }}
-        >
-          {" "}
-          1 Year{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button onClick={clearSearchParams}>Clear Search Criteria</button>
-      </div>
-      {(priceVolumeList.length === 0 ) ? (
+
+      {priceVolumeList.length === 0 ? (
         <div className="please-select-coin-wrapper">
           Please select a coin to view chart
         </div>
       ) : (
-        <div className="chart">
+        <div className="flex justify-center items-center max-w-[1440px] h-96 my-7">
           {priceVolumeChartIsLoading && (
             <div>Loading Price and Volumne Chart</div>
           )}
 
           <div className="line-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false) && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <LineChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -385,7 +327,7 @@ function Coins() {
             </div>
           </div>
           <div className="bar-chart-wrapper">
-            {(priceVolumeChartIsLoadingHasError === false) && (
+            {priceVolumeChartIsLoadingHasError === false && (
               <BarChart priceVolumeList={priceVolumeList} />
             )}
             <div className="charts-coins-container">
@@ -406,6 +348,20 @@ function Coins() {
           )}
         </div>
       )}
+      <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
+        <DaysButton days="1" buttonText="1D" />
+        <DaysButton days="7" buttonText="7D" />
+        <DaysButton days="30" buttonText="1M" />
+        <DaysButton days="90" buttonText="90D" />
+        <DaysButton days="180" buttonText="180D" />
+        <DaysButton days="365" buttonText="1Y" />
+      </div>
+      <div
+        className="bg-button-unselected-search-bar-background w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer"
+        onClick={clearSearchParams}
+      >
+        Clear Search Criteria
+      </div>
 
       <div>
         <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
