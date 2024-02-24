@@ -125,36 +125,6 @@ function Coins() {
     setCoinListDsc(false);
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-        text: "Chart.js Line Chart",
-      },
-    },
-    scales: {
-      y: {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      x: {
-        display: true,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-    },
-    tension: 0.5,
-  };
-
   useEffect(() => {
     getCoinList();
 
@@ -177,7 +147,7 @@ function Coins() {
     history.push(`/coin-page/${item.id}`);
   };
 
-  const colors = ["blue", "purple", "green"];
+  const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   const handleSortOrder = () => {
     if (sortOrder === "default") {
@@ -300,52 +270,57 @@ function Coins() {
       </div>
 
       {priceVolumeList.length === 0 ? (
-        <div className="please-select-coin-wrapper">
+        <div className="my-8 text-2xl flex justify-center">
           Please select a coin to view chart
         </div>
       ) : (
-        <div className="flex justify-center items-center max-w-[1440px] h-96 my-7">
-          {priceVolumeChartIsLoading && (
-            <div>Loading Price and Volumne Chart</div>
-          )}
-
-          <div className="line-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
-              <LineChart priceVolumeList={priceVolumeList} />
+        <div>
+          <div className="my-8 text-2xl flex justify-center">
+            {priceVolumeChartIsLoading && (
+              <div>Loading Price and Volumne Chart</div>
             )}
-            <div className="charts-coins-container">
-              {selectedCoinData &&
-                selectedCoinData.map((coin) => (
-                  <div className="coin-indicator-wrapper">
-                    <ColorIndicator
-                      background={colors[selectedCoinData.indexOf(coin)]}
-                    ></ColorIndicator>
-                    {coin.name}&nbsp;{currencySymbol}
-                    {coin.current_price.toLocaleString()}
-                  </div>
-                ))}
+          </div>
+          <div className="flex justify-center items-center max-w-[1440px] h-auto my-7">
+            <div className="w-1/2 h-auto p-5 mr-7 bg-line-bar-chart-background rounded-md">
+              {priceVolumeChartIsLoadingHasError === false && (
+                <LineChart priceVolumeList={priceVolumeList} />
+              )}
+              <div className="flex justify-between">
+                {selectedCoinData &&
+                  selectedCoinData.map((coin) => (
+                    <div className="flex items-center mx-2.5 mt-2">
+                      <ColorIndicator
+                        background={colors[selectedCoinData.indexOf(coin)]}
+                      ></ColorIndicator>
+                      {coin.name}&nbsp;{currencySymbol}
+                      {coin.current_price.toLocaleString()}
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div className="w-1/2 h-auto p-5 ml-7 bg-line-bar-chart-background rounded-md">
+              {priceVolumeChartIsLoadingHasError === false && (
+                <BarChart priceVolumeList={priceVolumeList} />
+              )}
+              <div className="flex justify-between">
+                {selectedCoinData &&
+                  selectedCoinData.map((coin) => (
+                    <div className="flex items-center mx-1 mt-2">
+                      <ColorIndicator
+                        background={colors[selectedCoinData.indexOf(coin)]}
+                      ></ColorIndicator>
+                      {coin.name}&nbsp;{currencySymbol}
+                      {convertToBillion(coin.total_volume)}B
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
-          <div className="bar-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
-              <BarChart priceVolumeList={priceVolumeList} />
+          <div className="my-8 text-2xl flex justify-center">
+            {priceVolumeChartIsLoadingHasError && (
+              <div>Error fetching Price and Volumne Chart</div>
             )}
-            <div className="charts-coins-container">
-              {selectedCoinData &&
-                selectedCoinData.map((coin) => (
-                  <div className="coin-indicator-wrapper">
-                    <ColorIndicator
-                      background={colors[selectedCoinData.indexOf(coin)]}
-                    ></ColorIndicator>
-                    {coin.name}&nbsp;{currencySymbol}
-                    {convertToBillion(coin.total_volume)}B
-                  </div>
-                ))}
-            </div>
           </div>
-          {priceVolumeChartIsLoadingHasError && (
-            <div>Error fetching Price and Volumne Chart</div>
-          )}
         </div>
       )}
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
