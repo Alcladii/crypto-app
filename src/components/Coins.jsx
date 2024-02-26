@@ -22,10 +22,6 @@ const CoinTag = styled.img`
   align-items: center;
 `;
 
-const IndividualCoinWrapper = styled.div`
-  border: 1px solid black;
-`;
-
 const ProgressBarOuter = styled.div`
   border: 1px solid black;
   border-radius: 99px;
@@ -78,7 +74,6 @@ function Coins() {
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortBy, setSortBy] = useLocalState("sortBy", "");
-  const [sortOrder, setSortOrder] = useLocalState("sortOrder", "");
   const [displayCoinList, setDisplayCoinList] = useLocalState(
     "displayCoinList",
     []
@@ -124,9 +119,6 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
-      if (sortOrder === "") {
-        setSortOrder("default");
-      }
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -141,36 +133,6 @@ function Coins() {
 
   const setToAsc = () => {
     setCoinListDsc(false);
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-        text: "Chart.js Line Chart",
-      },
-    },
-    scales: {
-      y: {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      x: {
-        display: true,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-    },
-    tension: 0.5,
   };
 
   useEffect(() => {
@@ -196,18 +158,6 @@ function Coins() {
   };
 
   const colors = ["blue", "purple", "green"];
-
-  const handleSortOrder = () => {
-    if (sortOrder === "default") {
-      setSortOrder("ascent");
-    }
-    if (sortOrder === "ascent") {
-      setSortOrder("descent");
-    }
-    if (sortOrder === "descent") {
-      setSortOrder("default");
-    }
-  };
 
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {
