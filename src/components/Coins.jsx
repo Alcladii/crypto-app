@@ -305,7 +305,7 @@ function Coins() {
               <div className="flex justify-between">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
-                    <div className="flex items-center mx-1 mt-2">
+                    <div key={coin.id} className="flex items-center mx-1 mt-2">
                       <ColorIndicator
                         background={colors[selectedCoinData.indexOf(coin)]}
                       ></ColorIndicator>
