@@ -133,10 +133,6 @@ function Coins() {
     handleSearchParams("show_top_fifty", coinListDsc);
   }, [coinListDsc]);
 
-  useEffect(() => {
-    handleSearchParams("show_top_fifty", coinListDsc);
-  }, [coinListDsc]);
-
   const options = {
     responsive: true,
     plugins: {
