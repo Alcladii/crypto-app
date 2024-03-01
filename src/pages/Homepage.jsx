@@ -48,7 +48,7 @@ export const Home = () => {
             Currency Converter
           </div>
         </div>
-        {queryParams.load_coins_page === "true" ? (
+        {loadCoinsPageFromUrl ? (
           <Coins />
         ) : (
           <CurrencyConverter />

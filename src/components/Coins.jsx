@@ -84,6 +84,8 @@ function Coins() {
     []
   );
 
+  const showTopFifty = queryParams.show_top_fifty === "true";
+
   const getCoinList = async () => {
     try {
       // save for making real API calls in the future
@@ -98,7 +100,7 @@ function Coins() {
         "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
       );*/
       let coins;
-      const order = coinListDsc ? "market_cap_desc" : "market_cap_asc";
+      const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
         "/coins/markets",
@@ -338,10 +340,34 @@ function Coins() {
         Clear Search Criteria
       </div>
 
-      <div>
-        <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
-        <button onClick={setToAsc}> Bottom 50 </button>
-        {coinListIsLoading && <div>Loading Coin List</div>}
+      <div className="max-w-[1440px]">
+        <div className="flex justify-center my-6">
+          <div
+            className={`${
+              coinListDsc
+                ? "bg-button-selected"
+                : "bg-button-unselected-search-bar-background"
+            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer`}
+            onClick={setToDsc}
+          >
+            {" "}
+            Top 50{" "}
+          </div>
+          <div
+            className={`${
+              !coinListDsc
+                ? "bg-button-selected"
+                : "bg-button-unselected-search-bar-background"
+            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer`}
+            onClick={setToAsc}
+          >
+            {" "}
+            Bottom 50{" "}
+          </div>
+        </div>
+        {coinListIsLoading && (
+          <div className="flex justify-center my-5">Loading Coin List</div>
+        )}
         {/*
           save for infinite scroll when making real API call
           <InfiniteScroll
@@ -350,54 +376,57 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="coin-list-title-container">
-          <div className="coin-number-column-width">#</div>
-          <div className="coin-column-width">
+        <div className="flex">
+          <div className="w-[4%] flex items-center">#</div>
+          <div className="w-[15%] pr-2 flex justify-start items-center">
             <div>Name</div>&nbsp;
             <button onClick={handleSortByName}>sort</button>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] pl-2 flex justify-start items-center">
             <div>Price</div>
             <button onClick={handleSortByPrice}>sort</button>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>1h%</div>
             <button onClick={handleSortByOneHour}>sort</button>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>24h%</div>
             <button onClick={handleSortByTwentyFourHours}>sort</button>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>7d%</div>
             <button onClick={handleSortBySevenDays}>sort</button>
           </div>
-          <div className="coin-column-width">24h volume/Market Cap</div>
-          <div className="coin-column-width">Circulating/Total supply</div>
-          <div className="coin-column-width">Last 7d</div>
+          <div className="w-[17%] flex justify-start items-center">
+            24h volume/Market Cap
+          </div>
+          <div className="w-[17%] flex justify-start items-center">
+            Circulating/Total supply
+          </div>
+          <div className="w-[17%] flex justify-start items-center">Last 7d</div>
         </div>
         {displayCoinList.map((singleCoin) => (
-          <div key={singleCoin.id} className="individual-coin">
-            <div className="coin-number-column-width">
+          <div key={singleCoin.id} className="flex items-center">
+            <div className="w-[4%] flex items-center">
               {displayCoinList.indexOf(singleCoin) + 1}
             </div>
             <div
-              className="coin-column-width"
+              className="w-[15%] pr-2 flex justify-start items-center"
               onClick={() => handleClick(singleCoin)}
             >
-              <div className="coin-name-icon-wrapper">
+              <div className="flex items-center">
                 <CoinTag src={singleCoin.image} />
                 &nbsp;&nbsp;
-                <span>{singleCoin.name}</span>
+                <div>{singleCoin.name}</div>
               </div>
             </div>
-            <div className="coin-data-width">
+            <div className="w-[10%] pl-2 flex justify-start items-center">
               {currencySymbol}
               {singleCoin.current_price &&
                 singleCoin.current_price.toLocaleString()}
             </div>
-            &nbsp;&nbsp;
-            <div className="change-percentage-wrapper">
+            <div className="w-[10%] flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -420,7 +449,7 @@ function Coins() {
                 %
               </div>
             </div>
-            <div className="change-percentage-wrapper">
+            <div className="w-[10%] flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -443,7 +472,7 @@ function Coins() {
                 %
               </div>
             </div>
-            <div className="change-percentage-wrapper">
+            <div className="w-[10%] flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -466,7 +495,7 @@ function Coins() {
                 %
               </div>
             </div>
-            <div className="coin-column-width">
+            <div className="w-[17%] flex justify-start items-center">
               <div>
                 <div className="market-cap-change-wrapper">
                   <span>
@@ -487,7 +516,7 @@ function Coins() {
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="coin-column-width">
+            <div className="w-[17%] flex justify-start items-center">
               <div>
                 <div className="total-circulating-supply-wrapper">
                   <span>
@@ -508,7 +537,7 @@ function Coins() {
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="coin-column-width">
+            <div className="w-[17%] flex justify-start items-center">
               <div className="individual-coin-chart">
                 <LineChartIndividualCoin
                   priceList={singleCoin.sparkline_in_7d.price}
