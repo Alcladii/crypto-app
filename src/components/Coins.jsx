@@ -489,27 +489,13 @@ function Coins() {
           <div className="coin-column-width">
             <div>Name</div>
             <div onClick={handleSortByName}>
-              {/*<img
-                src={
-                  sortOrderByNameInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByNameInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByNameInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
-                }
-                className="w-3.5 ml-2"
-              />*/}
               <img
                 src={
                   sortOrderByNameInQueryParams === "default"
                     ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
                     : sortOrderByNameInQueryParams === "ascent"
                     ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByNameInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
                 }
                 className="w-3.5 ml-2"
               />
@@ -524,9 +510,7 @@ function Coins() {
                     ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
                     : sortOrderByPriceInQueryParams === "ascent"
                     ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByPriceInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
                 }
                 className="w-3.5 ml-2"
               />
@@ -541,9 +525,7 @@ function Coins() {
                     ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
                     : sortOrderByPriceChange1hInQueryParams === "ascent"
                     ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByPriceChange1hInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
                 }
                 className="w-3.5 ml-2"
               />
@@ -558,9 +540,7 @@ function Coins() {
                     ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
                     : sortOrderByPriceChange24hInQueryParams === "ascent"
                     ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByPriceChange24hInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
                 }
                 className="w-3.5 ml-2"
               />
@@ -575,9 +555,7 @@ function Coins() {
                     ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
                     : sortOrderByPriceChange7dInQueryParams === "ascent"
                     ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : sortOrderByPriceChange7dInQueryParams === "descent"
-                    ? "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                    : ""
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
                 }
                 className="w-3.5 ml-2"
               />
