@@ -86,8 +86,6 @@ function Coins() {
   
   const showTopFifty = queryParams.show_top_fifty === "true";
 
-  console.log(showTopFifty)
-
   const getCoinList = async () => {
     try {
       // save for making real API calls in the future
