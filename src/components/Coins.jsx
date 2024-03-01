@@ -83,7 +83,7 @@ function Coins() {
     "displayCoinList",
     []
   );
-
+  
   const showTopFifty = queryParams.show_top_fifty === "true";
 
   const getCoinList = async () => {
@@ -99,7 +99,7 @@ function Coins() {
         "/coins/markets",
         "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
       );*/
-      let coins;
+      let coins;     
       const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
@@ -128,6 +128,10 @@ function Coins() {
   };
 
   useEffect(() => {
+    handleSearchParams("show_top_fifty", coinListDsc);
+  }, [coinListDsc]);
+
+  useEffect(() => {
     getCoinList();
 
     const minute = 60000;
@@ -137,7 +141,7 @@ function Coins() {
     }, minute);
 
     return () => clearInterval(intervalId);
-  }, [coinListDsc]);
+  }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
     getCurrencyList();
