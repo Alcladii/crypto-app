@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LogarithmicScale, 
+  LogarithmicScale,
   PointElement,
   LineElement,
   Title,
@@ -15,7 +15,7 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  LogarithmicScale, 
+  LogarithmicScale,
   PointElement,
   LineElement,
   Title,
@@ -23,12 +23,8 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
 
 const LineChart = ({ priceVolumeList }) => {
-  const { selectedCoinId, setPriceVolumeList, selectedCoinData, setSelectedCoinData } =
-    useContext(CryptoContext);
-
   const options = {
     responsive: true,
     plugins: {
@@ -41,13 +37,26 @@ const LineChart = ({ priceVolumeList }) => {
       },
     },
     scales: {
-      y: {
-        display: true,
+      "y-axis-1": {
+        display: false,
         grid: {
           display: false,
           drawBorder: false,
         },
-        type: 'logarithmic',
+      },
+      "y-axis-2": {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
+      "y-axis-3": {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
       },
       x: {
         display: true,
@@ -60,31 +69,43 @@ const LineChart = ({ priceVolumeList }) => {
     tension: 0.5,
   };
 
-  const colors = ["blue", "purple", "green"]; 
+  const borderColors = ["#7878FA", "#D878FA", "#01F1E3"];
+  const backgroundColors = [
+    ["rgba(116, 116, 242, 0.1)", "rgba(116, 116, 242, 0.01)"],
+    ["rgba(216, 120, 250, 0.1)", "rgba(216, 120, 250, 0.01)"],
+    ["rgba(30, 213, 191, 0.1)", "rgba(145, 252, 228, 0.01)"],
+  ];
 
   const priceData = {
-    labels: priceVolumeList.length !== 0 && priceVolumeList[0].prices.map((item) =>
-      new Date(item[0]).toLocaleDateString()
-    ),
-    datasets:      
-      priceVolumeList.map((item) => {
-        const borderColor = colors[priceVolumeList.indexOf(item)]; 
-        return {
-          label: `Trade Price`,
-          data: item.prices.map((price) => price[1]),
-          borderColor,
-          backgroundColor: (context) => {
-            const ctx = context.chart.ctx;
-            const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-            gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-            gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
-            return gradient;
-          },
-          pointRadius: 0,
-          borderWidth: 3,
-          fill: true,
-        };
-      }),
+    labels:
+      priceVolumeList.length !== 0 &&
+      priceVolumeList[0].prices.map((item) =>
+        new Date(item[0]).toLocaleDateString(undefined, { day: "numeric" })
+      ),
+    datasets: priceVolumeList.map((item) => {
+      return {
+        label: `Trade Price`,
+        data: item.prices.map((price) => price[1]),
+        borderColor: borderColors[priceVolumeList.indexOf(item)],
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(
+            0,
+            `${backgroundColors[priceVolumeList.indexOf(item)][0]}`
+          );
+          gradient.addColorStop(
+            1,
+            `${backgroundColors[priceVolumeList.indexOf(item)][1]}`
+          );
+          return gradient;
+        },
+        pointRadius: 0,
+        borderWidth: 3,
+        fill: true,
+        yAxisID: `y-axis-${priceVolumeList.indexOf(item) + 1}`,
+      };
+    }),
   };
 
   return <Line data={priceData} options={options} />;

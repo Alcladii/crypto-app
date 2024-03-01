@@ -1,10 +1,10 @@
-import React, {useContext} from "react";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LogarithmicScale, 
+  LogarithmicScale,
   PointElement,
   BarElement,
   Title,
@@ -15,7 +15,7 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  LogarithmicScale, 
+  LogarithmicScale,
   PointElement,
   BarElement,
   Title,
@@ -23,10 +23,8 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
 
 const BarChart = ({ priceVolumeList }) => {
-  const { selectedCoinId, setPriceVolumeList } = useContext(CryptoContext);
   const options = {
     responsive: true,
     plugins: {
@@ -35,16 +33,29 @@ const BarChart = ({ priceVolumeList }) => {
       },
       title: {
         display: false,
-        text: "Chart.js Line Chart",
+        text: "Chart.js Bar Chart",
       },
     },
     scales: {
-      y: {
+      "y-axis-1": {
         display: false,
         grid: {
           display: false,
           drawBorder: false,
-          type: "logarithmic"
+        },
+      },
+      "y-axis-2": {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
+      "y-axis-3": {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
         },
       },
       x: {
@@ -58,34 +69,30 @@ const BarChart = ({ priceVolumeList }) => {
     tension: 0.5,
   };
 
-  const colors = ["blue", "purple", "green"];
+  const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   const volumeData = {
     labels:
       priceVolumeList.length !== 0 &&
       priceVolumeList[0].total_volumes.map((item) =>
-        new Date(item[0]).toLocaleDateString()
+        new Date(item[0]).toLocaleDateString(undefined, { day: "numeric" })
       ),
     datasets: priceVolumeList.map((item) => {
       const borderColor = colors[priceVolumeList.indexOf(item)];
+      const backgroundColor = colors[priceVolumeList.indexOf(item)];
       return {
         label: `Trade Price`,
         data: item.total_volumes.map((volume) => volume[1]),
         borderColor,
-        backgroundColor: (context) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-          gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
-          return gradient;
-        },
+        backgroundColor,
         pointRadius: 0,
         borderWidth: 3,
+        borderRadius: 4,
         fill: true,
+        yAxisID: `y-axis-${priceVolumeList.indexOf(item) + 1}`,
       };
     }),
   };
-
   return <Bar data={volumeData} options={options} />;
 };
 
