@@ -33,6 +33,7 @@ export default {
         "button-unselected-search-bar-background": "#191925",
         "go-up": "#01F1E3",
         "go-down": "#FE2264",
+        "line-bar-chart-background": "#191932"
       },
       fontFamily: {
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
