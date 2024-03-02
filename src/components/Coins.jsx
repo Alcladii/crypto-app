@@ -29,13 +29,13 @@ const IndividualCoinWrapper = styled.div`
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
   background: ${(props) => `${props.background}80`};
-  height: 10px;
+  height: 8px;
   width: 100%;
 `;
 
 const ProgressBarInner = styled.div`
   border-radius: 99px;
-  height: 10px;
+  height: 8px;
   width: ${(props) => props.width * 100}%;
   background: ${(props) => props.background};
 `;
@@ -417,11 +417,11 @@ function Coins() {
             key={singleCoin.id}
             className="flex items-center h-20 my-2.5 bg-button-unselected-search-bar-background rounded-md font-space-grotesk"
           >
-            <div className="w-[4%] pl-3 flex items-center border">
+            <div className="w-[4%] pl-3 flex items-center">
               {displayCoinList.indexOf(singleCoin) + 1}
             </div>
             <div
-              className="w-[15%] pr-2 flex justify-start items-center border"
+              className="w-[15%] pr-2 flex justify-start items-center"
               onClick={() => handleClick(singleCoin)}
             >
               <div className="flex items-center">
@@ -430,13 +430,13 @@ function Coins() {
                 <span>{singleCoin.name}</span>
               </div>
             </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center text-lg border">
+            <div className="w-[9%] pl-2 flex justify-start items-center text-lg">
               {currencySymbol}
               {singleCoin.current_price &&
                 singleCoin.current_price.toLocaleString()}
             </div>
             <div
-              className="w-[9%] pl-2 flex justify-start items-center border" /*className="change-percentage-wrapper"*/
+              className="w-[9%] pl-2 flex justify-start items-center"
             >
               {
                 <Arrow
@@ -461,7 +461,7 @@ function Coins() {
               </div>
             </div>
             <div
-              className="w-[9%] pl-2 flex justify-start items-center border" /*className="change-percentage-wrapper"*/
+              className="w-[9%] pl-2 flex justify-start items-center" 
             >
               {
                 <Arrow
@@ -486,7 +486,7 @@ function Coins() {
               </div>
             </div>
             <div
-              className="w-[9%] pl-2 flex justify-start items-center border" /*className="change-percentage-wrapper"*/
+              className="w-[9%] pl-2 flex justify-start items-center"
             >
               {
                 <Arrow
@@ -511,10 +511,10 @@ function Coins() {
               </div>
             </div>
             <div
-              className="w-[20%] px-2 flex justify-start items-center border" /*className="coin-column-width"*/
+              className="w-[20%] pr-3.5 flex justify-start items-center"
             >
               <div className="w-full">
-                <div className="flex w-full items-center justify-between border text-sm">
+                <div className="flex w-full items-center justify-between text-sm">
                   <span>
                     {currencySymbol}
                     {convertToBillion(singleCoin.market_cap_change_24h)}B
@@ -547,11 +547,11 @@ function Coins() {
               </div>
             </div>
             <div
-              className="w-[20%] px-2 flex justify-start items-center border" /*className="coin-column-width"*/
+              className="w-[20%] pl-4 flex justify-start items-center"
             >
               <div className="w-full">
                 <div
-                  className="flex w-full items-center justify-between border text-sm" /*className="total-circulating-supply-wrapper"*/
+                  className="flex w-full items-center justify-between text-sm"
                 >
                   <span>
                     {currencySymbol}
@@ -585,11 +585,15 @@ function Coins() {
               </div>
             </div>
             <div
-              className="w-[15%] pr-3 flex justify-end items-center border" /*className="coin-column-width"*/
+              className="w-[15%] pr-3 flex justify-end items-center"
             >
-              <div className="w-5/6 pt-2.5 border">
+              <div className="w-5/6 pt-6">
                 <LineChartIndividualCoin
                   priceList={singleCoin.sparkline_in_7d.price}
+                  color={progressBarColors[
+                    displayCoinList.indexOf(singleCoin) %
+                      progressBarColors.length
+                  ]}
                 />
               </div>
             </div>
