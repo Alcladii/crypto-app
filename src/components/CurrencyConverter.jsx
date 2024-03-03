@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
+import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
 
 export const CurrencyConverter = () => {
   const {
@@ -10,6 +11,7 @@ export const CurrencyConverter = () => {
     displayCurrency,
     coinList,
     currencySymbol,
+    currencyConverterDays,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
   const [leftCurrency, setLeftCurrency] = useLocalState(
@@ -48,10 +50,10 @@ export const CurrencyConverter = () => {
     getRightCurrencyPriceVolumeHasError,
     setGetRightCurrencyPriceVolumeHasError,
   ] = useState(false);
-  const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
+  /*const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
     "currencyConverterDays",
     7
-  );
+  );*/
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -256,8 +258,14 @@ export const CurrencyConverter = () => {
             rightCurrencyData.market_data.current_price[displayCurrency]}
         </div>
       </div>
-      <div>
-        <button
+      <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
+        <DaysButtonInCurrencyConverter days="1" buttonText="1D" />
+        <DaysButtonInCurrencyConverter days="7" buttonText="7D" />
+        <DaysButtonInCurrencyConverter days="30" buttonText="1M" />
+        <DaysButtonInCurrencyConverter days="90" buttonText="90D" />
+        <DaysButtonInCurrencyConverter days="180" buttonText="180D" />
+        <DaysButtonInCurrencyConverter days="365" buttonText="1Y" />
+        {/*<button
           onClick={() => {
             setCurrencyConverterDays(0);
           }}
@@ -274,8 +282,6 @@ export const CurrencyConverter = () => {
           {" "}
           7 Days{" "}
         </button>
-        {/*I put two spaces here just to seperate the buttons before I start working on the CSS*/}
-        &nbsp;&nbsp;
         <button
           onClick={() => {
             setCurrencyConverterDays(30);
@@ -310,7 +316,7 @@ export const CurrencyConverter = () => {
         >
           {" "}
           1 Year{" "}
-        </button>
+        </button>*/}
       </div>
       <div>
         {leftCurrencyData !== null && leftCurrencyData.name}&nbsp;to&nbsp;

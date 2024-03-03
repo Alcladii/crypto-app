@@ -52,6 +52,10 @@ export const CryptoProvider = ({ children }) => {
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] =
     useState(null);
   const [isNumber, setIsNumber] = useState(true);
+  const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
+    "currencyConverterDays",
+    7
+  );
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -181,6 +185,8 @@ export const CryptoProvider = ({ children }) => {
         queryParams,
         historyURL,
         setPriceVolumeChartIsLoadingHasError,
+        currencyConverterDays,
+        setCurrencyConverterDays,
       }}
     >
       {children}
