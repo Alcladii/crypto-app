@@ -31,7 +31,7 @@ export const CurrencyConverter = () => {
     useState(false);
   const [rightCurrencyData, setRightCurrencyData] = useLocalState(
     "rightCurrencyData",
-     null
+    null
   );
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
@@ -50,10 +50,6 @@ export const CurrencyConverter = () => {
     getRightCurrencyPriceVolumeHasError,
     setGetRightCurrencyPriceVolumeHasError,
   ] = useState(false);
-  /*const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
-    "currencyConverterDays",
-    7
-  );*/
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -265,58 +261,6 @@ export const CurrencyConverter = () => {
         <DaysButtonInCurrencyConverter days="90" buttonText="90D" />
         <DaysButtonInCurrencyConverter days="180" buttonText="180D" />
         <DaysButtonInCurrencyConverter days="365" buttonText="1Y" />
-        {/*<button
-          onClick={() => {
-            setCurrencyConverterDays(0);
-          }}
-        >
-          {" "}
-          1 Day{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setCurrencyConverterDays(6);
-          }}
-        >
-          {" "}
-          7 Days{" "}
-        </button>
-        <button
-          onClick={() => {
-            setCurrencyConverterDays(30);
-          }}
-        >
-          {" "}
-          1 Month{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setCurrencyConverterDays(89);
-          }}
-        >
-          {" "}
-          90 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setCurrencyConverterDays(179);
-          }}
-        >
-          {" "}
-          180 Days{" "}
-        </button>
-        &nbsp;&nbsp;
-        <button
-          onClick={() => {
-            setCurrencyConverterDays(364);
-          }}
-        >
-          {" "}
-          1 Year{" "}
-        </button>*/}
       </div>
       <div>
         {leftCurrencyData !== null && leftCurrencyData.name}&nbsp;to&nbsp;
