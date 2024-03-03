@@ -161,7 +161,7 @@ export const SlickCarousel = ({ coinList }) => {
         {comparisonIsOn ? (
           <div
             onClick={handleComparison}
-            className="bg-button-selected w-44 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
+            className="selected-button w-44 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
           >
             <img
               src="https://i.ibb.co/1mN5KGj/icons8-cross-50.png"
@@ -193,7 +193,7 @@ export const SlickCarousel = ({ coinList }) => {
                   selected={coin.selected}
                   className={`${
                     coin.selected
-                      ? "bg-button-selected"
+                      ? "selected-button"
                       : "bg-button-unselected-search-bar-background"
                   } cursor-pointer h-16 flex items-center rounded-md px-1 py-1`}
                 >
