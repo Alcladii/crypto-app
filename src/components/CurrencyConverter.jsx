@@ -50,11 +50,20 @@ export const CurrencyConverter = () => {
     getRightCurrencyPriceVolumeHasError,
     setGetRightCurrencyPriceVolumeHasError,
   ] = useState(false);
+  const [leftCurrencyIcon, setLeftCurrencyIcon] = useLocalState(
+    "leftCurrencyIcon",
+    ""
+  );
+  const [rightCurrencyIcon, setRightCurrencyIcon] = useLocalState(
+    "leftCurrencyIcon",
+    ""
+  );
+
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  const handleClick = () => {
+  const handleReverse = () => {
     setLeftCurrency(rightCurrency);
     setRightCurrency(leftCurrency);
     setLeftCurrencyData(rightCurrencyData);
@@ -204,56 +213,98 @@ export const CurrencyConverter = () => {
     coinList &&
     coinList.map((item) => (
       <option key={item.id} value={item.id}>
-        {item.name}
+        {item.name}({item.symbol.toUpperCase()})
       </option>
     ));
 
+  useEffect(() => {
+    coinList.forEach((item) => {
+      if (item.id === leftCurrency) {
+        setLeftCurrencyIcon(item.image);
+      }
+    });
+  }, [leftCurrency]);
+
+  useEffect(() => {
+    coinList.forEach((item) => {
+      if (item.id === rightCurrency) {
+        setRightCurrencyIcon(item.image);
+      }
+    });
+  }, [rightCurrency]);
+
   return (
     <div className="App">
-      {singleCoinIsLoading && <div>Loading Single Coin</div>}
-      {singleCoinLoadingHasError && (
-        <div>Error in loading coin data, unable to update coin price</div>
-      )}
-      <div>You sell</div>
-      <input onChange={handleChange} value={inputValue} />
-      <div className="currencySelectorWrapper">
-        <select
-          className="currencySelector"
-          value={leftCurrency}
-          onChange={(e) => {
-            handleLeftCurrencySelect(e.target.value);
-            handleConvert();
-          }}
-        >
-          {currencyOptions}
-        </select>
-        <div>
-          1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
-          &nbsp;=&nbsp;{currencySymbol}
-          {leftCurrencyData &&
-            leftCurrencyData.market_data.current_price[displayCurrency]}
+      <div className="flex justify-center my-6">
+        {singleCoinIsLoading && <div>Loading Single Coin</div>}
+        {singleCoinLoadingHasError && (
+          <div>Error in loading coin data, unable to update coin price</div>
+        )}
+      </div>
+      <div className="flex relative">
+        <div className="w-[50%] p-6 mr-3 h-48 bg-line-bar-chart-background rounded-md">
+          <div className="text-sm">You sell</div>
+          <div className="flex items-center border-b-2 py-3 mt-6">
+            <div className="w-[5%] mr-2.5">
+              <img className="h-7 w-auto" src={leftCurrencyIcon} />
+            </div>
+            <div className="w-[95%]">
+              <select
+                className="w-[45%] appearance-none font-space-grotesk bg-transparent"
+                value={leftCurrency}
+                onChange={(e) => {
+                  handleLeftCurrencySelect(e.target.value);
+                  handleConvert();
+                }}
+              >
+                {currencyOptions}
+              </select>
+              <input
+                className="w-[55%] text-right text-lg font-semibold bg-transparent focus:outline-none"
+                onChange={handleChange}
+                value={inputValue}
+              />
+            </div>
+          </div>
+          <div className="mt-3 text-sm">
+            1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
+            &nbsp;=&nbsp;{currencySymbol}
+            {leftCurrencyData &&
+              leftCurrencyData.market_data.current_price[displayCurrency]}
+          </div>
+        </div>
+        <div onClick={handleReverse} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-white rounded-full">
+          <img className="h-9" src="https://i.ibb.co/YypnKyZ/icons8-swap-60.png"/>
+        </div>
+        <div className="w-[50%] p-6 ml-3 h-48 bg-right-currency-background rounded-md">
+          <div className="text-sm">You buy</div>
+          <div className="flex items-center border-b-2 py-3 mt-6">
+            <div className="w-[5%] mr-2.5">
+              <img className="h-7 w-auto" src={rightCurrencyIcon} />
+            </div>
+            <select
+              className="w-[45%] appearance-none font-space-grotesk bg-transparent"
+              value={rightCurrency}
+              onChange={(e) => {
+                handleRightCurrencySelect(e.target.value);
+                handleConvert();
+              }}
+            >
+              {currencyOptions}
+            </select>
+            <div className="w-[55%] text-right text-lg font-semibold bg-transparent focus:outline-none">
+              {convertedResult != 0 ? convertedResult : ""}
+            </div>
+          </div>
+          <div className="mt-3 text-sm">
+            1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
+            &nbsp;=&nbsp;{currencySymbol}
+            {rightCurrencyData &&
+              rightCurrencyData.market_data.current_price[displayCurrency]}
+          </div>
         </div>
       </div>
-      <button onClick={handleClick}>reverse</button>
-      <div>You buy&nbsp; {convertedResult != 0 ? convertedResult : ""}</div>
-      <div className="currencySelectorWrapper">
-        <select
-          className="currencySelector"
-          value={rightCurrency}
-          onChange={(e) => {
-            handleRightCurrencySelect(e.target.value);
-            handleConvert();
-          }}
-        >
-          {currencyOptions}
-        </select>
-        <div>
-          1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
-          &nbsp;=&nbsp;{currencySymbol}
-          {rightCurrencyData &&
-            rightCurrencyData.market_data.current_price[displayCurrency]}
-        </div>
-      </div>
+
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
         <DaysButtonInCurrencyConverter days="1" buttonText="1D" />
         <DaysButtonInCurrencyConverter days="7" buttonText="7D" />
