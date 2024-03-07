@@ -616,7 +616,6 @@ function Coins() {
             >
               <div className="flex items-center">
                 <CoinTag src={singleCoin.image} />
-                {console.log(singleCoin.image)}
                 &nbsp;&nbsp;
                 <div>{singleCoin.name}</div>
               </div>

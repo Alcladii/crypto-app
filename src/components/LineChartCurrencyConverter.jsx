@@ -23,10 +23,9 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
 
 const LineChartCurrencyConverter = ({ priceVolumeList }) => {
-  if (priceVolumeList[0].length !==0 && priceVolumeList[1].length !== 0) {
+  if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
     const priceLeft = priceVolumeList[0].prices.map((price) => price[1]);
     const priceRight = priceVolumeList[1].prices.map((price) => price[1]);
 
@@ -36,13 +35,6 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       const quotient = priceLeft[i] / priceRight[i];
       convertionRate.push(quotient);
     }
-
-    const {
-      selectedCoinId,
-      setPriceVolumeList,
-      selectedCoinData,
-      setSelectedCoinData,
-    } = useContext(CryptoContext);
 
     const options = {
       responsive: true,
@@ -79,18 +71,18 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       labels:
         priceVolumeList.length !== 0 &&
         priceVolumeList[0].prices.map((item) =>
-          new Date(item[0]).toLocaleDateString()
+          new Date(item[0]).toLocaleDateString(undefined, { day: "numeric" })
         ),
       datasets: [
         {
-          label: `Trade Price`,
+          label: `Currency Converter Line Chart`,
           data: convertionRate,
-          borderColor: "blue",
+          borderColor: "#7878FA",
           backgroundColor: (context) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-            gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-            gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+            gradient.addColorStop(0, "rgba(116, 116, 242, 0.6)");
+            gradient.addColorStop(1, "rgba(116, 116, 242, 0.1)");
             return gradient;
           },
           pointRadius: 0,
@@ -100,7 +92,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       ],
     };
 
-    return <Line data={priceData} options={options} />
+    return <Line data={priceData} options={options} />;
   }
 };
 

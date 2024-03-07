@@ -234,7 +234,7 @@ export const CurrencyConverter = () => {
   }, [rightCurrency]);
 
   return (
-    <div className="App">
+    <div>
       <div className="flex justify-center my-6">
         {singleCoinIsLoading && <div>Loading Single Coin</div>}
         {singleCoinLoadingHasError && (
@@ -273,8 +273,14 @@ export const CurrencyConverter = () => {
               leftCurrencyData.market_data.current_price[displayCurrency]}
           </div>
         </div>
-        <div onClick={handleReverse} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-white rounded-full">
-          <img className="h-9" src="https://i.ibb.co/YypnKyZ/icons8-swap-60.png"/>
+        <div
+          onClick={handleReverse}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-white rounded-full cursor-pointer"
+        >
+          <img
+            className="h-9"
+            src="https://i.ibb.co/YypnKyZ/icons8-swap-60.png"
+          />
         </div>
         <div className="w-[50%] p-6 ml-3 h-48 bg-right-currency-background rounded-md">
           <div className="text-sm">You buy</div>
@@ -304,6 +310,32 @@ export const CurrencyConverter = () => {
           </div>
         </div>
       </div>
+      <div className="mt-16 bg-line-bar-chart-background rounded-md p-6">
+        <div className="font-space-grotesk">
+          {leftCurrencyData !== null && (
+            <span>
+              {leftCurrencyData.name}({leftCurrencyData.symbol.toUpperCase()})
+            </span>
+          )}
+          <span className="text-to-in-currency-converter mx-4">to</span>
+          {rightCurrencyData !== null && (
+            <span>
+              {rightCurrencyData.name}
+              ({rightCurrencyData.symbol.toUpperCase()})
+            </span>
+          )}
+        </div>
+        {getLeftCurrencyPriceVolumeHasError ||
+        getRightCurrencyPriceVolumeHasError ? (
+          <div className="flex justify-center my-5">
+            Error in getting price and volume data, can't update chart
+          </div>
+        ) : (
+          requests !== null && (
+            <LineChartCurrencyConverter priceVolumeList={requests} />
+          )
+        )}
+      </div>
 
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
         <DaysButtonInCurrencyConverter days="1" buttonText="1D" />
@@ -313,18 +345,6 @@ export const CurrencyConverter = () => {
         <DaysButtonInCurrencyConverter days="180" buttonText="180D" />
         <DaysButtonInCurrencyConverter days="365" buttonText="1Y" />
       </div>
-      <div>
-        {leftCurrencyData !== null && leftCurrencyData.name}&nbsp;to&nbsp;
-        {rightCurrencyData !== null && rightCurrencyData.name}
-      </div>
-      {getLeftCurrencyPriceVolumeHasError ||
-      getRightCurrencyPriceVolumeHasError ? (
-        <div>Error in getting price and volume data, can't update chart</div>
-      ) : (
-        requests !== null && (
-          <LineChartCurrencyConverter priceVolumeList={requests} />
-        )
-      )}
     </div>
   );
 };
