@@ -338,7 +338,7 @@ export const CurrencyConverter = () => {
       </div>
 
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
-        <DaysButtonInCurrencyConverter days="1" buttonText="1D" />
+        <DaysButtonInCurrencyConverter days="2" buttonText="1D" />
         <DaysButtonInCurrencyConverter days="7" buttonText="7D" />
         <DaysButtonInCurrencyConverter days="30" buttonText="1M" />
         <DaysButtonInCurrencyConverter days="90" buttonText="90D" />

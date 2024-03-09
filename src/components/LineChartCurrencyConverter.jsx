@@ -23,17 +23,37 @@ ChartJS.register(
   Filler,
   Legend
 );
+import { CryptoContext } from "../contexts/cryptoContext";
 
 const LineChartCurrencyConverter = ({ priceVolumeList }) => {
   if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
     const priceLeft = priceVolumeList[0].prices.map((price) => price[1]);
     const priceRight = priceVolumeList[1].prices.map((price) => price[1]);
+    const { currencyConverterDays } = useContext(CryptoContext);
 
     const convertionRate = [];
 
     for (let i = 0; i < priceLeft.length; i++) {
       const quotient = priceLeft[i] / priceRight[i];
       convertionRate.push(quotient);
+    }
+
+    let maxTicksLimit;
+
+    if (currencyConverterDays === "2") {
+      maxTicksLimit = 24;
+    }
+    if (currencyConverterDays === "7") {
+      maxTicksLimit = 7;
+    }
+    if (currencyConverterDays === "30" || currencyConverterDays === "90") {
+      maxTicksLimit = 30;
+    }
+    if (currencyConverterDays === "180") {
+      maxTicksLimit = 6;
+    }
+    if (currencyConverterDays === "365") {
+      maxTicksLimit = 12;
     }
 
     const options = {
@@ -62,6 +82,9 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
             display: false,
             drawBorder: false,
           },
+          ticks: {
+            maxTicksLimit: maxTicksLimit,
+          },
         },
       },
       tension: 0.5,
@@ -70,9 +93,19 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
     const priceData = {
       labels:
         priceVolumeList.length !== 0 &&
-        priceVolumeList[0].prices.map((item) =>
-          new Date(item[0]).toLocaleDateString(undefined, { day: "numeric" })
-        ),
+        priceVolumeList[0].prices.map((item) => {
+          const date = new Date(item[0]);
+          return currencyConverterDays === "2"
+            ? date.toLocaleTimeString(undefined, {
+                hour: "numeric",
+                hour12: true,
+              })
+            : currencyConverterDays === "7" ||
+              currencyConverterDays === "30" ||
+              currencyConverterDays === "90"
+            ? date.toLocaleDateString(undefined, { day: "numeric" })
+            : date.toLocaleDateString(undefined, { month: "short" });
+        }),
       datasets: [
         {
           label: `Currency Converter Line Chart`,
