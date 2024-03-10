@@ -26,9 +26,10 @@ ChartJS.register(
 import { CryptoContext } from "../contexts/cryptoContext";
 
 const LineChartCurrencyConverter = ({ priceVolumeList }) => {
-  if (priceVolumeList[0].length !==0 && priceVolumeList[1].length !== 0) {
+  if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
     const priceLeft = priceVolumeList[0].prices.map((price) => price[1]);
     const priceRight = priceVolumeList[1].prices.map((price) => price[1]);
+    const { currencyConverterDays } = useContext(CryptoContext);
 
     const convertionRate = [];
 
@@ -37,12 +38,23 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       convertionRate.push(quotient);
     }
 
-    const {
-      selectedCoinId,
-      setPriceVolumeList,
-      selectedCoinData,
-      setSelectedCoinData,
-    } = useContext(CryptoContext);
+    let maxTicksLimit;
+
+    if (currencyConverterDays === "2") {
+      maxTicksLimit = 24;
+    }
+    if (currencyConverterDays === "7") {
+      maxTicksLimit = 7;
+    }
+    if (currencyConverterDays === "30" || currencyConverterDays === "90") {
+      maxTicksLimit = 30;
+    }
+    if (currencyConverterDays === "180") {
+      maxTicksLimit = 6;
+    }
+    if (currencyConverterDays === "365") {
+      maxTicksLimit = 12;
+    }
 
     const options = {
       responsive: true,
@@ -70,6 +82,9 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
             display: false,
             drawBorder: false,
           },
+          ticks: {
+            maxTicksLimit: maxTicksLimit,
+          },
         },
       },
       tension: 0.5,
@@ -78,19 +93,29 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
     const priceData = {
       labels:
         priceVolumeList.length !== 0 &&
-        priceVolumeList[0].prices.map((item) =>
-          new Date(item[0]).toLocaleDateString()
-        ),
+        priceVolumeList[0].prices.map((item) => {
+          const date = new Date(item[0]);
+          return currencyConverterDays === "2"
+            ? date.toLocaleTimeString(undefined, {
+                hour: "numeric",
+                hour12: true,
+              })
+            : currencyConverterDays === "7" ||
+              currencyConverterDays === "30" ||
+              currencyConverterDays === "90"
+            ? date.toLocaleDateString(undefined, { day: "numeric" })
+            : date.toLocaleDateString(undefined, { month: "short" });
+        }),
       datasets: [
         {
-          label: `Trade Price`,
+          label: `Currency Converter Line Chart`,
           data: convertionRate,
-          borderColor: "blue",
+          borderColor: "#7878FA",
           backgroundColor: (context) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-            gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-            gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+            gradient.addColorStop(0, "rgba(116, 116, 242, 0.6)");
+            gradient.addColorStop(1, "rgba(116, 116, 242, 0.1)");
             return gradient;
           },
           pointRadius: 0,
@@ -100,7 +125,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       ],
     };
 
-    return <Line data={priceData} options={options} />
+    return <Line data={priceData} options={options} />;
   }
 };
 

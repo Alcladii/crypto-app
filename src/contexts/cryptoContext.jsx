@@ -33,7 +33,10 @@ export const CryptoProvider = ({ children }) => {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState(false);
-  const [priceVolumeList, setPriceVolumeList] = useLocalState("priceVolumeList",[]);
+  const [priceVolumeList, setPriceVolumeList] = useLocalState(
+    "priceVolumeList",
+    []
+  );
   const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
@@ -52,6 +55,10 @@ export const CryptoProvider = ({ children }) => {
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] =
     useState(null);
   const [isNumber, setIsNumber] = useState(true);
+  const [currencyConverterDays, setCurrencyConverterDays] = useLocalState(
+    "currencyConverterDays",
+    7
+  );
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -102,11 +109,16 @@ export const CryptoProvider = ({ children }) => {
   const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
     try {
       setPriceVolumeChartIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`
-      );
+
+      let apiUrl;
+      if (numOfDays == 2) {
+        apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
+      } else {
+        apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
+      }
+      const { data } = await axios(apiUrl);
       setPriceVolumeChartIsLoading(false);
-      return data;    
+      return data;
     } catch (err) {
       // one is for loading, the other is for error handling
       setPriceVolumeChartIsLoadingHasError(true);
@@ -118,7 +130,7 @@ export const CryptoProvider = ({ children }) => {
   const historyURL = useHistory();
   const queryParams = queryString.parse(location.search);
 
-//google how to make a query string state custom hook
+  //google how to make a query string state custom hook
 
   const handleSearchParams = (conditionKey, conditionValue) => {
     if (!conditionKey in queryParams) {
@@ -131,9 +143,9 @@ export const CryptoProvider = ({ children }) => {
   };
 
   const clearSearchParams = () => {
-    const updatedParams = {}
-    historyURL.push(`?${queryString.stringify(updatedParams)}`)
-  }
+    const updatedParams = {};
+    historyURL.push(`?${queryString.stringify(updatedParams)}`);
+  };
 
   return (
     <CryptoContext.Provider
@@ -181,6 +193,8 @@ export const CryptoProvider = ({ children }) => {
         queryParams,
         historyURL,
         setPriceVolumeChartIsLoadingHasError,
+        currencyConverterDays,
+        setCurrencyConverterDays,
       }}
     >
       {children}
