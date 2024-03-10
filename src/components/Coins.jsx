@@ -505,7 +505,7 @@ function Coins() {
           <div
             className={`${
               coinListDsc
-                ? "bg-button-selected"
+                ? "selected-button"
                 : "bg-button-unselected-search-bar-background"
             } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer`}
             onClick={setToDsc}
@@ -516,7 +516,7 @@ function Coins() {
           <div
             className={`${
               !coinListDsc
-                ? "bg-button-selected"
+                ? "selected-button"
                 : "bg-button-unselected-search-bar-background"
             } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer`}
             onClick={setToAsc}

@@ -337,3 +337,9 @@
 .page-max-width {
   max-width: 1440px;
 }
+
+.selected-button {
+  background-color: rgba(97, 97, 214, 0.5);
+  background-image: linear-gradient(to bottom, rgb(120, 120, 250,1), rgb(120, 120, 250, 0));
+}
+
