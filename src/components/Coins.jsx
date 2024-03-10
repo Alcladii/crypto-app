@@ -23,10 +23,6 @@ const CoinTag = styled.img`
   align-items: center;
 `;
 
-const IndividualCoinWrapper = styled.div`
-  border: 1px solid black;
-`;
-
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
   background: ${(props) => `${props.background}80`};
@@ -78,11 +74,31 @@ function Coins() {
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
   const [sortBy, setSortBy] = useLocalState("sortBy", "");
-  const [sortOrder, setSortOrder] = useLocalState("sortOrder", "");
   const [displayCoinList, setDisplayCoinList] = useLocalState(
     "displayCoinList",
     []
   );
+
+  const [sortOrderByName, setSortOrderByName] = useLocalState(
+    "sortOrderByName",
+    "default"
+  );
+  const [sortOrderByPrice, setSortOrderByPrice] = useLocalState(
+    "sortOrderByPrice",
+    "default"
+  );
+  const [sortOrderByPriceChange1h, setSortOrderByPriceChange1h] = useLocalState(
+    "sortOrderByPriceChange1h",
+    "default"
+  );
+  const [sortOrderByPriceChange24h, setSortOrderByPriceChange24h] =
+    useLocalState("sortOrderByPriceChange24h", "default");
+  const [sortOrderByPriceChange7d, setSortOrderByPriceChange7d] = useLocalState(
+    "sortOrderByPriceChange7d",
+    "default"
+  );
+  
+  const showTopFifty = queryParams.show_top_fifty === "true";
 
   const getCoinList = async () => {
     try {
@@ -97,8 +113,8 @@ function Coins() {
         "/coins/markets",
         "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
       );*/
-      let coins;
-      const order = coinListDsc ? "market_cap_desc" : "market_cap_asc";
+      let coins;     
+      const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
         "/coins/markets",
@@ -106,9 +122,6 @@ function Coins() {
       );
       coins = response.data;
       setCoinList(coins);
-      if (sortOrder === "") {
-        setSortOrder("default");
-      }
       setCoinListIsLoading(false);
       setCoinListLoadingHasError(false);
     } catch (err) {
@@ -125,35 +138,9 @@ function Coins() {
     setCoinListDsc(false);
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-        text: "Chart.js Line Chart",
-      },
-    },
-    scales: {
-      y: {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      x: {
-        display: true,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-    },
-    tension: 0.5,
-  };
+  useEffect(() => {
+    handleSearchParams("show_top_fifty", coinListDsc);
+  }, [coinListDsc]);
 
   useEffect(() => {
     getCoinList();
@@ -165,7 +152,7 @@ function Coins() {
     }, minute);
 
     return () => clearInterval(intervalId);
-  }, [coinListDsc]);
+  }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
     getCurrencyList();
@@ -177,17 +164,65 @@ function Coins() {
     history.push(`/coin-page/${item.id}`);
   };
 
-  const colors = ["blue", "purple", "green"];
+  const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
-  const handleSortOrder = () => {
-    if (sortOrder === "default") {
-      setSortOrder("ascent");
+  const handleSortOrderByName = () => {
+    if (sortOrderByName === "default") {
+      setSortOrderByName("ascent");
     }
-    if (sortOrder === "ascent") {
-      setSortOrder("descent");
+    if (sortOrderByName === "ascent") {
+      setSortOrderByName("descent");
     }
-    if (sortOrder === "descent") {
-      setSortOrder("default");
+    if (sortOrderByName === "descent") {
+      setSortOrderByName("default");
+    }
+  };
+
+  const handleSortOrderByPrice = () => {
+    if (sortOrderByPrice === "default") {
+      setSortOrderByPrice("ascent");
+    }
+    if (sortOrderByPrice === "ascent") {
+      setSortOrderByPrice("descent");
+    }
+    if (sortOrderByPrice === "descent") {
+      setSortOrderByPrice("default");
+    }
+  };
+
+  const handleSortOrderByPriceChange1h = () => {
+    if (sortOrderByPriceChange1h === "default") {
+      setSortOrderByPriceChange1h("ascent");
+    }
+    if (sortOrderByPriceChange1h === "ascent") {
+      setSortOrderByPriceChange1h("descent");
+    }
+    if (sortOrderByPriceChange1h === "descent") {
+      setSortOrderByPriceChange1h("default");
+    }
+  };
+
+  const handleSortOrderByPriceChange24h = () => {
+    if (sortOrderByPriceChange24h === "default") {
+      setSortOrderByPriceChange24h("ascent");
+    }
+    if (sortOrderByPriceChange24h === "ascent") {
+      setSortOrderByPriceChange24h("descent");
+    }
+    if (sortOrderByPriceChange24h === "descent") {
+      setSortOrderByPriceChange24h("default");
+    }
+  };
+
+  const handleSortOrderByPriceChange7d = () => {
+    if (sortOrderByPriceChange7d === "default") {
+      setSortOrderByPriceChange7d("ascent");
+    }
+    if (sortOrderByPriceChange7d === "ascent") {
+      setSortOrderByPriceChange7d("descent");
+    }
+    if (sortOrderByPriceChange7d === "descent") {
+      setSortOrderByPriceChange7d("default");
     }
   };
 
@@ -195,35 +230,55 @@ function Coins() {
     if (sortBy !== "name") {
       setSortBy("name");
     }
-    handleSortOrder();
+    handleSortOrderByName();
+    setSortOrderByPrice("default");
+    setSortOrderByPriceChange1h("default");
+    setSortOrderByPriceChange24h("default");
+    setSortOrderByPriceChange7d("default");
   };
 
   const handleSortByPrice = () => {
     if (sortBy !== "current_price") {
       setSortBy("current_price");
     }
-    handleSortOrder();
+    handleSortOrderByPrice();
+    setSortOrderByName("default");
+    setSortOrderByPriceChange1h("default");
+    setSortOrderByPriceChange24h("default");
+    setSortOrderByPriceChange7d("default");
   };
 
   const handleSortByOneHour = () => {
     if (sortBy !== "price_change_percentage_1h_in_currency") {
       setSortBy("price_change_percentage_1h_in_currency");
     }
-    handleSortOrder();
+    handleSortOrderByPriceChange1h();
+    setSortOrderByName("default");
+    setSortOrderByPrice("default");
+    setSortOrderByPriceChange24h("default");
+    setSortOrderByPriceChange7d("default");
   };
 
   const handleSortByTwentyFourHours = () => {
     if (sortBy !== "price_change_percentage_24h_in_currency") {
       setSortBy("price_change_percentage_24h_in_currency");
     }
-    handleSortOrder();
+    handleSortOrderByPriceChange24h();
+    setSortOrderByName("default");
+    setSortOrderByPrice("default");
+    setSortOrderByPriceChange1h("default");
+    setSortOrderByPriceChange7d("default");
   };
 
   const handleSortBySevenDays = () => {
     if (sortBy !== "price_change_percentage_7d_in_currency") {
       setSortBy("price_change_percentage_7d_in_currency");
     }
-    handleSortOrder();
+    handleSortOrderByPriceChange7d();
+    setSortOrderByName("default");
+    setSortOrderByPrice("default");
+    setSortOrderByPriceChange1h("default");
+    setSortOrderByPriceChange24h("default");
   };
 
   useEffect(() => {
@@ -231,55 +286,108 @@ function Coins() {
   }, [sortBy]);
 
   useEffect(() => {
-    handleSearchParams("sort_order", sortOrder);
-  }, [sortOrder]);
+    handleSearchParams("sort_order_by_name", sortOrderByName);
+  }, [sortOrderByName]);
+
+  useEffect(() => {
+    handleSearchParams("sort_order_by_price", sortOrderByPrice);
+  }, [sortOrderByPrice]);
+
+  useEffect(() => {
+    handleSearchParams(
+      "sort_order_by_price_change_1h",
+      sortOrderByPriceChange1h
+    );
+  }, [sortOrderByPriceChange1h]);
+
+  useEffect(() => {
+    handleSearchParams(
+      "sort_order_by_price_change_24h",
+      sortOrderByPriceChange24h
+    );
+  }, [sortOrderByPriceChange24h]);
+
+  useEffect(() => {
+    handleSearchParams(
+      "sort_order_by_price_change_7d",
+      sortOrderByPriceChange7d
+    );
+  }, [sortOrderByPriceChange7d]);
+
+  const sortByInQueryParams = queryParams.sort_by;
+  const sortOrderByNameInQueryParams = queryParams.sort_order_by_name;
+  const sortOrderByPriceInQueryParams = queryParams.sort_order_by_price;
+  const sortOrderByPriceChange1hInQueryParams =
+    queryParams.sort_order_by_price_change_1h;
+  const sortOrderByPriceChange24hInQueryParams =
+    queryParams.sort_order_by_price_change_24h;
+  const sortOrderByPriceChange7dInQueryParams =
+    queryParams.sort_order_by_price_change_7d;
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
-    const sortByInQueryParams = queryParams.sort_by;
-    const sortOrderInQueryParams = queryParams.sort_order;
-    if (sortByInQueryParams === "name" && sortOrderInQueryParams === "ascent") {
+
+    if (
+      sortByInQueryParams === "name" &&
+      sortOrderByNameInQueryParams === "ascent"
+    ) {
       sortedCoinList.sort((value1, value2) =>
-        value1.name.localeCompare(value2.name)
+        value1[sortByInQueryParams].localeCompare(value2[sortByInQueryParams])
       );
       setDisplayCoinList(sortedCoinList);
     }
     if (
       sortByInQueryParams === "name" &&
-      sortOrderInQueryParams === "descent"
+      sortOrderByNameInQueryParams === "descent"
     ) {
       sortedCoinList.sort((value1, value2) =>
-        value2.name.localeCompare(value1.name)
+        value2[sortByInQueryParams].localeCompare(value1[sortByInQueryParams])
       );
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortByInQueryParams === "current_price" ||
-        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
-      sortOrderInQueryParams === "ascent"
+      (sortByInQueryParams === "current_price" &&
+        sortOrderByPriceInQueryParams === "ascent") ||
+      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+        sortOrderByPriceChange1hInQueryParams === "ascent") ||
+      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+        sortOrderByPriceChange24hInQueryParams === "ascent") ||
+      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+        sortOrderByPriceChange7dInQueryParams === "ascent")
     ) {
-      sortedCoinList.sort((value1, value2) => value1[sortBy] - value2[sortBy]);
+      sortedCoinList.sort(
+        (value1, value2) =>
+          value1[sortByInQueryParams] - value2[sortByInQueryParams]
+      );
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortByInQueryParams === "current_price" ||
-        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
-      sortOrderInQueryParams === "descent"
+      (sortByInQueryParams === "current_price" &&
+        sortOrderByPriceInQueryParams === "descent") ||
+      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+        sortOrderByPriceChange1hInQueryParams === "descent") ||
+      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+        sortOrderByPriceChange24hInQueryParams === "descent") ||
+      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+        sortOrderByPriceChange7dInQueryParams === "descent")
     ) {
-      sortedCoinList.sort((value1, value2) => value2[sortBy] - value1[sortBy]);
+      sortedCoinList.sort(
+        (value1, value2) =>
+          value2[sortByInQueryParams] - value1[sortByInQueryParams]
+      );
       setDisplayCoinList(sortedCoinList);
     }
     if (
-      (sortByInQueryParams === "name" ||
-        sortByInQueryParams === "current_price" ||
-        sortByInQueryParams === "price_change_percentage_1h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_24h_in_currency" ||
-        sortByInQueryParams === "price_change_percentage_7d_in_currency") &&
-      sortOrderInQueryParams === "default"
+      (sortByInQueryParams === "name" &&
+        sortOrderByNameInQueryParams === "default") ||
+      (sortByInQueryParams === "current_price" &&
+        sortOrderByPriceInQueryParams === "default") ||
+      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+        sortOrderByPriceChange1hInQueryParams === "default") ||
+      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+        sortOrderByPriceChange24hInQueryParams === "default") ||
+      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+        sortOrderByPriceChange7dInQueryParams === "default")
     ) {
       setDisplayCoinList(coinList);
     }
@@ -287,7 +395,15 @@ function Coins() {
 
   useEffect(() => {
     sortCoinList();
-  }, [queryParams.sort_order, coinList]);
+  }, [
+    sortByInQueryParams,
+    sortOrderByNameInQueryParams,
+    sortOrderByPriceInQueryParams,
+    sortOrderByPriceChange1hInQueryParams,
+    sortOrderByPriceChange24hInQueryParams,
+    sortOrderByPriceChange7dInQueryParams,
+    coinList,
+  ]);
 
   useEffect(() => {
     handleSearchParams("days", numOfDays);
@@ -316,52 +432,57 @@ function Coins() {
       </div>
 
       {priceVolumeList.length === 0 ? (
-        <div className="please-select-coin-wrapper">
+        <div className="my-8 text-2xl flex justify-center">
           Please select a coin to view chart
         </div>
       ) : (
-        <div className="flex justify-center items-center max-w-[1440px] h-96 my-7">
-          {priceVolumeChartIsLoading && (
-            <div>Loading Price and Volumne Chart</div>
-          )}
-
-          <div className="line-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
-              <LineChart priceVolumeList={priceVolumeList} />
+        <div>
+          <div className="my-8 text-2xl flex justify-center">
+            {priceVolumeChartIsLoading && (
+              <div>Loading Price and Volumne Chart</div>
             )}
-            <div className="charts-coins-container">
-              {selectedCoinData &&
-                selectedCoinData.map((coin) => (
-                  <div className="coin-indicator-wrapper">
-                    <ColorIndicator
-                      background={colors[selectedCoinData.indexOf(coin)]}
-                    ></ColorIndicator>
-                    {coin.name}&nbsp;{currencySymbol}
-                    {coin.current_price.toLocaleString()}
-                  </div>
-                ))}
+          </div>
+          <div className="flex justify-center items-center max-w-[1440px] h-auto my-7">
+            <div className="w-1/2 h-auto p-5 mr-7 bg-line-bar-chart-background rounded-md">
+              {priceVolumeChartIsLoadingHasError === false && (
+                <LineChart priceVolumeList={priceVolumeList} />
+              )}
+              <div className="flex justify-between">
+                {selectedCoinData &&
+                  selectedCoinData.map((coin) => (
+                    <div className="flex items-center mx-2.5 mt-2">
+                      <ColorIndicator
+                        background={colors[selectedCoinData.indexOf(coin)]}
+                      ></ColorIndicator>
+                      {coin.name}&nbsp;{currencySymbol}
+                      {coin.current_price.toLocaleString()}
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div className="w-1/2 h-auto p-5 ml-7 bg-line-bar-chart-background rounded-md">
+              {priceVolumeChartIsLoadingHasError === false && (
+                <BarChart priceVolumeList={priceVolumeList} />
+              )}
+              <div className="flex justify-between">
+                {selectedCoinData &&
+                  selectedCoinData.map((coin) => (
+                    <div key={coin.id} className="flex items-center mx-1 mt-2">
+                      <ColorIndicator
+                        background={colors[selectedCoinData.indexOf(coin)]}
+                      ></ColorIndicator>
+                      {coin.name}&nbsp;{currencySymbol}
+                      {convertToBillion(coin.total_volume)}B
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
-          <div className="bar-chart-wrapper">
-            {priceVolumeChartIsLoadingHasError === false && (
-              <BarChart priceVolumeList={priceVolumeList} />
+          <div className="my-8 text-2xl flex justify-center">
+            {priceVolumeChartIsLoadingHasError && (
+              <div>Error fetching Price and Volumne Chart</div>
             )}
-            <div className="charts-coins-container">
-              {selectedCoinData &&
-                selectedCoinData.map((coin) => (
-                  <div className="coin-indicator-wrapper">
-                    <ColorIndicator
-                      background={colors[selectedCoinData.indexOf(coin)]}
-                    ></ColorIndicator>
-                    {coin.name}&nbsp;{currencySymbol}
-                    {convertToBillion(coin.total_volume)}B
-                  </div>
-                ))}
-            </div>
           </div>
-          {priceVolumeChartIsLoadingHasError && (
-            <div>Error fetching Price and Volumne Chart</div>
-          )}
         </div>
       )}
       <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
@@ -379,10 +500,34 @@ function Coins() {
         Clear Search Criteria
       </div>
 
-      <div>
-        <button onClick={setToDsc}> Top 50 </button>&nbsp;&nbsp;
-        <button onClick={setToAsc}> Bottom 50 </button>
-        {coinListIsLoading && <div>Loading Coin List</div>}
+      <div className="max-w-[1440px]">
+        <div className="flex justify-center my-6">
+          <div
+            className={`${
+              coinListDsc
+                ? "bg-button-selected"
+                : "bg-button-unselected-search-bar-background"
+            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer`}
+            onClick={setToDsc}
+          >
+            {" "}
+            Top 50{" "}
+          </div>
+          <div
+            className={`${
+              !coinListDsc
+                ? "bg-button-selected"
+                : "bg-button-unselected-search-bar-background"
+            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer`}
+            onClick={setToAsc}
+          >
+            {" "}
+            Bottom 50{" "}
+          </div>
+        </div>
+        {coinListIsLoading && (
+          <div className="flex justify-center my-5">Loading Coin List</div>
+        )}
         {/*
           save for infinite scroll when making real API call
           <InfiniteScroll
@@ -391,31 +536,90 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="coin-list-title-container">
-          <div className="coin-number-column-width">#</div>
-          <div className="coin-column-width">
-            <div>Name</div>&nbsp;
-            <button onClick={handleSortByName}>sort</button>
+         <div className="flex">
+          <div className="w-[4%] flex items-center">#</div>
+          <div className="w-[15%] pr-2 flex justify-start items-center">
+            <div>Name</div>
+            <div onClick={handleSortByName}>
+              <img
+                src={
+                  sortOrderByNameInQueryParams === "default"
+                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
+                    : sortOrderByNameInQueryParams === "ascent"
+                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
+                }
+                className="w-3.5 ml-2"
+              />
+            </div>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] pl-2 flex justify-start items-center">
             <div>Price</div>
-            <button onClick={handleSortByPrice}>sort</button>
+            <div onClick={handleSortByPrice}>
+              <img
+                src={
+                  sortOrderByPriceInQueryParams === "default"
+                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
+                    : sortOrderByPriceInQueryParams === "ascent"
+                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
+                }
+                className="w-3.5 ml-2"
+              />
+            </div>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>1h%</div>
-            <button onClick={handleSortByOneHour}>sort</button>
+            <div onClick={handleSortByOneHour}>
+              <img
+                src={
+                  sortOrderByPriceChange1hInQueryParams === "default"
+                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
+                    : sortOrderByPriceChange1hInQueryParams === "ascent"
+                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
+                }
+                className="w-3.5 ml-2"
+              />
+            </div>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>24h%</div>
-            <button onClick={handleSortByTwentyFourHours}>sort</button>
+            <div onClick={handleSortByTwentyFourHours}>
+              <img
+                src={
+                  sortOrderByPriceChange24hInQueryParams === "default"
+                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
+                    : sortOrderByPriceChange24hInQueryParams === "ascent"
+                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
+                }
+                className="w-3.5 ml-2"
+              />
+            </div>
           </div>
-          <div className="coin-data-width">
+          <div className="w-[10%] flex justify-start items-center">
             <div>7d%</div>
-            <button onClick={handleSortBySevenDays}>sort</button>
+            <div onClick={handleSortBySevenDays}>
+              <img
+                src={
+                  sortOrderByPriceChange7dInQueryParams === "default"
+                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
+                    : sortOrderByPriceChange7dInQueryParams === "ascent"
+                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
+                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
+                }
+                className="w-3.5 ml-2"
+              />
+            </div>
           </div>
-          <div className="coin-column-width">24h volume/Market Cap</div>
-          <div className="coin-column-width">Circulating/Total supply</div>
-          <div className="coin-column-width">Last 7d</div>
+          <div className="w-[17%] flex justify-start items-center">
+            24h volume/Market Cap
+          </div>
+          <div className="w-[17%] flex justify-start items-center">
+            Circulating/Total supply
+          </div>
+          <div className="w-[17%] flex justify-start items-center">Last 7d</div>
         </div>
         {displayCoinList.map((singleCoin) => (
           <div
@@ -432,7 +636,7 @@ function Coins() {
               <div className="flex items-center">
                 <CoinTag src={singleCoin.image} />
                 &nbsp;&nbsp;
-                <span>{singleCoin.name}</span>
+                <div>{singleCoin.name}</div>
               </div>
             </div>
             <div className="w-[9%] pl-2 flex justify-start items-center text-lg">
