@@ -14,6 +14,7 @@ import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
+import { PriceChangePercentageText } from "./priceChangePercentageText";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -308,12 +309,6 @@ function Coins() {
     return displayCoinList.indexOf(coin) % progressBarColors.length;
   };
 
-  const priceChangePercentage = (coin, priceChangePeriod) => {
-    return coin[priceChangePeriod] !== null
-      ? retainTwoDigits(coin[priceChangePeriod])
-      : "N/A";
-  };
-
   return (
     <div className="App">
       <div className="my-[20px]">
@@ -453,19 +448,9 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`flex justify-start items-center ml-2 ${
-                  singleCoin.price_change_percentage_1h_in_currency > 0
-                    ? "text-go-up"
-                    : "text-go-down"
-                }`}
-              >
-                {priceChangePercentage(
-                  singleCoin,
-                  "price_change_percentage_1h_in_currency"
-                )}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_1h_in_currency}
+              />
             </div>
             <div className="w-[9%] pl-2 flex justify-start items-center">
               {
@@ -475,19 +460,9 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`flex justify-start items-center ml-2 ${
-                  singleCoin.price_change_percentage_24h_in_currency > 0
-                    ? "text-go-up"
-                    : "text-go-down"
-                }`}
-              >
-                {priceChangePercentage(
-                  singleCoin,
-                  "price_change_percentage_24h_in_currency"
-                )}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_24h_in_currency}
+              />
             </div>
             <div className="w-[9%] pl-2 flex justify-start items-center">
               {
@@ -497,19 +472,9 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`flex justify-start items-center ml-2 ${
-                  singleCoin.price_change_percentage_7d_in_currency > 0
-                    ? "text-go-up"
-                    : "text-go-down"
-                }`}
-              >
-                {priceChangePercentage(
-                  singleCoin,
-                  "price_change_percentage_7d_in_currency"
-                )}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_7d_in_currency}
+              />
             </div>
             <div className="w-[20%] pr-3.5 flex justify-start items-center">
               <div className="w-full">
@@ -525,10 +490,7 @@ function Coins() {
                 </div>
                 <ProgressBarOuter
                   background={
-                    progressBarColors[
-                      displayCoinList.indexOf(singleCoin) %
-                        progressBarColors.length
-                    ]
+                    progressBarColors[calculateColorIndex(singleCoin)]
                   }
                 >
                   <ProgressBarInner
@@ -536,10 +498,7 @@ function Coins() {
                       singleCoin.market_cap_change_24h / singleCoin.market_cap
                     }
                     background={
-                      progressBarColors[
-                        displayCoinList.indexOf(singleCoin) %
-                          progressBarColors.length
-                      ]
+                      progressBarColors[calculateColorIndex(singleCoin)]
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
