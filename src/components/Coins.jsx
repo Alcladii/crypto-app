@@ -14,6 +14,7 @@ import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
+import { PriceChangePercentageText } from "./priceChangePercentageText";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -23,18 +24,17 @@ const CoinTag = styled.img`
 `;
 
 const ProgressBarOuter = styled.div`
-  border: 1px solid black;
   border-radius: 99px;
-  background: #a505d0;
-  height: 10px;
-  width: 150px;
+  background: ${(props) => `${props.background}80`};
+  height: 8px;
+  width: 100%;
 `;
 
 const ProgressBarInner = styled.div`
   border-radius: 99px;
-  height: 10px;
-  width: ${(props) => props.width * 150}px;
-  background: purple;
+  height: 8px;
+  width: ${(props) => props.width * 100}%;
+  background: ${(props) => props.background};
 `;
 
 const ColorIndicator = styled.div`
@@ -409,6 +409,22 @@ function Coins() {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
 
+  const progressBarColors = [
+    "#C27721",
+    "#6374C3",
+    "#30E0A1",
+    "#F5AC37",
+    "#F3EB2F",
+    "#638FFE",
+    "#4DEEE5",
+    "#F06142",
+    "#5082CF",
+  ];
+
+  const calculateColorIndex = (coin) => {
+    return displayCoinList.indexOf(coin) % progressBarColors.length;
+  };
+
   return (
     <div className="App">
       <div className="my-[20px]">
@@ -606,8 +622,11 @@ function Coins() {
           <div className="w-[17%] flex justify-start items-center">Last 7d</div>
         </div>
         {displayCoinList.map((singleCoin) => (
-          <div key={singleCoin.id} className="flex items-center">
-            <div className="w-[4%] flex items-center">
+          <div
+            key={singleCoin.id}
+            className="flex items-center h-20 my-2.5 bg-button-unselected-search-bar-background rounded-md font-space-grotesk"
+          >
+            <div className="w-[4%] pl-3 flex items-center">
               {displayCoinList.indexOf(singleCoin) + 1}
             </div>
             <div
@@ -620,12 +639,12 @@ function Coins() {
                 <div>{singleCoin.name}</div>
               </div>
             </div>
-            <div className="w-[10%] pl-2 flex justify-start items-center">
+            <div className="w-[9%] pl-2 flex justify-start items-center text-lg">
               {currencySymbol}
               {singleCoin.current_price &&
                 singleCoin.current_price.toLocaleString()}
             </div>
-            <div className="w-[10%] flex justify-start items-center">
+            <div className="w-[9%] pl-2 flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -633,22 +652,11 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`coin-data-width ${
-                  singleCoin.price_change_percentage_1h_in_currency > 0
-                    ? "positive-num"
-                    : "negative-num"
-                }`}
-              >
-                {singleCoin.price_change_percentage_1h_in_currency !== null
-                  ? retainTwoDigits(
-                      singleCoin.price_change_percentage_1h_in_currency
-                    )
-                  : "N/A"}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_1h_in_currency}
+              />
             </div>
-            <div className="w-[10%] flex justify-start items-center">
+            <div className="w-[9%] pl-2 flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -656,22 +664,11 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`coin-data-width ${
-                  singleCoin.price_change_percentage_24h_in_currency > 0
-                    ? "positive-num"
-                    : "negative-num"
-                }`}
-              >
-                {singleCoin.price_change_percentage_24h_in_currency !== null
-                  ? retainTwoDigits(
-                      singleCoin.price_change_percentage_24h_in_currency
-                    )
-                  : "N/A"}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_24h_in_currency}
+              />
             </div>
-            <div className="w-[10%] flex justify-start items-center">
+            <div className="w-[9%] pl-2 flex justify-start items-center">
               {
                 <Arrow
                   priceChange={
@@ -679,24 +676,13 @@ function Coins() {
                   }
                 />
               }
-              <div
-                className={`coin-data-width ${
-                  singleCoin.price_change_percentage_7d_in_currency > 0
-                    ? "positive-num"
-                    : "negative-num"
-                }`}
-              >
-                {singleCoin.price_change_percentage_7d_in_currency !== null
-                  ? retainTwoDigits(
-                      singleCoin.price_change_percentage_7d_in_currency
-                    )
-                  : "N/A"}
-                %
-              </div>
+              <PriceChangePercentageText
+                coin={singleCoin.price_change_percentage_7d_in_currency}
+              />
             </div>
-            <div className="w-[17%] flex justify-start items-center">
-              <div>
-                <div className="market-cap-change-wrapper">
+            <div className="w-[20%] pr-3.5 flex justify-start items-center">
+              <div className="w-full">
+                <div className="flex w-full items-center justify-between text-sm">
                   <span>
                     {currencySymbol}
                     {convertToBillion(singleCoin.market_cap_change_24h)}B
@@ -706,18 +692,25 @@ function Coins() {
                     {convertToBillion(singleCoin.market_cap)}B
                   </span>
                 </div>
-                <ProgressBarOuter>
+                <ProgressBarOuter
+                  background={
+                    progressBarColors[calculateColorIndex(singleCoin)]
+                  }
+                >
                   <ProgressBarInner
                     width={
                       singleCoin.market_cap_change_24h / singleCoin.market_cap
+                    }
+                    background={
+                      progressBarColors[calculateColorIndex(singleCoin)]
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="w-[17%] flex justify-start items-center">
-              <div>
-                <div className="total-circulating-supply-wrapper">
+            <div className="w-[20%] pl-4 flex justify-start items-center">
+              <div className="w-full">
+                <div className="flex w-full items-center justify-between text-sm">
                   <span>
                     {currencySymbol}
                     {convertToBillion(singleCoin.circulating_supply)}B
@@ -727,19 +720,27 @@ function Coins() {
                     {convertToBillion(singleCoin.total_supply)}B
                   </span>
                 </div>
-                <ProgressBarOuter>
+                <ProgressBarOuter
+                  background={
+                    progressBarColors[calculateColorIndex(singleCoin)]
+                  }
+                >
                   <ProgressBarInner
                     width={
                       singleCoin.circulating_supply / singleCoin.total_supply
+                    }
+                    background={
+                      progressBarColors[calculateColorIndex(singleCoin)]
                     }
                   ></ProgressBarInner>
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="w-[17%] flex justify-start items-center">
-              <div className="individual-coin-chart">
+            <div className="w-[15%] pr-3 flex justify-end items-center">
+              <div className="w-5/6 pt-6">
                 <LineChartIndividualCoin
                   priceList={singleCoin.sparkline_in_7d.price}
+                  color={progressBarColors[calculateColorIndex(singleCoin)]}
                 />
               </div>
             </div>
