@@ -14,7 +14,7 @@ import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
-import { PriceChangePercentageText } from "./priceChangePercentageText";
+import { PriceChangePercentageText } from "../components/priceChangePercentageText";
 
 const CoinTag = styled.img`
   width: 30px;
