@@ -29,7 +29,7 @@ export default {
     extend: {
       colors: {
         "crpyto-background-dark": "#13121A",
-        "button-selected": "#6161D6",
+        "button-selected": "rgba(97, 97, 214, 0.5)",
         "button-unselected-search-bar-background": "#191925",
         "go-up": "#01F1E3",
         "go-down": "#FE2264",

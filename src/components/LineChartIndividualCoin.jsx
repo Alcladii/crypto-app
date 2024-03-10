@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChartIndividualCoin = ({ priceList }) => {
+const LineChartIndividualCoin = ({ priceList, color }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -59,17 +59,17 @@ const LineChartIndividualCoin = ({ priceList }) => {
       {
         label: "Trade Price",
         data: priceList,
-        borderColor: "blue",
+        borderColor: color,
         //here is the part for the gradient fill
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-          gradient.addColorStop(0, "rgba(29, 26, 232, .5)");
-          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+          gradient.addColorStop(0, `${color}`);
+          gradient.addColorStop(0.2, "rgba(0, 0, 0, 0.0)");
           return gradient;
         },
         pointRadius: 0,
-        borderWidth: 3,
+        borderWidth: 2,
         fill: true,
       },
     ],
