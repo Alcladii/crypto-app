@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,8 +23,13 @@ ChartJS.register(
   Filler,
   Legend
 );
+import { CryptoContext } from "../contexts/cryptoContext";
+import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
+import { setDisplayIntervalLineChart } from "./setDisplayTimeIntervalLineBarChart";
 
 const LineChart = ({ priceVolumeList }) => {
+  const { numOfDays } = useContext(CryptoContext);
+  const maxTicksLimit = setMaxTicksLimit(numOfDays);
   const options = {
     responsive: true,
     plugins: {
@@ -64,6 +69,9 @@ const LineChart = ({ priceVolumeList }) => {
           display: false,
           drawBorder: false,
         },
+        ticks: {
+          maxTicksLimit: maxTicksLimit,
+        },
       },
     },
     tension: 0.5,
@@ -79,9 +87,9 @@ const LineChart = ({ priceVolumeList }) => {
   const priceData = {
     labels:
       priceVolumeList.length !== 0 &&
-      priceVolumeList[0].prices.map((item) =>
-        new Date(item[0]).toLocaleDateString(undefined, { day: "numeric" })
-      ),
+      priceVolumeList[0].prices.map((item) => {
+        return setDisplayIntervalLineChart(numOfDays, item);
+      }),
     datasets: priceVolumeList.map((item) => {
       return {
         label: `Trade Price`,
