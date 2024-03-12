@@ -79,17 +79,6 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       labels:
         priceVolumeList.length !== 0 &&
         priceVolumeList[0].prices.map((item) => {
-          /*const date = new Date(item[0]);
-          return currencyConverterDays === "2"
-            ? date.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                hour12: true,
-              })
-            : currencyConverterDays === "7" ||
-              currencyConverterDays === "30" ||
-              currencyConverterDays === "90"
-            ? date.toLocaleDateString(undefined, { day: "numeric" })
-            : date.toLocaleDateString(undefined, { month: "short" });*/
           return setDisplayIntervalLineChart(currencyConverterDays, item);
         }),
 
