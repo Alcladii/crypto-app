@@ -109,10 +109,6 @@ function Coins() {
       );
       setCoinList(coinList.concat(data))
       setCoinPage(coinPage + 1)*/
-      /*const { coins }  = await api(
-        "/coins/markets",
-        "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
-      );*/
       let coins;
       const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
