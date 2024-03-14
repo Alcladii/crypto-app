@@ -24,6 +24,8 @@ ChartJS.register(
   Legend
 );
 import { CryptoContext } from "../contexts/cryptoContext";
+import { setMaxTicksLimit } from "./setMaxTicksLimitLineChartCurrencyConverter";
+import { setDisplayIntervalLineChart } from "./setDisplayTimeIntervalLineBarChart";
 
 const LineChartCurrencyConverter = ({ priceVolumeList }) => {
   if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
@@ -38,24 +40,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       convertionRate.push(quotient);
     }
 
-    let maxTicksLimit;
-
-    if (currencyConverterDays === "2") {
-      maxTicksLimit = 24;
-    }
-    if (currencyConverterDays === "7") {
-      maxTicksLimit = 7;
-    }
-    if (currencyConverterDays === "30" || currencyConverterDays === "90") {
-      maxTicksLimit = 30;
-    }
-    if (currencyConverterDays === "180") {
-      maxTicksLimit = 6;
-    }
-    if (currencyConverterDays === "365") {
-      maxTicksLimit = 12;
-    }
-
+    const maxTicksLimit = setMaxTicksLimit(currencyConverterDays);
     const options = {
       responsive: true,
       plugins: {
@@ -94,18 +79,9 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       labels:
         priceVolumeList.length !== 0 &&
         priceVolumeList[0].prices.map((item) => {
-          const date = new Date(item[0]);
-          return currencyConverterDays === "2"
-            ? date.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                hour12: true,
-              })
-            : currencyConverterDays === "7" ||
-              currencyConverterDays === "30" ||
-              currencyConverterDays === "90"
-            ? date.toLocaleDateString(undefined, { day: "numeric" })
-            : date.toLocaleDateString(undefined, { month: "short" });
+          return setDisplayIntervalLineChart(currencyConverterDays, item);
         }),
+
       datasets: [
         {
           label: `Currency Converter Line Chart`,
