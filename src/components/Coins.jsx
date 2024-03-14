@@ -532,8 +532,8 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="flex">
-          <div className="w-[4%] flex items-center">#</div>
+         <div className="flex">
+          <div className="w-[4%] pl-3 flex items-center">#</div>
           <div className="w-[15%] pr-2 flex justify-start items-center">
             <div>Name</div>
             <div onClick={handleSortByName}>
@@ -549,7 +549,7 @@ function Coins() {
               />
             </div>
           </div>
-          <div className="w-[10%] pl-2 flex justify-start items-center">
+          <div className="w-[9%] pl-2 flex justify-start items-center">
             <div>Price</div>
             <div onClick={handleSortByPrice}>
               <img
@@ -564,7 +564,7 @@ function Coins() {
               />
             </div>
           </div>
-          <div className="w-[10%] flex justify-start items-center">
+          <div className="w-[9%] pl-2 flex justify-start items-center">
             <div>1h%</div>
             <div onClick={handleSortByOneHour}>
               <img
@@ -579,7 +579,7 @@ function Coins() {
               />
             </div>
           </div>
-          <div className="w-[10%] flex justify-start items-center">
+          <div className="w-[9%] pl-2 flex justify-start items-center">
             <div>24h%</div>
             <div onClick={handleSortByTwentyFourHours}>
               <img
@@ -594,7 +594,7 @@ function Coins() {
               />
             </div>
           </div>
-          <div className="w-[10%] flex justify-start items-center">
+          <div className="w-[9%] pl-2 flex justify-start items-center">
             <div>7d%</div>
             <div onClick={handleSortBySevenDays}>
               <img
@@ -609,13 +609,13 @@ function Coins() {
               />
             </div>
           </div>
-          <div className="w-[17%] flex justify-start items-center">
+          <div className="w-[20%] pr-3.5 flex justify-start items-center">
             24h volume/Market Cap
           </div>
-          <div className="w-[17%] flex justify-start items-center">
+          <div className="w-[20%] pl-3.5 flex justify-start items-center">
             Circulating/Total supply
           </div>
-          <div className="w-[17%] flex justify-start items-center">Last 7d</div>
+          <div className="w-[15%] flex pl-7 justify-start items-center">Last 7d</div>
         </div>
         {displayCoinList.map((singleCoin) => (
           <div
@@ -704,7 +704,7 @@ function Coins() {
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="w-[20%] pl-4 flex justify-start items-center">
+            <div className="w-[20%] pl-3.5 flex justify-start items-center">
               <div className="w-full">
                 <div className="flex w-full items-center justify-between text-sm">
                   <span>
