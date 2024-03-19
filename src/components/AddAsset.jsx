@@ -91,17 +91,17 @@ export const AddAsset = ({ addCoin }) => {
       <button onClick={togglePopup}>Add Asset</button>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
-          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md py-8 px-10">
-            <div className="flex h-[15%] justify-between items-center">
+          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
+            <div className="flex h-[12%] justify-between items-center">
               <div className="font-space-grotesk text-lg font-semibold">Select Coins</div>
               <div
                 onClick={togglePopup}
-                className="w-9 h-9 rounded-full border-2 cursor-pointer flex justify-center items-center text-2xl"
+                className="w-8 h-8 rounded-full border-2 cursor-pointer flex justify-center items-center text-2xl"
               >
                 ×
               </div>
             </div>
-            <div className="flex h-[85%] pt-4">
+            <div className="flex h-[88%] pt-6">
               <div className="w-[38%] bg-line-bar-chart-background rounded-lg flex justify-center items-center">
                 {selectedCoin && (
                   <div className="flex-col justify-center items-center">
