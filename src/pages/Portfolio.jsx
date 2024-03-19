@@ -70,11 +70,16 @@ function Portfolio() {
   }, []);
 
   return (
-    <div>
-      <h2>Portfolio</h2>
-      <AddAsset addCoin={addCoin} />
-      {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
-      <PortfolioItem />
+    <div className="bg-crpyto-background-dark h-screen w-screen">
+      <div className="max-w-[1440px] border mx-auto px-10 py-8">
+        <div className="flex justify-between">
+          <h2 className="font-space-grotesk text-xl">Portfolio</h2>
+          <AddAsset addCoin={addCoin} />
+        </div>
+
+        {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
+        <PortfolioItem />
+      </div>
     </div>
   );
 }

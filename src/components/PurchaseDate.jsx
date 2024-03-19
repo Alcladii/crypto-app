@@ -25,9 +25,12 @@ export const PurchaseDate = ({ date }) => {
   return (
     <div>
       <input
-        type="date"
-        value={localDate || ""}
+        className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
+        type="text"
+        onFocus={(e) => (e.target.type = "date")}
+        onBlur={(e) => (e.target.type = "text")}
         onChange={(e) => handleInput(e.target.value)}
+        placeholder="Purchased Date"
       />
     </div>
   );
