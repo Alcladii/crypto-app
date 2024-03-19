@@ -106,7 +106,7 @@ export const AddAsset = ({ addCoin }) => {
                 {selectedCoin && (
                   <div className="flex-col justify-center items-center">
                     <div className="w-32 flex justify-center items-center mb-2">
-                      <div className="w-12 h-12 flex justify-center items-center rounded-md pb-2 bg-coin-icon-background">
+                      <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-coin-icon-background">
                         <img
                           className="w-8 mt-2"
                           src={selectedCoin.image.large}
