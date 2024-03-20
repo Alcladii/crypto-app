@@ -70,10 +70,10 @@ function Portfolio() {
   }, []);
 
   return (
-    <div className="bg-crpyto-background-dark h-screen w-screen">
-      <div className="max-w-[1440px] border mx-auto px-10 py-8">
+    <div className="bg-crpyto-background-dark h-full w-screen">
+      <div className="max-w-[1440px] border mx-auto px-10 py-8 font-space-grotesk  ">
         <div className="flex justify-between">
-          <h2 className="font-space-grotesk text-xl">Portfolio</h2>
+          <h2 className="text-xl">Portfolio</h2>
           <AddAsset addCoin={addCoin} />
         </div>
 
