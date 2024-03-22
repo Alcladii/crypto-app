@@ -55,7 +55,7 @@ export const PortfolioItem = () => {
         portfolioList.map((item) => (
           <div className="flex flex-col w-full border">
             <div className="flex">
-              <div className="w-[30%] bg-line-bar-chart-background rounded-l-lg">
+              <div className="w-[30%] bg-line-bar-chart-background rounded-l-lg py-2">
                 <div className="flex items-center py-3">
                   <div>
                     <CoinTag src={item.coinData.image.large} />
@@ -86,17 +86,17 @@ export const PortfolioItem = () => {
                 {/*<div>Last Updated&nbsp;{item.coinData.last_updated}</div>*/}
               </div>
               <div className="w-[75%] border flex bg-button-unselected-search-bar-background rounded-r-lg">
-                <div className="w-[50%] border">
-                  <div>
-                    <div>
+                <div className="w-[50%] border p-4 flex flex-col justify-between">
+                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                    <div className="text-xl font-semibold">
                       {currencySymbol}
                       {item.coinData.market_data.current_price[displayCurrency]}
                     </div>
-                    <div>Current Price</div>
+                    <div className="text-sm">Current Price</div>
                   </div>
-                  <div>
-                    <div className="portfolio-item-market-cap-volume-wrapper">
-                      <div>
+                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                    <div className="flex items-center">
+                      <div  className="text-xl font-semibold">
                         {retainTwoDigits(
                           (item.coinData.market_data.total_volume[
                             displayCurrency
@@ -124,28 +124,28 @@ export const PortfolioItem = () => {
                         </ProgressBarOuter>
                       </div>
                     </div>
-                    <div>Market Cap vs Volume</div>
+                    <div className="text-sm">Market Cap vs Volume</div>
                   </div>
                 </div>
-                <div className="w-[50%] border">
-                  <div>
-                    <div>
+                <div className="w-[50%] border p-4 flex flex-col justify-between">
+                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                    <div className="text-xl font-semibold">
                       {retainTwoDigits(
                         item.coinData.market_data.price_change_percentage_24h
                       )}
                       %
                     </div>
-                    <div>24h%</div>
+                    <div className="text-sm">24h%</div>
                   </div>
-                  <div>
-                    <div>
+                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                    <div className="text-xl font-semibold">
                       {retainTwoDigits(
                         item.coinData.market_data.circulating_supply /
                           item.coinData.market_data.total_supply
                       )}
                       %
                     </div>
-                    <div>Circ Supply vs Max Supply</div>
+                    <div className="text-sm">Circ Supply vs Max Supply</div>
                   </div>
                 </div>
               </div>

@@ -36,7 +36,8 @@ export default {
         "line-bar-chart-background": "#191932",
         "right-currency-background": "#1E1932",
         "to-in-currency-converter": "rgba(209, 209, 209, 0.8)",
-        "coin-icon-background": "#2C2C4A"
+        "coin-icon-background": "#2C2C4A",
+        "portfolio-item-price-properties": "#2D2D51"
       },
       fontFamily: {
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
