@@ -5,7 +5,7 @@ import { CryptoContext } from "../contexts/cryptoContext";
 export const PurchaseDate = ({ date }) => {
   const [localDate, setLocalDate] = useState(date);
 
-  const { setPurchaseDate, setFormattedDateForHistoryApiCall } =
+  const { setPurchaseDate, setFormattedDateForHistoryApiCall, editAsset } =
     useContext(CryptoContext);
 
   const formatDate = (dateString) => {
@@ -24,6 +24,12 @@ export const PurchaseDate = ({ date }) => {
 
   return (
     <div>
+      {editAsset ? <input
+        className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
+        type="date"      
+        onChange={(e) => handleInput(e.target.value)}
+        placeholder={date}
+      /> :
       <input
         className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
         type="text"
@@ -31,7 +37,7 @@ export const PurchaseDate = ({ date }) => {
         onBlur={(e) => (e.target.type = "text")}
         onChange={(e) => handleInput(e.target.value)}
         placeholder="Purchased Date"
-      />
+      />}
     </div>
   );
 };

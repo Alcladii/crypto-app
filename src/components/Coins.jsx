@@ -14,7 +14,7 @@ import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
-import { PriceChangePercentageText } from "./priceChangePercentageText";
+import { PriceChangePercentageText } from "./PriceChangePercentageText";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -532,7 +532,7 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-         <div className="flex">
+        <div className="flex">
           <div className="w-[4%] pl-3 flex items-center">#</div>
           <div className="w-[15%] pr-2 flex justify-start items-center">
             <div>Name</div>
@@ -615,7 +615,9 @@ function Coins() {
           <div className="w-[20%] pl-3.5 flex justify-start items-center">
             Circulating/Total supply
           </div>
-          <div className="w-[15%] flex pl-7 justify-start items-center">Last 7d</div>
+          <div className="w-[15%] flex pl-7 justify-start items-center">
+            Last 7d
+          </div>
         </div>
         {displayCoinList.map((singleCoin) => (
           <div
@@ -648,9 +650,11 @@ function Coins() {
                   }
                 />
               }
-              <PriceChangePercentageText
-                coin={singleCoin.price_change_percentage_1h_in_currency}
-              />
+              <div className="ml-2">
+                <PriceChangePercentageText
+                  coin={singleCoin.price_change_percentage_1h_in_currency}
+                />
+              </div>
             </div>
             <div className="w-[9%] pl-2 flex justify-start items-center">
               {
@@ -660,9 +664,11 @@ function Coins() {
                   }
                 />
               }
-              <PriceChangePercentageText
-                coin={singleCoin.price_change_percentage_24h_in_currency}
-              />
+              <div className="ml-2">
+                <PriceChangePercentageText
+                  coin={singleCoin.price_change_percentage_24h_in_currency}
+                />
+              </div>
             </div>
             <div className="w-[9%] pl-2 flex justify-start items-center">
               {
@@ -672,9 +678,11 @@ function Coins() {
                   }
                 />
               }
-              <PriceChangePercentageText
-                coin={singleCoin.price_change_percentage_7d_in_currency}
-              />
+              <div className="ml-2">
+                <PriceChangePercentageText
+                  coin={singleCoin.price_change_percentage_7d_in_currency}
+                />
+              </div>
             </div>
             <div className="w-[20%] pr-3.5 flex justify-start items-center">
               <div className="w-full">

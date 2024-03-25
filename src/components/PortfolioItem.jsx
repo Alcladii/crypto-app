@@ -3,6 +3,8 @@ import styled from "styled-components";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { EditAsset } from "../components/EditAsset";
+import { PriceChangePercentageText } from "./PriceChangePercentageText";
+import { Arrow } from "./Arrow";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -12,18 +14,17 @@ const CoinTag = styled.img`
 `;
 
 const ProgressBarOuter = styled.div`
-  border: 1px solid black;
   border-radius: 99px;
-  background: #a505d0;
+  background: rgba(1, 241, 227, 0.5);
   height: 10px;
-  width: 150px;
+  width: 100%;
 `;
 
 const ProgressBarInner = styled.div`
   border-radius: 99px;
   height: 10px;
-  width: ${(props) => props.width * 150}px;
-  background: purple;
+  width: ${(props) => props.width * 100}%;
+  background: #01f1e3;
 `;
 
 export const PortfolioItem = () => {
@@ -80,9 +81,11 @@ export const PortfolioItem = () => {
                     </div>
                     <div className="mx-3">{profitPercentage(item)}%</div>
                   </div>
-                  <div className="text-sm">Purchased&nbsp;{item.purchaseDate1}</div>
+                  <div className="text-sm">
+                    Purchased&nbsp;{item.purchaseDate1}
+                  </div>
                 </div>
-               
+
                 {/*<div>Last Updated&nbsp;{item.coinData.last_updated}</div>*/}
               </div>
               <div className="w-[75%] border flex bg-button-unselected-search-bar-background rounded-r-lg">
@@ -96,7 +99,7 @@ export const PortfolioItem = () => {
                   </div>
                   <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
                     <div className="flex items-center">
-                      <div  className="text-xl font-semibold">
+                      <div className="text-xl font-semibold text-portfolio-item-bar">
                         {retainTwoDigits(
                           (item.coinData.market_data.total_volume[
                             displayCurrency
@@ -109,41 +112,62 @@ export const PortfolioItem = () => {
                         %
                       </div>{" "}
                       &nbsp;&nbsp;
-                      <div>
-                        <ProgressBarOuter>
-                          <ProgressBarInner
-                            width={
-                              item.coinData.market_data.total_volume[
-                                displayCurrency
-                              ] /
-                              item.coinData.market_data.market_cap[
-                                displayCurrency
-                              ]
-                            }
-                          ></ProgressBarInner>
-                        </ProgressBarOuter>
-                      </div>
+                      <ProgressBarOuter>
+                        <ProgressBarInner
+                          width={
+                            item.coinData.market_data.total_volume[
+                              displayCurrency
+                            ] /
+                            item.coinData.market_data.market_cap[
+                              displayCurrency
+                            ]
+                          }
+                        ></ProgressBarInner>
+                      </ProgressBarOuter>
                     </div>
                     <div className="text-sm">Market Cap vs Volume</div>
                   </div>
                 </div>
                 <div className="w-[50%] border p-4 flex flex-col justify-between">
                   <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
-                    <div className="text-xl font-semibold">
-                      {retainTwoDigits(
-                        item.coinData.market_data.price_change_percentage_24h
-                      )}
-                      %
+                    <div className="flex items-center">
+                      <div>
+                        <Arrow
+                          priceChange={
+                            item.coinData.market_data
+                              .price_change_percentage_24h
+                          }
+                        />
+                      </div>
+                      <div className="text-xl font-semibold ml-2">
+                        <PriceChangePercentageText
+                          coin={
+                            item.coinData.market_data
+                              .price_change_percentage_24h
+                          }
+                        />
+                      </div>
                     </div>
                     <div className="text-sm">24h%</div>
                   </div>
                   <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
-                    <div className="text-xl font-semibold">
-                      {retainTwoDigits(
-                        item.coinData.market_data.circulating_supply /
-                          item.coinData.market_data.total_supply
-                      )}
-                      %
+                    <div className="flex items-center">
+                      <div className="text-xl font-semibold">
+                        {retainTwoDigits(
+                          item.coinData.market_data.circulating_supply /
+                            item.coinData.market_data.total_supply
+                        )}
+                        %
+                      </div>
+                      &nbsp;&nbsp;
+                      <ProgressBarOuter>
+                        <ProgressBarInner
+                          width={
+                            item.coinData.market_data.circulating_supply /
+                            item.coinData.market_data.total_supply
+                          }
+                        ></ProgressBarInner>
+                      </ProgressBarOuter>
                     </div>
                     <div className="text-sm">Circ Supply vs Max Supply</div>
                   </div>
@@ -151,7 +175,7 @@ export const PortfolioItem = () => {
               </div>
             </div>
             <div className="flex justify-end my-3">
-              <button onClick={() => handleClick(item.id)}>Remove</button>
+              <div className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4" onClick={() => handleClick(item.id)}>Remove</div>
               <EditAsset id={item.id} />
             </div>
           </div>

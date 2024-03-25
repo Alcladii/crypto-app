@@ -14,6 +14,7 @@ export const AddAsset = ({ addCoin }) => {
     formattedDateForHistoryApiCall,
     isNumber,
     setIsNumber,
+    setEditAsset,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -29,6 +30,7 @@ export const AddAsset = ({ addCoin }) => {
     setShowPopup(!showPopup);
     setSelectedCoin("");
     setSelectedAmount("");
+    setEditAsset(false)
   };
 
   const coinsOptions =

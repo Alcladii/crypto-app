@@ -14,6 +14,7 @@ export const EditAsset = ({ id }) => {
     isNumber,
     setIsNumber,
     formattedDateForHistoryApiCall,
+    setEditAsset,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -23,6 +24,7 @@ export const EditAsset = ({ id }) => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+    setEditAsset(true)
   };
 
   const handleEditClick = (a) => {
@@ -85,30 +87,52 @@ export const EditAsset = ({ id }) => {
     togglePopup();
   };
 
+  console.log(selectedItem.purchaseDate1)
+
   return (
     <div>
-      <button onClick={handleEdit}>Edit</button>
+      <div
+        className="flex justify-center items-center w-24 h-10 selected-button rounded-md"
+        onClick={handleEdit}
+      >
+        Edit
+      </div>
       {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Edit Asset</h2>
-            <p>Edit selected asset below</p>
-            {selectedItem && (
-              <div key={selectedItem.id}>{selectedItem.coinData.name}</div>
-            )}
-            <PurchaseAmount amount={selectedItem.purchaseAmount1} />
-            {!isNumber && <div>Put in a number</div>}
-            <PurchaseDate date={selectedItem.purchaseDate1} />
-            <button
-              onClick={() => {
-                handleSaveClick(selectedItem.coinData.id);
-              }}
-            >
-              Save
-            </button>
-            <button onClick={togglePopup}>Close</button>
+        //<div className="popup">
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
+          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
+            <div className="popup-content">
+              <p>Edit Asset</p>
+              {selectedItem && (
+                /*<img
+              className="w-8 mt-2"
+              src={selectedCoin.image.large}
+            />*/
+                <div className="flex items-center border">
+                 
+                  <img
+                    className="w-8"
+                    src={selectedItem.coinData.image.large}
+                  />
+                 
+                  <div className="flex items-center h-10" key={selectedItem.id}>{selectedItem.coinData.name}</div>
+                </div>
+              )}
+              <PurchaseAmount amount={selectedItem.purchaseAmount1} />
+              {!isNumber && <div>Put in a number</div>}
+              <PurchaseDate date={selectedItem.purchaseDate1} />
+              <button
+                onClick={() => {
+                  handleSaveClick(selectedItem.coinData.id);
+                }}
+              >
+                Save
+              </button>
+              <button onClick={togglePopup}>Close</button>
+            </div>
           </div>
         </div>
+        // </div>
       )}
     </div>
   );
