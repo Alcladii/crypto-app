@@ -14,6 +14,7 @@ export const AddAsset = ({ addCoin }) => {
     formattedDateForHistoryApiCall,
     isNumber,
     setIsNumber,
+    setEditAsset,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -29,6 +30,7 @@ export const AddAsset = ({ addCoin }) => {
     setShowPopup(!showPopup);
     setSelectedCoin("");
     setSelectedAmount("");
+    setEditAsset(false)
   };
 
   const coinsOptions =
@@ -88,7 +90,7 @@ export const AddAsset = ({ addCoin }) => {
 
   return (
     <div>
-      <button onClick={togglePopup}>Add Asset</button>
+      <div className="flex justify-center items-center w-28 h-10 selected-button rounded-md mb-3" onClick={togglePopup}>Add Asset</div>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">

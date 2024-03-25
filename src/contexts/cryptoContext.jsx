@@ -59,6 +59,7 @@ export const CryptoProvider = ({ children }) => {
     "currencyConverterDays",
     7
   );
+  const [editAsset, setEditAsset] = useState(false) 
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -195,6 +196,8 @@ export const CryptoProvider = ({ children }) => {
         setPriceVolumeChartIsLoadingHasError,
         currencyConverterDays,
         setCurrencyConverterDays,
+        editAsset, 
+        setEditAsset,
       }}
     >
       {children}
