@@ -24,7 +24,7 @@ export const EditAsset = ({ id }) => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
-    setEditAsset(true)
+    setEditAsset(true);
   };
 
   const handleEditClick = (a) => {
@@ -87,8 +87,6 @@ export const EditAsset = ({ id }) => {
     togglePopup();
   };
 
-  console.log(selectedItem.purchaseDate1)
-
   return (
     <div>
       <div
@@ -98,24 +96,19 @@ export const EditAsset = ({ id }) => {
         Edit
       </div>
       {showPopup && (
-        //<div className="popup">
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
             <div className="popup-content">
               <p>Edit Asset</p>
               {selectedItem && (
-                /*<img
-              className="w-8 mt-2"
-              src={selectedCoin.image.large}
-            />*/
                 <div className="flex items-center border">
-                 
                   <img
                     className="w-8"
                     src={selectedItem.coinData.image.large}
                   />
-                 
-                  <div className="flex items-center h-10" key={selectedItem.id}>{selectedItem.coinData.name}</div>
+                  <div className="flex items-center h-10" key={selectedItem.id}>
+                    {selectedItem.coinData.name}
+                  </div>
                 </div>
               )}
               <PurchaseAmount amount={selectedItem.purchaseAmount1} />
@@ -132,7 +125,6 @@ export const EditAsset = ({ id }) => {
             </div>
           </div>
         </div>
-        // </div>
       )}
     </div>
   );

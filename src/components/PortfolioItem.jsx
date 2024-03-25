@@ -54,7 +54,7 @@ export const PortfolioItem = () => {
     <div>
       {portfolioList.length !== 0 &&
         portfolioList.map((item) => (
-          <div className="flex flex-col w-full border">
+          <div className="flex flex-col w-full">
             <div className="flex">
               <div className="w-[30%] bg-line-bar-chart-background rounded-l-lg py-2">
                 <div className="flex items-center py-3">
@@ -85,11 +85,9 @@ export const PortfolioItem = () => {
                     Purchased&nbsp;{item.purchaseDate1}
                   </div>
                 </div>
-
-                {/*<div>Last Updated&nbsp;{item.coinData.last_updated}</div>*/}
               </div>
-              <div className="w-[75%] border flex bg-button-unselected-search-bar-background rounded-r-lg">
-                <div className="w-[50%] border p-4 flex flex-col justify-between">
+              <div className="w-[75%] flex bg-button-unselected-search-bar-background rounded-r-lg">
+                <div className="w-[50%] p-4 flex flex-col justify-between">
                   <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
                     <div className="text-xl font-semibold">
                       {currencySymbol}
@@ -128,7 +126,7 @@ export const PortfolioItem = () => {
                     <div className="text-sm">Market Cap vs Volume</div>
                   </div>
                 </div>
-                <div className="w-[50%] border p-4 flex flex-col justify-between">
+                <div className="w-[50%] p-4 flex flex-col justify-between">
                   <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
                     <div className="flex items-center">
                       <div>
