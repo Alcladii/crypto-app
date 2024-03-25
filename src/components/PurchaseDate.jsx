@@ -28,7 +28,7 @@ export const PurchaseDate = ({ date }) => {
         className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
         type="date"      
         onChange={(e) => handleInput(e.target.value)}
-        placeholder={date}
+        value={date}
       /> :
       <input
         className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
