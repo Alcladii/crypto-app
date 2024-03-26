@@ -98,10 +98,12 @@ export const EditAsset = ({ id }) => {
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
-            <div className="popup-content">
-              <p>Edit Asset</p>
+            <div className="h-full flex flex-col justify-between">
+              <div className="h-[13%] flex items-center text-xl semi-bold">
+                Edit Asset
+              </div>
               {selectedItem && (
-                <div className="flex items-center border">
+                <div className="flex items-center">
                   <img
                     className="w-8"
                     src={selectedItem.coinData.image.large}
@@ -111,17 +113,27 @@ export const EditAsset = ({ id }) => {
                   </div>
                 </div>
               )}
+              <div>Purchased Amount</div>
               <PurchaseAmount amount={selectedItem.purchaseAmount1} />
               {!isNumber && <div>Put in a number</div>}
+              <div>Purchased Date</div>
               <PurchaseDate date={selectedItem.purchaseDate1} />
-              <button
-                onClick={() => {
-                  handleSaveClick(selectedItem.coinData.id);
-                }}
-              >
-                Save
-              </button>
-              <button onClick={togglePopup}>Close</button>
+              <div className="flex justify-end mt-2">
+                <div
+                  className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4"
+                  onClick={() => {
+                    handleSaveClick(selectedItem.coinData.id);
+                  }}
+                >
+                  Save
+                </div>
+                <div
+                  className="flex justify-center items-center w-24 h-10 selected-button rounded-md"
+                  onClick={togglePopup}
+                >
+                  Close
+                </div>
+              </div>
             </div>
           </div>
         </div>
