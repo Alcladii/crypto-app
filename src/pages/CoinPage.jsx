@@ -56,11 +56,10 @@ const CoinPage = () => {
 
   const htmlContent = singleCoin.description && singleCoin.description.en;
 
-
   const createMarkup = () => {
     let processedContent = htmlContent;
     if (!isExpanded && htmlContent.length > 800) {
-      processedContent = htmlContent.slice(0, 800) + '...';
+      processedContent = htmlContent.slice(0, 800) + "...";
     }
     processedContent = processedContent.replace(
       /<a href="(.*?)">(.*?)<\/a>/g,
@@ -73,7 +72,6 @@ const CoinPage = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
-
 
   return (
     <div className="bg-crpyto-background-dark h-[100%] w-screen">
@@ -251,13 +249,13 @@ const CoinPage = () => {
             <div className="mt-36">
               <div className="mb-4 text-xl font-semibold">Description</div>
               {singleCoin && (
-                <div dangerouslySetInnerHTML={createMarkup(htmlContent)}  />
+                <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
               )}
-              { htmlContent.length > 156 && (
-        <button onClick={toggleExpand}>
-          {isExpanded ? 'Read Less' : 'Read More'}
-        </button>
-      )}
+              {htmlContent.length > 156 && (
+                <button onClick={toggleExpand}>
+                  {isExpanded ? "Read Less" : "Read More"}
+                </button>
+              )}
             </div>
             {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
           </div>
@@ -366,16 +364,13 @@ const CoinPage = () => {
                 )}
               </div>
               {singleCoin.market_data && (
-                <ProgressBarOuter background={"#F8D2A6"
-                }>
-                  
+                <ProgressBarOuter background={"#F8D2A6"}>
                   <ProgressBarInner
                     width={
-                      (singleCoin.market_data.total_volume[displayCurrency] /
-                        singleCoin.market_data.market_cap[displayCurrency])            
+                      singleCoin.market_data.total_volume[displayCurrency] /
+                      singleCoin.market_data.market_cap[displayCurrency]
                     }
-                    background={"#D4770C"
-                }
+                    background={"#D4770C"}
                   ></ProgressBarInner>
                 </ProgressBarOuter>
               )}
@@ -385,22 +380,40 @@ const CoinPage = () => {
                 {singleCoin.links &&
                   singleCoin.links.homepage.map((item, index) => {
                     if (item !== "") {
-                      return <div key={index}><a className="text-white" href={item}>{item}</a></div>;
+                      return (
+                        <div key={index}>
+                          <a className="text-white" href={item}>
+                            {item}
+                          </a>
+                        </div>
+                      );
                     }
                   })}
               </div>
               <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
-              {singleCoin.links &&
-                singleCoin.links.blockchain_site
-                  .filter((item) => item.includes("blockchair"))
-                  .map((item) => <div><a className="text-white" href={item}>{item}</a></div>)}
+                {singleCoin.links &&
+                  singleCoin.links.blockchain_site
+                    .filter((item) => item.includes("blockchair"))
+                    .map((item) => (
+                      <div>
+                        <a className="text-white" href={item}>
+                          {item}
+                        </a>
+                      </div>
+                    ))}
               </div>
               <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
-              {singleCoin.links &&
-                singleCoin.links.blockchain_site
-                  .filter((item) => item.includes("tokenview"))
-                  .map((item) => <div><a className="text-white" href={item}>{item}</a></div>)}
-              </div>    
+                {singleCoin.links &&
+                  singleCoin.links.blockchain_site
+                    .filter((item) => item.includes("tokenview"))
+                    .map((item) => (
+                      <div>
+                        <a className="text-white" href={item}>
+                          {item}
+                        </a>
+                      </div>
+                    ))}
+              </div>
             </div>
           </div>
         </div>
