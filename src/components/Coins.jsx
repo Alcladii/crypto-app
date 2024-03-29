@@ -427,9 +427,15 @@ function Coins() {
         <SlickCarousel coinList={coinList} />
       </div>
 
-      {priceVolumeList.length === 0 ? (
+      {priceVolumeList.length === 0 &&
+      priceVolumeChartIsLoadingHasError !== true ? (
         <div className="my-8 text-2xl flex justify-center">
           Please select a coin to view chart
+        </div>
+      ) : priceVolumeList.length === 0 &&
+        priceVolumeChartIsLoadingHasError === true ? (
+        <div className="my-8 text-2xl flex justify-center">
+          Error fetching Price and Volumne Chart
         </div>
       ) : (
         <div>
