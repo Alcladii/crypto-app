@@ -27,6 +27,11 @@ export default function App() {
 
   return (
     <div>
+      <div className="bg-right-currency-background w-screen" >
+        <div className="max-w-[1440px] h-24 mx-auto flex items-center justify-between py-8 px-10">
+
+        </div>
+      </div>
       <div className="bg-crpyto-background-dark w-screen" >
         <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
           <div className="font-sans font-bold text-2xl">
