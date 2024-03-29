@@ -4,27 +4,30 @@ import axios from "axios";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { CryptoContext } from "../contexts/cryptoContext";
+import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
+import { Arrow } from "../components/Arrow";
+import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
 
 const ProgressBarOuter = styled.div`
-  border: 1px solid black;
   border-radius: 99px;
-  background: #a505d0;
-  height: 10px;
-  width: 150px;
+  background: ${(props) => `${props.background}80`};
+  height: 8px;
+  width: 100%;
 `;
 
 const ProgressBarInner = styled.div`
   border-radius: 99px;
-  height: 10px;
-  width: ${(props) => props.width * 1.5}px;
-  background: purple;
+  height: 8px;
+  width: ${(props) => props.width * 100}%;
+  background: ${(props) => props.background};
 `;
 
 const CoinPage = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const coinId = useParams();
 
   const history = useHistory();
-  
+
   const {
     convertToBillion,
     getSingleCoinData,
@@ -47,222 +50,362 @@ const CoinPage = () => {
   }, []);
 
   const handleClick = () => {
-    setSingleCoin({})
-    history.push("/");    
+    setSingleCoin({});
+    history.push("/");
   };
 
   const htmlContent = singleCoin.description && singleCoin.description.en;
 
-  const createMarkup = (htmlContent) => {
-    return {
-      __html:
-        htmlContent &&
-        htmlContent.replace(
-          /<a href="(.*?)">(.*?)<\/a>/g,
-          '<a href="$1" target="_blank">$2</a>'
-        ),
-    };
+
+  const createMarkup = () => {
+    let processedContent = htmlContent;
+    if (!isExpanded && htmlContent.length > 800) {
+      processedContent = htmlContent.slice(0, 800) + '...';
+    }
+    processedContent = processedContent.replace(
+      /<a href="(.*?)">(.*?)<\/a>/g,
+      '<a href="$1" target="_blank">$2</a>'
+    );
+
+    return { __html: `${processedContent}` };
   };
 
-  return (
-    <div>
-      <button onClick={handleClick}>Back to Coins</button>
-      {singleCoinIsLoading && <div>Loading Coin</div>}
-      <div className="coin-page-columns">
-        <div className="coin-page-column-1">
-          {singleCoin.image && <img src={singleCoin.image.small} />}
-          <div>
-            <span>{singleCoin.name}</span>&nbsp;
-            {singleCoin.symbol && (
-              <span>({singleCoin.symbol.toUpperCase()})</span>
-            )}
-          </div>
-          {singleCoin.links && (
-            <a href={singleCoin.links.homepage[0]}>
-              {singleCoin.links.homepage[0]}
-            </a>
-          )}
-        </div>
-        <div className="coin-page-column-2">
-          {singleCoin.market_data && (
-            <div>
-              {currencySymbol}
-              {singleCoin.market_data.current_price[
-                displayCurrency
-              ].toLocaleString()}
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <div>
-              {singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%
-            </div>
-          )}
-          <div className="ath-atl-container">
-            <div className="ath-column">
-              ATH:
-              {singleCoin.market_data && (
-                <div>
-                  {currencySymbol}
-                  {singleCoin.market_data.ath[displayCurrency].toLocaleString()}
-                </div>
-              )}
-              {singleCoin.market_data && (
-                <div>
-                  {singleCoin.market_data.ath_change_percentage[
-                    displayCurrency
-                  ].toFixed(2)}
-                  %
-                </div>
-              )}
-              {singleCoin.market_data && (
-                <div>
-                  {new Date(
-                    singleCoin.market_data.ath_date[displayCurrency]
-                  ).toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
-                </div>
-              )}
-            </div>
-            <div className="atl-column">
-              ATL:
-              {singleCoin.market_data && (
-                <div>
-                  {currencySymbol}
-                  {singleCoin.market_data.atl[displayCurrency].toLocaleString()}
-                </div>
-              )}
-              {singleCoin.market_data && (
-                <div>
-                  {singleCoin.market_data.atl_change_percentage[
-                    displayCurrency
-                  ].toFixed(2)}
-                  %
-                </div>
-              )}
-              {singleCoin.market_data && (
-                <div>
-                  {new Date(
-                    singleCoin.market_data.atl_date[displayCurrency]
-                  ).toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="coin-page-column-3">
-          {singleCoin.market_data && (
-            <div>
-              Market Cap: {currencySymbol}
-              {convertToBillion(
-                singleCoin.market_data.market_cap[displayCurrency]
-              )}
-              B&nbsp;&nbsp;
-              {singleCoin.market_data.price_change_percentage_24h.toFixed(2)}%
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <div>
-              Fully Diluted Valuation: {currencySymbol}
-              {convertToBillion(
-                singleCoin.market_data.fully_diluted_valuation[displayCurrency]
-              )}
-              B
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <div>
-              Volume 24h: {currencySymbol}
-              {convertToBillion(
-                singleCoin.market_data.market_cap_change_24h_in_currency[
-                  displayCurrency
-                ]
-              )}
-              B
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <div>
-              Volume/Market:{" "}
-              {(
-                singleCoin.market_data.total_volume[displayCurrency] /
-                singleCoin.market_data.market_cap[displayCurrency]
-              ).toFixed(5)}
-            </div>
-          )}
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
-          {singleCoin.market_data && (
-            <div>
-              Total Volume:{" "}
-              {singleCoin.market_data.total_volume[
-                displayCurrency
-              ].toLocaleString()}
-              BTC
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <div>
-              Circulating Supply:{" "}
-              {singleCoin.market_data.circulating_supply.toLocaleString()}
-              BTC
-            </div>
-          )}
-          {singleCoin.market_data &&
-            (singleCoin.market_data.max_supply !== null ? (
-              <div>
-                Max Supply: {singleCoin.market_data.max_supply.toLocaleString()}
-                BTC
-              </div>
-            ) : (
-              <div> Max Supply: N/A</div>
-            ))}
-          {singleCoin.market_data && (
-            <div>
-              {retainTwoDigits(
-                (singleCoin.market_data.total_volume[displayCurrency] /
-                  singleCoin.market_data.market_cap[displayCurrency]) *
-                  100
-              )}
-              %
-            </div>
-          )}
-          {singleCoin.market_data && (
-            <ProgressBarOuter>
-              <ProgressBarInner
-                width={
-                  (singleCoin.market_data.total_volume[displayCurrency] /
-                    singleCoin.market_data.market_cap[displayCurrency]) *
-                  100
-                }
-              ></ProgressBarInner>
-            </ProgressBarOuter>
-          )}
+
+  return (
+    <div className="bg-crpyto-background-dark h-[100%] w-screen">
+      <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk ">
+        <div
+          className="flex justify-center items-center w-36 h-10 selected-button rounded-lg"
+          onClick={handleClick}
+        >
+          Back to Coins
         </div>
-      </div>
-      <div>
-        {singleCoin && (
-          <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
+        {singleCoinIsLoading && (
+          <div className="my-5 flex justify-center items-center">
+            Loading Coin
+          </div>
         )}
+        <div className="flex w-full my-5">
+          <div className="column-1 flex flex-col w-[55%] mr-6">
+            <div className="flex">
+              <div className="flex w-[45%] h-96 flex flex-col items-center mr-3">
+                <div className="w-full h-[80%] flex flex-col justify-center items-center rounded-lg bg-right-currency-background mb-3">
+                  {singleCoin.image && (
+                    <div className="p-3 rounded-lg bg-coin-icon-background">
+                      <img src={singleCoin.image.small} />
+                    </div>
+                  )}
+                  <div className="mt-6 text-2xl font-semibold">
+                    <span>{singleCoin.name}</span>&nbsp;
+                    {singleCoin.symbol && (
+                      <span>({singleCoin.symbol.toUpperCase()})</span>
+                    )}
+                  </div>
+                </div>
+                <div className="h-[20%] w-full flex justify-center items-center mt-3 bg-right-currency-background rounded-lg">
+                  {singleCoin.links && (
+                    <a
+                      className="text-white"
+                      href={singleCoin.links.homepage[0]}
+                    >
+                      {singleCoin.links.homepage[0]}
+                    </a>
+                  )}
+                </div>
+              </div>
+              <div className="flex w-[55%] h-96 flex flex-col items-center ml-3 bg-right-currency-background rounded-lg">
+                <div className="flex justify-center items-center h-[36%]">
+                  {singleCoin.market_data && (
+                    <div className="mr-4 text-3xl font-semibold">
+                      {currencySymbol}
+                      {singleCoin.market_data.current_price[
+                        displayCurrency
+                      ].toLocaleString()}
+                    </div>
+                  )}
+                  {singleCoin.market_data && (
+                    <div className="flex items-center">
+                      <div className="mr-2">
+                        <Arrow
+                          priceChange={
+                            singleCoin.market_data.price_change_percentage_24h
+                          }
+                        />
+                      </div>
+                      <div className="text-lg font-semibold">
+                        <PriceChangePercentageText
+                          coin={
+                            singleCoin.market_data.price_change_percentage_24h
+                          }
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col w-full h-[64%]">
+                  <div className="flex flex-col justify-center items-center h-[50%]">
+                    <div className="flex items-center">
+                      <div className="mr-2">
+                        {singleCoin.market_data && (
+                          <Arrow
+                            priceChange={
+                              singleCoin.market_data.ath_change_percentage[
+                                displayCurrency
+                              ]
+                            }
+                          />
+                        )}
+                      </div>
+                      All Time High:
+                      {singleCoin.market_data && (
+                        <div className="mx-2">
+                          {currencySymbol}
+                          {singleCoin.market_data.ath[
+                            displayCurrency
+                          ].toLocaleString()}
+                        </div>
+                      )}
+                      {singleCoin.market_data && (
+                        <div>
+                          {singleCoin.market_data.ath_change_percentage[
+                            displayCurrency
+                          ].toFixed(2)}
+                          %
+                        </div>
+                      )}
+                    </div>
+                    {singleCoin.market_data && (
+                      <div>
+                        {new Date(
+                          singleCoin.market_data.ath_date[displayCurrency]
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          timeZone: "GMT",
+                        })}
+                        &nbsp;GMT
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-center items-center h-[50%]">
+                    <div className="flex items-center">
+                      <div className="mr-2">
+                        {singleCoin.market_data && (
+                          <Arrow
+                            priceChange={
+                              singleCoin.market_data.atl_change_percentage[
+                                displayCurrency
+                              ]
+                            }
+                          />
+                        )}
+                      </div>
+                      All Time Low:
+                      {singleCoin.market_data && (
+                        <div className="mx-2">
+                          {currencySymbol}
+                          {singleCoin.market_data.atl[
+                            displayCurrency
+                          ].toLocaleString()}
+                        </div>
+                      )}
+                      {singleCoin.market_data && (
+                        <div>
+                          <div>
+                            {singleCoin.market_data.atl_change_percentage[
+                              displayCurrency
+                            ].toFixed(2)}
+                            %
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {singleCoin.market_data && (
+                      <div>
+                        {new Date(
+                          singleCoin.market_data.atl_date[displayCurrency]
+                        ).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          timeZone: "GMT",
+                        })}
+                        &nbsp;GMT
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-36">
+              <div className="mb-4 text-xl font-semibold">Description</div>
+              {singleCoin && (
+                <div dangerouslySetInnerHTML={createMarkup(htmlContent)}  />
+              )}
+              { htmlContent.length > 156 && (
+        <button onClick={toggleExpand}>
+          {isExpanded ? 'Read Less' : 'Read More'}
+        </button>
+      )}
+            </div>
+            {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
+          </div>
+
+          <div className="flex flex-col w-[45%] ml-6 ">
+            <div className="h-[500px] w-full px-14 py-14 bg-right-currency-background rounded-lg flex flex-col justify-between text-lg">
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Market Cap: {currencySymbol}
+                  {convertToBillion(
+                    singleCoin.market_data.market_cap[displayCurrency]
+                  )}
+                  B&nbsp;&nbsp;
+                  {singleCoin.market_data.price_change_percentage_24h.toFixed(
+                    2
+                  )}
+                  %
+                </div>
+              )}
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Fully Diluted Valuation: {currencySymbol}
+                  {convertToBillion(
+                    singleCoin.market_data.fully_diluted_valuation[
+                      displayCurrency
+                    ]
+                  )}
+                  B
+                </div>
+              )}
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Volume 24h: {currencySymbol}
+                  {convertToBillion(
+                    singleCoin.market_data.market_cap_change_24h_in_currency[
+                      displayCurrency
+                    ]
+                  )}
+                  B
+                </div>
+              )}
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Volume/Market:{" "}
+                  {(
+                    singleCoin.market_data.total_volume[displayCurrency] /
+                    singleCoin.market_data.market_cap[displayCurrency]
+                  ).toFixed(5)}
+                </div>
+              )}
+
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Total Volume:{" "}
+                  {singleCoin.market_data.total_volume[
+                    displayCurrency
+                  ].toLocaleString()}
+                  BTC
+                </div>
+              )}
+              {singleCoin.market_data && (
+                <div className="flex items-center">
+                  <CoinPagePlusInCircleIcon />
+                  &nbsp;&nbsp; Circulating Supply:{" "}
+                  {singleCoin.market_data.circulating_supply.toLocaleString()}
+                  BTC
+                </div>
+              )}
+              {singleCoin.market_data &&
+                (singleCoin.market_data.max_supply !== null ? (
+                  <div className="flex items-center">
+                    <CoinPagePlusInCircleIcon />
+                    &nbsp;&nbsp; Max Supply:{" "}
+                    {singleCoin.market_data.max_supply.toLocaleString()}
+                    BTC
+                  </div>
+                ) : (
+                  <div> Max Supply: N/A</div>
+                ))}
+              <div className="flex justify-between">
+                {singleCoin.market_data && (
+                  <div>
+                    {retainTwoDigits(
+                      (singleCoin.market_data.total_volume[displayCurrency] /
+                        singleCoin.market_data.market_cap[displayCurrency]) *
+                        100
+                    )}
+                    %
+                  </div>
+                )}
+                {singleCoin.market_data && (
+                  <div>
+                    {retainTwoDigits(
+                      (1 -
+                        singleCoin.market_data.total_volume[displayCurrency] /
+                          singleCoin.market_data.market_cap[displayCurrency]) *
+                        100
+                    )}
+                    %
+                  </div>
+                )}
+              </div>
+              {singleCoin.market_data && (
+                <ProgressBarOuter background={"#F8D2A6"
+                }>
+                  
+                  <ProgressBarInner
+                    width={
+                      (singleCoin.market_data.total_volume[displayCurrency] /
+                        singleCoin.market_data.market_cap[displayCurrency])            
+                    }
+                    background={"#D4770C"
+                }
+                  ></ProgressBarInner>
+                </ProgressBarOuter>
+              )}
+            </div>
+            <div className="mt-20 h-64 flex flex-col justify-between ">
+              <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
+                {singleCoin.links &&
+                  singleCoin.links.homepage.map((item, index) => {
+                    if (item !== "") {
+                      return <div key={index}><a className="text-white" href={item}>{item}</a></div>;
+                    }
+                  })}
+              </div>
+              <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
+              {singleCoin.links &&
+                singleCoin.links.blockchain_site
+                  .filter((item) => item.includes("blockchair"))
+                  .map((item) => <div><a className="text-white" href={item}>{item}</a></div>)}
+              </div>
+              <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
+              {singleCoin.links &&
+                singleCoin.links.blockchain_site
+                  .filter((item) => item.includes("tokenview"))
+                  .map((item) => <div><a className="text-white" href={item}>{item}</a></div>)}
+              </div>    
+            </div>
+          </div>
         </div>
-      <div>
-        {singleCoin.links &&
-          singleCoin.links.homepage.map((item) => {
-            if (item !== "") {
-              return <div>{item}</div>;
-            }
-          })}
       </div>
-      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("blockchair")).map(item => <div>{item}</div>)}
-      {singleCoin.links && singleCoin.links.blockchain_site.filter(item => item.includes("tokenview")).map(item => <div>{item}</div>)}
-      {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
     </div>
-    
   );
 };
 

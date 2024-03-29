@@ -24,6 +24,7 @@ export default {
     "./src/pages/Homepage.jsx",
     "./src/pages/Portfolio.jsx",
     "./src/App.jsx",
+    "./src/components/CoinPagePlusInCircleIcon.jsx",
   ],
   theme: {
     extend: {
@@ -39,7 +40,9 @@ export default {
         "coin-icon-background": "#2C2C4A",
         "portfolio-item-price-properties": "#2D2D51",
         "portfolio-item-bar": "#01F1E3",
-        "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)"
+        "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)",
+        "coin-page-progress-bar-outter": "#F8D2A6",
+        "coin-page-progress-bar-inner": "#D4770C",
       },
       fontFamily: {
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
