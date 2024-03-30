@@ -58,14 +58,13 @@ const CoinPage = () => {
 
   const createMarkup = () => {
     let processedContent = htmlContent;
-    if (!isExpanded && htmlContent.length > 800) {
-      processedContent = htmlContent.slice(0, 800) + "...";
+    if (!isExpanded && htmlContent.length > 1045) {
+      processedContent = htmlContent.slice(0, 1045) + "...";
     }
     processedContent = processedContent.replace(
       /<a href="(.*?)">(.*?)<\/a>/g,
       '<a href="$1" target="_blank">$2</a>'
     );
-
     return { __html: `${processedContent}` };
   };
 
@@ -107,7 +106,7 @@ const CoinPage = () => {
                 <div className="h-[20%] w-full flex justify-center items-center mt-3 bg-right-currency-background rounded-lg">
                   {singleCoin.links && (
                     <a
-                      className="text-white"
+                      className="text-white" target="_blank"
                       href={singleCoin.links.homepage[0]}
                     >
                       {singleCoin.links.homepage[0]}
@@ -248,14 +247,23 @@ const CoinPage = () => {
             </div>
             <div className="mt-36">
               <div className="mb-4 text-xl font-semibold">Description</div>
-              {singleCoin && (
-                <div dangerouslySetInnerHTML={createMarkup(htmlContent)} />
-              )}
-              {htmlContent.length > 156 && (
-                <button onClick={toggleExpand}>
-                  {isExpanded ? "Read Less" : "Read More"}
-                </button>
-              )}
+              <p>
+                {singleCoin && (
+                  <span dangerouslySetInnerHTML={createMarkup(htmlContent)} />
+                )}
+                {htmlContent.length > 996 && (
+                  <span
+                    style={{
+                      display: "inline",
+                      color: "#6060FF",
+                      cursor: "pointer",
+                    }}
+                    onClick={toggleExpand}
+                  >
+                    {isExpanded ? "Read Less" : "Read More"}
+                  </span>
+                )}
+              </p>
             </div>
             {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
           </div>
@@ -378,17 +386,15 @@ const CoinPage = () => {
             <div className="mt-20 h-64 flex flex-col justify-between ">
               <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
                 {singleCoin.links &&
-                  singleCoin.links.homepage.map((item, index) => {
-                    if (item !== "") {
-                      return (
-                        <div key={index}>
-                          <a className="text-white" href={item}>
-                            {item}
-                          </a>
-                        </div>
-                      );
-                    }
-                  })}
+                  singleCoin.links.homepage
+                    .filter((e) => e !== "")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <a className="text-white" target="_blank" href={item}>
+                          {item}
+                        </a>
+                      </div>
+                    ))}
               </div>
               <div className="w-full h-16 bg-right-currency-background rounded-lg flex justify-center items-center">
                 {singleCoin.links &&
@@ -396,7 +402,7 @@ const CoinPage = () => {
                     .filter((item) => item.includes("blockchair"))
                     .map((item) => (
                       <div>
-                        <a className="text-white" href={item}>
+                        <a className="text-white" target="_blank" href={item}>
                           {item}
                         </a>
                       </div>
@@ -408,7 +414,7 @@ const CoinPage = () => {
                     .filter((item) => item.includes("tokenview"))
                     .map((item) => (
                       <div>
-                        <a className="text-white" href={item}>
+                        <a className="text-white" target="_blank" href={item}>
                           {item}
                         </a>
                       </div>
