@@ -39,7 +39,7 @@ export default {
         "coin-icon-background": "#2C2C4A",
         "portfolio-item-price-properties": "#2D2D51",
         "portfolio-item-bar": "#01F1E3",
-        "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)"
+        "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)",
       },
       fontFamily: {
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],

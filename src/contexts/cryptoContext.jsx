@@ -65,6 +65,10 @@ export const CryptoProvider = ({ children }) => {
     return (number / 1000000000).toFixed(2);
   };
 
+  const convertToTrillion = (number) => {
+    return (number / 1000000000000).toFixed(2);
+  };
+
   const retainTwoDigits = (number) => {
     return number.toFixed(2);
   };
@@ -198,6 +202,7 @@ export const CryptoProvider = ({ children }) => {
         setCurrencyConverterDays,
         editAsset, 
         setEditAsset,
+        convertToTrillion,
       }}
     >
       {children}
