@@ -31,7 +31,6 @@ export default function App() {
 
   return (
     <div>
-      {/*<div className={`${darkMode ? 'bg-crpyto-background-dark' : 'bg-white'} w-screen`} >*/}
       <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
         <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
           <div

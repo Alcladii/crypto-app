@@ -62,8 +62,6 @@ export const CryptoProvider = ({ children }) => {
   const [editAsset, setEditAsset] = useState(false) 
   const [darkMode, setDarkMode] = useLocalState("darkMode", true)
 
-  console.log(darkMode)
-
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
   };
