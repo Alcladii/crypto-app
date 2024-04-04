@@ -28,10 +28,25 @@ export default {
   ],
   theme: {
     extend: {
+      textColor:{
+        skin: {
+          "selected-button-app-name-text": 'var(--color-text-selected-button-app-name)',
+          "unselected-button-text": 'var(--color-text-unselected-button)',
+          "currency-selector-text-color": 'var(--color-text-currency-selector)',
+          "search-bar-place-holder-text-color": 'var(--color-text-search-bar-place-holder)',
+        }
+      },
+      backgroundColor: {
+        skin: {
+          app: 'var(--color-background-app)',
+          "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)'
+        }
+      },
       colors: {
         "crpyto-background-dark": "#13121A",
         "button-selected": "rgba(97, 97, 214, 0.5)",
         "button-unselected-search-bar-background": "#191925",
+        "button-unselected-search-bar-background-light": "rgba(204, 204, 250, 0.4)",
         "go-up": "#01F1E3",
         "go-down": "#FE2264",
         "line-bar-chart-background": "#191932",
@@ -41,9 +56,14 @@ export default {
         "portfolio-item-price-properties": "#2D2D51",
         "portfolio-item-bar": "#01F1E3",
         "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)",
+        "text-button-selected-currency-selector-dark-theme": "rgb(255, 255, 255)",
+        "text-button-unselected-dark-theme":"rgb(71 85 105)",
+        "placeholder-light": "rgba(66, 66, 134, 1)",
+        "placeholder-dark": "rgba(209, 209, 209, 1)",
         "coin-page-progress-bar-outter": "#F8D2A6",
         "coin-page-progress-bar-inner": "#D4770C",
       },
+      
       fontFamily: {
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
       },

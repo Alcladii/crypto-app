@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import api from "../api";
+import { CryptoContext } from "../contexts/cryptoContext";
 
 export const SearchItemInput = ({ setResults }) => {
+  const { darkMode } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
   //save for real api call
   /*const fetchData = (value) => {
@@ -39,7 +41,13 @@ export const SearchItemInput = ({ setResults }) => {
       placeholder="Search for coin"
       onChange={handleChange}
       value={inputValue}
-      className="h-10 w-80 px-5 outline-none bg-button-unselected-search-bar-background rounded-md"
+      className={`h-10 w-80 px-5 outline-none ${
+        darkMode ? "" : "theme-light"
+      } bg-skin-unselected-button-bg rounded-md ${
+        darkMode
+          ? "placeholder-placeholder-dark"
+          : "placeholder-placeholder-light"
+      }`}
     />
   );
 };

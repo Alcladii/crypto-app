@@ -60,6 +60,7 @@ export const CryptoProvider = ({ children }) => {
     7
   );
   const [editAsset, setEditAsset] = useState(false) 
+  const [darkMode, setDarkMode] = useLocalState("darkMode", true)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -202,6 +203,8 @@ export const CryptoProvider = ({ children }) => {
         setCurrencyConverterDays,
         editAsset, 
         setEditAsset,
+        darkMode,
+        setDarkMode,
         convertToTrillion,
         setSingleCoinLoadingHasError,
         singleCoinLoadingHasError,
