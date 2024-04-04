@@ -50,14 +50,20 @@ const CoinPage = () => {
   }, []);
 
   const handleClick = () => {
-    setSingleCoin({});
+    setSingleCoin(null)
     history.push("/");
   };
 
-  const htmlContent = singleCoin.description && singleCoin.description.en;
+  let htmlContent 
+  if (singleCoin!==null) {
+    htmlContent = singleCoin.description.en
+  }else {
+    htmlContent = ""
+  } ;
 
   const createMarkup = () => {
-    let processedContent = htmlContent;
+    if (htmlContent !== ""){
+      let processedContent = htmlContent;
     if (!isExpanded && htmlContent.length > 1045) {
       processedContent = htmlContent.slice(0, 1045) + "...";
     }
@@ -66,6 +72,7 @@ const CoinPage = () => {
       '<a href="$1" target="_blank">$2</a>'
     );
     return { __html: `${processedContent}` };
+    }
   };
 
   const toggleExpand = () => {
@@ -73,7 +80,7 @@ const CoinPage = () => {
   };
 
   return (
-    <div className="bg-crpyto-background-dark h-[100%] w-screen">
+    <div className="bg-crpyto-background-dark h-full w-screen">
       <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk ">
         <div
           className="flex justify-center items-center w-36 h-10 selected-button rounded-lg"
@@ -86,7 +93,9 @@ const CoinPage = () => {
             Loading Coin
           </div>
         )}
-        <div className="flex w-full my-5">
+        {singleCoinLoadingHasError && <div className="my-10 flex justify-center items-center text-2xl">Error in fetching Coin</div>} 
+        {singleCoin !== null &&
+          <div className="flex w-full my-5">
           <div className="column-1 flex flex-col w-[55%] mr-6">
             <div className="flex">
               <div className="flex w-[45%] h-96 flex flex-col items-center mr-3">
@@ -106,7 +115,8 @@ const CoinPage = () => {
                 <div className="h-[20%] w-full flex justify-center items-center mt-3 bg-right-currency-background rounded-lg">
                   {singleCoin.links && (
                     <a
-                      className="text-white" target="_blank"
+                      className="text-white"
+                      target="_blank"
                       href={singleCoin.links.homepage[0]}
                     >
                       {singleCoin.links.homepage[0]}
@@ -265,7 +275,6 @@ const CoinPage = () => {
                 )}
               </p>
             </div>
-            {singleCoinLoadingHasError && <div>Error in fetching Coin</div>}
           </div>
 
           <div className="flex flex-col w-[45%] ml-6 ">
@@ -423,6 +432,7 @@ const CoinPage = () => {
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
   );

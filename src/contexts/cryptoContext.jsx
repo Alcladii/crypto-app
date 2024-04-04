@@ -198,6 +198,8 @@ export const CryptoProvider = ({ children }) => {
         setCurrencyConverterDays,
         editAsset, 
         setEditAsset,
+        setSingleCoinLoadingHasError,
+        singleCoinLoadingHasError,
       }}
     >
       {children}
