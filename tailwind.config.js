@@ -24,6 +24,7 @@ export default {
     "./src/pages/Homepage.jsx",
     "./src/pages/Portfolio.jsx",
     "./src/App.jsx",
+    "./src/components/CoinPagePlusInCircleIcon.jsx",
   ],
   theme: {
     extend: {
@@ -59,6 +60,8 @@ export default {
         "text-button-unselected-dark-theme":"rgb(71 85 105)",
         "placeholder-light": "rgba(66, 66, 134, 1)",
         "placeholder-dark": "rgba(209, 209, 209, 1)",
+        "coin-page-progress-bar-outter": "#F8D2A6",
+        "coin-page-progress-bar-inner": "#D4770C",
       },
       
       fontFamily: {
