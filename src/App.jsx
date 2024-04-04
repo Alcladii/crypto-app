@@ -128,7 +128,7 @@ export default function App() {
               <ProgressBarOuter>
                 <ProgressBarInner
                   width={marketData.market_cap_percentage.eth}
-                  background={"rgba(132, 157, 255, 1)"}
+                  background="rgba(132, 157, 255, 1)"
                 ></ProgressBarInner>
               </ProgressBarOuter>
             </div>
