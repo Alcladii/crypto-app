@@ -203,6 +203,8 @@ export const CryptoProvider = ({ children }) => {
         editAsset, 
         setEditAsset,
         convertToTrillion,
+        setSingleCoinLoadingHasError,
+        singleCoinLoadingHasError,
       }}
     >
       {children}
