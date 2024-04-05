@@ -41,7 +41,7 @@ export default function App() {
 
   const [results, setResults] = useState([]);
   const [loadHomePage, setLoadHomePage] = useLocalState("loadHomePage", true);
-  const [marketData, setMarketData] = useLocalState("marketData", {});
+  const [marketData, setMarketData] = useLocalState("marketData", null);
   const [marketDataIsLoading, setMarketDataIsLoading] = useState(false);
   const [marketDataLoadingHasError, setMarketDataLoadingHasError] =
     useState(false);
@@ -95,7 +95,7 @@ export default function App() {
                 />
               </svg>
               &nbsp; Coins&nbsp;&nbsp;
-              {marketData && marketData.active_cryptocurrencies}
+              {marketData!==null && marketData.active_cryptocurrencies}
             </div>
             <div className="flex items-center">
               <svg
@@ -107,7 +107,7 @@ export default function App() {
                 <path d="M16.5 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v7.5a3 3 0 0 0 3 3v-6A4.5 4.5 0 0 1 10.5 6h6Z" />
                 <path d="M18 7.5a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3H18Z" />
               </svg>
-              &nbsp; Exchange&nbsp;&nbsp;{marketData && marketData.markets}
+              &nbsp; Exchange&nbsp;&nbsp;{marketData!==null  && marketData.markets}
             </div>
             <div className="flex items-center justify-center">
               <svg
@@ -126,7 +126,7 @@ export default function App() {
                 />
               </svg>
               &nbsp;
-              {marketData &&
+              {marketData!==null &&
                 convertToTrillion(marketData.total_market_cap[displayCurrency])}
               T
             </div>
@@ -147,7 +147,7 @@ export default function App() {
                 />
               </svg>
               &nbsp;
-              {marketData &&
+              {marketData!==null &&
                 convertToBillion(marketData.total_volume[displayCurrency])}
               B
             </div>
@@ -184,12 +184,12 @@ export default function App() {
                 </g>
               </svg>
               &nbsp;&nbsp;
-              {marketData &&
+              {marketData!==null &&
                 retainTwoDigits(marketData.market_cap_percentage.btc)}
               %&nbsp;&nbsp;
               <ProgressBarOuter>
                 <ProgressBarInner
-                  width={marketData.market_cap_percentage.btc}
+                  width={marketData!==null && marketData.market_cap_percentage.btc}
                   background={"rgba(247, 147, 26, 1)"}
                 ></ProgressBarInner>
               </ProgressBarOuter>
@@ -223,12 +223,12 @@ export default function App() {
                 </g>
               </svg>
               &nbsp;&nbsp;
-              {marketData &&
+              {marketData!==null &&
                 retainTwoDigits(marketData.market_cap_percentage.eth)}
               %&nbsp;&nbsp;
               <ProgressBarOuter>
                 <ProgressBarInner
-                  width={marketData.market_cap_percentage.eth}
+                  width={marketData!==null && marketData.market_cap_percentage.eth}
                   background="rgba(132, 157, 255, 1)"
                 ></ProgressBarInner>
               </ProgressBarOuter>
