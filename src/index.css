@@ -10,6 +10,7 @@
     --color-text-carousel-selected-button: rgba(255, 255, 255, 1);
     --color-text-carousel-unselected-button: rgba(255, 255, 255, 1);
     --color-text-carousel-current-price: rgba(209, 209, 209, 1);
+    --color-text-select-coin-to-view-chart-prompt: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -23,6 +24,7 @@
     --color-text-carousel-selected-button: rgba(255, 255, 255, 1);
     --color-text-carousel-unselected-button: rgba(24, 24, 37, 1);
     --color-text-carousel-current-price: rgb(88, 88, 88,1);
+    --color-text-select-coin-to-view-chart-prompt: rgba(24, 24, 37, 1);
     --color-background-app: rgba(255, 255, 255, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);

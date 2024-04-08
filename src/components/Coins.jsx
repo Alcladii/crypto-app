@@ -69,6 +69,7 @@ function Coins() {
     queryParams,
     historyURL,
     changeSearchParams,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
@@ -467,14 +468,14 @@ function Coins() {
   };
 
   return (
-    <div /*className="App"*/>
+    <div className={`${darkMode ? "" : "theme-light"}`} >
       <div className="my-5">
         <SlickCarousel coinList={coinList} />
       </div>
 
       {priceVolumeList.length === 0 &&
       priceVolumeChartIsLoadingHasError !== true ? (
-        <div className="my-8 text-2xl flex justify-center">
+        <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
           Please select a coin to view chart
         </div>
       ) : priceVolumeList.length === 0 &&
