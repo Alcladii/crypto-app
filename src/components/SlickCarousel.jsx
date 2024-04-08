@@ -69,49 +69,6 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  /*const updateSearchParams1 = () => {
-    queryParams.forEach((entry) => {
-      if (entry[key].includes("selectedcoin")) {
-        delete queryParams[entry]
-      }
-    })
-    if (selectedCoinData.length === 0) {
-      historyURL.push(`?${queryString.stringify(queryParams)}`);
-    } else {
-      let num = 1;
-      selectedCoinData.forEach((item) => {
-        if (item.selected === true) {
-          handleSearchParams(`selectedcoin_${num++}`, item.id);
-        }
-      });
-    }
-  }*/
-
-  /*const updateSearchParams = () => {
-    for (let property in queryParams) {
-      if (property.includes("selectedcoin")) {
-        delete queryParams[property];
-      }
-    }
-    if (selectedCoinData.length === 0) {
-      historyURL.push(`?${queryString.stringify(queryParams)}`);
-    } else {
-      let num = 1;
-      selectedCoinData.forEach((item) => {
-        if (item.selected === true) {
-          changeSearchParams(`selectedcoin_${num++}`, item.id);
-        }
-      });
-    }
-  };*/
-
-  /*useEffect(() => {
-    updateSearchParams();
-  }, [selectedCoinData]);*/
-
-  //loop over an object called queryParams, for each entry, if the key of the entry includes "selectedcoin", push 
-  //the value of that entry to an array called "selectedCoinData"
-
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
@@ -153,42 +110,6 @@ export const SlickCarousel = ({ coinList }) => {
     });
     setSelectedCoinData([]);
   };
-
- 
-
-  /*const getPriceVolumeDataForSelectedCoins = (conditions) => {
-    if (Object.keys(conditions).length === 0) {
-      setPriceVolumeList([]);
-    } else {
-      const requests = Object.keys(conditions)
-        .map((key) => {
-         if (
-            key.includes("selectedcoin")
-          ) {           
-             return getCoinPriceVolume(
-              conditions[key],
-              conditions.displaycurrency,
-              conditions.days
-            );
-          }
-          return null;
-        })
-        .filter((request) => request !== null);
-
-      Promise.all(requests).then((responses) => {
-        if(responses.includes(undefined)) {
-          setPriceVolumeChartIsLoadingHasError(true)
-        } else {
-          setPriceVolumeList(responses);
-          setPriceVolumeChartIsLoadingHasError(false)
-        }   
-      });
-    }
-  };
-
-  useEffect(() => {
-    getPriceVolumeDataForSelectedCoins(queryParams);
-  }, [location.search]);*/
 
   return (
     <div>
