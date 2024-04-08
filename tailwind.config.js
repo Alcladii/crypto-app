@@ -34,12 +34,17 @@ export default {
           "unselected-button-text": 'var(--color-text-unselected-button)',
           "currency-selector-text-color": 'var(--color-text-currency-selector)',
           "search-bar-place-holder-text-color": 'var(--color-text-search-bar-place-holder)',
+          "carousel-selected-button-text-color": 'var(--color-text-carousel-selected-button)',
+          "carousel-unselected-button-text-color": 'var(--color-text-carousel-unselected-button)',
+          "carousel-current-price-text-color": 'var(--color-text-carousel-current-price)',
         }
       },
       backgroundColor: {
         skin: {
           app: 'var(--color-background-app)',
-          "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)'
+          "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)',
+          "carousel-selected-button-background-color": 'var(--color-background-carousel-selected-button)',
+          "carousel-unselected-button-background-color": 'var(--color-background-carousel-unselected-button)',
         }
       },
       colors: {

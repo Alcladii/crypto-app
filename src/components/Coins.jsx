@@ -467,8 +467,8 @@ function Coins() {
   };
 
   return (
-    <div className="App">
-      <div className="my-[20px]">
+    <div /*className="App"*/>
+      <div className="my-5">
         <SlickCarousel coinList={coinList} />
       </div>
 
