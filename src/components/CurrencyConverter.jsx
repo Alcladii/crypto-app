@@ -68,14 +68,17 @@ export const CurrencyConverter = () => {
     setRightCurrency(leftCurrency);
     setLeftCurrencyData(rightCurrencyData);
     setRightCurrencyData(leftCurrencyData);
-  };
+  }
 
   const handleConvert = () => {
-    const conversionRate =
-      rightCurrencyData.market_data.current_price[displayCurrency] /
-      leftCurrencyData.market_data.current_price[displayCurrency];
-    const result = (inputValue / conversionRate).toFixed(6);
-    setConvertedResult(result);
+    if (rightCurrencyData && leftCurrencyData !== null) {
+      const conversionRate =
+        rightCurrencyData.market_data.current_price[displayCurrency] /
+        leftCurrencyData.market_data.current_price[displayCurrency];
+
+      const result = (inputValue / conversionRate).toFixed(6);
+      setConvertedResult(result);
+    }
   };
 
   const getSelectedLeftCurrencyData = async (item) => {
@@ -234,6 +237,7 @@ export const CurrencyConverter = () => {
   }, [rightCurrency]);
 
   return (
+    //<div className="text-white"> Currency Converter </div>
     <div>
       <div className="flex justify-center my-6">
         {singleCoinIsLoading && <div>Loading Single Coin</div>}
@@ -269,7 +273,7 @@ export const CurrencyConverter = () => {
           <div className="mt-3 text-sm">
             1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
             &nbsp;=&nbsp;{currencySymbol}
-            {leftCurrencyData &&
+            {leftCurrencyData !== null &&
               leftCurrencyData.market_data.current_price[displayCurrency]}
           </div>
         </div>
@@ -305,7 +309,7 @@ export const CurrencyConverter = () => {
           <div className="mt-3 text-sm">
             1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
             &nbsp;=&nbsp;{currencySymbol}
-            {rightCurrencyData &&
+            {rightCurrencyData !== null &&
               rightCurrencyData.market_data.current_price[displayCurrency]}
           </div>
         </div>
@@ -320,8 +324,7 @@ export const CurrencyConverter = () => {
           <span className="text-to-in-currency-converter mx-4">to</span>
           {rightCurrencyData !== null && (
             <span>
-              {rightCurrencyData.name}
-              ({rightCurrencyData.symbol.toUpperCase()})
+              {rightCurrencyData.name}({rightCurrencyData.symbol.toUpperCase()})
             </span>
           )}
         </div>

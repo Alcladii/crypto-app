@@ -37,6 +37,9 @@ export default function App() {
     retainTwoDigits,
     darkMode, 
     setDarkMode,
+    handleSearchParams,
+    changeSearchParams,
+    queryParams,
   } = useContext(CryptoContext);
 
   const [results, setResults] = useState([]);
@@ -48,10 +51,12 @@ export default function App() {
 
   const handleHomePageClick = () => {
     setLoadHomePage(true);
+    changeSearchParams("load_home_page", "true")
   };
 
   const handlePortfolioPageClick = () => {
     setLoadHomePage(false);
+    changeSearchParams("load_home_page", "false")
   };
 
   const toggleDarkMode = () => {
@@ -74,6 +79,12 @@ export default function App() {
   useEffect(() => {
     getMarketData();
   }, []);
+
+  useEffect(()=>{
+    handleSearchParams("load_home_page", "true")
+  }, [])
+
+  const loadHomePageInUrl = queryParams.load_home_page === "true"
 
   return (
     <div>
@@ -157,7 +168,7 @@ export default function App() {
               <Link
                 to="/"
                 className={`${
-                  loadHomePage
+                  loadHomePageInUrl
                     ? "text-skin-selected-button-app-name-text"
                     : "text-skin-unselected-button-text"
                 } flex items-center justify-center`}
@@ -167,10 +178,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill={
                     darkMode
-                      ? loadHomePage
+                      ? loadHomePageInUrl
                         ? "rgba(255, 255, 255, 1)"
                         : "rgba(255, 255, 255, 0.5)"
-                      : loadHomePage
+                      : loadHomePageInUrl
                       ? "rgba(53, 53, 112, 1)"
                       : "rgba(161, 161, 170, 1)"
                   }
@@ -189,7 +200,7 @@ export default function App() {
               <Link
                 to="/portfolio"
                 className={`${
-                  !loadHomePage
+                  !loadHomePageInUrl
                     ? "text-skin-selected-button-app-name-text"
                     : "text-skin-unselected-button-text"
                 } flex items-center justify-center`}
@@ -199,10 +210,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill={
                     darkMode
-                      ? !loadHomePage
+                      ? !loadHomePageInUrl
                         ? "rgba(255, 255, 255, 1)"
                         : "rgba(255, 255, 255, 0.5)"
-                      : !loadHomePage
+                      : !loadHomePageInUrl
                       ? "rgba(53, 53, 112, 1)"
                       : "rgba(161, 161, 170, 1)"
                   }

@@ -33,6 +33,8 @@ export const SlickCarousel = ({ coinList }) => {
     queryParams,
     historyURL,
     setPriceVolumeChartIsLoadingHasError,
+    changeSearchParams,
+    numOfDaysFromUrl,
   } = useContext(CryptoContext);
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState(
@@ -55,10 +57,10 @@ export const SlickCarousel = ({ coinList }) => {
         (coin) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => {
-          const isSelected = Object.values(queryParams).includes(coin.id);
-          return { ...coin, selected: isSelected };
-        });
+        const coinsInSlides = coinList.map((coin) => ({
+          ...coin,
+          selected: false,
+        }));
         setSlidesData(coinsInSlides);
         setSelectedCoinData([]);
       }
@@ -67,7 +69,25 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  const updateSearchParams = () => {
+  /*const updateSearchParams1 = () => {
+    queryParams.forEach((entry) => {
+      if (entry[key].includes("selectedcoin")) {
+        delete queryParams[entry]
+      }
+    })
+    if (selectedCoinData.length === 0) {
+      historyURL.push(`?${queryString.stringify(queryParams)}`);
+    } else {
+      let num = 1;
+      selectedCoinData.forEach((item) => {
+        if (item.selected === true) {
+          handleSearchParams(`selectedcoin_${num++}`, item.id);
+        }
+      });
+    }
+  }*/
+
+  /*const updateSearchParams = () => {
     for (let property in queryParams) {
       if (property.includes("selectedcoin")) {
         delete queryParams[property];
@@ -79,27 +99,30 @@ export const SlickCarousel = ({ coinList }) => {
       let num = 1;
       selectedCoinData.forEach((item) => {
         if (item.selected === true) {
-          handleSearchParams(`selectedcoin_${num++}`, item.id);
+          changeSearchParams(`selectedcoin_${num++}`, item.id);
         }
       });
     }
-  };
+  };*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     updateSearchParams();
-  }, [selectedCoinData]);
+  }, [selectedCoinData]);*/
+
+  //loop over an object called queryParams, for each entry, if the key of the entry includes "selectedcoin", push 
+  //the value of that entry to an array called "selectedCoinData"
 
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
       if (isSameCoin) {
-        if (queryParams.comparison_is_on === "false") {
+        if (!comparisonIsOn) {
           coin.selected = true;
         } else {
           if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
           else if (coin.selected) coin.selected = false;
         }
-      } else if (queryParams.comparison_is_on === "false") {
+      } else if (!comparisonIsOn) {
         coin.selected = false;
       }
       return coin;
@@ -109,6 +132,20 @@ export const SlickCarousel = ({ coinList }) => {
     setSlidesData(newSlides);
   };
 
+  useEffect(() => {
+    if (selectedCoinData.length === 0) {
+      setPriceVolumeList([]);
+    } else {
+      setPriceVolumeList([]);
+      const requests = selectedCoinData.map((item) => {
+        return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+      });
+      Promise.all(requests).then((responses) => {
+        setPriceVolumeList(responses);
+      });
+    }
+  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
+
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn);
     slidesData.forEach((slide) => {
@@ -117,11 +154,9 @@ export const SlickCarousel = ({ coinList }) => {
     setSelectedCoinData([]);
   };
 
-  useEffect(() => {
-    handleSearchParams("comparison_is_on", comparisonIsOn);
-  }, [comparisonIsOn]);
+ 
 
-  const getPriceVolumeDataForSelectedCoins = (conditions) => {
+  /*const getPriceVolumeDataForSelectedCoins = (conditions) => {
     if (Object.keys(conditions).length === 0) {
       setPriceVolumeList([]);
     } else {
@@ -153,7 +188,7 @@ export const SlickCarousel = ({ coinList }) => {
 
   useEffect(() => {
     getPriceVolumeDataForSelectedCoins(queryParams);
-  }, [location.search]);
+  }, [location.search]);*/
 
   return (
     <div>

@@ -68,12 +68,13 @@ function Coins() {
     location,
     queryParams,
     historyURL,
+    changeSearchParams,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
-  const [sortBy, setSortBy] = useLocalState("sortBy", "");
+  const [sortBy, setSortBy] = useLocalState("sortBy", "default");
   const [displayCoinList, setDisplayCoinList] = useLocalState(
     "displayCoinList",
     []
@@ -110,7 +111,7 @@ function Coins() {
       setCoinList(coinList.concat(data))
       setCoinPage(coinPage + 1)*/
       let coins;
-      const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
+      const order = (showTopFifty ? "market_cap_desc" : "market_cap_asc");
       setCoinListIsLoading(true);
       const response = await api(
         "/coins/markets",
@@ -128,15 +129,17 @@ function Coins() {
 
   const setToDsc = () => {
     setCoinListDsc(true);
+    changeSearchParams("show_top_fifty", true)
   };
 
   const setToAsc = () => {
     setCoinListDsc(false);
+    changeSearchParams("show_top_fifty", false)
   };
 
   useEffect(() => {
     handleSearchParams("show_top_fifty", coinListDsc);
-  }, [coinListDsc]);
+  }, []);
 
   useEffect(() => {
     getCoinList();
@@ -165,116 +168,156 @@ function Coins() {
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {
       setSortOrderByName("ascent");
+      changeSearchParams("sort_order_by_name", "ascent")
     }
     if (sortOrderByName === "ascent") {
       setSortOrderByName("descent");
+      changeSearchParams("sort_order_by_name", "descent")
     }
     if (sortOrderByName === "descent") {
       setSortOrderByName("default");
+      changeSearchParams("sort_order_by_name", "default")
     }
   };
 
   const handleSortOrderByPrice = () => {
     if (sortOrderByPrice === "default") {
       setSortOrderByPrice("ascent");
+      changeSearchParams("sort_order_by_price", "ascent")
     }
     if (sortOrderByPrice === "ascent") {
       setSortOrderByPrice("descent");
+      changeSearchParams("sort_order_by_price", "descent")
     }
     if (sortOrderByPrice === "descent") {
       setSortOrderByPrice("default");
+      changeSearchParams("sort_order_by_price", "default")
     }
   };
 
   const handleSortOrderByPriceChange1h = () => {
     if (sortOrderByPriceChange1h === "default") {
       setSortOrderByPriceChange1h("ascent");
+      changeSearchParams("sort_order_by_price_change_1h", "ascent")
     }
     if (sortOrderByPriceChange1h === "ascent") {
       setSortOrderByPriceChange1h("descent");
+      changeSearchParams("sort_order_by_price_change_1h", "descent")
     }
     if (sortOrderByPriceChange1h === "descent") {
       setSortOrderByPriceChange1h("default");
+      changeSearchParams("sort_order_by_price_change_1h", "default")
     }
   };
 
   const handleSortOrderByPriceChange24h = () => {
     if (sortOrderByPriceChange24h === "default") {
       setSortOrderByPriceChange24h("ascent");
+      changeSearchParams("sort_order_by_price_change_24h", "ascent")
     }
     if (sortOrderByPriceChange24h === "ascent") {
       setSortOrderByPriceChange24h("descent");
+      changeSearchParams("sort_order_by_price_change_24h", "descent")
     }
     if (sortOrderByPriceChange24h === "descent") {
       setSortOrderByPriceChange24h("default");
+      changeSearchParams("sort_order_by_price_change_24h", "default")
     }
   };
 
   const handleSortOrderByPriceChange7d = () => {
     if (sortOrderByPriceChange7d === "default") {
       setSortOrderByPriceChange7d("ascent");
+      changeSearchParams("sort_order_by_price_change_7d", "ascent")
     }
     if (sortOrderByPriceChange7d === "ascent") {
       setSortOrderByPriceChange7d("descent");
+      changeSearchParams("sort_order_by_price_change_7d", "descent")
     }
     if (sortOrderByPriceChange7d === "descent") {
       setSortOrderByPriceChange7d("default");
+      changeSearchParams("sort_order_by_price_change_7d", "default")
     }
   };
 
   const handleSortByName = () => {
     if (sortBy !== "name") {
-      setSortBy("name");
+      setSortBy("name");     
     }
+    changeSearchParams("sort_by", "name")
     handleSortOrderByName();
     setSortOrderByPrice("default");
+    changeSearchParams("sort_order_by_price", "default")
     setSortOrderByPriceChange1h("default");
+    changeSearchParams("sort_order_by_price_change_1h", "default")
     setSortOrderByPriceChange24h("default");
+    changeSearchParams("sort_order_by_price_change_24h", "default")
     setSortOrderByPriceChange7d("default");
+    changeSearchParams("sort_order_by_price_change_7d", "default")
   };
 
   const handleSortByPrice = () => {
     if (sortBy !== "current_price") {
       setSortBy("current_price");
     }
+    changeSearchParams("sort_by", "current_price")
     handleSortOrderByPrice();
     setSortOrderByName("default");
+    changeSearchParams("sort_order_by_name", "default")
     setSortOrderByPriceChange1h("default");
+    changeSearchParams("sort_order_by_price_change_1h", "default")
     setSortOrderByPriceChange24h("default");
+    changeSearchParams("sort_order_by_price_change_24h", "default")
     setSortOrderByPriceChange7d("default");
+    changeSearchParams("sort_order_by_price_change_7d", "default")
   };
 
   const handleSortByOneHour = () => {
     if (sortBy !== "price_change_percentage_1h_in_currency") {
       setSortBy("price_change_percentage_1h_in_currency");
     }
+    changeSearchParams("sort_by", "price_change_percentage_1h_in_currency")
     handleSortOrderByPriceChange1h();
     setSortOrderByName("default");
+    changeSearchParams("sort_order_by_name", "default")
     setSortOrderByPrice("default");
+    changeSearchParams("sort_order_by_price", "default")
     setSortOrderByPriceChange24h("default");
+    changeSearchParams("sort_order_by_price_change_24h", "default")
     setSortOrderByPriceChange7d("default");
+    changeSearchParams("sort_order_by_price_change_7d", "default")
   };
 
   const handleSortByTwentyFourHours = () => {
     if (sortBy !== "price_change_percentage_24h_in_currency") {
       setSortBy("price_change_percentage_24h_in_currency");
     }
+    changeSearchParams("sort_by", "price_change_percentage_24h_in_currency")
     handleSortOrderByPriceChange24h();
     setSortOrderByName("default");
+    changeSearchParams("sort_order_by_name", "default")
     setSortOrderByPrice("default");
+    changeSearchParams("sort_order_by_price", "default")
     setSortOrderByPriceChange1h("default");
+    changeSearchParams("sort_order_by_price_change_1h", "default")
     setSortOrderByPriceChange7d("default");
+    changeSearchParams("sort_order_by_price_change_7d", "default")
   };
 
   const handleSortBySevenDays = () => {
     if (sortBy !== "price_change_percentage_7d_in_currency") {
       setSortBy("price_change_percentage_7d_in_currency");
     }
+    changeSearchParams("sort_by", "price_change_percentage_7d_in_currency")
     handleSortOrderByPriceChange7d();
     setSortOrderByName("default");
+    changeSearchParams("sort_order_by_name", "default")
     setSortOrderByPrice("default");
+    changeSearchParams("sort_order_by_price", "default")
     setSortOrderByPriceChange1h("default");
+    changeSearchParams("sort_order_by_price_change_1h", "default")
     setSortOrderByPriceChange24h("default");
+    changeSearchParams("sort_order_by_price_change_24h", "default")
   };
 
   useEffect(() => {
@@ -374,6 +417,8 @@ function Coins() {
       setDisplayCoinList(sortedCoinList);
     }
     if (
+      (sortByInQueryParams === "default" &&
+        sortOrderByNameInQueryParams === "default") ||
       (sortByInQueryParams === "name" &&
         sortOrderByNameInQueryParams === "default") ||
       (sortByInQueryParams === "current_price" &&
@@ -403,7 +448,7 @@ function Coins() {
 
   useEffect(() => {
     handleSearchParams("days", numOfDays);
-  }, [numOfDays]);
+  }, []);
 
   const progressBarColors = [
     "#C27721",
@@ -446,7 +491,7 @@ function Coins() {
           </div>
           <div className="flex justify-center items-center max-w-[1440px] h-auto my-7">
             <div className="w-1/2 h-auto p-5 mr-7 bg-line-bar-chart-background rounded-md">
-              {priceVolumeChartIsLoadingHasError === false && (
+              {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(null)) && (
                 <LineChart priceVolumeList={priceVolumeList} />
               )}
               <div className="flex justify-between">
@@ -463,7 +508,7 @@ function Coins() {
               </div>
             </div>
             <div className="w-1/2 h-auto p-5 ml-7 bg-line-bar-chart-background rounded-md">
-              {priceVolumeChartIsLoadingHasError === false && (
+              {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(null)) && (
                 <BarChart priceVolumeList={priceVolumeList} />
               )}
               <div className="flex justify-between">
@@ -506,7 +551,7 @@ function Coins() {
         <div className="flex justify-center my-6">
           <div
             className={`${
-              coinListDsc
+              showTopFifty
                 ? "selected-button"
                 : "bg-button-unselected-search-bar-background"
             } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer`}
@@ -517,7 +562,7 @@ function Coins() {
           </div>
           <div
             className={`${
-              !coinListDsc
+              !showTopFifty
                 ? "selected-button"
                 : "bg-button-unselected-search-bar-background"
             } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer`}

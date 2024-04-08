@@ -25,11 +25,13 @@ ChartJS.register(
 );
 import { CryptoContext } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
-import { setDisplayIntervalLineChart } from "./setDisplayTimeIntervalLineBarChart";
+import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
-const LineChart = ({ priceVolumeList }) => {
-  const { numOfDays } = useContext(CryptoContext);
-  const maxTicksLimit = setMaxTicksLimit(numOfDays);
+const LineChart = ({ priceVolumeList, }) => {
+  
+  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext);
+  console.log(numOfDaysFromUrl)
+  const maxTicksLimit = setMaxTicksLimit(numOfDaysFromUrl);
   const options = {
     responsive: true,
     plugins: {
@@ -88,7 +90,7 @@ const LineChart = ({ priceVolumeList }) => {
     labels:
       priceVolumeList.length !== 0 &&
       priceVolumeList[0].prices.map((item) => {
-        return setDisplayIntervalLineChart(numOfDays, item);
+        return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
     datasets: priceVolumeList.map((item) => {
       return {
