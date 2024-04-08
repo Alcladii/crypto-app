@@ -71,11 +71,13 @@ export const CurrencyConverter = () => {
   };
 
   const handleConvert = () => {
-    const conversionRate =
+    if (rightCurrencyData !== null && leftCurrencyData !== null) {
+      const conversionRate =
       rightCurrencyData.market_data.current_price[displayCurrency] /
       leftCurrencyData.market_data.current_price[displayCurrency];
     const result = (inputValue / conversionRate).toFixed(6);
     setConvertedResult(result);
+    }   
   };
 
   const getSelectedLeftCurrencyData = async (item) => {
@@ -234,6 +236,7 @@ export const CurrencyConverter = () => {
   }, [rightCurrency]);
 
   return (
+    //<div>Currency Converter</div>
     <div>
       <div className="flex justify-center my-6">
         {singleCoinIsLoading && <div>Loading Single Coin</div>}

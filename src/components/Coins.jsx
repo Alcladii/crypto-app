@@ -73,7 +73,7 @@ function Coins() {
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState("coinListDsc", true);
-  const [sortBy, setSortBy] = useLocalState("sortBy", "");
+  const [sortBy, setSortBy] = useLocalState("sortBy", "default");
   const [displayCoinList, setDisplayCoinList] = useLocalState(
     "displayCoinList",
     []
@@ -322,7 +322,7 @@ function Coins() {
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
-
+     
     if (
       sortByInQueryParams === "name" &&
       sortOrderByNameInQueryParams === "ascent"
@@ -374,6 +374,8 @@ function Coins() {
       setDisplayCoinList(sortedCoinList);
     }
     if (
+      (sortByInQueryParams === "default" &&
+        sortOrderByNameInQueryParams === "default") ||
       (sortByInQueryParams === "name" &&
         sortOrderByNameInQueryParams === "default") ||
       (sortByInQueryParams === "current_price" &&
