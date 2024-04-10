@@ -37,7 +37,7 @@ export const CryptoProvider = ({ children }) => {
     "priceVolumeList",
     []
   );
-  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", []);
+  const [numOfDays, setNumOfDays] = useLocalState("numOfDays", "7");
   const [coinsInChart, setCoinsInChart] = useState([]);
   const [slidesData, setSlidesData] = useLocalState("slidesData", []);
   const [selectedCoinData, setSelectedCoinData] = useLocalState(
@@ -59,8 +59,8 @@ export const CryptoProvider = ({ children }) => {
     "currencyConverterDays",
     7
   );
-  const [editAsset, setEditAsset] = useState(false) 
-  const [darkMode, setDarkMode] = useLocalState("darkMode", true)
+  const [editAsset, setEditAsset] = useState(false);
+  const [darkMode, setDarkMode] = useLocalState("darkMode", true);
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -134,15 +134,22 @@ export const CryptoProvider = ({ children }) => {
 
   const location = useLocation();
   const historyURL = useHistory();
-  const queryParams = queryString.parse(location.search);
+  let queryParams = queryString.parse(location.search);
+
+  const numOfDaysFromUrl = queryParams.days
 
   //google how to make a query string state custom hook
 
   const handleSearchParams = (conditionKey, conditionValue) => {
-    if (!conditionKey in queryParams) {
+    if (!(conditionKey in queryParams)) {
       const updatedParams = { ...queryParams, [conditionKey]: conditionValue };
-      historyURL.push(`?${queryString.stringify(updatedParams)}`);
-    } else {
+      queryParams = updatedParams;
+    }
+    historyURL.push(`?${queryString.stringify(queryParams)}`);
+  };
+
+  const changeSearchParams = (conditionKey, conditionValue) => {
+    if (conditionValue !== queryParams[conditionKey]) {
       queryParams[conditionKey] = conditionValue;
       historyURL.push(`?${queryString.stringify(queryParams)}`);
     }
@@ -201,13 +208,15 @@ export const CryptoProvider = ({ children }) => {
         setPriceVolumeChartIsLoadingHasError,
         currencyConverterDays,
         setCurrencyConverterDays,
-        editAsset, 
+        editAsset,
         setEditAsset,
         darkMode,
         setDarkMode,
         convertToTrillion,
         setSingleCoinLoadingHasError,
         singleCoinLoadingHasError,
+        changeSearchParams,
+        numOfDaysFromUrl,
       }}
     >
       {children}

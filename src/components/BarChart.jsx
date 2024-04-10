@@ -25,10 +25,10 @@ ChartJS.register(
 );
 import { CryptoContext } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
-import { setDisplayIntervalLineChart } from "./setDisplayTimeIntervalLineBarChart";
+import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
 const BarChart = ({ priceVolumeList }) => {
-  const { numOfDays } = useContext(CryptoContext);
+  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext);
   const maxTicksLimit = setMaxTicksLimit(numOfDays);
   const options = {
     responsive: true,
@@ -42,22 +42,9 @@ const BarChart = ({ priceVolumeList }) => {
       },
     },
     scales: {
-      "y-axis-1": {
+      y: {
         display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      "y-axis-2": {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      "y-axis-3": {
-        display: false,
+        stacked: true,
         grid: {
           display: false,
           drawBorder: false,
@@ -65,6 +52,7 @@ const BarChart = ({ priceVolumeList }) => {
       },
       x: {
         display: true,
+        stacked: true,
         grid: {
           display: false,
           drawBorder: false,
@@ -81,23 +69,20 @@ const BarChart = ({ priceVolumeList }) => {
 
   const volumeData = {
     labels:
-      priceVolumeList.length !== 0 &&
+      priceVolumeList !== null &&
       priceVolumeList[0].total_volumes.map((item) => {
-        return setDisplayIntervalLineChart(numOfDays, item);
+        return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
     datasets: priceVolumeList.map((item) => {
-      const borderColor = colors[priceVolumeList.indexOf(item)];
       const backgroundColor = colors[priceVolumeList.indexOf(item)];
       return {
         label: `Trade Price`,
         data: item.total_volumes.map((volume) => volume[1]),
-        borderColor,
         backgroundColor,
         pointRadius: 0,
-        borderWidth: 3,
-        borderRadius: 4,
+        borderWidth: 0,
+        borderRadius: 6,
         fill: true,
-        yAxisID: `y-axis-${priceVolumeList.indexOf(item) + 1}`,
       };
     }),
   };

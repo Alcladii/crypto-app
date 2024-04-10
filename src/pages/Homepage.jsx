@@ -5,21 +5,23 @@ import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
 
 export const Home = () => {
-  const { useLocalState, handleSearchParams, queryParams, darkMode } =
+  const { useLocalState, handleSearchParams, queryParams, changeSearchParams } =
     useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
 
   const handleCoinsListClick = () => {
     setLoadCoins(true);
+    changeSearchParams("load_coins_page", "true")
   };
 
   const handleCurrencyConverterClick = () => {
     setLoadCoins(false);
+    changeSearchParams("load_coins_page", "false")
   };
 
   useEffect(() => {
-    handleSearchParams("load_coins_page", loadCoins);
-  }, [loadCoins]);
+    handleSearchParams("load_coins_page", loadCoins);    
+  },[]);
 
   const loadCoinsPageFromUrl = queryParams.load_coins_page === "true"
 

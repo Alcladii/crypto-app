@@ -33,6 +33,8 @@ export const SlickCarousel = ({ coinList }) => {
     queryParams,
     historyURL,
     setPriceVolumeChartIsLoadingHasError,
+    changeSearchParams,
+    numOfDaysFromUrl,
   } = useContext(CryptoContext);
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState(
@@ -55,10 +57,10 @@ export const SlickCarousel = ({ coinList }) => {
         (coin) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => {
-          const isSelected = Object.values(queryParams).includes(coin.id);
-          return { ...coin, selected: isSelected };
-        });
+        const coinsInSlides = coinList.map((coin) => ({
+          ...coin,
+          selected: false,
+        }));
         setSlidesData(coinsInSlides);
         setSelectedCoinData([]);
       }
@@ -67,39 +69,17 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  const updateSearchParams = () => {
-    for (let property in queryParams) {
-      if (property.includes("selectedcoin")) {
-        delete queryParams[property];
-      }
-    }
-    if (selectedCoinData.length === 0) {
-      historyURL.push(`?${queryString.stringify(queryParams)}`);
-    } else {
-      let num = 1;
-      selectedCoinData.forEach((item) => {
-        if (item.selected === true) {
-          handleSearchParams(`selectedcoin_${num++}`, item.id);
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    updateSearchParams();
-  }, [selectedCoinData]);
-
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
       if (isSameCoin) {
-        if (queryParams.comparison_is_on === "false") {
+        if (!comparisonIsOn) {
           coin.selected = true;
         } else {
           if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
           else if (coin.selected) coin.selected = false;
         }
-      } else if (queryParams.comparison_is_on === "false") {
+      } else if (!comparisonIsOn) {
         coin.selected = false;
       }
       return coin;
@@ -109,6 +89,20 @@ export const SlickCarousel = ({ coinList }) => {
     setSlidesData(newSlides);
   };
 
+  useEffect(() => {
+    if (selectedCoinData.length === 0) {
+      setPriceVolumeList([]);
+    } else {
+      setPriceVolumeList([]);
+      const requests = selectedCoinData.map((item) => {
+        return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+      });
+      Promise.all(requests).then((responses) => {
+        setPriceVolumeList(responses);
+      });
+    }
+  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
+
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn);
     slidesData.forEach((slide) => {
@@ -116,44 +110,6 @@ export const SlickCarousel = ({ coinList }) => {
     });
     setSelectedCoinData([]);
   };
-
-  useEffect(() => {
-    handleSearchParams("comparison_is_on", comparisonIsOn);
-  }, [comparisonIsOn]);
-
-  const getPriceVolumeDataForSelectedCoins = (conditions) => {
-    if (Object.keys(conditions).length === 0) {
-      setPriceVolumeList([]);
-    } else {
-      const requests = Object.keys(conditions)
-        .map((key) => {
-         if (
-            key.includes("selectedcoin")
-          ) {           
-             return getCoinPriceVolume(
-              conditions[key],
-              conditions.displaycurrency,
-              conditions.days
-            );
-          }
-          return null;
-        })
-        .filter((request) => request !== null);
-
-      Promise.all(requests).then((responses) => {
-        if(responses.includes(undefined)) {
-          setPriceVolumeChartIsLoadingHasError(true)
-        } else {
-          setPriceVolumeList(responses);
-          setPriceVolumeChartIsLoadingHasError(false)
-        }   
-      });
-    }
-  };
-
-  useEffect(() => {
-    getPriceVolumeDataForSelectedCoins(queryParams);
-  }, [location.search]);
 
   return (
     <div>

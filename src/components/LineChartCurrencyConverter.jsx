@@ -25,7 +25,7 @@ ChartJS.register(
 );
 import { CryptoContext } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineChartCurrencyConverter";
-import { setDisplayIntervalLineChart } from "./setDisplayTimeIntervalLineBarChart";
+import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
 const LineChartCurrencyConverter = ({ priceVolumeList }) => {
   if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
@@ -79,7 +79,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
       labels:
         priceVolumeList.length !== 0 &&
         priceVolumeList[0].prices.map((item) => {
-          return setDisplayIntervalLineChart(currencyConverterDays, item);
+          return setDisplayIntervalLineBarChart(currencyConverterDays, item);
         }),
 
       datasets: [
