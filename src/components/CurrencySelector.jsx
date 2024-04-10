@@ -12,16 +12,18 @@ export const CurrencySelector = () => {
     queryParams,
     historyURL,
     handleSearchParams,
+    changeSearchParams,
     darkMode,
   } = useContext(CryptoContext);
 
   const handleChange = (e) => {
     setDisplayCurrency(e.target.value);
+    changeSearchParams("displaycurrency", e.target.value)
   };
 
   useEffect(() => {
     handleSearchParams("displaycurrency", displayCurrency);
-  }, [displayCurrency]);
+  });
 
   return (
     <div className="relative flex justify-center h-10 w-32">

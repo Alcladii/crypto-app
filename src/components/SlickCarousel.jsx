@@ -35,6 +35,7 @@ export const SlickCarousel = ({ coinList }) => {
     setPriceVolumeChartIsLoadingHasError,
     changeSearchParams,
     numOfDaysFromUrl,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState(
@@ -112,29 +113,47 @@ export const SlickCarousel = ({ coinList }) => {
   };
 
   return (
-    <div>
+    <div className={`${darkMode ? "" : "theme-light"} `}>
       <div className="flex justify-end items-center py-8 ">
         {comparisonIsOn ? (
           <div
             onClick={handleComparison}
-            className="selected-button w-44 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
+            className="bg-skin-carousel-selected-button-background-color w-44 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer text-skin-carousel-selected-button-text-color"
           >
-            <img
-              src="https://i.ibb.co/1mN5KGj/icons8-cross-50.png"
-              className="w-7 mr-1.5"
-            />
-            Exit Comparison
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="rgba(255,255,255,1)"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+            &nbsp; Exit Comparison
           </div>
         ) : (
           <div
             onClick={handleComparison}
-            className="bg-button-unselected-search-bar-background w-32 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer"
+            className="bg-skin-carousel-unselected-button-background-color w-32 h-10 flex justify-center items-center rounded-md font-sans cursor-pointer text-skin-carousel-unselected-button-text-color"
           >
-            <img
-              src="https://i.ibb.co/yPvmz1f/icons8-charts-64.png"
-              className="w-5 mr-2.5"
-            />
-            Compare
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill={`${darkMode ? "rgba(255,255,255,1)" : "rgba(24, 24, 37, 1)"}`}
+              class="w-6 h-6"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm4.5 7.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25a.75.75 0 0 1 .75-.75Zm3.75-1.5a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0V12Zm2.25-3a.75.75 0 0 1 .75.75v6.75a.75.75 0 0 1-1.5 0V9.75A.75.75 0 0 1 13.5 9Zm3.75-1.5a.75.75 0 0 0-1.5 0v9a.75.75 0 0 0 1.5 0v-9Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            &nbsp; Compare
           </div>
         )}
       </div>
@@ -143,30 +162,37 @@ export const SlickCarousel = ({ coinList }) => {
           <Slider {...settings}>
             {slidesData.map((coin) => (
               <div>
-                <div 
-                  key={coin.id}               
+                <div
+                  key={coin.id}
                   onClick={() => handleClick(coin.id)}
                   selected={coin.selected}
                   className={`${
                     coin.selected
-                      ? "selected-button"
-                      : "bg-button-unselected-search-bar-background"
+                      ? "bg-skin-carousel-selected-button-background-color"
+                      : "bg-skin-carousel-unselected-button-background-color"
                   } cursor-pointer h-16 flex items-center rounded-md px-1 py-1`}
                 >
                   <div className="slide-icon-wrapper">
                     <CoinTag src={coin.image} />
                   </div>
                   <div className="slide-content-wrapper">
-                    <div className="flex items-center font-space-grotesk text-sm">
+                    <div
+                      className={`flex items-center font-space-grotesk text-sm ${
+                        coin.selected
+                          ? "text-skin-carousel-selected-button-text-color"
+                          : "text-skin-carousel-unselected-button-text-color"
+                      }`}
+                    >
                       <div>{coin.name}</div>
                       <div className="ml-0.5">
                         ({coin.symbol.toUpperCase()})
                       </div>
                     </div>
                     <div className="font-space-grotesk text-sm flex items-center">
-                      {currencySymbol}
-                      {coin.current_price}
-
+                      <span className="text-skin-carousel-current-price-text-color">
+                        {currencySymbol}
+                        {coin.current_price}
+                      </span>
                       <img
                         src={`${
                           coin.price_change_percentage_24h_in_currency > 0

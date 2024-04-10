@@ -51,12 +51,12 @@ export default function App() {
 
   const handleHomePageClick = () => {
     setLoadHomePage(true);
-    changeSearchParams("load_home_page", "true")
+    changeSearchParams("load_home_page", "true");
   };
 
   const handlePortfolioPageClick = () => {
     setLoadHomePage(false);
-    changeSearchParams("load_home_page", "false")
+    changeSearchParams("load_home_page", "false");
   };
 
   const toggleDarkMode = () => {
@@ -80,11 +80,11 @@ export default function App() {
     getMarketData();
   }, []);
 
-  useEffect(()=>{
-    handleSearchParams("load_home_page", "true")
-  }, [])
+  useEffect(() => {
+    handleSearchParams("load_home_page", "true");
+  }, []);
 
-  const loadHomePageInUrl = queryParams.load_home_page === "true"
+  const loadHomePageInUrl = queryParams.load_home_page === "true";
 
   return (
     <div>
@@ -247,7 +247,11 @@ export default function App() {
           </div>
         </div>
       </div>
-      <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
+      <div
+        className={`bg-skin-app w-screen ${
+          darkMode ? "" : "theme-light"
+        } `}
+      >
         <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
           <div
             className={`font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}

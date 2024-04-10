@@ -69,6 +69,7 @@ function Coins() {
     queryParams,
     historyURL,
     changeSearchParams,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
@@ -111,7 +112,7 @@ function Coins() {
       setCoinList(coinList.concat(data))
       setCoinPage(coinPage + 1)*/
       let coins;
-      const order = (showTopFifty ? "market_cap_desc" : "market_cap_asc");
+      const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
         "/coins/markets",
@@ -129,12 +130,12 @@ function Coins() {
 
   const setToDsc = () => {
     setCoinListDsc(true);
-    changeSearchParams("show_top_fifty", true)
+    changeSearchParams("show_top_fifty", true);
   };
 
   const setToAsc = () => {
     setCoinListDsc(false);
-    changeSearchParams("show_top_fifty", false)
+    changeSearchParams("show_top_fifty", false);
   };
 
   useEffect(() => {
@@ -168,156 +169,156 @@ function Coins() {
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {
       setSortOrderByName("ascent");
-      changeSearchParams("sort_order_by_name", "ascent")
+      changeSearchParams("sort_order_by_name", "ascent");
     }
     if (sortOrderByName === "ascent") {
       setSortOrderByName("descent");
-      changeSearchParams("sort_order_by_name", "descent")
+      changeSearchParams("sort_order_by_name", "descent");
     }
     if (sortOrderByName === "descent") {
       setSortOrderByName("default");
-      changeSearchParams("sort_order_by_name", "default")
+      changeSearchParams("sort_order_by_name", "default");
     }
   };
 
   const handleSortOrderByPrice = () => {
     if (sortOrderByPrice === "default") {
       setSortOrderByPrice("ascent");
-      changeSearchParams("sort_order_by_price", "ascent")
+      changeSearchParams("sort_order_by_price", "ascent");
     }
     if (sortOrderByPrice === "ascent") {
       setSortOrderByPrice("descent");
-      changeSearchParams("sort_order_by_price", "descent")
+      changeSearchParams("sort_order_by_price", "descent");
     }
     if (sortOrderByPrice === "descent") {
       setSortOrderByPrice("default");
-      changeSearchParams("sort_order_by_price", "default")
+      changeSearchParams("sort_order_by_price", "default");
     }
   };
 
   const handleSortOrderByPriceChange1h = () => {
     if (sortOrderByPriceChange1h === "default") {
       setSortOrderByPriceChange1h("ascent");
-      changeSearchParams("sort_order_by_price_change_1h", "ascent")
+      changeSearchParams("sort_order_by_price_change_1h", "ascent");
     }
     if (sortOrderByPriceChange1h === "ascent") {
       setSortOrderByPriceChange1h("descent");
-      changeSearchParams("sort_order_by_price_change_1h", "descent")
+      changeSearchParams("sort_order_by_price_change_1h", "descent");
     }
     if (sortOrderByPriceChange1h === "descent") {
       setSortOrderByPriceChange1h("default");
-      changeSearchParams("sort_order_by_price_change_1h", "default")
+      changeSearchParams("sort_order_by_price_change_1h", "default");
     }
   };
 
   const handleSortOrderByPriceChange24h = () => {
     if (sortOrderByPriceChange24h === "default") {
       setSortOrderByPriceChange24h("ascent");
-      changeSearchParams("sort_order_by_price_change_24h", "ascent")
+      changeSearchParams("sort_order_by_price_change_24h", "ascent");
     }
     if (sortOrderByPriceChange24h === "ascent") {
       setSortOrderByPriceChange24h("descent");
-      changeSearchParams("sort_order_by_price_change_24h", "descent")
+      changeSearchParams("sort_order_by_price_change_24h", "descent");
     }
     if (sortOrderByPriceChange24h === "descent") {
       setSortOrderByPriceChange24h("default");
-      changeSearchParams("sort_order_by_price_change_24h", "default")
+      changeSearchParams("sort_order_by_price_change_24h", "default");
     }
   };
 
   const handleSortOrderByPriceChange7d = () => {
     if (sortOrderByPriceChange7d === "default") {
       setSortOrderByPriceChange7d("ascent");
-      changeSearchParams("sort_order_by_price_change_7d", "ascent")
+      changeSearchParams("sort_order_by_price_change_7d", "ascent");
     }
     if (sortOrderByPriceChange7d === "ascent") {
       setSortOrderByPriceChange7d("descent");
-      changeSearchParams("sort_order_by_price_change_7d", "descent")
+      changeSearchParams("sort_order_by_price_change_7d", "descent");
     }
     if (sortOrderByPriceChange7d === "descent") {
       setSortOrderByPriceChange7d("default");
-      changeSearchParams("sort_order_by_price_change_7d", "default")
+      changeSearchParams("sort_order_by_price_change_7d", "default");
     }
   };
 
   const handleSortByName = () => {
     if (sortBy !== "name") {
-      setSortBy("name");     
+      setSortBy("name");
     }
-    changeSearchParams("sort_by", "name")
+    changeSearchParams("sort_by", "name");
     handleSortOrderByName();
     setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default")
+    changeSearchParams("sort_order_by_price", "default");
     setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default")
+    changeSearchParams("sort_order_by_price_change_1h", "default");
     setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default")
+    changeSearchParams("sort_order_by_price_change_24h", "default");
     setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default")
+    changeSearchParams("sort_order_by_price_change_7d", "default");
   };
 
   const handleSortByPrice = () => {
     if (sortBy !== "current_price") {
       setSortBy("current_price");
     }
-    changeSearchParams("sort_by", "current_price")
+    changeSearchParams("sort_by", "current_price");
     handleSortOrderByPrice();
     setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default")
+    changeSearchParams("sort_order_by_name", "default");
     setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default")
+    changeSearchParams("sort_order_by_price_change_1h", "default");
     setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default")
+    changeSearchParams("sort_order_by_price_change_24h", "default");
     setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default")
+    changeSearchParams("sort_order_by_price_change_7d", "default");
   };
 
   const handleSortByOneHour = () => {
     if (sortBy !== "price_change_percentage_1h_in_currency") {
       setSortBy("price_change_percentage_1h_in_currency");
     }
-    changeSearchParams("sort_by", "price_change_percentage_1h_in_currency")
+    changeSearchParams("sort_by", "price_change_percentage_1h_in_currency");
     handleSortOrderByPriceChange1h();
     setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default")
+    changeSearchParams("sort_order_by_name", "default");
     setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default")
+    changeSearchParams("sort_order_by_price", "default");
     setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default")
+    changeSearchParams("sort_order_by_price_change_24h", "default");
     setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default")
+    changeSearchParams("sort_order_by_price_change_7d", "default");
   };
 
   const handleSortByTwentyFourHours = () => {
     if (sortBy !== "price_change_percentage_24h_in_currency") {
       setSortBy("price_change_percentage_24h_in_currency");
     }
-    changeSearchParams("sort_by", "price_change_percentage_24h_in_currency")
+    changeSearchParams("sort_by", "price_change_percentage_24h_in_currency");
     handleSortOrderByPriceChange24h();
     setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default")
+    changeSearchParams("sort_order_by_name", "default");
     setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default")
+    changeSearchParams("sort_order_by_price", "default");
     setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default")
+    changeSearchParams("sort_order_by_price_change_1h", "default");
     setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default")
+    changeSearchParams("sort_order_by_price_change_7d", "default");
   };
 
   const handleSortBySevenDays = () => {
     if (sortBy !== "price_change_percentage_7d_in_currency") {
       setSortBy("price_change_percentage_7d_in_currency");
     }
-    changeSearchParams("sort_by", "price_change_percentage_7d_in_currency")
+    changeSearchParams("sort_by", "price_change_percentage_7d_in_currency");
     handleSortOrderByPriceChange7d();
     setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default")
+    changeSearchParams("sort_order_by_name", "default");
     setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default")
+    changeSearchParams("sort_order_by_price", "default");
     setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default")
+    changeSearchParams("sort_order_by_price_change_1h", "default");
     setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default")
+    changeSearchParams("sort_order_by_price_change_24h", "default");
   };
 
   useEffect(() => {
@@ -466,20 +467,25 @@ function Coins() {
     return displayCoinList.indexOf(coin) % progressBarColors.length;
   };
 
+  console.log(
+    priceVolumeList.length,
+    priceVolumeList,
+    priceVolumeChartIsLoadingHasError
+  );
   return (
-    <div className="App">
-      <div className="my-[20px]">
+    <div className={`${darkMode ? "" : "theme-light"}`}>
+      <div className="my-5">
         <SlickCarousel coinList={coinList} />
       </div>
 
       {priceVolumeList.length === 0 &&
       priceVolumeChartIsLoadingHasError !== true ? (
-        <div className="my-8 text-2xl flex justify-center">
+        <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
           Please select a coin to view chart
         </div>
       ) : priceVolumeList.length === 0 &&
         priceVolumeChartIsLoadingHasError === true ? (
-        <div className="my-8 text-2xl flex justify-center">
+        <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
           Error fetching Price and Volumne Chart
         </div>
       ) : (
@@ -490,10 +496,12 @@ function Coins() {
             )}
           </div>
           <div className="flex justify-center items-center max-w-[1440px] h-auto my-7">
-            <div className="w-1/2 h-auto p-5 mr-7 bg-line-bar-chart-background rounded-md">
-              {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(null)) && (
-                <LineChart priceVolumeList={priceVolumeList} />
-              )}
+            <div className="w-1/2 h-auto p-5 mr-7 bg-skin-charts-background-color rounded-md">
+              {!priceVolumeList.length !== 0 &&
+                !priceVolumeList.includes(undefined) &&
+                !priceVolumeList.includes(null) && (
+                  <LineChart priceVolumeList={priceVolumeList} />
+                )}
               <div className="flex justify-between">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -507,10 +515,12 @@ function Coins() {
                   ))}
               </div>
             </div>
-            <div className="w-1/2 h-auto p-5 ml-7 bg-line-bar-chart-background rounded-md">
-              {(priceVolumeChartIsLoadingHasError === false && !priceVolumeList.includes(null)) && (
-                <BarChart priceVolumeList={priceVolumeList} />
-              )}
+            <div className="w-1/2 h-auto p-5 ml-7 bg-skin-charts-background-color rounded-md">
+              {!priceVolumeList.length !== 0 &&
+                !priceVolumeList.includes(undefined) &&
+                !priceVolumeList.includes(null) && (
+                  <BarChart priceVolumeList={priceVolumeList} />
+                )}
               <div className="flex justify-between">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -525,14 +535,14 @@ function Coins() {
               </div>
             </div>
           </div>
-          <div className="my-8 text-2xl flex justify-center">
+          <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
             {priceVolumeChartIsLoadingHasError && (
               <div>Error fetching Price and Volumne Chart</div>
             )}
           </div>
         </div>
       )}
-      <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
+      <div className="flex my-5 w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         <DaysButton days="2" buttonText="1D" />
         <DaysButton days="7" buttonText="7D" />
         <DaysButton days="30" buttonText="1M" />
@@ -541,7 +551,7 @@ function Coins() {
         <DaysButton days="365" buttonText="1Y" />
       </div>
       <div
-        className="bg-button-unselected-search-bar-background w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer"
+        className="bg-skin-carousel-unselected-button-background-color w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer text-skin-carousel-unselected-button-text-color"
         onClick={clearSearchParams}
       >
         Clear Search Criteria
@@ -552,9 +562,9 @@ function Coins() {
           <div
             className={`${
               showTopFifty
-                ? "selected-button"
-                : "bg-button-unselected-search-bar-background"
-            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer`}
+                ? "bg-skin-carousel-selected-button-background-color"
+                : "bg-skin-carousel-unselected-button-background-color"
+            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer ${showTopFifty ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"}`}
             onClick={setToDsc}
           >
             {" "}
@@ -563,9 +573,9 @@ function Coins() {
           <div
             className={`${
               !showTopFifty
-                ? "selected-button"
-                : "bg-button-unselected-search-bar-background"
-            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer`}
+                ? "bg-skin-carousel-selected-button-background-color"
+                : "bg-skin-carousel-unselected-button-background-color"
+            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer ${!showTopFifty ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"}`}
             onClick={setToAsc}
           >
             {" "}
@@ -583,81 +593,265 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="flex">
+        <div
+          className={`flex ${
+            darkMode ? "" : "theme-light"
+          } text-skin-coin-list-titles-text-color`}
+        >
           <div className="w-[4%] pl-3 flex items-center">#</div>
           <div className="w-[15%] pr-2 flex justify-start items-center">
-            <div>Name</div>
+            <div className="mr-1">Name</div>
             <div onClick={handleSortByName}>
-              <img
-                src={
-                  sortOrderByNameInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByNameInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                }
-                className="w-3.5 ml-2"
-              />
+              {sortOrderByNameInQueryParams === "default" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : sortOrderByNameInQueryParams === "ascent" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div>Price</div>
+            <div className="mr-1">Price</div>
             <div onClick={handleSortByPrice}>
-              <img
-                src={
-                  sortOrderByPriceInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByPriceInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                }
-                className="w-3.5 ml-2"
-              />
+            {sortOrderByPriceInQueryParams === "default" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : sortOrderByPriceInQueryParams=== "ascent" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div>1h%</div>
+            <div className="mr-1">1h%</div>
             <div onClick={handleSortByOneHour}>
-              <img
-                src={
-                  sortOrderByPriceChange1hInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByPriceChange1hInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                }
-                className="w-3.5 ml-2"
-              />
+            {sortOrderByPriceChange1hInQueryParams === "default" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : sortOrderByPriceChange1hInQueryParams === "ascent" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div>24h%</div>
+            <div className="mr-1">24h%</div>
             <div onClick={handleSortByTwentyFourHours}>
-              <img
-                src={
-                  sortOrderByPriceChange24hInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByPriceChange24hInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                }
-                className="w-3.5 ml-2"
-              />
+            {sortOrderByPriceChange24hInQueryParams === "default" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : sortOrderByPriceChange24hInQueryParams === "ascent" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div>7d%</div>
+            <div className="mr-1">7d%</div>
             <div onClick={handleSortBySevenDays}>
-              <img
-                src={
-                  sortOrderByPriceChange7dInQueryParams === "default"
-                    ? "https://i.ibb.co/fpfHc9R/icons8-triangle-48-white.png"
-                    : sortOrderByPriceChange7dInQueryParams === "ascent"
-                    ? "https://i.ibb.co/pKrLjwn/icons8-triangle-48-2-white.png"
-                    : "https://i.ibb.co/2hMjkBq/icons8-square-48.png"
-                }
-                className="w-3.5 ml-2"
-              />
+            {sortOrderByPriceChange7dInQueryParams === "default" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : sortOrderByPriceChange7dInQueryParams === "ascent" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill={
+                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
+                  }
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="w-[20%] pr-3.5 flex justify-start items-center">
@@ -673,22 +867,22 @@ function Coins() {
         {displayCoinList.map((singleCoin) => (
           <div
             key={singleCoin.id}
-            className="flex items-center h-20 my-2.5 bg-button-unselected-search-bar-background rounded-md font-space-grotesk"
+            className="flex items-center h-20 my-2.5 bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
           >
-            <div className="w-[4%] pl-3 flex items-center">
+            <div className="w-[4%] pl-3 flex items-center text-skin-coin-list-text-color">
               {displayCoinList.indexOf(singleCoin) + 1}
             </div>
             <div
               className="w-[15%] pr-2 flex justify-start items-center"
               onClick={() => handleClick(singleCoin)}
             >
-              <div className="flex items-center">
+              <div className="flex items-center text-skin-coin-list-text-color">
                 <CoinTag src={singleCoin.image} />
                 &nbsp;&nbsp;
                 <div>{singleCoin.name}</div>
               </div>
             </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center text-lg">
+            <div className="w-[9%] pl-2 flex justify-start items-center text-lg text-skin-coin-list-text-color">
               {currencySymbol}
               {singleCoin.current_price &&
                 singleCoin.current_price.toLocaleString()}
@@ -735,7 +929,7 @@ function Coins() {
                 />
               </div>
             </div>
-            <div className="w-[20%] pr-3.5 flex justify-start items-center">
+            <div className="w-[20%] pr-3.5 flex justify-start items-center text-skin-coin-list-text-color">
               <div className="w-full">
                 <div className="flex w-full items-center justify-between text-sm">
                   <span>
@@ -763,7 +957,7 @@ function Coins() {
                 </ProgressBarOuter>
               </div>
             </div>
-            <div className="w-[20%] pl-3.5 flex justify-start items-center">
+            <div className="w-[20%] pl-3.5 flex justify-start items-center text-skin-coin-list-text-color">
               <div className="w-full">
                 <div className="flex w-full items-center justify-between text-sm">
                   <span>
