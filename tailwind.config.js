@@ -36,7 +36,7 @@ export default {
           "currency-selector-text-color": 'var(--color-text-currency-selector)',
           "search-bar-place-holder-text-color": 'var(--color-text-search-bar-place-holder)',
           "coins-currency-selector-selected-button-text-color": 'var(--color-text-coins-currency-selector-selected-button)',
-          "coins-currency-selector-unselected-button-text-color": 'var(--color-text-coins-currency-selector-unselected-button)'
+          "coins-currency-selector-unselected-button-text-color": 'var(--color-text-coins-currency-selector-unselected-button)',
           "carousel-selected-button-text-color": 'var(--color-text-carousel-selected-button)',
           "carousel-unselected-button-text-color": 'var(--color-text-carousel-unselected-button)',
           "carousel-current-price-text-color": 'var(--color-text-carousel-current-price)',
@@ -56,7 +56,7 @@ export default {
           "days-bar-background-color": 'var(--color-background-days-bar)',
           "days-button-background-color": 'var(--color-background-days-button)',
           "charts-background-color":'var(--color-background-charts)',
-          "coin-list-background-color":'var(--color-background-coin-list)'
+          "coin-list-background-color":'var(--color-background-coin-list)',
           "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
           "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
           "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
