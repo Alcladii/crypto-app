@@ -30,7 +30,6 @@ import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarC
 const LineChart = ({ priceVolumeList, }) => {
   
   const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext);
-  console.log(numOfDaysFromUrl)
   const maxTicksLimit = setMaxTicksLimit(numOfDaysFromUrl);
   const options = {
     responsive: true,

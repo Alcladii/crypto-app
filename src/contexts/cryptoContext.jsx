@@ -144,7 +144,6 @@ export const CryptoProvider = ({ children }) => {
     if (!(conditionKey in queryParams)) {
       const updatedParams = { ...queryParams, [conditionKey]: conditionValue };
       queryParams = updatedParams;
-      console.log("updatedParams", updatedParams);
     }
     historyURL.push(`?${queryString.stringify(queryParams)}`);
   };

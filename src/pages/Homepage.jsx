@@ -5,7 +5,7 @@ import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
 
 export const Home = () => {
-  const { useLocalState, handleSearchParams, queryParams, changeSearchParams, darkMode } =
+  const { useLocalState, handleSearchParams, queryParams, changeSearchParams, darkMode, } =
     useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
 
@@ -33,9 +33,9 @@ export const Home = () => {
             onClick={handleCoinsListClick}
             className={`${
               loadCoins
-                ? "selected-button"
-                : "bg-button-unselected-search-bar-background"
-            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
+                ? "bg-skin-coins-converter-selected-button-background"
+                : "bg-skin-coins-converter-unselected-button-background"
+            } ${darkMode ? "" : "theme-light"} flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
           >
             Coins
           </div>
@@ -43,9 +43,9 @@ export const Home = () => {
             onClick={handleCurrencyConverterClick}
             className={`${
               !loadCoins
-                ? "selected-button"
-                : "bg-button-unselected-search-bar-background"
-            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
+                ? "bg-skin-coins-converter-selected-button-background"
+                : "bg-skin-coins-converter-unselected-button-background"
+            } ${darkMode ? "" : "theme-light"} flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
           >
             Currency Converter
           </div>

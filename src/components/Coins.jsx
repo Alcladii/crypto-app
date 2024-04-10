@@ -366,7 +366,7 @@ function Coins() {
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
-
+     
     if (
       sortByInQueryParams === "name" &&
       sortOrderByNameInQueryParams === "ascent"

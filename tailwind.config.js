@@ -55,6 +55,10 @@ export default {
           "days-button-background-color": 'var(--color-background-days-button)',
           "charts-background-color":'var(--color-background-charts)',
           "coin-list-background-color":'var(--color-background-coin-list)'
+          "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
+          "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
+          "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
+
         }
       },
       colors: {

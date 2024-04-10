@@ -23,6 +23,9 @@
     --color-background-days-button: rgba(97, 97, 214, 0.5);
     --color-background-charts: rgba(25, 25, 50, 1);
     --color-background-coin-list: rgba(25, 25, 37, 1);
+    --color-background-coins-converter-selected-button: rgba(97, 97, 214, 0.5);
+    --color-background-coins-converter-unselected-button: rgba(35, 35, 54, 1);
+    --color-background-coins-converter-wrapper: rgba(25, 25, 37, 1);
   } 
 
   .theme-light {
@@ -45,5 +48,8 @@
     --color-background-days-button: rgba(97, 97, 214, 0.5);
     --color-background-charts: rgba(255, 255, 255, 1);
     --color-background-coin-list: rgba(255, 255, 255, 1);
+    --color-background-selected-button:rgba(97, 97, 214, 0.5);
+    --color-background-coins-converter-unselected-button: rgba(255, 255, 255, 1);
+    --color-background-coins-converter-wrapper: rgba(255, 255, 255, 1);
   }
 }

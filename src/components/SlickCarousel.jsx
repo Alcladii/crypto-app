@@ -70,9 +70,6 @@ export const SlickCarousel = ({ coinList }) => {
 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
-  //loop over an object called queryParams, for each entry, if the key of the entry includes "selectedcoin", push
-  //the value of that entry to an array called "selectedCoinData"
-
   const handleClick = (id) => {
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
