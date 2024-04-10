@@ -39,7 +39,10 @@ export default {
       backgroundColor: {
         skin: {
           app: 'var(--color-background-app)',
-          "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)'
+          "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)',
+          "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
+          "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
+          "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
         }
       },
       colors: {
