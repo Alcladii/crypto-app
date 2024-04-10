@@ -31,7 +31,7 @@ export const Home = () => {
   const loadCoinsPageFromUrl = queryParams.load_coins_page === "true";
 
   return (
-    <div className="bg-crpyto-background-dark h-full w-screen">
+    <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}>
       <div className="max-w-[1440px] mx-auto px-10 py-8">
         <div className="flex justify-left items-center">
           <div
