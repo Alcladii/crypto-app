@@ -5,25 +5,30 @@ import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
 
 export const Home = () => {
-  const { useLocalState, handleSearchParams, queryParams, changeSearchParams, darkMode, } =
-    useContext(CryptoContext);
+  const {
+    useLocalState,
+    handleSearchParams,
+    queryParams,
+    changeSearchParams,
+    darkMode,
+  } = useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
 
   const handleCoinsListClick = () => {
     setLoadCoins(true);
-    changeSearchParams("load_coins_page", "true")
+    changeSearchParams("load_coins_page", "true");
   };
 
   const handleCurrencyConverterClick = () => {
     setLoadCoins(false);
-    changeSearchParams("load_coins_page", "false")
+    changeSearchParams("load_coins_page", "false");
   };
 
   useEffect(() => {
-    handleSearchParams("load_coins_page", loadCoins);    
-  },[]);
+    handleSearchParams("load_coins_page", loadCoins);
+  }, []);
 
-  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true"
+  const loadCoinsPageFromUrl = queryParams.load_coins_page === "true";
 
   return (
     <div className="bg-crpyto-background-dark h-full w-screen">
@@ -32,29 +37,37 @@ export const Home = () => {
           <div
             onClick={handleCoinsListClick}
             className={`${
-              loadCoins
+              loadCoinsPageFromUrl
                 ? "bg-skin-coins-converter-selected-button-background"
                 : "bg-skin-coins-converter-unselected-button-background"
-            } ${darkMode ? "" : "theme-light"} flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
+            } ${
+              darkMode ? "" : "theme-light"
+            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
+              loadCoinsPageFromUrl
+                ? "text-skin-coins-currency-selector-selected-button-text-color"
+                : "text-skin-coins-currency-selector-unselected-button-text-color"
+            }`}
           >
             Coins
           </div>
           <div
             onClick={handleCurrencyConverterClick}
             className={`${
-              !loadCoins
+              !loadCoinsPageFromUrl
                 ? "bg-skin-coins-converter-selected-button-background"
                 : "bg-skin-coins-converter-unselected-button-background"
-            } ${darkMode ? "" : "theme-light"} flex items-center justify-center h-10 w-44 rounded-md cursor-pointer`}
+            } ${
+              darkMode ? "" : "theme-light"
+            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
+              !loadCoinsPageFromUrl
+                ? "text-skin-coins-currency-selector-selected-button-text-color"
+                : "text-skin-coins-currency-selector-unselected-button-text-color"
+            }`}
           >
             Currency Converter
           </div>
         </div>
-        {loadCoinsPageFromUrl ? (
-          <Coins />
-        ) : (
-          <CurrencyConverter />
-        )}
+        {loadCoinsPageFromUrl ? <Coins /> : <CurrencyConverter />}
       </div>
     </div>
   );

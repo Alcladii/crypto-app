@@ -34,6 +34,8 @@ export default {
           "unselected-button-text": 'var(--color-text-unselected-button)',
           "currency-selector-text-color": 'var(--color-text-currency-selector)',
           "search-bar-place-holder-text-color": 'var(--color-text-search-bar-place-holder)',
+          "coins-currency-selector-selected-button-text-color": 'var(--color-text-coins-currency-selector-selected-button)',
+          "coins-currency-selector-unselected-button-text-color": 'var(--color-text-coins-currency-selector-unselected-button)'
         }
       },
       backgroundColor: {

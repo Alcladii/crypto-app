@@ -7,6 +7,8 @@
     --color-text-selected-button-app-name: rgba(255, 255, 255, 1);
     --color-text-unselected-button : rgba(255, 255, 255, 0.5);
     --color-text-currency-selector: rgba(255, 255, 255, 0.8);
+    --color-text-coins-currency-selector-selected-button: rgba(255, 255, 255, 1);
+    --color-text-coins-currency-selector-unselected-button: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-coins-converter-selected-button: rgba(97, 97, 214, 0.5);
@@ -18,6 +20,8 @@
     --color-text-selected-button-app-name: rgba(53, 53, 112, 1);
     --color-text-unselected-button : rgba(161, 161, 170, 1);
     --color-text-currency-selector: rgba(66, 66, 134, 0.8);
+    --color-text-coins-currency-selector-selected-button: rgba(255, 255, 255, 1);
+    --color-text-coins-currency-selector-unselected-button: rgba(66, 66, 134, 1);
     --color-background-app: rgba(255, 255, 255, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-selected-button:rgba(97, 97, 214, 0.5);
