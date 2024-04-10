@@ -154,7 +154,7 @@ export default function App() {
         </div>
       </div>
       <div
-        className={`bg-skin-app w-screen h-[100vh] ${
+        className={`bg-skin-app w-screen ${
           darkMode ? "" : "theme-light"
         } `}
       >

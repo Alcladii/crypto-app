@@ -11,10 +11,18 @@
     --color-text-carousel-unselected-button: rgba(255, 255, 255, 1);
     --color-text-carousel-current-price: rgba(209, 209, 209, 1);
     --color-text-select-coin-to-view-chart-prompt: rgba(255, 255, 255, 1);
+    --color-text-days-button-top-bottom-fifty: rgba(255, 255, 255, 1);
+    --color-text-unselected-days-button-top-bottom-fifty: rgba(167, 167, 204, 1);
+    --color-text-coin-list-titles: rgba(209, 209, 209, 1);
+    --color-text-coin-list: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
     --color-background-carousel-unselected-button: rgba(25, 25, 37, 1);
+    --color-background-days-bar: rgba(35, 35, 54, 1);
+    --color-background-days-button: rgba(97, 97, 214, 0.5);
+    --color-background-charts: rgba(25, 25, 50, 1);
+    --color-background-coin-list: rgba(25, 25, 37, 1);
   } 
 
   .theme-light {
@@ -25,9 +33,17 @@
     --color-text-carousel-unselected-button: rgba(24, 24, 37, 1);
     --color-text-carousel-current-price: rgb(88, 88, 88,1);
     --color-text-select-coin-to-view-chart-prompt: rgba(24, 24, 37, 1);
-    --color-background-app: rgba(255, 255, 255, 1);
+    --color-text-days-button-top-bottom-fifty: rgba(24, 24, 37, 1);
+    --color-text-unselected-days-button-top-bottom-fifty: rgba(66, 66, 134, 1); 
+    --color-text-coin-list-titles: rgba(66, 66, 134, 1);
+    --color-text-coin-list: rgba(35, 35, 54, 1);
+    --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
     --color-background-carousel-unselected-button: rgba(255, 255, 255, 1);
+    --color-background-days-bar: rgba(204, 204, 250, 0.4);
+    --color-background-days-button: rgba(97, 97, 214, 0.5);
+    --color-background-charts: rgba(255, 255, 255, 1);
+    --color-background-coin-list: rgba(255, 255, 255, 1);
   }
 }
