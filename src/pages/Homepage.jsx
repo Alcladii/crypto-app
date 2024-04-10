@@ -5,7 +5,7 @@ import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
 
 export const Home = () => {
-  const { useLocalState, handleSearchParams, queryParams, changeSearchParams } =
+  const { useLocalState, handleSearchParams, queryParams, changeSearchParams, darkMode, } =
     useContext(CryptoContext);
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
 
