@@ -1,5 +1,5 @@
 export const Arrow = ({ priceChange }) => {
-  return (
+  return(
     <img
       className="w-2"
       src={
@@ -8,5 +8,5 @@ export const Arrow = ({ priceChange }) => {
         : "https://i.ibb.co/DzMdxQ0/icons8-triangle-48-2.png"
       }
     />
-  );
+  ) 
 };

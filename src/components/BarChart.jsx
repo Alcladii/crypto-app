@@ -79,9 +79,9 @@ const BarChart = ({ priceVolumeList }) => {
         label: `Trade Price`,
         data: item.total_volumes.map((volume) => volume[1]),
         backgroundColor,
-        pointRadius: 0,
+        pointRadius: 3,
         borderWidth: 0,
-        borderRadius: 6,
+        borderRadius: 3,
         fill: true,
       };
     }),

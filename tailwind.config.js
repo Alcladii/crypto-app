@@ -25,6 +25,7 @@ export default {
     "./src/pages/Portfolio.jsx",
     "./src/App.jsx",
     "./src/components/CoinPagePlusInCircleIcon.jsx",
+    "./src/components/DaysButton.jsx",
   ],
   theme: {
     extend: {
@@ -34,15 +35,30 @@ export default {
           "unselected-button-text": 'var(--color-text-unselected-button)',
           "currency-selector-text-color": 'var(--color-text-currency-selector)',
           "search-bar-place-holder-text-color": 'var(--color-text-search-bar-place-holder)',
+          "carousel-selected-button-text-color": 'var(--color-text-carousel-selected-button)',
+          "carousel-unselected-button-text-color": 'var(--color-text-carousel-unselected-button)',
+          "carousel-current-price-text-color": 'var(--color-text-carousel-current-price)',
+          "select-coin-to-view-chart-prompt-text-color": 'var(--color-text-select-coin-to-view-chart-prompt)',
+          "days-button-top-bottom-fifty-text-color":'var(--color-text-days-button-top-bottom-fifty)',
+          "unselected-days-top-bottom-fifty-button-text-color":'var(--color-text-unselected-days-button-top-bottom-fifty)',
+          "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',
+          "coin-list-text-color":'var(--color-text-coin-list)'
         }
       },
       backgroundColor: {
         skin: {
           app: 'var(--color-background-app)',
           "unselected-button-bg": 'var(--color-background-unselected-button-search-bar-currency-selector)',
+          "carousel-selected-button-background-color": 'var(--color-background-carousel-selected-button)',
+          "carousel-unselected-button-background-color": 'var(--color-background-carousel-unselected-button)',
+          "days-bar-background-color": 'var(--color-background-days-bar)',
+          "days-button-background-color": 'var(--color-background-days-button)',
+          "charts-background-color":'var(--color-background-charts)',
+          "coin-list-background-color":'var(--color-background-coin-list)'
           "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
           "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
           "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
+
         }
       },
       colors: {
