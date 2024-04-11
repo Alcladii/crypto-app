@@ -26,6 +26,7 @@ export default {
     "./src/App.jsx",
     "./src/components/CoinPagePlusInCircleIcon.jsx",
     "./src/components/DaysButton.jsx",
+    "./src/components/PriceChangePercentageText.jsx"
   ],
   theme: {
     extend: {
@@ -44,7 +45,9 @@ export default {
           "days-button-top-bottom-fifty-text-color":'var(--color-text-days-button-top-bottom-fifty)',
           "unselected-days-top-bottom-fifty-button-text-color":'var(--color-text-unselected-days-button-top-bottom-fifty)',
           "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',
-          "coin-list-text-color":'var(--color-text-coin-list)'
+          "coin-list-text-color":'var(--color-text-coin-list)',
+          "change-percentage-in-coin-page-positive-text-color":'var(--color-text-change-percentage-in-coin-page-positive)',
+          "change-percentage-in-coin-page-negative-text-color":'var(--color-text-change-percentage-in-coin-page-negative)'
         }
       },
       backgroundColor: {
@@ -60,7 +63,6 @@ export default {
           "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
           "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
           "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
-
         }
       },
       colors: {

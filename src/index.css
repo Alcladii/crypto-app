@@ -17,6 +17,8 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(167, 167, 204, 1);
     --color-text-coin-list-titles: rgba(209, 209, 209, 1);
     --color-text-coin-list: rgba(255, 255, 255, 1);
+    --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
+    --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -44,6 +46,8 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(66, 66, 134, 1); 
     --color-text-coin-list-titles: rgba(66, 66, 134, 1);
     --color-text-coin-list: rgba(35, 35, 54, 1);
+    --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
+    --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
