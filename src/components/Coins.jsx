@@ -467,11 +467,6 @@ function Coins() {
     return displayCoinList.indexOf(coin) % progressBarColors.length;
   };
 
-  console.log(
-    priceVolumeList.length,
-    priceVolumeList,
-    priceVolumeChartIsLoadingHasError
-  );
   return (
     <div className={`${darkMode ? "" : "theme-light"}`}>
       <div className="my-5">

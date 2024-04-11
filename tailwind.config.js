@@ -44,7 +44,10 @@ export default {
           "days-button-top-bottom-fifty-text-color":'var(--color-text-days-button-top-bottom-fifty)',
           "unselected-days-top-bottom-fifty-button-text-color":'var(--color-text-unselected-days-button-top-bottom-fifty)',
           "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',
-          "coin-list-text-color":'var(--color-text-coin-list)'
+          "coin-list-text-color":'var(--color-text-coin-list)',
+          "single-coin-page-text-color":'var(--color-text-single-coin-page)',
+          "single-coin-time-text-color":'var(--color-text-single-coin-time)',
+          "single-coin-link-text-color":'var(--color-text-single-coin-link)',
         }
       },
       backgroundColor: {
@@ -60,7 +63,8 @@ export default {
           "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
           "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
           "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
-
+          "single-coin-page-modules-background-color":'var(--color-background-single-coin-page-modules)',
+          "coin-icon-wrapper-background-color":'var(--color-background-coin-icon-wrapper)'
         }
       },
       colors: {
