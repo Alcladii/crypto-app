@@ -44,7 +44,14 @@ export default {
           "days-button-top-bottom-fifty-text-color":'var(--color-text-days-button-top-bottom-fifty)',
           "unselected-days-top-bottom-fifty-button-text-color":'var(--color-text-unselected-days-button-top-bottom-fifty)',
           "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',
-          "coin-list-text-color":'var(--color-text-coin-list)'
+          "coin-list-text-color":'var(--color-text-coin-list)',
+          "you-sell-you-buy-text-color":'var(--color-text-you-sell-you-buy)',
+          "selected-coin-currency-converter-left-right-text-color":'var(--color-text-selected-coin-currency-converter-left-right)',
+          "coin-price-name-currency-converter-text-color":'var(--color-text-coin-price-name-currency-converter)',
+          "coin-price-number-currency-converter-text-color":'var(--color-text-coin-price-number-currency-converter)',
+          "currency-inside-chart-text-color":'var(--color-text-currency-inside-chart)',
+          "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
+          "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
         }
       },
       backgroundColor: {
@@ -60,10 +67,18 @@ export default {
           "coins-converter-selected-button-background": 'var(--color-background-coins-converter-selected-button)',
           "coins-converter-unselected-button-background": 'var(--color-background-coins-converter-unselected-button)',
           "coins-converter-wrapper-background":'var(--color-background-coins-converter-wrapper)',
-
+          "left-currency-background-color":'var(--color-background-left-currency)',
+          "right-currency-background-color":'var(--color-background-right-currency)',
+          "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
+          "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
         }
       },
-      colors: {
+      borderColor: {
+        skin: {
+          "currency-converter-border-color": 'var(--color-border-currency-converter)',
+        }
+      },
+      colors: {      
         "crpyto-background-dark": "#13121A",
         "button-selected": "rgba(97, 97, 214, 0.5)",
         "button-unselected-search-bar-background": "#191925",
