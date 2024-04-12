@@ -15,6 +15,7 @@ export const AddAsset = ({ addCoin }) => {
     isNumber,
     setIsNumber,
     setEditAsset,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -93,7 +94,7 @@ export const AddAsset = ({ addCoin }) => {
       <div className="flex justify-center items-center w-28 h-10 selected-button rounded-md mb-3" onClick={togglePopup}>Add Asset</div>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
-          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
+          <div className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-skin-app ${darkMode ? "" : "theme-light"} rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}>
             <div className="flex h-[12%] justify-between items-center">
               <div className="font-space-grotesk text-lg font-semibold">Select Coins</div>
               <div
@@ -104,11 +105,11 @@ export const AddAsset = ({ addCoin }) => {
               </div>
             </div>
             <div className="flex h-[88%] pt-6">
-              <div className="w-[38%] bg-line-bar-chart-background rounded-lg flex justify-center items-center">
+              <div className="w-[38%] bg-skin-add-asset-popup-coin-name-icon-wrapper-background-color rounded-lg flex justify-center items-center">
                 {selectedCoin && (
                   <div className="flex-col justify-center items-center">
                     <div className="w-32 flex justify-center items-center mb-2">
-                      <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-coin-icon-background">
+                      <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-skin-add-asset-popup-icon-wrapper-background-color">
                         <img
                           className="w-8 mt-2"
                           src={selectedCoin.image.large}

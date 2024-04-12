@@ -79,6 +79,8 @@ export default {
           "right-currency-background-color":'var(--color-background-right-currency)',
           "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
+          "add-asset-popup-coin-name-icon-wrapper-background-color":'var(--color-background-add-asset-popup-coin-name-icon-wrapper)',
+          "add-asset-popup-icon-wrapper-background-color":'var(--color-background-add-asset-popup-icon-wrapper)',
         }
       },
       borderColor: {
