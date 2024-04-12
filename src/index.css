@@ -17,6 +17,8 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(167, 167, 204, 1);
     --color-text-coin-list-titles: rgba(209, 209, 209, 1);
     --color-text-coin-list: rgba(255, 255, 255, 1);
+    --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
+    --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-text-you-sell-you-buy: rgba(255, 255, 255, 0.8);
     --color-text-selected-coin-currency-converter-left-right:  rgba(255, 255, 255, 1);
     --color-text-coin-price-name-currency-converter:  rgba(255, 255, 255, 0.8);
@@ -56,6 +58,8 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(66, 66, 134, 1); 
     --color-text-coin-list-titles: rgba(66, 66, 134, 1);
     --color-text-coin-list: rgba(35, 35, 54, 1);
+    --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
+    --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-text-you-sell-you-buy: rgba(24, 24, 37, 1);
     --color-text-selected-coin-currency-converter-left-right: rgba(53, 53, 112, 1);
     --color-text-coin-price-name-currency-converter:  rgba(53, 53, 112, 0.8);
