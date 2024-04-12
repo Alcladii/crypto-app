@@ -56,6 +56,7 @@ export const PortfolioItem = () => {
       {portfolioList.length !== 0 &&
         portfolioList.map((item) => (
           <div
+            key={item.id}
             className={`flex flex-col w-full ${darkMode ? "" : "theme-light"}`}
           >
             <div className="flex">
