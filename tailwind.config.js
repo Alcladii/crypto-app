@@ -47,7 +47,7 @@ export default {
           "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',
           "coin-list-text-color":'var(--color-text-coin-list)',
           "change-percentage-in-coin-page-positive-text-color":'var(--color-text-change-percentage-in-coin-page-positive)',
-          "change-percentage-in-coin-page-negative-text-color":'var(--color-text-change-percentage-in-coin-page-negative)'
+          "change-percentage-in-coin-page-negative-text-color":'var(--color-text-change-percentage-in-coin-page-negative)',
           "you-sell-you-buy-text-color":'var(--color-text-you-sell-you-buy)',
           "selected-coin-currency-converter-left-right-text-color":'var(--color-text-selected-coin-currency-converter-left-right)',
           "coin-price-name-currency-converter-text-color":'var(--color-text-coin-price-name-currency-converter)',
