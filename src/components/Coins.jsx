@@ -890,7 +890,7 @@ function Coins() {
                   }
                 />
               }
-              <div className="ml-2">
+              <div className="ml-1">
                 <PriceChangePercentageText
                   coin={singleCoin.price_change_percentage_1h_in_currency}
                 />
@@ -904,7 +904,7 @@ function Coins() {
                   }
                 />
               }
-              <div className="ml-2">
+              <div className="ml-1">
                 <PriceChangePercentageText
                   coin={singleCoin.price_change_percentage_24h_in_currency}
                 />
@@ -918,7 +918,7 @@ function Coins() {
                   }
                 />
               }
-              <div className="ml-2">
+              <div className="ml-1">
                 <PriceChangePercentageText
                   coin={singleCoin.price_change_percentage_7d_in_currency}
                 />

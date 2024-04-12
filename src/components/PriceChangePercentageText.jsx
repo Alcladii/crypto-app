@@ -7,7 +7,7 @@ export const PriceChangePercentageText = ({ coin }) => {
   return (
     <div
       className={`flex justify-start items-center ${
-        coin > 0 ? "text-go-up" : "text-go-down"
+        coin > 0 ? "text-skin-change-percentage-in-coin-page-positive-text-color" : "text-skin-change-percentage-in-coin-page-negative-text-color"
       }`}
     >
       {coin !== null ? retainTwoDigits(Math.abs(coin)) : "N/A"}%
