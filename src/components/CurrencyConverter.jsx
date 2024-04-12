@@ -12,6 +12,7 @@ export const CurrencyConverter = () => {
     coinList,
     currencySymbol,
     currencyConverterDays,
+    darkMode,
   } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
   const [leftCurrency, setLeftCurrency] = useLocalState(
@@ -75,7 +76,7 @@ export const CurrencyConverter = () => {
       const conversionRate =
         rightCurrencyData.market_data.current_price[displayCurrency] /
         leftCurrencyData.market_data.current_price[displayCurrency];
-      
+
       const result = (inputValue / conversionRate).toFixed(6);
       setConvertedResult(result);
     }
@@ -237,24 +238,25 @@ export const CurrencyConverter = () => {
   }, [rightCurrency]);
 
   return (
-    //<div>Currency Converter</div>
-    <div>
+    <div className={`${darkMode ? "" : "theme-light"}`}>
       <div className="flex justify-center my-6">
-        {singleCoinIsLoading && <div>Loading Single Coin</div>}
+        {singleCoinIsLoading && <div className="text-skin-loading-and-error-message-currency-converter-text-color">Loading Single Coin</div>}
         {singleCoinLoadingHasError && (
-          <div>Error in loading coin data, unable to update coin price</div>
+          <div className="text-skin-loading-and-error-message-currency-converter-text-color">Error in loading coin data, unable to update coin price</div>
         )}
       </div>
       <div className="flex relative">
-        <div className="w-[50%] p-6 mr-3 h-48 bg-line-bar-chart-background rounded-md">
-          <div className="text-sm">You sell</div>
-          <div className="flex items-center border-b-2 py-3 mt-6">
+        <div className="w-[50%] p-6 mr-3 h-48 bg-skin-left-currency-background-color rounded-md">
+          <div className="text-sm text-skin-you-sell-you-buy-text-color">
+            You sell
+          </div>
+          <div className="flex items-center border-b-2 border-skin-currency-converter-border-color py-3 mt-6">
             <div className="w-[5%] mr-2.5">
               <img className="h-7 w-auto" src={leftCurrencyIcon} />
             </div>
             <div className="w-[95%]">
               <select
-                className="w-[45%] appearance-none font-space-grotesk bg-transparent"
+                className="w-[45%] appearance-none font-space-grotesk bg-transparent text-skin-selected-coin-currency-converter-left-right-text-color"
                 value={leftCurrency}
                 onChange={(e) => {
                   handleLeftCurrencySelect(e.target.value);
@@ -271,29 +273,65 @@ export const CurrencyConverter = () => {
             </div>
           </div>
           <div className="mt-3 text-sm">
-            1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
-            &nbsp;=&nbsp;{currencySymbol}
-            {leftCurrencyData !== null &&
-              leftCurrencyData.market_data.current_price[displayCurrency]}
+            <span className="text-skin-coin-price-name-currency-converter-text-color">
+              1&nbsp;{leftCurrencyData !== null && leftCurrencyData.name}
+              &nbsp;=&nbsp;
+            </span>
+            <span className="text-skin-coin-price-number-currency-converter-text-color">
+              {currencySymbol}
+              {leftCurrencyData !== null &&
+                leftCurrencyData.market_data.current_price[displayCurrency]}
+            </span>
           </div>
         </div>
         <div
           onClick={handleReverse}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-white rounded-full cursor-pointer"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 rounded-full cursor-pointer bg-transparent"
         >
-          <img
-            className="h-9"
-            src="https://i.ibb.co/YypnKyZ/icons8-swap-60.png"
-          />
+          <svg
+            fill={darkMode ? "rgba(61, 61, 126, 1)" : "rgba(255, 255, 255, 1)"}
+            width="48"
+            height="48"
+            viewBox="-138.24 -138.24 788.48 788.48"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#000000"
+            stroke-width="0.00512"
+          >
+            <g
+              id="SVGRepo_bgCarrier"
+              stroke-width="0"
+              transform="translate(0,0), scale(1)"
+            >
+              <rect
+                x="-138.24"
+                y="-138.24"
+                width="788.48"
+                height="788.48"
+                rx="394.24"
+                fill={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(53, 53, 112, 1)"}
+                strokewidth="0"
+              ></rect>
+            </g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z"></path>
+            </g>
+          </svg>
         </div>
-        <div className="w-[50%] p-6 ml-3 h-48 bg-right-currency-background rounded-md">
-          <div className="text-sm">You buy</div>
-          <div className="flex items-center border-b-2 py-3 mt-6">
+        <div className="w-[50%] p-6 ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
+          <div className="text-sm text-skin-you-sell-you-buy-text-color">
+            You buy
+          </div>
+          <div className="flex items-center border-b-2 border-skin-currency-converter-border-color py-3 mt-6">
             <div className="w-[5%] mr-2.5">
               <img className="h-7 w-auto" src={rightCurrencyIcon} />
             </div>
             <select
-              className="w-[45%] appearance-none font-space-grotesk bg-transparent"
+              className="w-[45%] appearance-none font-space-grotesk bg-transparent text-skin-selected-coin-currency-converter-left-right-text-color"
               value={rightCurrency}
               onChange={(e) => {
                 handleRightCurrencySelect(e.target.value);
@@ -307,30 +345,35 @@ export const CurrencyConverter = () => {
             </div>
           </div>
           <div className="mt-3 text-sm">
-            1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
-            &nbsp;=&nbsp;{currencySymbol}
-            {rightCurrencyData !== null &&
-              rightCurrencyData.market_data.current_price[displayCurrency]}
+            <span className="text-skin-coin-price-name-currency-converter-text-color">
+              1&nbsp;{rightCurrencyData !== null && rightCurrencyData.name}
+              &nbsp;=&nbsp;
+            </span>
+            <span className="text-skin-coin-price-number-currency-converter-text-color">
+              {currencySymbol}
+              {rightCurrencyData !== null &&
+                rightCurrencyData.market_data.current_price[displayCurrency]}
+            </span>
           </div>
         </div>
       </div>
-      <div className="mt-16 bg-line-bar-chart-background rounded-md p-6">
+      <div className="mt-16 bg-skin-currency-converter-chart-background-color rounded-md p-6">
         <div className="font-space-grotesk">
           {leftCurrencyData !== null && (
-            <span>
+            <span className="text-skin-currency-inside-chart-text-color">
               {leftCurrencyData.name}({leftCurrencyData.symbol.toUpperCase()})
             </span>
           )}
-          <span className="text-to-in-currency-converter mx-4">to</span>
+          <span className="text-skin-to-inside-chart-text-color mx-4">to</span>
           {rightCurrencyData !== null && (
-            <span>
+            <span className="text-skin-currency-inside-chart-text-color">
               {rightCurrencyData.name}({rightCurrencyData.symbol.toUpperCase()})
             </span>
           )}
         </div>
         {getLeftCurrencyPriceVolumeHasError ||
         getRightCurrencyPriceVolumeHasError ? (
-          <div className="flex justify-center my-5">
+          <div className="flex justify-center my-5 text-skin-loading-and-error-message-currency-converter-text-color">
             Error in getting price and volume data, can't update chart
           </div>
         ) : (
@@ -340,7 +383,7 @@ export const CurrencyConverter = () => {
         )}
       </div>
 
-      <div className="flex my-5 w-fit h-auto bg-button-unselected-search-bar-background rounded-md">
+      <div className="flex my-5 w-fit h-auto bg-skin-days-button-bar-currency-converter-background-color rounded-md">
         <DaysButtonInCurrencyConverter days="2" buttonText="1D" />
         <DaysButtonInCurrencyConverter days="7" buttonText="7D" />
         <DaysButtonInCurrencyConverter days="30" buttonText="1M" />
