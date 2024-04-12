@@ -17,6 +17,9 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(167, 167, 204, 1);
     --color-text-coin-list-titles: rgba(209, 209, 209, 1);
     --color-text-coin-list: rgba(255, 255, 255, 1);
+    --color-text-single-coin-page: rgba(255, 255, 255, 1);
+    --color-text-single-coin-time: rgba(185, 185, 186, 1);
+    --color-text-single-coin-link: rgba(255, 255, 255, 1);
     --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
     --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-text-you-sell-you-buy: rgba(255, 255, 255, 0.8);
@@ -37,6 +40,8 @@
     --color-background-coins-converter-selected-button: rgba(97, 97, 214, 0.5);
     --color-background-coins-converter-unselected-button: rgba(35, 35, 54, 1);
     --color-background-coins-converter-wrapper: rgba(25, 25, 37, 1);
+    --color-background-single-coin-page-modules: rgba(30, 25, 50, 1);
+    --color-background-coin-icon-wrapper: rgba(44, 44, 74, 1);
     --color-background-left-currency: rgba(25, 25, 50, 1);
     --color-background-right-currency: rgba(30, 25, 50, 1);
     --color-background-currency-converter-chart: rgba(25, 25, 50, 1);
@@ -58,6 +63,9 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(66, 66, 134, 1); 
     --color-text-coin-list-titles: rgba(66, 66, 134, 1);
     --color-text-coin-list: rgba(35, 35, 54, 1);
+    --color-text-single-coin-page: rgba(35, 35, 54, 1);
+    --color-text-single-coin-time: rgba(24, 24, 37, 1);
+    --color-text-single-coin-link: rgba(35, 35, 54, 1);
     --color-text-change-percentage-in-coin-page-positive: rgba(1, 241, 227, 1);
     --color-text-change-percentage-in-coin-page-negative: rgba(254, 34, 100, 1);
     --color-text-you-sell-you-buy: rgba(24, 24, 37, 1);
@@ -75,9 +83,11 @@
     --color-background-days-button: rgba(97, 97, 214, 0.5);
     --color-background-charts: rgba(255, 255, 255, 1);
     --color-background-coin-list: rgba(255, 255, 255, 1);
-    --color-background-selected-button:rgba(97, 97, 214, 0.5);
+    --color-background-coins-converter-selected-button:rgba(97, 97, 214, 0.5);
     --color-background-coins-converter-unselected-button: rgba(255, 255, 255, 1);
     --color-background-coins-converter-wrapper: rgba(255, 255, 255, 1);
+    --color-background-single-coin-page-modules: rgba(255, 255, 255, 1);
+    --color-background-coin-icon-wrapper: rgba(204, 204, 250, 0.4);  
     --color-background-left-currency: rgba(255, 255, 255, 1);
     --color-background-right-currency: rgba(255, 255, 255, 1);
     --color-background-currency-converter-chart: rgba(255, 255, 255, 1);
