@@ -17,6 +17,13 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(167, 167, 204, 1);
     --color-text-coin-list-titles: rgba(209, 209, 209, 1);
     --color-text-coin-list: rgba(255, 255, 255, 1);
+    --color-text-you-sell-you-buy: rgba(255, 255, 255, 0.8);
+    --color-text-selected-coin-currency-converter-left-right:  rgba(255, 255, 255, 1);
+    --color-text-coin-price-name-currency-converter:  rgba(255, 255, 255, 0.8);
+    --color-text-coin-price-number-currency-converter: rgba(255, 255, 255, 1);
+    --color-text-currency-inside-chart: rgba(255,255,255,1);
+    --color-text-to-inside-chart:rgba(209, 209, 209, 0.8); 
+    --color-text-loading-and-error-message-currency-converter: rgba(255,255,255,1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -28,6 +35,11 @@
     --color-background-coins-converter-selected-button: rgba(97, 97, 214, 0.5);
     --color-background-coins-converter-unselected-button: rgba(35, 35, 54, 1);
     --color-background-coins-converter-wrapper: rgba(25, 25, 37, 1);
+    --color-background-left-currency: rgba(25, 25, 50, 1);
+    --color-background-right-currency: rgba(30, 25, 50, 1);
+    --color-background-currency-converter-chart: rgba(25, 25, 50, 1);
+    --color-background-days-button-bar-currency-converter: rgba(35, 35, 54, 1);
+    --color-border-currency-converter: rgba(255, 255, 255, 1);
   } 
 
   .theme-light {
@@ -44,6 +56,13 @@
     --color-text-unselected-days-button-top-bottom-fifty: rgba(66, 66, 134, 1); 
     --color-text-coin-list-titles: rgba(66, 66, 134, 1);
     --color-text-coin-list: rgba(35, 35, 54, 1);
+    --color-text-you-sell-you-buy: rgba(24, 24, 37, 1);
+    --color-text-selected-coin-currency-converter-left-right: rgba(53, 53, 112, 1);
+    --color-text-coin-price-name-currency-converter:  rgba(53, 53, 112, 0.8);
+    --color-text-coin-price-number-currency-converter: rgba(53, 53, 112, 1);
+    --color-text-currency-inside-chart: rgba(53, 53, 112, 1);
+    --color-text-to-inside-chart:rgba(53, 53, 112, 0.6);
+    --color-text-loading-and-error-message-currency-converter: rgba(24, 24, 37, 1);
     --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -55,5 +74,10 @@
     --color-background-selected-button:rgba(97, 97, 214, 0.5);
     --color-background-coins-converter-unselected-button: rgba(255, 255, 255, 1);
     --color-background-coins-converter-wrapper: rgba(255, 255, 255, 1);
+    --color-background-left-currency: rgba(255, 255, 255, 1);
+    --color-background-right-currency: rgba(255, 255, 255, 1);
+    --color-background-currency-converter-chart: rgba(255, 255, 255, 1);
+    --color-background-days-button-bar-currency-converter: rgba(204, 204, 250, 0.4);
+    --color-border-currency-converter: rgba(53, 53, 112, 1);
   }
 }
