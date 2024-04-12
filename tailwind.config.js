@@ -58,6 +58,9 @@ export default {
           "currency-inside-chart-text-color":'var(--color-text-currency-inside-chart)',
           "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
+          "portfolio-item-coin-name-total-value-current-price-text-color":'var(--color-text-portfolio-item-coin-name-total-value-current-price)',
+          "portfolio-item-titles-text-color": 'var(--colort-text-portfolio-item-titles)',
+          "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
         }
       },
       backgroundColor: {
@@ -79,11 +82,15 @@ export default {
           "right-currency-background-color":'var(--color-background-right-currency)',
           "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
+          "portfolio-item-left-column-back-ground-color":'var(--color-background-portfolio-item-left-column)',
+          "portfolio-item-right-column-back-ground-color":'var(--color-background-portfolio-item-right-column)',
+          "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)'
         }
       },
       borderColor: {
         skin: {
           "currency-converter-border-color": 'var(--color-border-currency-converter)',
+          "portfolio-item-frames-border-color":'var(--color-border-portfolio-item-frames)',
         }
       },
       colors: {      
