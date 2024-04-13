@@ -27,14 +27,12 @@ function Portfolio() {
     setPortfolioListNeedsUpdate(true)
   };
 
-  console.log("portfolioList outside function", portfolioList)
   //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
   //So it gives the accurate profit
 
   const getLatestCoinDataOnLoad = async () => {   
     try {    
       setFetchingLatestCoinData(true);
-      console.log("portfolioList in function", portfolioList)
       const promises = portfolioList.map((coin) =>
         axios(
           `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
