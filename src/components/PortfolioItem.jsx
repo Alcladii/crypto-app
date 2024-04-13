@@ -36,20 +36,20 @@ export const PortfolioItem = () => {
     setPortfolioList,
   } = useContext(CryptoContext);
 
-  console.log(portfolioList)
-
   const handleClick = (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
   };
 
   const profitPercentage = (item) => {
-    return retainTwoDigits(
+    if(item.historyData.market_data){
+      return retainTwoDigits(
       ((item.coinData.market_data.current_price[displayCurrency] -
         item.historyData.market_data.current_price[displayCurrency]) /
         item.historyData.market_data.current_price[displayCurrency]) *
         100
     );
+    }   
   };
 
   return (

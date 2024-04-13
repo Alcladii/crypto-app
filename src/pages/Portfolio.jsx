@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 import { CryptoContext } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
@@ -14,7 +15,7 @@ function Portfolio() {
     const newPortfolioList = [
       ...portfolioList,
       {
-        id: Math.random(),
+        id: uuidv4(),
         coinData: coin,
         purchaseAmount1: purchaseAmount,
         purchaseDate1: purchaseDate,
@@ -23,20 +24,19 @@ function Portfolio() {
     ];
     setPortfolioList(newPortfolioList);
   };
-
   //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
   //So it gives the accurate profit
 
   const getLatestCoinDataOnLoad = async () => {
-    try {
+    try {    
       setFetchingLatestCoinData(true);
       const promises = portfolioList.map((coin) =>
         axios(
           `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
         )
       );
-      const updatedCoinData = await Promise.all(promises);
-      updateToLatestCoinDataOnLoad(updatedCoinData);
+      updatedCoinData = await Promise.all(promises);
+      updateToLatestCoinDataOnLoad(updatedCoinData);      
       setFetchingLatestCoinData(false);
       setFetchingLatestCoinDataHasError(false);
     } catch (err) {
@@ -54,10 +54,11 @@ function Portfolio() {
       });
       return item;
     });
-    setPortfolioList(newPortfolioList);
+    setPortfolioList(newPortfolioList);   
   };
 
   useEffect(() => {
+    
     getLatestCoinDataOnLoad();
 
     const minute = 60000;
@@ -67,7 +68,7 @@ function Portfolio() {
     }, minute);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [portfolioList]);
 
   return (
     <div className="bg-crpyto-background-dark h-full w-screen">

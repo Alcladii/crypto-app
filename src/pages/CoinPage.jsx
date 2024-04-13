@@ -406,8 +406,8 @@ const CoinPage = () => {
                   {singleCoin.links &&
                     singleCoin.links.homepage
                       .filter((e) => e !== "")
-                      .map((item, index) => (
-                        <div key={index}>
+                      .map((item) => (
+                        <div key={Math.random()}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
