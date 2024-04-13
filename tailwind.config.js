@@ -79,6 +79,8 @@ export default {
           "right-currency-background-color":'var(--color-background-right-currency)',
           "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
+          "edit-asset-popup-background-color":'var(--color-background-edit-asset-popup)',
+          "edit-asset-items-background-color":'var(--color-background-edit-asset-items)',
         }
       },
       borderColor: {

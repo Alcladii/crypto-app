@@ -15,6 +15,7 @@ export const EditAsset = ({ id }) => {
     setIsNumber,
     formattedDateForHistoryApiCall,
     setEditAsset,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -97,7 +98,7 @@ export const EditAsset = ({ id }) => {
       </div>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
-          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
+          <div className={`${darkMode ? "" : "theme-light"} fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-skin-edit-asset-popup-background-color rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}>
             <div className="h-full flex flex-col justify-between">
               <div className="h-[13%] flex items-center text-xl semi-bold">
                 Edit Asset

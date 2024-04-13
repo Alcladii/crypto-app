@@ -46,6 +46,8 @@
     --color-background-right-currency: rgba(30, 25, 50, 1);
     --color-background-currency-converter-chart: rgba(25, 25, 50, 1);
     --color-background-days-button-bar-currency-converter: rgba(35, 35, 54, 1);
+    --color-background-edit-asset-popup: rgba(19, 18, 26, 1);
+    --color-background-edit-asset-items: rgba(25, 25, 37, 1);
     --color-border-currency-converter: rgba(255, 255, 255, 1);
   } 
 
@@ -92,6 +94,8 @@
     --color-background-right-currency: rgba(255, 255, 255, 1);
     --color-background-currency-converter-chart: rgba(255, 255, 255, 1);
     --color-background-days-button-bar-currency-converter: rgba(204, 204, 250, 0.4);
+    --color-background-edit-asset-popup: rgba(243, 245, 249, 1);
+    --color-background-edit-asset-items: rgba(204, 204, 250, 0.4);
     --color-border-currency-converter: rgba(53, 53, 112, 1);
   }
 }
