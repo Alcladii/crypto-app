@@ -36,6 +36,8 @@ export const PortfolioItem = () => {
     setPortfolioList,
   } = useContext(CryptoContext);
 
+  console.log(portfolioList)
+
   const handleClick = (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
