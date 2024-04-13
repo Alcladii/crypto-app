@@ -27,7 +27,7 @@ const ProgressBarInner = styled.div`
   background: #01f1e3;
 `;
 
-export const PortfolioItem = () => {
+export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
   const {
     displayCurrency,
     currencySymbol,
@@ -36,20 +36,21 @@ export const PortfolioItem = () => {
     setPortfolioList,
   } = useContext(CryptoContext);
 
-  const handleClick = (id) => {
+  const handleRemove= (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
+    setPortfolioListNeedsUpdate(true);
   };
 
   const profitPercentage = (item) => {
-    if(item.historyData.market_data){
+    if (item.historyData.market_data) {
       return retainTwoDigits(
-      ((item.coinData.market_data.current_price[displayCurrency] -
-        item.historyData.market_data.current_price[displayCurrency]) /
-        item.historyData.market_data.current_price[displayCurrency]) *
-        100
-    );
-    }   
+        ((item.coinData.market_data.current_price[displayCurrency] -
+          item.historyData.market_data.current_price[displayCurrency]) /
+          item.historyData.market_data.current_price[displayCurrency]) *
+          100
+      );
+    }
   };
 
   return (
@@ -175,8 +176,13 @@ export const PortfolioItem = () => {
               </div>
             </div>
             <div className="flex justify-end my-3">
-              <div className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4" onClick={() => handleClick(item.id)}>Remove</div>
-              <EditAsset id={item.id} />
+              <div
+                className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4"
+                onClick={() => handleRemove(item.id)}
+              >
+                Remove
+              </div>
+              <EditAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate} />
             </div>
           </div>
         ))}

@@ -5,7 +5,7 @@ import { CryptoContext } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "../components/PurchaseAmount";
 import { PurchaseDate } from "../components/PurchaseDate";
 
-export const EditAsset = ({ id }) => {
+export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
   const {
     portfolioList,
     setPortfolioList,
@@ -27,10 +27,10 @@ export const EditAsset = ({ id }) => {
     setEditAsset(true);
   };
 
-  const handleEditClick = (a) => {
+  /*const handleEditClick = (a) => {
     portfolioList.map(() => {});
     setIsNumber(true);
-  };
+  };*/
 
   const selectedItem = portfolioList.find((item) => item.id === id);
 
@@ -79,11 +79,13 @@ export const EditAsset = ({ id }) => {
       setShowPopup(false);
       updateSelectedCoinData(coin);
       setIsNumber(true);
+      setPortfolioListNeedsUpdate(true)
     }
   };
 
   const handleEdit = () => {
-    handleEditClick(id);
+    //handleEditClick(id);
+    setIsNumber(true);
     togglePopup();
   };
 

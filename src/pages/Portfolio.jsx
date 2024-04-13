@@ -10,6 +10,7 @@ function Portfolio() {
   const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
   const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
     useState(false);
+  const [portfolioListNeedsUpdate, setPortfolioListNeedsUpdate] = useState(false)
 
   const addCoin = (coin, purchaseAmount, purchaseDate, history) => {
     const newPortfolioList = [
@@ -23,19 +24,23 @@ function Portfolio() {
       },
     ];
     setPortfolioList(newPortfolioList);
+    setPortfolioListNeedsUpdate(true)
   };
+
+  console.log("portfolioList outside function", portfolioList)
   //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
   //So it gives the accurate profit
 
-  const getLatestCoinDataOnLoad = async () => {
+  const getLatestCoinDataOnLoad = async () => {   
     try {    
       setFetchingLatestCoinData(true);
+      console.log("portfolioList in function", portfolioList)
       const promises = portfolioList.map((coin) =>
         axios(
           `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
         )
       );
-      updatedCoinData = await Promise.all(promises);
+      const updatedCoinData = await Promise.all(promises);
       updateToLatestCoinDataOnLoad(updatedCoinData);      
       setFetchingLatestCoinData(false);
       setFetchingLatestCoinDataHasError(false);
@@ -66,9 +71,10 @@ function Portfolio() {
     const intervalId = setInterval(() => {
       getLatestCoinDataOnLoad();
     }, minute);
+    setPortfolioListNeedsUpdate(false)
 
     return () => clearInterval(intervalId);
-  }, [portfolioList]);
+  }, [portfolioListNeedsUpdate]);
 
   return (
     <div className="bg-crpyto-background-dark h-full w-screen">
@@ -79,7 +85,7 @@ function Portfolio() {
         </div>
 
         {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
-        <PortfolioItem />
+        <PortfolioItem setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>
       </div>
     </div>
   );
