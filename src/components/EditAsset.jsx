@@ -27,11 +27,6 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
     setEditAsset(true);
   };
 
-  /*const handleEditClick = (a) => {
-    portfolioList.map(() => {});
-    setIsNumber(true);
-  };*/
-
   const selectedItem = portfolioList.find((item) => item.id === id);
 
   const editItem = (currentData, amount, date, historyData) => {
@@ -84,7 +79,6 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
   };
 
   const handleEdit = () => {
-    //handleEditClick(id);
     setIsNumber(true);
     togglePopup();
   };

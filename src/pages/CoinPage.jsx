@@ -7,6 +7,7 @@ import { CryptoContext } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
+import { v4 as uuidv4 } from 'uuid';
 
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
@@ -407,7 +408,7 @@ const CoinPage = () => {
                     singleCoin.links.homepage
                       .filter((e) => e !== "")
                       .map((item) => (
-                        <div key={Math.random()}>
+                        <div key={uuidv4()}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
