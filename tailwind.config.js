@@ -60,7 +60,7 @@ export default {
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
           "add-asset-popup-buttons-title-text-color":'var(--color-text-add-asset-popup-buttons-title)',
           "add-asset-popup-coin-selector-text-color":'var(--color-text-add-asset-popup-coin-selector)',
-          "add-asset-popup-input-text-color":'var(--color-text-add-asset-popup-input)'
+          "add-asset-popup-input-text-color":'var(--color-text-add-asset-popup-input)',
           "portfolio-item-coin-name-total-value-current-price-text-color":'var(--color-text-portfolio-item-coin-name-total-value-current-price)',
           "portfolio-item-titles-text-color": 'var(--colort-text-portfolio-item-titles)',
           "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
@@ -88,7 +88,7 @@ export default {
           "add-asset-popup-coin-name-icon-wrapper-background-color":'var(--color-background-add-asset-popup-coin-name-icon-wrapper)',
           "add-asset-popup-icon-wrapper-background-color":'var(--color-background-add-asset-popup-icon-wrapper)',
           "add-asset-popup-items-background-color":'var(--color-background-add-asset-popup-items)',
-          "add-asset-popup-buttons-background-color":'var(--color-background-add-asset-popup-buttons)'
+          "add-asset-popup-buttons-background-color":'var(--color-background-add-asset-popup-buttons)',
           "portfolio-item-left-column-back-ground-color":'var(--color-background-portfolio-item-left-column)',
           "portfolio-item-right-column-back-ground-color":'var(--color-background-portfolio-item-right-column)',
           "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)'
