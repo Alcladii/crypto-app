@@ -59,7 +59,7 @@ export default {
           "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
           "edit-asset-popup-input-text-color":'var(--color-text-edit-asset-popup-input)',
-          "edit-asset-popup-title-text-color":'var(--color-text-edit-asset-popup-title)'
+          "edit-asset-popup-buttons-title-text-color":'var(--color-text-edit-asset-popup-buttons-title)'
         }
       },
       backgroundColor: {
@@ -83,6 +83,7 @@ export default {
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
           "edit-asset-popup-background-color":'var(--color-background-edit-asset-popup)',
           "edit-asset-items-background-color":'var(--color-background-edit-asset-items)',
+          "edit-asset-buttons-background-color":'var(--color-background-edit-asset-buttons)',
         }
       },
       borderColor: {

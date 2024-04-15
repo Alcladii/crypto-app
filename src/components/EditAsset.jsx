@@ -100,7 +100,7 @@ export const EditAsset = ({ id }) => {
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div className={`${darkMode ? "" : "theme-light"} fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-skin-edit-asset-popup-background-color rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}>
             <div className="h-full flex flex-col justify-between">
-              <div className="h-[13%] flex items-center text-xl semi-bold">
+              <div className="h-[13%] flex items-center text-skin-edit-asset-popup-buttons-title-text-color text-xl semi-bold">
                 Edit Asset
               </div>
               {selectedItem && (
@@ -109,19 +109,19 @@ export const EditAsset = ({ id }) => {
                     className="w-8"
                     src={selectedItem.coinData.image.large}
                   />
-                  <div className="flex items-center h-10" key={selectedItem.id}>
+                  <div className="flex items-center h-10 text-skin-edit-asset-popup-buttons-title-text-color" key={selectedItem.id}>
                     {selectedItem.coinData.name}
                   </div>
                 </div>
               )}
-              <div className="text-skin-edit-asset-popup-title-text-color">Purchased Amount</div>
+              <div className="text-skin-edit-asset-popup-buttons-title-text-color">Purchased Amount</div>
               <PurchaseAmount amount={selectedItem.purchaseAmount1} />
               {!isNumber && <div>Put in a number</div>}
-              <div className="text-skin-edit-asset-popup-title-text-color">Purchased Date</div>
+              <div className="text-skin-edit-asset-popup-buttons-title-text-color">Purchased Date</div>
               <PurchaseDate date={selectedItem.purchaseDate1} />
               <div className="flex justify-end mt-2">
                 <div
-                  className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4"
+                  className="flex justify-center items-center w-24 h-10 text-skin-edit-asset-popup-buttons-title-text-color bg-skin-edit-asset-buttons-background-color rounded-md mr-4"
                   onClick={() => {
                     handleSaveClick(selectedItem.coinData.id);
                   }}
@@ -129,7 +129,7 @@ export const EditAsset = ({ id }) => {
                   Save
                 </div>
                 <div
-                  className="flex justify-center items-center w-24 h-10 selected-button rounded-md"
+                  className="flex justify-center items-center w-24 h-10 text-skin-edit-asset-popup-buttons-title-text-color bg-skin-edit-asset-buttons-background-color rounded-md"
                   onClick={togglePopup}
                 >
                   Close
