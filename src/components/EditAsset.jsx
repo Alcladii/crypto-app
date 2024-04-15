@@ -114,10 +114,10 @@ export const EditAsset = ({ id }) => {
                   </div>
                 </div>
               )}
-              <div>Purchased Amount</div>
+              <div className="text-skin-edit-asset-popup-title-text-color">Purchased Amount</div>
               <PurchaseAmount amount={selectedItem.purchaseAmount1} />
               {!isNumber && <div>Put in a number</div>}
-              <div>Purchased Date</div>
+              <div className="text-skin-edit-asset-popup-title-text-color">Purchased Date</div>
               <PurchaseDate date={selectedItem.purchaseDate1} />
               <div className="flex justify-end mt-2">
                 <div

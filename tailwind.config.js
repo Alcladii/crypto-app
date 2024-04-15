@@ -58,6 +58,8 @@ export default {
           "currency-inside-chart-text-color":'var(--color-text-currency-inside-chart)',
           "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
+          "edit-asset-popup-input-text-color":'var(--color-text-edit-asset-popup-input)',
+          "edit-asset-popup-title-text-color":'var(--color-text-edit-asset-popup-title)'
         }
       },
       backgroundColor: {
