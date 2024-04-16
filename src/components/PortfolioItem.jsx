@@ -27,7 +27,7 @@ const ProgressBarInner = styled.div`
   background: #01f1e3;
 `;
 
-export const PortfolioItem = () => {
+export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
   const {
     displayCurrency,
     currencySymbol,
@@ -37,18 +37,21 @@ export const PortfolioItem = () => {
     darkMode,
   } = useContext(CryptoContext);
 
-  const handleClick = (id) => {
+  const handleRemove= (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
+    setPortfolioListNeedsUpdate(true);
   };
 
   const profitPercentage = (item) => {
-    return retainTwoDigits(
-      ((item.coinData.market_data.current_price[displayCurrency] -
-        item.historyData.market_data.current_price[displayCurrency]) /
-        item.historyData.market_data.current_price[displayCurrency]) *
-        100
-    );
+    if (item.historyData.market_data) {
+      return retainTwoDigits(
+        ((item.coinData.market_data.current_price[displayCurrency] -
+          item.historyData.market_data.current_price[displayCurrency]) /
+          item.historyData.market_data.current_price[displayCurrency]) *
+          100
+      );
+    }
   };
 
   return (
@@ -198,7 +201,7 @@ export const PortfolioItem = () => {
               >
                 Remove
               </div>
-              <EditAsset id={item.id} />
+              <EditAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate} />
             </div>
           </div>
         ))}
