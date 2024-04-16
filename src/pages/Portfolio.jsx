@@ -71,7 +71,7 @@ function Portfolio() {
 
   return (
     <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}` }>
-      <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk  ">
+      <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk  ">
         <div className="flex justify-between">
           <h2 className="text-xl text-skin-portfolio-item-coin-name-total-value-current-price-text-color">Portfolio</h2>
           <AddAsset addCoin={addCoin} />

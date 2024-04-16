@@ -41,7 +41,7 @@ export default {
           "carousel-selected-button-text-color": 'var(--color-text-carousel-selected-button)',
           "carousel-unselected-button-text-color": 'var(--color-text-carousel-unselected-button)',
           "carousel-current-price-text-color": 'var(--color-text-carousel-current-price)',
-          "select-coin-to-view-chart-prompt-text-color": 'var(--color-text-select-coin-to-view-chart-prompt)',
+          "prompt-text-color": 'var(--color-text-prompt)',
           "days-button-top-bottom-fifty-text-color":'var(--color-text-days-button-top-bottom-fifty)',
           "unselected-days-top-bottom-fifty-button-text-color":'var(--color-text-unselected-days-button-top-bottom-fifty)',
           "coin-list-titles-text-color":'var(--color-text-coin-list-titles)',

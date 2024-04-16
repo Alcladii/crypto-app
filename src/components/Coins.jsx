@@ -80,7 +80,6 @@ function Coins() {
     "displayCoinList",
     []
   );
-
   const [sortOrderByName, setSortOrderByName] = useLocalState(
     "sortOrderByName",
     "default"
@@ -99,6 +98,10 @@ function Coins() {
     "sortOrderByPriceChange7d",
     "default"
   );
+  const [
+    displaySelectCoinToSeeChartMessage,
+    setDisplaySelectCoinToSeeChartMessage,
+  ] = useState(true);
 
   const showTopFifty = queryParams.show_top_fifty === "true";
 
@@ -366,7 +369,7 @@ function Coins() {
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
-     
+
     if (
       sortByInQueryParams === "name" &&
       sortOrderByNameInQueryParams === "ascent"
@@ -470,29 +473,27 @@ function Coins() {
   return (
     <div className={`${darkMode ? "" : "theme-light"}`}>
       <div className="my-5">
-        <SlickCarousel coinList={coinList} />
+        <SlickCarousel
+          coinList={coinList}
+          setDisplaySelectCoinToSeeChartMessage={
+            setDisplaySelectCoinToSeeChartMessage
+          }
+        />
       </div>
-
-      {priceVolumeList.length === 0 &&
-      priceVolumeChartIsLoadingHasError !== true ? (
-        <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
+      {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
+        <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
           Please select a coin to view chart
-        </div>
-      ) : priceVolumeList.length === 0 &&
-        priceVolumeChartIsLoadingHasError === true ? (
-        <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
-          Error fetching Price and Volumne Chart
         </div>
       ) : (
         <div>
-          <div className="my-8 text-2xl flex justify-center">
+          <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
             {priceVolumeChartIsLoading && (
               <div>Loading Price and Volumne Chart</div>
             )}
           </div>
-          <div className="flex justify-center items-center max-w-[1440px] h-auto my-7">
+          <div className="flex justify-center items-center max-w-[1296px] h-auto my-7">
             <div className="w-1/2 h-auto p-5 mr-7 bg-skin-charts-background-color rounded-md">
-              {!priceVolumeList.length !== 0 &&
+              {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
                   <LineChart priceVolumeList={priceVolumeList} />
@@ -511,7 +512,7 @@ function Coins() {
               </div>
             </div>
             <div className="w-1/2 h-auto p-5 ml-7 bg-skin-charts-background-color rounded-md">
-              {!priceVolumeList.length !== 0 &&
+              {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
                   <BarChart priceVolumeList={priceVolumeList} />
@@ -530,10 +531,12 @@ function Coins() {
               </div>
             </div>
           </div>
-          <div className="my-8 text-2xl flex justify-center text-skin-select-coin-to-view-chart-prompt-text-color">
-            {priceVolumeChartIsLoadingHasError && (
-              <div>Error fetching Price and Volumne Chart</div>
-            )}
+          <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
+            {(priceVolumeList.length === 0 &&
+              priceVolumeChartIsLoadingHasError) ||
+              (priceVolumeChartIsLoadingHasError && (
+                <div>Error fetching Price and Volumne Chart</div>
+              ))}
           </div>
         </div>
       )}
@@ -552,14 +555,18 @@ function Coins() {
         Clear Search Criteria
       </div>
 
-      <div className="max-w-[1440px]">
+      <div className="max-w-[1296px]">
         <div className="flex justify-center my-6">
           <div
             className={`${
               showTopFifty
                 ? "bg-skin-carousel-selected-button-background-color"
                 : "bg-skin-carousel-unselected-button-background-color"
-            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer ${showTopFifty ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"}`}
+            } flex justify-center items-center mr-5 h-10 w-44 rounded md cursor-pointer ${
+              showTopFifty
+                ? "text-skin-days-button-top-bottom-fifty-text-color"
+                : "text-skin-unselected-days-top-bottom-fifty-button-text-color"
+            }`}
             onClick={setToDsc}
           >
             {" "}
@@ -570,7 +577,11 @@ function Coins() {
               !showTopFifty
                 ? "bg-skin-carousel-selected-button-background-color"
                 : "bg-skin-carousel-unselected-button-background-color"
-            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer ${!showTopFifty ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"}`}
+            } flex justify-center items-center ml-5 h-10 w-44 rounded-md cursor-pointer ${
+              !showTopFifty
+                ? "text-skin-days-button-top-bottom-fifty-text-color"
+                : "text-skin-unselected-days-top-bottom-fifty-button-text-color"
+            }`}
             onClick={setToAsc}
           >
             {" "}
@@ -648,7 +659,7 @@ function Coins() {
           <div className="w-[9%] pl-2 flex justify-start items-center">
             <div className="mr-1">Price</div>
             <div onClick={handleSortByPrice}>
-            {sortOrderByPriceInQueryParams === "default" ? (
+              {sortOrderByPriceInQueryParams === "default" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -663,7 +674,7 @@ function Coins() {
                     clip-rule="evenodd"
                   />
                 </svg>
-              ) : sortOrderByPriceInQueryParams=== "ascent" ? (
+              ) : sortOrderByPriceInQueryParams === "ascent" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -699,7 +710,7 @@ function Coins() {
           <div className="w-[9%] pl-2 flex justify-start items-center">
             <div className="mr-1">1h%</div>
             <div onClick={handleSortByOneHour}>
-            {sortOrderByPriceChange1hInQueryParams === "default" ? (
+              {sortOrderByPriceChange1hInQueryParams === "default" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -750,7 +761,7 @@ function Coins() {
           <div className="w-[9%] pl-2 flex justify-start items-center">
             <div className="mr-1">24h%</div>
             <div onClick={handleSortByTwentyFourHours}>
-            {sortOrderByPriceChange24hInQueryParams === "default" ? (
+              {sortOrderByPriceChange24hInQueryParams === "default" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -801,7 +812,7 @@ function Coins() {
           <div className="w-[9%] pl-2 flex justify-start items-center">
             <div className="mr-1">7d%</div>
             <div onClick={handleSortBySevenDays}>
-            {sortOrderByPriceChange7dInQueryParams === "default" ? (
+              {sortOrderByPriceChange7dInQueryParams === "default" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
