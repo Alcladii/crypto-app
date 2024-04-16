@@ -6,7 +6,7 @@ import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 
 function Portfolio() {
-  const { portfolioList, setPortfolioList } = useContext(CryptoContext);
+  const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext);
   const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
   const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
     useState(false);
@@ -75,10 +75,10 @@ function Portfolio() {
   }, [portfolioListNeedsUpdate]);
 
   return (
-    <div className="bg-crpyto-background-dark h-full w-screen">
+    <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}` }>
       <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk  ">
         <div className="flex justify-between">
-          <h2 className="text-xl">Portfolio</h2>
+          <h2 className="text-xl text-skin-portfolio-item-coin-name-total-value-current-price-text-color">Portfolio</h2>
           <AddAsset addCoin={addCoin} />
         </div>
 

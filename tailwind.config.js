@@ -58,6 +58,12 @@ export default {
           "currency-inside-chart-text-color":'var(--color-text-currency-inside-chart)',
           "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
+          "add-asset-popup-buttons-title-text-color":'var(--color-text-add-asset-popup-buttons-title)',
+          "add-asset-popup-coin-selector-text-color":'var(--color-text-add-asset-popup-coin-selector)',
+          "add-asset-popup-input-text-color":'var(--color-text-add-asset-popup-input)',
+          "portfolio-item-coin-name-total-value-current-price-text-color":'var(--color-text-portfolio-item-coin-name-total-value-current-price)',
+          "portfolio-item-titles-text-color": 'var(--colort-text-portfolio-item-titles)',
+          "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
         }
       },
       backgroundColor: {
@@ -79,11 +85,19 @@ export default {
           "right-currency-background-color":'var(--color-background-right-currency)',
           "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
+          "add-asset-popup-coin-name-icon-wrapper-background-color":'var(--color-background-add-asset-popup-coin-name-icon-wrapper)',
+          "add-asset-popup-icon-wrapper-background-color":'var(--color-background-add-asset-popup-icon-wrapper)',
+          "add-asset-popup-items-background-color":'var(--color-background-add-asset-popup-items)',
+          "add-asset-popup-buttons-background-color":'var(--color-background-add-asset-popup-buttons)',
+          "portfolio-item-left-column-back-ground-color":'var(--color-background-portfolio-item-left-column)',
+          "portfolio-item-right-column-back-ground-color":'var(--color-background-portfolio-item-right-column)',
+          "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)'
         }
       },
       borderColor: {
         skin: {
           "currency-converter-border-color": 'var(--color-border-currency-converter)',
+          "portfolio-item-frames-border-color":'var(--color-border-portfolio-item-frames)',
         }
       },
       colors: {      
@@ -102,8 +116,8 @@ export default {
         "portfolio-item-bar-background": "rgba(1, 241, 227, 0.5)",
         "text-button-selected-currency-selector-dark-theme": "rgb(255, 255, 255)",
         "text-button-unselected-dark-theme":"rgb(71 85 105)",
-        "placeholder-light": "rgba(66, 66, 134, 1)",
-        "placeholder-dark": "rgba(209, 209, 209, 1)",
+        "placeholder-light": "rgba(66, 66, 134, 1)", //don't delete this
+        "placeholder-dark": "rgba(209, 209, 209, 1)", //don't delete this
         "coin-page-progress-bar-outter": "#F8D2A6",
         "coin-page-progress-bar-inner": "#D4770C",
       },

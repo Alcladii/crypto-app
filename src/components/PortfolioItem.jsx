@@ -34,6 +34,7 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
     retainTwoDigits,
     portfolioList,
     setPortfolioList,
+    darkMode,
   } = useContext(CryptoContext);
 
   const handleRemove= (id) => {
@@ -57,23 +58,28 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
     <div>
       {portfolioList.length !== 0 &&
         portfolioList.map((item) => (
-          <div className="flex flex-col w-full">
+          <div
+            key={item.id}
+            className={`flex flex-col w-full ${darkMode ? "" : "theme-light"}`}
+          >
             <div className="flex">
-              <div className="w-[30%] bg-line-bar-chart-background rounded-l-lg py-2">
+              <div className="w-[30%] bg-skin-portfolio-item-left-column-back-ground-color rounded-l-lg py-2 pl-4">
                 <div className="flex items-center py-3">
                   <div>
                     <CoinTag src={item.coinData.image.large} />
                   </div>
                   &nbsp;&nbsp;
-                  <div className="text-xl font-semibold">
+                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                     {item.coinData.name}({item.coinData.symbol.toUpperCase()})
                   </div>
                   &nbsp;&nbsp;
                 </div>
-                <div className="p-2 pb-3">
-                  <div className="text-base">Total Value</div>
+                <div className="py-2">
+                  <div className="text-base text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
+                    Total Value
+                  </div>
                   <div className="flex items-center">
-                    <div className="text-2xl font-semibold py-2">
+                    <div className="text-2xl font-semibold py-2 text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                       {currencySymbol}
                       {retainTwoDigits(
                         item.coinData.market_data.current_price[
@@ -82,23 +88,30 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                       )}
                       &nbsp;{displayCurrency.toUpperCase()}
                     </div>
-                    <div className="mx-3">{profitPercentage(item)}%</div>
+                    <div className="mx-3 flex items-center">
+                      <Arrow priceChange={profitPercentage(item)}/>&nbsp;
+                      <PriceChangePercentageText
+                        coin={profitPercentage(item)}
+                      />
+                    </div>
                   </div>
-                  <div className="text-sm">
+                  <div className="text-sm text-skin-portfolio-item-titles-text-color">
                     Purchased&nbsp;{item.purchaseDate1}
                   </div>
                 </div>
               </div>
-              <div className="w-[75%] flex bg-button-unselected-search-bar-background rounded-r-lg">
+              <div className="w-[75%] flex bg-skin-portfolio-item-right-column-back-ground-color rounded-r-lg">
                 <div className="w-[50%] p-4 flex flex-col justify-between">
-                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
-                    <div className="text-xl font-semibold">
+                  <div className="border-2 border-skin-portfolio-item-frames-border-color rounded-md px-2 py-2">
+                    <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                       {currencySymbol}
                       {item.coinData.market_data.current_price[displayCurrency]}
                     </div>
-                    <div className="text-sm">Current Price</div>
+                    <div className="text-sm text-skin-portfolio-item-titles-text-color">
+                      Current Price
+                    </div>
                   </div>
-                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                  <div className="border-2 border-skin-portfolio-item-frames-border-color rounded-md px-2 py-2">
                     <div className="flex items-center">
                       <div className="text-xl font-semibold text-portfolio-item-bar">
                         {retainTwoDigits(
@@ -126,11 +139,13 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                         ></ProgressBarInner>
                       </ProgressBarOuter>
                     </div>
-                    <div className="text-sm">Market Cap vs Volume</div>
+                    <div className="text-sm text-skin-portfolio-item-titles-text-color">
+                      Market Cap vs Volume
+                    </div>
                   </div>
                 </div>
                 <div className="w-[50%] p-4 flex flex-col justify-between">
-                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                  <div className="border-2 border-skin-portfolio-item-frames-border-color rounded-md px-2 py-2">
                     <div className="flex items-center">
                       <div>
                         <Arrow
@@ -149,14 +164,16 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                         />
                       </div>
                     </div>
-                    <div className="text-sm">24h%</div>
+                    <div className="text-sm text-skin-portfolio-item-titles-text-color">
+                      24h%
+                    </div>
                   </div>
-                  <div className="border-2 border-portfolio-item-price-properties rounded-md px-2 py-2">
+                  <div className="border-2 border-skin-portfolio-item-frames-border-color rounded-md px-2 py-2">
                     <div className="flex items-center">
-                      <div className="text-xl font-semibold">
+                      <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                         {retainTwoDigits(
-                          item.coinData.market_data.circulating_supply /
-                            item.coinData.market_data.total_supply
+                          (item.coinData.market_data.circulating_supply /
+                            item.coinData.market_data.total_supply)*100
                         )}
                         %
                       </div>
@@ -170,15 +187,17 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                         ></ProgressBarInner>
                       </ProgressBarOuter>
                     </div>
-                    <div className="text-sm">Circ Supply vs Max Supply</div>
+                    <div className="text-sm text-skin-portfolio-item-titles-text-color">
+                      Circ Supply vs Max Supply
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="flex justify-end my-3">
               <div
-                className="flex justify-center items-center w-24 h-10 selected-button rounded-md mr-4"
-                onClick={() => handleRemove(item.id)}
+                className="flex justify-center items-center w-24 h-10 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color rounded-md mr-4"
+                onClick={() => handleClick(item.id)}
               >
                 Remove
               </div>

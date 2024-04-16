@@ -86,7 +86,7 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
   return (
     <div>
       <div
-        className="flex justify-center items-center w-24 h-10 selected-button rounded-md"
+        className="flex justify-center items-center w-24 h-10 rounded-md bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color"
         onClick={handleEdit}
       >
         Edit
