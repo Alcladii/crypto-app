@@ -89,8 +89,8 @@ export default function App() {
   return (
     <div>
       <div className="bg-right-currency-background w-screen text-white">
-        <div className="max-w-[1440px]  min-w-[1200px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
-          <div className="flex items-center w-[70%] justify-between">
+        <div className="max-w-[1440px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
+          <div className="flex items-center sm:w-[70%] w-[90%] overflow-x-auto justify-between" style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: 'none' }}>
             <div className="flex items-center text-[rgba(209, 209, 209, 1)]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
