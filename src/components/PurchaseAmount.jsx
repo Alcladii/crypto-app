@@ -28,7 +28,7 @@ export const PurchaseAmount = ({ amount }) => {
     <div>
       <input
         value={inputPurchasedAmount}
-        className={`w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color ${
+        className={`w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-edit-asset-popup-input-text-color ${
           darkMode
             ? "placeholder-placeholder-dark"
             : "placeholder-placeholder-light"

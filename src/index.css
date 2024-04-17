@@ -33,7 +33,7 @@
     --color-text-loading-and-error-message-currency-converter: rgba(255,255,255,1);
     --color-text-add-asset-popup-buttons-title: rgba(255,255,255,1);
     --color-text-add-asset-popup-coin-selector: rgba(209, 209, 209, 1);
-    --color-text-add-asset-popup-input: rgba(209, 209, 209, 1) ;
+    --color-text-add-edit-asset-popup-input: rgba(209, 209, 209, 1) ;
     --color-text-portfolio-item-coin-name-total-value-current-price: rgba(255, 255, 255, 1);
     --colort-text-portfolio-item-titles: rgba(209, 209, 209, 1);
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
@@ -55,11 +55,10 @@
     --color-background-currency-converter-chart: rgba(25, 25, 50, 1);
     --color-background-days-button-bar-currency-converter: rgba(35, 35, 54, 1);
     --color-background-edit-asset-popup: rgba(19, 18, 26, 1);
-    --color-background-edit-asset-items: rgba(25, 25, 37, 1);
     --color-background-edit-asset-buttons: rgba(97, 97, 214, 0.5);
     --color-background-add-asset-popup-coin-name-icon-wrapper: rgba(25, 25, 50, 1);
     --color-background-add-asset-popup-icon-wrapper: rgba(44, 44, 74, 1);
-    --color-background-add-asset-popup-items: rgba(25, 25, 37, 1);
+    --color-background-add-edit-asset-popup-items: rgba(25, 25, 37, 1);
     --color-background-add-asset-popup-buttons: rgba(97, 97, 214, 0.5);
     --color-background-portfolio-item-left-column: rgba(25, 25, 50, 1);
     --color-background-portfolio-item-right-column: rgba(25, 25, 37, 1);
@@ -98,7 +97,7 @@
     --color-text-edit-asset-popup-buttons-title: rgba(24, 24, 37, 1);
     --color-text-add-asset-popup-buttons-title: rgba(24, 24, 37, 1);
     --color-text-add-asset-popup-coin-selector: rgba(66, 66, 134, 1);
-    --color-text-add-asset-popup-input: rgba(66, 66, 134, 1);
+    --color-text-add-edit-asset-popup-input: rgba(66, 66, 134, 1);
     --color-text-portfolio-item-coin-name-total-value-current-price: rgba(35, 35, 54, 1);
     --colort-text-portfolio-item-titles: rgba(24, 24, 37, 1);
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
@@ -124,7 +123,7 @@
     --color-background-edit-asset-buttons: rgba(97, 97, 214, 0.5);
     --color-background-add-asset-popup-coin-name-icon-wrapper: rgba(255, 255, 255, 1);
     --color-background-add-asset-popup-icon-wrapper: rgba(204, 204, 250, 0.4);
-    --color-background-add-asset-popup-items: rgba(204, 204, 250, 0.4);
+    --color-background-add-edit-asset-popup-items: rgba(204, 204, 250, 0.4);
     --color-background-add-asset-popup-buttons: rgba(97, 97, 214, 0.5);
     --color-background-portfolio-item-left-column: rgba(204, 204, 250, 0.4);
     --color-background-portfolio-item-right-column: rgba(255, 255, 255, 1);
