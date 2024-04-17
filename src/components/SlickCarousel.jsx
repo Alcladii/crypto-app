@@ -161,7 +161,7 @@ export const SlickCarousel = ({ coinList }) => {
         {slidesData && (
           <Slider {...settings}>
             {slidesData.map((coin) => (
-              <div>
+              <div key={coin.id}>
                 <div
                   key={coin.id}
                   onClick={() => handleClick(coin.id)}

@@ -28,9 +28,11 @@ export const PurchaseAmount = ({ amount }) => {
     <div>
       <input
         value={inputPurchasedAmount}
-        className={`w-full bg-skin-edit-asset-items-background-color text-skin-edit-asset-popup-input-text-color ${darkMode
-          ? "placeholder-placeholder-dark"
-          : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
+        className={`w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color ${
+          darkMode
+            ? "placeholder-placeholder-dark"
+            : "placeholder-placeholder-light"
+        } outline-none appearance-none rounded-md h-12 pl-3`}
         onChange={(e) => handleChange(e.target.value)}
         placeholder={placeholder}
         onFocus={handleFocus}

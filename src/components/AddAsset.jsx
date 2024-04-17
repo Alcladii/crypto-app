@@ -15,6 +15,7 @@ export const AddAsset = ({ addCoin }) => {
     isNumber,
     setIsNumber,
     setEditAsset,
+    darkMode,
   } = useContext(CryptoContext);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -30,7 +31,7 @@ export const AddAsset = ({ addCoin }) => {
     setShowPopup(!showPopup);
     setSelectedCoin("");
     setSelectedAmount("");
-    setEditAsset(false)
+    setEditAsset(false);
   };
 
   const coinsOptions =
@@ -90,25 +91,48 @@ export const AddAsset = ({ addCoin }) => {
 
   return (
     <div>
-      <div className="flex justify-center items-center w-28 h-10 selected-button rounded-md mb-3" onClick={togglePopup}>Add Asset</div>
+      <div className="flex justify-center items-center w-28 h-10 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color" onClick={togglePopup}>Add Asset</div>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
-          <div className="fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-crpyto-background-dark rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10">
+          <div
+            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-skin-app ${
+              darkMode ? "" : "theme-light"
+            } rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}
+          >
             <div className="flex h-[12%] justify-between items-center">
-              <div className="font-space-grotesk text-lg font-semibold">Select Coins</div>
-              <div
-                onClick={togglePopup}
-                className="w-8 h-8 rounded-full border-2 cursor-pointer flex justify-center items-center text-2xl"
-              >
-                ×
+              <div className="font-space-grotesk text-lg font-semibold text-skin-add-asset-popup-buttons-title-text-color">
+                Select Coins
               </div>
+              <svg
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill={darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"}
+                class="w-8 h-8 cursor-pointer"
+                onClick={togglePopup}
+              >
+                
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {" "}
+                  <rect x="0" fill="none" width="24" height="24"></rect>{" "}
+                  <g>
+                    {" "}
+                    <path d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0 4-10.3.1-14.2zm-4.3 11.3L12 13.4l-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8-1.4 1.4z"></path>{" "}
+                  </g>{" "}
+                </g>
+              </svg>
             </div>
             <div className="flex h-[88%] pt-6">
-              <div className="w-[38%] bg-line-bar-chart-background rounded-lg flex justify-center items-center">
+              <div className="w-[38%] bg-skin-add-asset-popup-coin-name-icon-wrapper-background-color rounded-lg flex justify-center items-center">
                 {selectedCoin && (
                   <div className="flex-col justify-center items-center">
                     <div className="w-32 flex justify-center items-center mb-2">
-                      <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-coin-icon-background">
+                      <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-skin-add-asset-popup-icon-wrapper-background-color">
                         <img
                           className="w-8 mt-2"
                           src={selectedCoin.image.large}
@@ -124,7 +148,7 @@ export const AddAsset = ({ addCoin }) => {
               </div>
               <div className="w-[65%] ml-5 flex flex-col justify-between ">
                 <select
-                  className="w-full bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 pl-3"
+                  className="w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-coin-selector-text-color outline-none appearance-none rounded-md h-12 pl-3"
                   value={selectedCoin.id}
                   onChange={(e) => {
                     handleCoinSelect(e.target.value);
@@ -140,13 +164,13 @@ export const AddAsset = ({ addCoin }) => {
                 <PurchaseDate />
                 <div className="flex justify-between">
                   <div
-                    className="w-1/2 bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 mr-2 flex justify-center items-center"
+                    className="w-1/2 bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 mr-2 flex justify-center items-center"
                     onClick={togglePopup}
                   >
                     Cancel
                   </div>
                   <div
-                    className="w-1/2 bg-button-unselected-search-bar-background outline-none appearance-none rounded-md h-12 ml-2 flex justify-center items-center"
+                    className="w-1/2 bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 ml-2 flex justify-center items-center"
                     onClick={() => {
                       handleAddClick(selectedCoin.id);
                     }}

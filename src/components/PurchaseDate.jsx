@@ -4,8 +4,7 @@ import { CryptoContext } from "../contexts/cryptoContext";
 
 export const PurchaseDate = ({ date }) => {
   const [localDate, setLocalDate] = useState(date);
-
-  const { setPurchaseDate, setFormattedDateForHistoryApiCall, editAsset, darkMode } =
+  const { setPurchaseDate, setFormattedDateForHistoryApiCall, editAsset, darkMode, } =
     useContext(CryptoContext);
 
   const formatDate = (dateString) => {
@@ -25,7 +24,7 @@ export const PurchaseDate = ({ date }) => {
   return (
     <div>
       {editAsset ? <input
-        className={`w-full bg-skin-edit-asset-items-background-color text-skin-edit-asset-popup-input-text-color ${darkMode
+        className={`w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color ${darkMode
           ? "placeholder-placeholder-dark"
           : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
         type="date"      
@@ -33,9 +32,9 @@ export const PurchaseDate = ({ date }) => {
         value={localDate}
       /> :
       <input
-        className={`w-full bg-skin-edit-asset-items-background-color text-skin-edit-asset-popup-input-text-color ${darkMode
-          ? "placeholder-placeholder-dark"
-          : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
+        className={`w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color ${darkMode
+        ? "placeholder-placeholder-dark"
+        : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
         type="text"
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
