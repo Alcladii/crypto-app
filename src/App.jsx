@@ -40,6 +40,8 @@ export default function App() {
     handleSearchParams,
     changeSearchParams,
     queryParams,
+    portfolioList,
+    redirectedFromPortfolioPage,
   } = useContext(CryptoContext);
 
   const [results, setResults] = useState([]);
@@ -382,7 +384,7 @@ export default function App() {
           <Portfolio />
         </Route>
         <Route exact path="/coin-page/:coinId">
-          <CoinPage />
+         {redirectedFromPortfolioPage ? <CoinPage portfolioList={portfolioList}/> : <CoinPage />} 
         </Route>
       </Switch>
     </div>

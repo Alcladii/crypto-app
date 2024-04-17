@@ -70,6 +70,7 @@ function Coins() {
     historyURL,
     changeSearchParams,
     darkMode,
+    setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext);
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
@@ -162,6 +163,7 @@ function Coins() {
 
   const handleClick = (item) => {
     history.push(`/coin-page/${item.id}`);
+    setRedirectedFromPortfolioPage(false);
   };
 
   const colors = ["#7878FA", "#D878FA", "#01F1E3"];

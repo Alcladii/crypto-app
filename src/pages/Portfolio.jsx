@@ -81,7 +81,6 @@ function Portfolio() {
           <h2 className="text-xl text-skin-portfolio-item-coin-name-total-value-current-price-text-color">Portfolio</h2>
           <AddAsset addCoin={addCoin} />
         </div>
-
         {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
         <PortfolioItem setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>
       </div>
