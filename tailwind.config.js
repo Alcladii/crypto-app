@@ -58,6 +58,8 @@ export default {
           "currency-inside-chart-text-color":'var(--color-text-currency-inside-chart)',
           "to-inside-chart-text-color":'var(--color-text-to-inside-chart)',
           "loading-and-error-message-currency-converter-text-color":'var(--color-text-loading-and-error-message-currency-converter)',
+          "edit-asset-popup-input-text-color":'var(--color-text-edit-asset-popup-input)',
+          "edit-asset-popup-buttons-title-text-color":'var(--color-text-edit-asset-popup-buttons-title)'
           "add-asset-popup-buttons-title-text-color":'var(--color-text-add-asset-popup-buttons-title)',
           "add-asset-popup-coin-selector-text-color":'var(--color-text-add-asset-popup-coin-selector)',
           "add-asset-popup-input-text-color":'var(--color-text-add-asset-popup-input)',
@@ -85,6 +87,9 @@ export default {
           "right-currency-background-color":'var(--color-background-right-currency)',
           "currency-converter-chart-background-color":'var(--color-background-currency-converter-chart)',
           "days-button-bar-currency-converter-background-color":'var(--color-background-days-button-bar-currency-converter)',
+          "edit-asset-popup-background-color":'var(--color-background-edit-asset-popup)',
+          "edit-asset-items-background-color":'var(--color-background-edit-asset-items)',
+          "edit-asset-buttons-background-color":'var(--color-background-edit-asset-buttons)',
           "add-asset-popup-coin-name-icon-wrapper-background-color":'var(--color-background-add-asset-popup-coin-name-icon-wrapper)',
           "add-asset-popup-icon-wrapper-background-color":'var(--color-background-add-asset-popup-icon-wrapper)',
           "add-asset-popup-items-background-color":'var(--color-background-add-asset-popup-items)',
