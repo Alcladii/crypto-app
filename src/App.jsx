@@ -90,8 +90,8 @@ export default function App() {
     <div>
       <div className="bg-right-currency-background w-screen text-white">
         <div className="max-w-[1440px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
-          <div className="flex items-center sm:w-[70%] w-[90%] overflow-x-auto justify-between" style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: 'none' }}>
-            <div className="flex items-center text-[rgba(209, 209, 209, 1)]">
+          <div className="flex items-center lg:w-[70%] w-full justify-between" style={{ overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: 'none' }}>
+            <div className="flex items-center text-[rgba(209, 209, 209, 1)] mr-4 xl:mr-0 min-w-32">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -105,10 +105,10 @@ export default function App() {
                   clip-rule="evenodd"
                 />
               </svg>
-              &nbsp; Coins&nbsp;&nbsp;
-              {marketData!==null && marketData.active_cryptocurrencies}
+              
+              <div>&nbsp;Coins&nbsp;&nbsp;{marketData!==null && marketData.active_cryptocurrencies}</div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mr-4 xl:mr-0 min-w-40">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -118,9 +118,9 @@ export default function App() {
                 <path d="M16.5 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v7.5a3 3 0 0 0 3 3v-6A4.5 4.5 0 0 1 10.5 6h6Z" />
                 <path d="M18 7.5a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3H18Z" />
               </svg>
-              &nbsp; Exchange&nbsp;&nbsp;{marketData!==null  && marketData.markets}
+              <div>&nbsp; Exchange&nbsp;&nbsp;{marketData!==null  && marketData.markets}</div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mr-4 xl:mr-0 min-w-16">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16px"
@@ -141,7 +141,7 @@ export default function App() {
                 convertToTrillion(marketData.total_market_cap[displayCurrency])}
               T
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mr-4 xl:mr-0 min-w-20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16px"
@@ -162,7 +162,7 @@ export default function App() {
                 convertToBillion(marketData.total_volume[displayCurrency])}
               B
             </div>
-            <div className="flex justify-center items-center ">
+            <div className="flex justify-center items-center mr-4 xl:mr-0 min-w-44 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -205,7 +205,7 @@ export default function App() {
                 ></ProgressBarInner>
               </ProgressBarOuter>
             </div>
-            <div className="flex justify-center items-center ">
+            <div className="flex justify-center items-center mr-4 xl:mr-0 min-w-44">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24px"
