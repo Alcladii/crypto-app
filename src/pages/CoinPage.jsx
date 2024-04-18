@@ -467,12 +467,8 @@ const CoinPage = ({ portfolioList }) => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("blockchair"))
                       .map((item) => (
-                        <div>
-                          <a
-                            className="text-skin-single-coin-link-text-color"
-                            target="_blank"
-                            href={item}
-                          >
+                        <div key={uuidv4()}>
+                          <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
                         </div>
@@ -483,12 +479,8 @@ const CoinPage = ({ portfolioList }) => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("tokenview"))
                       .map((item) => (
-                        <div>
-                          <a
-                            className="text-skin-single-coin-link-text-color"
-                            target="_blank"
-                            href={item}
-                          >
+                        <div key={uuidv4()}>
+                          <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
                         </div>
