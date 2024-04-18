@@ -89,8 +89,8 @@ export default function App() {
   return (
     <div>
       <div className="bg-right-currency-background w-screen text-white">
-        <div className="max-w-[1440px]  min-w-[1200px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
-          <div className="flex items-center w-[70%] justify-between">
+        <div className="max-w-[1296px]  min-w-[1200px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
+          <div className="flex items-center w-[75%] justify-between">
             <div className="flex items-center text-[rgba(209, 209, 209, 1)]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -252,7 +252,7 @@ export default function App() {
           darkMode ? "" : "theme-light"
         } `}
       >
-        <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
+        <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-10">
           <div
             className={`font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
           >
