@@ -185,7 +185,7 @@ const CoinPage = ({ portfolioList }) => {
                       </div>
                     )}
                   </div>
-                  {portfolioList !== undefined &&
+                  {portfolioList &&
                     portfolioList.map(
                       (item) =>
                         item.coinData.id === coinId.coinId && (
