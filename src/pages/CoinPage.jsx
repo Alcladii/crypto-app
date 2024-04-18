@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
-import { v4 as uuidv4 } from "uuid";
+
 
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
@@ -189,7 +189,7 @@ const CoinPage = ({ portfolioList }) => {
                     portfolioList.map(
                       (item) =>
                         item.coinData.id === coinId.coinId && (
-                          <div className=" flex items-center">
+                          <div key={uuidv4()} className=" flex items-center">
                             <div className="text-xl mr-3">Profit:</div>
                             <div
                               className={`text-xl ${
