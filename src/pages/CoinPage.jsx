@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams} from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
-
 
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
@@ -57,7 +55,7 @@ const CoinPage = ({ portfolioList }) => {
     history.push("/");
   };
 
-  const handleBackToPortfolio = () => {
+  const naviBackToPortfolio = () => {
     setSingleCoin(null);
     history.push("/portfolio");
   };
@@ -110,7 +108,7 @@ const CoinPage = ({ portfolioList }) => {
         ) : (
           <div
             className="flex justify-center items-center w-40 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
-            onClick={handleBackToPortfolio}
+            onClick={naviBackToPortfolio}
           >
             Back to Portfolio
           </div>
