@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useParams} from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
@@ -187,7 +186,7 @@ const CoinPage = ({ portfolioList }) => {
                     portfolioList.map(
                       (item) =>
                         item.coinData.id === coinId.coinId && (
-                          <div key={uuidv4()} className=" flex items-center">
+                          <div key={item.id} className=" flex items-center">
                             <div className="text-xl mr-3">Profit:</div>
                             <div
                               className={`text-xl ${
@@ -449,7 +448,7 @@ const CoinPage = ({ portfolioList }) => {
                     singleCoin.links.homepage
                       .filter((e) => e !== "")
                       .map((item) => (
-                        <div key={uuidv4()}>
+                        <div key={item}>
                           <a
                             className="text-skin-single-coin-link-text-color"
                             target="_blank"
@@ -465,7 +464,7 @@ const CoinPage = ({ portfolioList }) => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("blockchair"))
                       .map((item) => (
-                        <div key={uuidv4()}>
+                        <div key={item}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
@@ -477,7 +476,7 @@ const CoinPage = ({ portfolioList }) => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("tokenview"))
                       .map((item) => (
-                        <div key={uuidv4()}>
+                        <div key={item}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
