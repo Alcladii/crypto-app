@@ -79,8 +79,7 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                     <CoinTag src={item.coinData.image.large} />
                   </div>
                   &nbsp;&nbsp;
-                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color" onClick={()=>{handleClick(item.coinData)}}>
-                    
+                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color" onClick={()=>handleClick(item.coinData)}>                   
                     {item.coinData.name}({item.coinData.symbol.toUpperCase()})
                   </div>
                   &nbsp;&nbsp;
