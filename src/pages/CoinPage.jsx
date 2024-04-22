@@ -96,7 +96,7 @@ const CoinPage = ({ portfolioList }) => {
     <div
       className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
     >
-      <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
+      <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
         {!redirectedFromPortfolioPage ? (
           <div
             className="flex justify-center items-center w-36 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
@@ -112,7 +112,6 @@ const CoinPage = ({ portfolioList }) => {
             Back to Portfolio
           </div>
         )}
-
         {singleCoinIsLoading && (
           <div className="my-5 flex justify-center items-center">
             Loading Coin

@@ -4,7 +4,6 @@ import { CryptoContext } from "../contexts/cryptoContext";
 
 export const PurchaseDate = ({ date }) => {
   const [localDate, setLocalDate] = useState(date);
-
   const { setPurchaseDate, setFormattedDateForHistoryApiCall, editAsset, darkMode, } =
     useContext(CryptoContext);
 
@@ -25,13 +24,15 @@ export const PurchaseDate = ({ date }) => {
   return (
     <div>
       {editAsset ? <input
-        className="w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color outline-none appearance-none rounded-md h-12 pl-3"
+        className={`w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-edit-asset-popup-input-text-color ${darkMode
+          ? "placeholder-placeholder-dark"
+          : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
         type="date"      
         onChange={(e) => handleInput(e.target.value)}
         value={localDate}
       /> :
       <input
-        className={`w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-input-text-color ${darkMode
+        className={`w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-edit-asset-popup-input-text-color ${darkMode
         ? "placeholder-placeholder-dark"
         : "placeholder-placeholder-light"} outline-none appearance-none rounded-md h-12 pl-3`}
         type="text"

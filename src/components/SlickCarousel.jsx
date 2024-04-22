@@ -15,7 +15,7 @@ const SlidesContainer = styled.div`
   height: 70px;
 `;
 
-export const SlickCarousel = ({ coinList }) => {
+export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage }) => {
   const {
     currencySymbol,
     retainTwoDigits,
@@ -71,6 +71,7 @@ export const SlickCarousel = ({ coinList }) => {
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
   const handleClick = (id) => {
+    setDisplaySelectCoinToSeeChartMessage(false)
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
       if (isSameCoin) {
@@ -110,6 +111,8 @@ export const SlickCarousel = ({ coinList }) => {
       slide.selected = false;
     });
     setSelectedCoinData([]);
+    setPriceVolumeChartIsLoadingHasError(false);
+    setDisplaySelectCoinToSeeChartMessage(true);
   };
 
   return (

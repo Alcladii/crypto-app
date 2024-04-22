@@ -114,9 +114,9 @@ export const CryptoProvider = ({ children }) => {
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
 
   const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
+    setPriceVolumeChartIsLoadingHasError(false);
+    setPriceVolumeChartIsLoading(true);
     try {
-      setPriceVolumeChartIsLoading(true);
-
       let apiUrl;
       if (numOfDays == 2) {
         apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
