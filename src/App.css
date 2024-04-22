@@ -105,21 +105,6 @@
   width: 150px;
 }
 
-.result-list {
-  position: absolute;
-  color: black;
-  top: 10px;
-  width: 300px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px #ddd;
-  margin-top: 1rem;
-  max-height: 150px;
-  overflow-y: scroll;
-}
-
 .search-wrapper {
   position: relative;
   display: flex;

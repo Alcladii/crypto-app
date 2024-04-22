@@ -64,6 +64,8 @@ export default {
           "portfolio-item-coin-name-total-value-current-price-text-color":'var(--color-text-portfolio-item-coin-name-total-value-current-price)',
           "portfolio-item-titles-text-color": 'var(--colort-text-portfolio-item-titles)',
           "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
+          "coin-search-result-list-text-color":'var(--color-text-coin-search-result-list)',
+          "coin-search-input-text-color":'var(--color-text-coin-search-input)'
         }
       },
       backgroundColor: {
@@ -91,7 +93,9 @@ export default {
           "add-asset-popup-buttons-background-color":'var(--color-background-add-asset-popup-buttons)',
           "portfolio-item-left-column-back-ground-color":'var(--color-background-portfolio-item-left-column)',
           "portfolio-item-right-column-back-ground-color":'var(--color-background-portfolio-item-right-column)',
-          "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)'
+          "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)',
+          "search-popup-background-color":'var(--color-background-search-popup)',
+          "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)'
         }
       },
       borderColor: {
