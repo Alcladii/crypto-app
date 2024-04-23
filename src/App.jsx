@@ -44,7 +44,6 @@ export default function App() {
     redirectedFromPortfolioPage,
   } = useContext(CryptoContext);
 
-  const [results, setResults] = useState([]);
   const [loadHomePage, setLoadHomePage] = useLocalState("loadHomePage", true);
   const [marketData, setMarketData] = useLocalState("marketData", null);
   const [marketDataIsLoading, setMarketDataIsLoading] = useState(false);
@@ -91,9 +90,17 @@ export default function App() {
   return (
     <div>
       <div className="bg-right-currency-background w-screen text-white">
-        <div className="max-w-[1296px]  min-w-[1200px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
-          <div className="flex items-center w-[75%] justify-between">
-            <div className="flex items-center text-[rgba(209, 209, 209, 1)]">
+        <div className="max-w-[1296px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
+          <div
+            className="flex items-center md:w-[70%] w-full justify-between"
+            style={{
+              overflowX: "auto",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitScrollbar: "none",
+            }}
+          >
+            <div className="flex items-center text-[rgba(209, 209, 209, 1)] mr-4 xl:mr-0 min-w-32">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -107,10 +114,13 @@ export default function App() {
                   clip-rule="evenodd"
                 />
               </svg>
-              &nbsp; Coins&nbsp;&nbsp;
-              {marketData!==null && marketData.active_cryptocurrencies}
+
+              <div>
+                &nbsp;Coins&nbsp;&nbsp;
+                {marketData !== null && marketData.active_cryptocurrencies}
+              </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mr-4 xl:mr-0 min-w-40">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -120,9 +130,12 @@ export default function App() {
                 <path d="M16.5 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v7.5a3 3 0 0 0 3 3v-6A4.5 4.5 0 0 1 10.5 6h6Z" />
                 <path d="M18 7.5a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3H18Z" />
               </svg>
-              &nbsp; Exchange&nbsp;&nbsp;{marketData!==null  && marketData.markets}
+              <div>
+                &nbsp; Exchange&nbsp;&nbsp;
+                {marketData !== null && marketData.markets}
+              </div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mr-4 xl:mr-0 min-w-16">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16px"
@@ -139,11 +152,11 @@ export default function App() {
                 />
               </svg>
               &nbsp;
-              {marketData!==null &&
+              {marketData !== null &&
                 convertToTrillion(marketData.total_market_cap[displayCurrency])}
               T
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mr-4 xl:mr-0 min-w-20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16px"
@@ -160,11 +173,11 @@ export default function App() {
                 />
               </svg>
               &nbsp;
-              {marketData!==null &&
+              {marketData !== null &&
                 convertToBillion(marketData.total_volume[displayCurrency])}
               B
             </div>
-            <div className="flex justify-center items-center ">
+            <div className="flex justify-center items-center mr-4 xl:mr-0 min-w-44 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -197,17 +210,19 @@ export default function App() {
                 </g>
               </svg>
               &nbsp;&nbsp;
-              {marketData!==null &&
+              {marketData !== null &&
                 retainTwoDigits(marketData.market_cap_percentage.btc)}
               %&nbsp;&nbsp;
               <ProgressBarOuter>
                 <ProgressBarInner
-                  width={marketData!==null && marketData.market_cap_percentage.btc}
+                  width={
+                    marketData !== null && marketData.market_cap_percentage.btc
+                  }
                   background={"rgba(247, 147, 26, 1)"}
                 ></ProgressBarInner>
               </ProgressBarOuter>
             </div>
-            <div className="flex justify-center items-center ">
+            <div className="flex justify-center items-center mr-4 xl:mr-0 min-w-44">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24px"
@@ -236,12 +251,14 @@ export default function App() {
                 </g>
               </svg>
               &nbsp;&nbsp;
-              {marketData!==null &&
+              {marketData !== null &&
                 retainTwoDigits(marketData.market_cap_percentage.eth)}
               %&nbsp;&nbsp;
               <ProgressBarOuter>
                 <ProgressBarInner
-                  width={marketData!==null && marketData.market_cap_percentage.eth}
+                  width={
+                    marketData !== null && marketData.market_cap_percentage.eth
+                  }
                   background="rgba(132, 157, 255, 1)"
                 ></ProgressBarInner>
               </ProgressBarOuter>
@@ -249,18 +266,14 @@ export default function App() {
           </div>
         </div>
       </div>
-      <div
-        className={`bg-skin-app w-screen ${
-          darkMode ? "" : "theme-light"
-        } `}
-      >
+      <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
         <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-10">
           <div
             className={`font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
           >
             CryptoFun
           </div>
-          <div className="flex w-80">
+          <div className="w-80 hidden md:flex">
             <div
               onClick={handleHomePageClick}
               className="flex items-center justify-center h-10 w-1/2"
@@ -328,9 +341,8 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center space-x-5">
-            <div>
-              <SearchItemInput setResults={setResults} />
-              <ResultList results={results} />
+            <div className="flex flex-col relative">
+              <SearchItemInput />
             </div>
             <div>
               <CurrencySelector />

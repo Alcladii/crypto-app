@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
+
 @layer base {
   :root  {
     --color-text-selected-button-app-name: rgba(255, 255, 255, 1);
@@ -37,6 +49,8 @@
     --color-text-portfolio-item-coin-name-total-value-current-price: rgba(255, 255, 255, 1);
     --colort-text-portfolio-item-titles: rgba(209, 209, 209, 1);
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
+    --color-text-coin-search-result-list: rgba(255, 255, 255, 1);
+    --color-text-coin-search-input: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -63,6 +77,8 @@
     --color-background-portfolio-item-left-column: rgba(25, 25, 50, 1);
     --color-background-portfolio-item-right-column: rgba(25, 25, 37, 1);
     --color-background-portfolio-item-buttons: rgba(97, 97, 214, 0.5);
+    --color-background-search-popup: rgba(97, 97, 214, 0.5);
+    --color-background-coin-search-result-list: rgba(25, 25, 37, 1);
     --color-border-currency-converter: rgba(255, 255, 255, 1);
     --color-border-portfolio-item-frames: rgba(45, 45, 81, 1);
   } 
@@ -101,6 +117,8 @@
     --color-text-portfolio-item-coin-name-total-value-current-price: rgba(35, 35, 54, 1);
     --colort-text-portfolio-item-titles: rgba(24, 24, 37, 1);
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
+    --color-text-coin-search-result-list: rgba(24, 24, 37, 1);
+    --color-text-coin-search-input: rgba(24, 24, 37, 1);
     --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -128,6 +146,8 @@
     --color-background-portfolio-item-left-column: rgba(204, 204, 250, 0.4);
     --color-background-portfolio-item-right-column: rgba(255, 255, 255, 1);
     --color-background-portfolio-item-buttons: rgba(97, 97, 214, 0.5);
+    --color-background-search-popup: rgba(204, 204, 250, 0.4);
+    --color-background-coin-search-result-list: rgba(255, 255, 255, 1);
     --color-border-currency-converter: rgba(53, 53, 112, 1);
     --color-border-portfolio-item-frames: rgba(204, 204, 250, 0.4);
   }
