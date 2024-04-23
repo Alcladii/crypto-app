@@ -61,6 +61,7 @@ export const CryptoProvider = ({ children }) => {
   );
   const [editAsset, setEditAsset] = useState(false);
   const [darkMode, setDarkMode] = useLocalState("darkMode", true);
+  const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] = useLocalState("redirectFromPortfolioPage", false)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -217,6 +218,8 @@ export const CryptoProvider = ({ children }) => {
         singleCoinLoadingHasError,
         changeSearchParams,
         numOfDaysFromUrl,
+        redirectedFromPortfolioPage, 
+        setRedirectedFromPortfolioPage,
       }}
     >
       {children}
