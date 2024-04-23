@@ -1,4 +1,5 @@
 import react, { useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
@@ -35,6 +36,7 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
     portfolioList,
     setPortfolioList,
     darkMode,
+    setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext);
 
   const handleRemove= (id) => {
@@ -54,6 +56,14 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
     }
   };
 
+  const history = useHistory();
+
+  const handleClick = (item) => {
+    history.push(`/coin-page/${item.id}`);
+    setRedirectedFromPortfolioPage(true);
+  };
+
+
   return (
     <div>
       {portfolioList.length !== 0 &&
@@ -69,7 +79,7 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
                     <CoinTag src={item.coinData.image.large} />
                   </div>
                   &nbsp;&nbsp;
-                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
+                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color" onClick={()=>handleClick(item.coinData)}>                   
                     {item.coinData.name}({item.coinData.symbol.toUpperCase()})
                   </div>
                   &nbsp;&nbsp;

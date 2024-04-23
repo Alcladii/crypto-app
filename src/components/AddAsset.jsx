@@ -139,7 +139,7 @@ export const AddAsset = ({ addCoin }) => {
                         />
                       </div>
                     </div>
-                    <div className="w-32 flex justify-center mt-4 text-2xl font-bold">
+                    <div className="w-32 flex justify-center mt-4 text-2xl font-bold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                       {selectedCoin.name}&nbsp;(
                       {selectedCoin.symbol.toUpperCase()})
                     </div>
@@ -148,7 +148,7 @@ export const AddAsset = ({ addCoin }) => {
               </div>
               <div className="w-[65%] ml-5 flex flex-col justify-between ">
                 <select
-                  className="w-full bg-skin-add-asset-popup-items-background-color text-skin-add-asset-popup-coin-selector-text-color outline-none appearance-none rounded-md h-12 pl-3"
+                  className="w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-asset-popup-coin-selector-text-color outline-none appearance-none rounded-md h-12 pl-3"
                   value={selectedCoin.id}
                   onChange={(e) => {
                     handleCoinSelect(e.target.value);

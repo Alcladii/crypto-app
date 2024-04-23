@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+import { useHistory, useParams} from "react-router-dom";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
-import { v4 as uuidv4 } from 'uuid';
 
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
@@ -23,7 +20,7 @@ const ProgressBarInner = styled.div`
   background: ${(props) => props.background};
 `;
 
-const CoinPage = () => {
+const CoinPage = ({ portfolioList }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const coinId = useParams();
 
@@ -41,6 +38,7 @@ const CoinPage = () => {
     retainTwoDigits,
     setSingleCoin,
     darkMode,
+    redirectedFromPortfolioPage,
   } = useContext(CryptoContext);
 
   useEffect(() => {
@@ -54,6 +52,11 @@ const CoinPage = () => {
   const handleClick = () => {
     setSingleCoin(null);
     history.push("/");
+  };
+
+  const naviBackToPortfolio = () => {
+    setSingleCoin(null);
+    history.push("/portfolio");
   };
 
   let htmlContent;
@@ -81,17 +84,34 @@ const CoinPage = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const calculateProfit = (item) => {
+    return retainTwoDigits(
+      (item.coinData.market_data.current_price[displayCurrency] -
+        item.historyData.market_data.current_price[displayCurrency]) *
+        item.purchaseAmount1
+    );
+  };
+
   return (
     <div
       className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
     >
-      <div className="max-w-[1440px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
-        <div
-          className="flex justify-center items-center w-36 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
-          onClick={handleClick}
-        >
-          Back to Coins
-        </div>
+      <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
+        {!redirectedFromPortfolioPage ? (
+          <div
+            className="flex justify-center items-center w-36 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
+            onClick={handleClick}
+          >
+            Back to Coins
+          </div>
+        ) : (
+          <div
+            className="flex justify-center items-center w-40 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
+            onClick={naviBackToPortfolio}
+          >
+            Back to Portfolio
+          </div>
+        )}
         {singleCoinIsLoading && (
           <div className="my-5 flex justify-center items-center">
             Loading Coin
@@ -161,6 +181,25 @@ const CoinPage = () => {
                       </div>
                     )}
                   </div>
+                  {portfolioList &&
+                    portfolioList.map(
+                      (item) =>
+                        item.coinData.id === coinId.coinId && (
+                          <div key={item.id} className=" flex items-center">
+                            <div className="text-xl mr-3">Profit:</div>
+                            <div
+                              className={`text-xl ${
+                                calculateProfit(item) > 0
+                                  ? "text-skin-change-percentage-in-coin-page-positive-text-color"
+                                  : "text-skin-change-percentage-in-coin-page-negative-text-color"
+                              }`}
+                            >
+                              {currencySymbol}
+                              {calculateProfit(item)}
+                            </div>
+                          </div>
+                        )
+                    )}
                   <div className="flex flex-col w-full h-[64%]">
                     <div className="flex flex-col justify-center items-center h-[50%]">
                       <div className="flex items-center">
@@ -408,8 +447,12 @@ const CoinPage = () => {
                     singleCoin.links.homepage
                       .filter((e) => e !== "")
                       .map((item) => (
-                        <div key={uuidv4()}>
-                          <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
+                        <div key={item}>
+                          <a
+                            className="text-skin-single-coin-link-text-color"
+                            target="_blank"
+                            href={item}
+                          >
                             {item}
                           </a>
                         </div>
@@ -420,7 +463,7 @@ const CoinPage = () => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("blockchair"))
                       .map((item) => (
-                        <div>
+                        <div key={item}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>
@@ -432,7 +475,7 @@ const CoinPage = () => {
                     singleCoin.links.blockchain_site
                       .filter((item) => item.includes("tokenview"))
                       .map((item) => (
-                        <div>
+                        <div key={item}>
                           <a className="text-skin-single-coin-link-text-color" target="_blank" href={item}>
                             {item}
                           </a>

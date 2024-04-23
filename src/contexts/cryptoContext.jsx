@@ -61,6 +61,7 @@ export const CryptoProvider = ({ children }) => {
   );
   const [editAsset, setEditAsset] = useState(false);
   const [darkMode, setDarkMode] = useLocalState("darkMode", true);
+  const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] = useLocalState("redirectFromPortfolioPage", false)
 
   const convertToBillion = (number) => {
     return (number / 1000000000).toFixed(2);
@@ -113,9 +114,9 @@ export const CryptoProvider = ({ children }) => {
   const currencySymbol = currencies[displayCurrency.toUpperCase()]?.symbol;
 
   const getCoinPriceVolume = async (coinId, currency, numOfDays) => {
+    setPriceVolumeChartIsLoadingHasError(false);
+    setPriceVolumeChartIsLoading(true);
     try {
-      setPriceVolumeChartIsLoading(true);
-
       let apiUrl;
       if (numOfDays == 2) {
         apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
@@ -217,6 +218,8 @@ export const CryptoProvider = ({ children }) => {
         singleCoinLoadingHasError,
         changeSearchParams,
         numOfDaysFromUrl,
+        redirectedFromPortfolioPage, 
+        setRedirectedFromPortfolioPage,
       }}
     >
       {children}
