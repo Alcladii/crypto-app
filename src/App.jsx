@@ -264,7 +264,6 @@ export default function App() {
           </div>
         </div>
       </div>
-      {/*part below is nav bar*/}
       <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
         <div className="max-w-[1440px] mx-auto flex items-center justify-between py-8 px-10">
           <div

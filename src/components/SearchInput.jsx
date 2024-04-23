@@ -11,18 +11,6 @@ export const SearchItemInput = () => {
 
   let searchInputRef = useRef();
 
-  //save for real api call
-  /*const fetchData = (value) => {
-    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6000&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d")
-      .then((response) => response.json())
-      .then((json) => {       
-         const results = json.filter((coin) => {
-            return value&&coin && coin.id && coin.id.toLowerCase().includes(value)
-        });
-        setResults(results);
-      })
-  }*/
-
   useEffect(() => {
     let closeSearchInput = (e) => {
       if (!searchInputRef.current.contains(e.target)) {
