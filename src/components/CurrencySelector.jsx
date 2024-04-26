@@ -26,9 +26,9 @@ export const CurrencySelector = () => {
   });
 
   return (
-    <div className="relative flex justify-center h-10 w-32">
+    <div className="relative flex justify-center h-10 w-16 md:w-32">
       <div
-        className={`h-full w-auto flex items-center justify-center pl-2 bg-skin-unselected-button-bg rounded-l-md ${
+        className={`h-full w-auto items-center justify-center pl-2 bg-skin-unselected-button-bg hidden md:flex rounded-l-md ${
           darkMode ? "" : "theme-light"
         }`}
       >
@@ -36,7 +36,7 @@ export const CurrencySelector = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(66, 66, 134, 1)"}
-          class="w-6 h-6"
+          class="w-6 h-6 "
         >
           <path d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 0 1-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004ZM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 0 1-.921.42Z" />
           <path
@@ -47,7 +47,7 @@ export const CurrencySelector = () => {
         </svg>
       </div>
       <select
-        className={`pl-2 w-full bg-skin-unselected-button-bg outline-none appearance-none rounded-s-none ${
+        className={`pl-1 sm:pl-2 w-full bg-transparent md:bg-skin-unselected-button-bg outline-none appearance-none rounded-s-none ${
           darkMode ? "" : "theme-light"
         } text-skin-currency-selector-text-color`}
         value={displayCurrency}
@@ -59,7 +59,7 @@ export const CurrencySelector = () => {
           </option>
         ))}
       </select>
-      <div className="h-full w-auto absolute right-0 flex items-center justify-center pointer-events-none pr-2">
+      <div className="h-full w-auto absolute right-0 flex items-center justify-center pointer-events-none pr-1 sm:pr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

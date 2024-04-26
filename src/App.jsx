@@ -92,13 +92,7 @@ export default function App() {
       <div className="bg-right-currency-background w-screen text-white">
         <div className="max-w-[1296px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
           <div
-            className="flex items-center md:w-[70%] w-full justify-between"
-            style={{
-              overflowX: "auto",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitScrollbar: "none",
-            }}
+            className="flex items-center md:w-[70%] w-full justify-between overflow-x-scroll no-scrollbar"
           >
             <div className="flex items-center text-[rgba(209, 209, 209, 1)] mr-4 xl:mr-0 min-w-32">
               <svg
@@ -267,16 +261,50 @@ export default function App() {
         </div>
       </div>
       <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
-        <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-10">
+        <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-5 sm:px-10">
           <div
-            className={`font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
+            className={`flex items-center font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
           >
-            CryptoFun
+            <svg
+              width="36"
+              height="24"
+              viewBox="0 -2 36 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_587_3440)">
+                <path
+                  d="M12.3431 0C10.3124 0 8.36487 0.8067 6.92893 2.24264L2.24264 6.92893C0.8067 8.36487 0 10.3124 0 12.3431C0 16.5719 3.42809 20 7.65687 20C9.6876 20 11.6351 19.1933 13.0711 17.7573L16.3126 14.5158C16.3126 14.5157 16.3127 14.5159 16.3126 14.5158L25.7573 5.07107C26.4431 4.38527 27.3733 4 28.3431 4C29.9669 4 31.3435 5.05827 31.8207 6.52271L34.8015 3.54197C33.4417 1.41223 31.0573 0 28.3431 0C26.3124 0 24.3649 0.8067 22.9289 2.24264L10.2427 14.9289C9.55687 15.6147 8.62673 16 7.65687 16C5.63723 16 4 14.3628 4 12.3431C4 11.3733 4.38527 10.4431 5.07107 9.75733L9.75733 5.07107C10.4431 4.38527 11.3733 4 12.3431 4C13.9669 4 15.3435 5.05832 15.8207 6.52281L18.8015 3.54205C17.4417 1.41227 15.0574 0 12.3431 0Z"
+                  fill="#6161D6"
+                  fill-opacity="1"
+                ></path>
+                <path
+                  d="M10.0439 14.9289C9.35807 15.6147 8.42793 16 7.45807 16C5.83453 16 4.45807 14.942 3.98067 13.4778L1 16.4585C2.35987 18.5879 4.74406 20 7.45807 20C9.4888 20 11.4363 19.1933 12.8723 17.7573L25.5585 5.07107C26.2443 4.38527 27.1745 4 28.1443 4C30.164 4 31.8012 5.63723 31.8012 7.65687C31.8012 8.62673 31.4159 9.55687 30.7301 10.2427L26.0439 14.9289C25.3581 15.6147 24.4279 16 23.4581 16C21.8344 16 20.4579 14.9418 19.9805 13.4775L16.9999 16.4582C18.3597 18.5879 20.7439 20 23.4581 20C25.4888 20 27.4363 19.1933 28.8723 17.7573L33.5585 13.0711C34.9945 11.6351 35.8012 9.6876 35.8012 7.65687C35.8012 3.42809 32.3731 0 28.1443 0C26.1136 0 24.1661 0.8067 22.7301 2.24264L10.0439 14.9289Z"
+                  fill="#6161D6"
+                  fill-opacity="1"
+                ></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_587_3440">
+                  <rect
+                    width="36"
+                    height="20"
+                    fill="white"
+                    fill-opacity="1"
+                  ></rect>
+                </clipPath>
+              </defs>
+            </svg>
+            <span className="ml-2 hidden sm:block">CryptoFun</span>
           </div>
-          <div className="w-80 hidden md:flex">
+          <div className="w-40 sm:w-60 md:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
             <div
               onClick={handleHomePageClick}
-              className="flex items-center justify-center h-10 w-1/2"
+              className={`flex items-center justify-center h-10 w-[30%] sm:w-1/2 md:w-1/2 mr-0.5 rounded-md ${
+                loadHomePageInUrl
+                  ? "bg-skin-coins-converter-selected-button-background"
+                  : "bg-skin-coins-converter-unselected-button-background"
+              }`}
             >
               <Link
                 to="/"
@@ -303,12 +331,16 @@ export default function App() {
                   <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                   <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>
-                &nbsp;Home
+                <span className="hidden sm:block">&nbsp;Home</span>
               </Link>
             </div>
             <div
               onClick={handlePortfolioPageClick}
-              className="flex items-center justify-center h-10 w-1/2"
+              className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 md:w-1/2 ml-0.5 rounded-md ${
+                !loadHomePageInUrl
+                  ? "bg-skin-coins-converter-selected-button-background"
+                  : "bg-skin-coins-converter-unselected-button-background"
+              }`}
             >
               <Link
                 to="/portfolio"
@@ -340,11 +372,11 @@ export default function App() {
               </Link>
             </div>
           </div>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center md:space-x-5">
             <div className="flex flex-col relative">
               <SearchItemInput />
             </div>
-            <div>
+            <div className="mr-1 md:mr-0">
               <CurrencySelector />
             </div>
             <button
@@ -396,7 +428,11 @@ export default function App() {
           <Portfolio />
         </Route>
         <Route exact path="/coin-page/:coinId">
-         {redirectedFromPortfolioPage ? <CoinPage portfolioList={portfolioList}/> : <CoinPage />} 
+          {redirectedFromPortfolioPage ? (
+            <CoinPage portfolioList={portfolioList} />
+          ) : (
+            <CoinPage />
+          )}
         </Route>
       </Switch>
     </div>
