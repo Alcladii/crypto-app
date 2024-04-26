@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { useLocation, useHistory } from "react-router-dom";
 import Slider from "react-slick";
 import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
-import queryString from "query-string";
+import { Arrow } from "../components/Arrow"
 
 const CoinTag = styled.img`
   width: 30px;
@@ -227,20 +226,13 @@ export const SlickCarousel = ({
                         <span className="hidden lg:block">)</span>
                       </div>
                     </div>
-                    <div className="font-space-grotesk text-sm flex flex-col sm:flex-row items-center sm:items-center">
+                    <div className="font-space-grotesk text-sm flex flex-col sm:flex-row items-end sm:items-center">
                       <span className="text-skin-carousel-current-price-text-color">
                         {currencySymbol}
                         {coin.current_price}
                       </span>
                       <div className="flex items-center">
-                        <img
-                          src={`${
-                            coin.price_change_percentage_24h_in_currency > 0
-                              ? "https://i.ibb.co/zbDF1N6/icons8-triangle-48.png"
-                              : "https://i.ibb.co/DzMdxQ0/icons8-triangle-48-2.png"
-                          }`}
-                          className="h-2 sm:ml-2.5 mr-1.5"
-                        />
+                        <Arrow priceChange = {coin.price_change_percentage_24h_in_currency} />
                         <span
                           className={`${
                             coin.price_change_percentage_24h_in_currency > 0

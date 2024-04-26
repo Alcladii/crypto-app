@@ -4,7 +4,7 @@ export const Arrow = ({ priceChange }) => {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="w-4 h-4"
+      class="w-3 h-3"
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g
@@ -25,7 +25,7 @@ export const Arrow = ({ priceChange }) => {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="w-4 h-4"
+      class="w-3 h-3"
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g
