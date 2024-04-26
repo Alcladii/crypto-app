@@ -503,7 +503,10 @@ function Coins() {
               <div className="flex justify-between">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
-                    <div key={coin.id} className="flex items-center mx-2.5 mt-2">
+                    <div
+                      key={coin.id}
+                      className="flex items-center mx-2.5 mt-2"
+                    >
                       <ColorIndicator
                         background={colors[selectedCoinData.indexOf(coin)]}
                       ></ColorIndicator>
@@ -542,7 +545,7 @@ function Coins() {
           </div>
         </div>
       )}
-      <div className="flex my-5 w-fit h-auto bg-skin-days-bar-background-color rounded-md">
+      <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         <DaysButton days="2" buttonText="1D" />
         <DaysButton days="7" buttonText="7D" />
         <DaysButton days="30" buttonText="1M" />
@@ -550,13 +553,6 @@ function Coins() {
         <DaysButton days="180" buttonText="180D" />
         <DaysButton days="365" buttonText="1Y" />
       </div>
-      <div
-        className="bg-skin-carousel-unselected-button-background-color w-44 h-10 mx-1 my-0.5 flex justify-center items-center rounded-md font-space-grotesk cursor-pointer text-skin-carousel-unselected-button-text-color"
-        onClick={clearSearchParams}
-      >
-        Clear Search Criteria
-      </div>
-
       <div className="max-w-[1296px]">
         <div className="flex justify-center my-6">
           <div

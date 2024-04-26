@@ -15,7 +15,10 @@ const SlidesContainer = styled.div`
   height: 70px;
 `;
 
-export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage }) => {
+export const SlickCarousel = ({
+  coinList,
+  setDisplaySelectCoinToSeeChartMessage,
+}) => {
   const {
     currencySymbol,
     retainTwoDigits,
@@ -49,6 +52,36 @@ export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage 
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 1536,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 860,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   useEffect(() => {
@@ -71,7 +104,7 @@ export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage 
   let numOfSelectedSlides = slidesData.filter((coin) => coin.selected).length;
 
   const handleClick = (id) => {
-    setDisplaySelectCoinToSeeChartMessage(false)
+    setDisplaySelectCoinToSeeChartMessage(false);
     const newSlides = slidesData.map((coin) => {
       const isSameCoin = id === coin.id;
       if (isSameCoin) {
@@ -147,7 +180,9 @@ export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage 
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill={`${darkMode ? "rgba(255,255,255,1)" : "rgba(24, 24, 37, 1)"}`}
+              fill={`${
+                darkMode ? "rgba(255,255,255,1)" : "rgba(24, 24, 37, 1)"
+              }`}
               class="w-6 h-6"
             >
               <path
@@ -166,19 +201,18 @@ export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage 
             {slidesData.map((coin) => (
               <div key={coin.id}>
                 <div
-                  key={coin.id}
                   onClick={() => handleClick(coin.id)}
                   selected={coin.selected}
                   className={`${
                     coin.selected
                       ? "bg-skin-carousel-selected-button-background-color"
                       : "bg-skin-carousel-unselected-button-background-color"
-                  } cursor-pointer h-16 flex items-center rounded-md px-1 py-1`}
+                  } cursor-pointer h-16 flex items-center rounded-md px-3 py-1`}
                 >
-                  <div className="slide-icon-wrapper">
+                  <div className="w-fit sm:w-[25%]">
                     <CoinTag src={coin.image} />
                   </div>
-                  <div className="slide-content-wrapper">
+                  <div className="w-full sm:w-[75%] text-left text-xs flex items-center justify-between sm:justify-start sm:flex-col sm:items-stretch">
                     <div
                       className={`flex items-center font-space-grotesk text-sm ${
                         coin.selected
@@ -186,37 +220,41 @@ export const SlickCarousel = ({ coinList, setDisplaySelectCoinToSeeChartMessage 
                           : "text-skin-carousel-unselected-button-text-color"
                       }`}
                     >
-                      <div>{coin.name}</div>
-                      <div className="ml-0.5">
-                        ({coin.symbol.toUpperCase()})
+                      <div className="hidden lg:block">{coin.name}</div>
+                      <div className="flex items-center pl-1 sm:pl-0">
+                        <span className="hidden lg:block">(</span>
+                        {coin.symbol.toUpperCase()}
+                        <span className="hidden lg:block">)</span>
                       </div>
                     </div>
-                    <div className="font-space-grotesk text-sm flex items-center">
+                    <div className="font-space-grotesk text-sm flex flex-col sm:flex-row items-center sm:items-center">
                       <span className="text-skin-carousel-current-price-text-color">
                         {currencySymbol}
                         {coin.current_price}
                       </span>
-                      <img
-                        src={`${
-                          coin.price_change_percentage_24h_in_currency > 0
-                            ? "https://i.ibb.co/zbDF1N6/icons8-triangle-48.png"
-                            : "https://i.ibb.co/DzMdxQ0/icons8-triangle-48-2.png"
-                        }`}
-                        className="h-2 ml-2.5 mr-1.5"
-                      />
-                      <span
-                        className={`${
-                          coin.price_change_percentage_24h_in_currency > 0
-                            ? "text-go-up"
-                            : "text-go-down"
-                        }`}
-                      >
-                        {coin.price_change_percentage_24h_in_currency &&
-                          retainTwoDigits(
-                            coin.price_change_percentage_24h_in_currency
-                          )}
-                        %
-                      </span>
+                      <div className="flex items-center">
+                        <img
+                          src={`${
+                            coin.price_change_percentage_24h_in_currency > 0
+                              ? "https://i.ibb.co/zbDF1N6/icons8-triangle-48.png"
+                              : "https://i.ibb.co/DzMdxQ0/icons8-triangle-48-2.png"
+                          }`}
+                          className="h-2 sm:ml-2.5 mr-1.5"
+                        />
+                        <span
+                          className={`${
+                            coin.price_change_percentage_24h_in_currency > 0
+                              ? "text-go-up"
+                              : "text-go-down"
+                          }`}
+                        >
+                          {coin.price_change_percentage_24h_in_currency &&
+                            retainTwoDigits(
+                              coin.price_change_percentage_24h_in_currency
+                            )}
+                          %
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
