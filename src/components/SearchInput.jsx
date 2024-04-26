@@ -32,9 +32,9 @@ export const SearchItemInput = () => {
       "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
     );
     const coins = response.data;
-    const results = coins.filter((coin) => {
-      return value && coin && coin.id && coin.id.toLowerCase().includes(value);
-    });
+    const results = coins.filter((coin) => (
+      coin.name.toLowerCase().includes(value.toLowerCase())
+    ));
     setResults(results);
   };
 
@@ -48,14 +48,14 @@ export const SearchItemInput = () => {
   };
 
   return (
-    <div className="flex items-center relative">
-      <div ref={searchInputRef}>
+    <div className="flex items-center">
+      <div ref={searchInputRef} className="relative">
         <div>
           <input
             placeholder="Search for coin"
             onChange={handleChange}
             value={inputValue}
-            className={`hidden h-10 md:block md:w-40 lg:block lg:w-80 px-5 outline-none bg-skin-unselected-button-bg rounded-md text-skin-coin-search-input-text-color ${
+            className={`hidden h-10 lg:block lg:w-80 px-5 outline-none bg-skin-unselected-button-bg rounded-md text-skin-coin-search-input-text-color ${
               darkMode
                 ? "placeholder-placeholder-dark"
                 : "placeholder-placeholder-light"
@@ -63,7 +63,7 @@ export const SearchItemInput = () => {
           />
         </div>
         <button
-          className={`md:hidden lg:hidden flex items-center justify-center h-10 w-10 appearance-none rounded-md bg-skin-unselected-button-bg`}
+          className={`lg:hidden flex items-center justify-center h-10 w-6 appearance-none rounded-md bg-transparent`}
           onClick={toggleSearchInputPopup}
         >
           <svg
@@ -86,7 +86,7 @@ export const SearchItemInput = () => {
         <div
           className={`border ${
             showSearchInputPopup ? "absolute" : "hidden"
-          } md:hidden w-60 p-0.5 bg-skin-search-popup-background-color rounded-md`}
+          } -left-24 md:left-0 -bottom-14 lg:hidden w-56 p-0.5 bg-skin-search-popup-background-color rounded-md`}
         >
           <input
             placeholder="Search for coin"
@@ -97,7 +97,7 @@ export const SearchItemInput = () => {
             }`}
             onChange={handleChange}
             value={inputValue}
-          />
+          />       
         </div>
         <ResultList results={results} />
       </div>

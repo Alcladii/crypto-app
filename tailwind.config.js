@@ -100,7 +100,8 @@ export default {
           "portfolio-item-right-column-back-ground-color":'var(--color-background-portfolio-item-right-column)',
           "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)',
           "search-popup-background-color":'var(--color-background-search-popup)',
-          "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)'
+          "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)',
+          "home-porfolio-button-wrapper-background-color":'var(--color-bakcground-home-porfolio-button-wrapper)'
         }
       },
       borderColor: {
