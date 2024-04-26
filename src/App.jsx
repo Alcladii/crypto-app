@@ -297,10 +297,10 @@ export default function App() {
             </svg>
             <span className="ml-2 hidden sm:block">CryptoFun</span>
           </div>
-          <div className="w-40 sm:w-60 md:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
+          <div className="w-40 sm:w-60 lg:w-68 xl:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
             <div
               onClick={handleHomePageClick}
-              className={`flex items-center justify-center h-10 w-[30%] sm:w-1/2 md:w-1/2 mr-0.5 rounded-md ${
+              className={`flex items-center justify-center h-10 w-[30%] sm:w-1/2 lg:w-1/2  xl:w-1/2 mr-0.5 rounded-md ${
                 loadHomePageInUrl
                   ? "bg-skin-coins-converter-selected-button-background"
                   : "bg-skin-coins-converter-unselected-button-background"
@@ -336,7 +336,7 @@ export default function App() {
             </div>
             <div
               onClick={handlePortfolioPageClick}
-              className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 md:w-1/2 ml-0.5 rounded-md ${
+              className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 lg:w-1/2 xl:w-1/2 ml-0.5 rounded-md ${
                 !loadHomePageInUrl
                   ? "bg-skin-coins-converter-selected-button-background"
                   : "bg-skin-coins-converter-unselected-button-background"
