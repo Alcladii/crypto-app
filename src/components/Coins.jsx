@@ -40,9 +40,17 @@ const ProgressBarInner = styled.div`
 const ColorIndicator = styled.div`
   height: 10px;
   width: 15px;
-  border: 1px solid white;
   background: ${(props) => props.background};
 `;
+
+const daysSelectionData = [
+  { days: "2", buttonText: "1D" },
+  { days: "7", buttonText: "7D" },
+  { days: "30", buttonText: "1M" },
+  { days: "90", buttonText: "90D" },
+  { days: "180", buttonText: "180D" },
+  { days: "365", buttonText: "1Y" },
+];
 
 function Coins() {
   const {
@@ -473,7 +481,7 @@ function Coins() {
   };
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"}`}>
+    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px]`}>
       <div className="my-5">
         <SlickCarousel
           coinList={coinList}
@@ -493,67 +501,68 @@ function Coins() {
               <div>Loading Price and Volumne Chart</div>
             )}
           </div>
-          <div className="flex justify-center items-center max-w-[1296px] h-auto my-7">
-            <div className="w-1/2 h-auto p-5 mr-7 bg-skin-charts-background-color rounded-md">
+          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
+            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
                   <LineChart priceVolumeList={priceVolumeList} />
                 )}
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
                     <div
                       key={coin.id}
-                      className="flex items-center mx-2.5 mt-2"
+                      className="flex items-center mx-2.5 mt-2 text-skin-chart-color-indicator-text-color"
                     >
                       <ColorIndicator
                         background={colors[selectedCoinData.indexOf(coin)]}
                       ></ColorIndicator>
-                      {coin.name}&nbsp;{currencySymbol}
+                      &nbsp;{coin.name}&nbsp;{currencySymbol}
                       {coin.current_price.toLocaleString()}
                     </div>
                   ))}
               </div>
             </div>
-            <div className="w-1/2 h-auto p-5 ml-7 bg-skin-charts-background-color rounded-md">
+            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mb-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
                   <BarChart priceVolumeList={priceVolumeList} />
                 )}
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
-                    <div key={coin.id} className="flex items-center mx-1 mt-2">
+                    <div
+                      key={coin.id}
+                      className="flex items-center mx-1 mt-2 text-skin-chart-color-indicator-text-color"
+                    >
                       <ColorIndicator
                         background={colors[selectedCoinData.indexOf(coin)]}
                       ></ColorIndicator>
-                      {coin.name}&nbsp;{currencySymbol}
+                      &nbsp;{coin.name}&nbsp;{currencySymbol}
                       {convertToBillion(coin.total_volume)}B
                     </div>
                   ))}
               </div>
             </div>
           </div>
-          <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-            {(priceVolumeList.length === 0 &&
-              priceVolumeChartIsLoadingHasError) ||
-              (priceVolumeChartIsLoadingHasError && (
-                <div>Error fetching Price and Volumne Chart</div>
-              ))}
-          </div>
+
+          {(priceVolumeList.length === 0 &&
+            priceVolumeChartIsLoadingHasError) ||
+            (priceVolumeChartIsLoadingHasError && (
+              <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
+                Error fetching Price and Volumne Chart
+              </div>
+            ))}
         </div>
       )}
       <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
-        <DaysButton days="2" buttonText="1D" />
-        <DaysButton days="7" buttonText="7D" />
-        <DaysButton days="30" buttonText="1M" />
-        <DaysButton days="90" buttonText="90D" />
-        <DaysButton days="180" buttonText="180D" />
-        <DaysButton days="365" buttonText="1Y" />
+        {daysSelectionData.map((item) => (
+          <DaysButton days={item.days} buttonText={item.buttonText} />
+        ))}
       </div>
-      <div className="max-w-[1296px]">
+      <div>
         <div className="flex justify-center my-6">
           <div
             className={`${
@@ -597,408 +606,440 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div
-          className={`flex ${
-            darkMode ? "" : "theme-light"
-          } text-skin-coin-list-titles-text-color`}
-        >
-          <div className="w-[4%] pl-3 flex items-center">#</div>
-          <div className="w-[15%] pr-2 flex justify-start items-center">
-            <div className="mr-1">Name</div>
-            <div onClick={handleSortByName}>
-              {sortOrderByNameInQueryParams === "default" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : sortOrderByNameInQueryParams === "ascent" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              )}
-            </div>
-          </div>
-          <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div className="mr-1">Price</div>
-            <div onClick={handleSortByPrice}>
-              {sortOrderByPriceInQueryParams === "default" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : sortOrderByPriceInQueryParams === "ascent" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              )}
-            </div>
-          </div>
-          <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div className="mr-1">1h%</div>
-            <div onClick={handleSortByOneHour}>
-              {sortOrderByPriceChange1hInQueryParams === "default" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : sortOrderByPriceChange1hInQueryParams === "ascent" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              )}
-            </div>
-          </div>
-          <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div className="mr-1">24h%</div>
-            <div onClick={handleSortByTwentyFourHours}>
-              {sortOrderByPriceChange24hInQueryParams === "default" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : sortOrderByPriceChange24hInQueryParams === "ascent" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              )}
-            </div>
-          </div>
-          <div className="w-[9%] pl-2 flex justify-start items-center">
-            <div className="mr-1">7d%</div>
-            <div onClick={handleSortBySevenDays}>
-              {sortOrderByPriceChange7dInQueryParams === "default" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : sortOrderByPriceChange7dInQueryParams === "ascent" ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill={
-                    darkMode ? "rgba(209, 209, 209, 1)" : "rgba(66, 66, 134, 1)"
-                  }
-                  class="w-5 h-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              )}
-            </div>
-          </div>
-          <div className="w-[20%] pr-3.5 flex justify-start items-center">
-            24h volume/Market Cap
-          </div>
-          <div className="w-[20%] pl-3.5 flex justify-start items-center">
-            Circulating/Total supply
-          </div>
-          <div className="w-[15%] flex pl-7 justify-start items-center">
-            Last 7d
-          </div>
-        </div>
-        {displayCoinList.map((singleCoin) => (
+        <div className="overflow-x-scroll no-scrollbar">
           <div
-            key={singleCoin.id}
-            className="flex items-center h-20 my-2.5 bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
+            className={`flex ${
+              darkMode ? "" : "theme-light"
+            } text-skin-coin-list-titles-text-color`}
           >
-            <div className="w-[4%] pl-3 flex items-center text-skin-coin-list-text-color">
-              {displayCoinList.indexOf(singleCoin) + 1}
-            </div>
-            <div
-              className="w-[15%] pr-2 flex justify-start items-center"
-              onClick={() => handleClick(singleCoin)}
-            >
-              <div className="flex items-center text-skin-coin-list-text-color">
-                <CoinTag src={singleCoin.image} />
-                &nbsp;&nbsp;
-                <div>{singleCoin.name}</div>
-              </div>
-            </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center text-lg text-skin-coin-list-text-color">
-              {currencySymbol}
-              {singleCoin.current_price &&
-                singleCoin.current_price.toLocaleString()}
-            </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center">
-              {
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_1h_in_currency
-                  }
-                />
-              }
-              <div className="ml-1">
-                <PriceChangePercentageText
-                  coin={singleCoin.price_change_percentage_1h_in_currency}
-                />
-              </div>
-            </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center">
-              {
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_24h_in_currency
-                  }
-                />
-              }
-              <div className="ml-1">
-                <PriceChangePercentageText
-                  coin={singleCoin.price_change_percentage_24h_in_currency}
-                />
-              </div>
-            </div>
-            <div className="w-[9%] pl-2 flex justify-start items-center">
-              {
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_7d_in_currency
-                  }
-                />
-              }
-              <div className="ml-1">
-                <PriceChangePercentageText
-                  coin={singleCoin.price_change_percentage_7d_in_currency}
-                />
-              </div>
-            </div>
-            <div className="w-[20%] pr-3.5 flex justify-start items-center text-skin-coin-list-text-color">
-              <div className="w-full">
-                <div className="flex w-full items-center justify-between text-sm">
-                  <span>
-                    {currencySymbol}
-                    {convertToBillion(singleCoin.market_cap_change_24h)}B
-                  </span>
-                  <span>
-                    {currencySymbol}
-                    {convertToBillion(singleCoin.market_cap)}B
-                  </span>
-                </div>
-                <ProgressBarOuter
-                  background={
-                    progressBarColors[calculateColorIndex(singleCoin)]
-                  }
-                >
-                  <ProgressBarInner
-                    width={
-                      singleCoin.market_cap_change_24h / singleCoin.market_cap
+            <div className="w-[4%] min-w-12 pl-3 flex items-center">#</div>
+            <div className="w-[15%] min-w-32 pr-2 flex justify-start items-center">
+              <div className="mr-1">Name</div>
+              <div onClick={handleSortByName}>
+                {sortOrderByNameInQueryParams === "default" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
                     }
-                    background={
-                      progressBarColors[calculateColorIndex(singleCoin)]
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : sortOrderByNameInQueryParams === "ascent" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
                     }
-                  ></ProgressBarInner>
-                </ProgressBarOuter>
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                )}
               </div>
             </div>
-            <div className="w-[20%] pl-3.5 flex justify-start items-center text-skin-coin-list-text-color">
-              <div className="w-full">
-                <div className="flex w-full items-center justify-between text-sm">
-                  <span>
-                    {currencySymbol}
-                    {convertToBillion(singleCoin.circulating_supply)}B
-                  </span>
-                  <span>
-                    {currencySymbol}
-                    {convertToBillion(singleCoin.total_supply)}B
-                  </span>
-                </div>
-                <ProgressBarOuter
-                  background={
-                    progressBarColors[calculateColorIndex(singleCoin)]
-                  }
-                >
-                  <ProgressBarInner
-                    width={
-                      singleCoin.circulating_supply / singleCoin.total_supply
+            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="mr-1">Price</div>
+              <div onClick={handleSortByPrice}>
+                {sortOrderByPriceInQueryParams === "default" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
                     }
-                    background={
-                      progressBarColors[calculateColorIndex(singleCoin)]
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : sortOrderByPriceInQueryParams === "ascent" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
                     }
-                  ></ProgressBarInner>
-                </ProgressBarOuter>
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                )}
               </div>
             </div>
-            <div className="w-[15%] pr-3 flex justify-end items-center">
-              <div className="w-5/6 pt-6">
-                <LineChartIndividualCoin
-                  priceList={singleCoin.sparkline_in_7d.price}
-                  color={progressBarColors[calculateColorIndex(singleCoin)]}
-                />
+            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="mr-1">1h%</div>
+              <div onClick={handleSortByOneHour}>
+                {sortOrderByPriceChange1hInQueryParams === "default" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : sortOrderByPriceChange1hInQueryParams === "ascent" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                )}
               </div>
+            </div>
+            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="mr-1">24h%</div>
+              <div onClick={handleSortByTwentyFourHours}>
+                {sortOrderByPriceChange24hInQueryParams === "default" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : sortOrderByPriceChange24hInQueryParams === "ascent" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                )}
+              </div>
+            </div>
+            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="mr-1">7d%</div>
+              <div onClick={handleSortBySevenDays}>
+                {sortOrderByPriceChange7dInQueryParams === "default" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : sortOrderByPriceChange7dInQueryParams === "ascent" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={
+                      darkMode
+                        ? "rgba(209, 209, 209, 1)"
+                        : "rgba(66, 66, 134, 1)"
+                    }
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                )}
+              </div>
+            </div>
+            <div className="w-[20%] min-w-44 pr-3.5 flex justify-start items-center">
+              24h volume/Market Cap
+            </div>
+            <div className="w-[20%] min-w-44 pl-3.5 flex justify-start items-center">
+              Circulating/Total supply
+            </div>
+            <div className="w-[15%] min-w-32 flex pl-7 justify-start items-center">
+              Last 7d
             </div>
           </div>
-        ))}
+          {displayCoinList.map((singleCoin) => (
+            <div
+              key={singleCoin.id}
+              className="flex items-center h-20 my-2.5 w-fit lg:w-full bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
+            >
+              <div className="w-[4%] min-w-12 pl-3 flex items-center text-skin-coin-list-text-color">
+                {displayCoinList.indexOf(singleCoin) + 1}
+              </div>
+              <div
+                className="w-[15%] min-w-32 pr-2 flex justify-start items-center"
+                onClick={() => handleClick(singleCoin)}
+              >
+                <div className="flex items-center text-skin-coin-list-text-color">
+                  <CoinTag src={singleCoin.image} />
+                  &nbsp;&nbsp;
+                  <div>{singleCoin.name}</div>
+                </div>
+              </div>
+              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center text-lg text-skin-coin-list-text-color">
+                {currencySymbol}
+                {singleCoin.current_price &&
+                  singleCoin.current_price.toLocaleString()}
+              </div>
+              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+                {
+                  <Arrow
+                    priceChange={
+                      singleCoin.price_change_percentage_1h_in_currency
+                    }
+                  />
+                }
+                <div className="ml-1">
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_1h_in_currency}
+                  />
+                </div>
+              </div>
+              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+                {
+                  <Arrow
+                    priceChange={
+                      singleCoin.price_change_percentage_24h_in_currency
+                    }
+                  />
+                }
+                <div className="ml-1">
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_24h_in_currency}
+                  />
+                </div>
+              </div>
+              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+                {
+                  <Arrow
+                    priceChange={
+                      singleCoin.price_change_percentage_7d_in_currency
+                    }
+                  />
+                }
+                <div className="ml-1">
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_7d_in_currency}
+                  />
+                </div>
+              </div>
+              <div className="w-[20%] min-w-44 pr-3.5 flex justify-start items-center text-skin-coin-list-text-color">
+                <div className="w-full">
+                  <div className="flex w-full items-center justify-between text-sm">
+                    <span>
+                      {currencySymbol}
+                      {convertToBillion(singleCoin.market_cap_change_24h)}B
+                    </span>
+                    <span>
+                      {currencySymbol}
+                      {convertToBillion(singleCoin.market_cap)}B
+                    </span>
+                  </div>
+                  <ProgressBarOuter
+                    background={
+                      progressBarColors[calculateColorIndex(singleCoin)]
+                    }
+                  >
+                    <ProgressBarInner
+                      width={
+                        singleCoin.market_cap_change_24h / singleCoin.market_cap
+                      }
+                      background={
+                        progressBarColors[calculateColorIndex(singleCoin)]
+                      }
+                    ></ProgressBarInner>
+                  </ProgressBarOuter>
+                </div>
+              </div>
+              <div className="w-[20%] min-w-44 pl-3.5 flex justify-start items-center text-skin-coin-list-text-color">
+                <div className="w-full">
+                  <div className="flex w-full items-center justify-between text-sm">
+                    <span>
+                      {currencySymbol}
+                      {convertToBillion(singleCoin.circulating_supply)}B
+                    </span>
+                    <span>
+                      {currencySymbol}
+                      {convertToBillion(singleCoin.total_supply)}B
+                    </span>
+                  </div>
+                  <ProgressBarOuter
+                    background={
+                      progressBarColors[calculateColorIndex(singleCoin)]
+                    }
+                  >
+                    <ProgressBarInner
+                      width={
+                        singleCoin.circulating_supply / singleCoin.total_supply
+                      }
+                      background={
+                        progressBarColors[calculateColorIndex(singleCoin)]
+                      }
+                    ></ProgressBarInner>
+                  </ProgressBarOuter>
+                </div>
+              </div>
+              <div className="w-[15%] min-w-32 pr-3 flex justify-end items-center">
+                <div className="w-5/6 pt-6">
+                  <LineChartIndividualCoin
+                    priceList={singleCoin.sparkline_in_7d.price}
+                    color={progressBarColors[calculateColorIndex(singleCoin)]}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>        
         {/*</InfiniteScroll>*/}
         {coinListLoadingHasError && <div>Error in fetching Coins List</div>}
       </div>
