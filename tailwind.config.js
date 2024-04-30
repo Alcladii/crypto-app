@@ -67,7 +67,8 @@ export default {
           "portfolio-item-titles-text-color": 'var(--colort-text-portfolio-item-titles)',
           "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
           "coin-search-result-list-text-color":'var(--color-text-coin-search-result-list)',
-          "coin-search-input-text-color":'var(--color-text-coin-search-input)'
+          "coin-search-input-text-color":'var(--color-text-coin-search-input)',
+          "chart-color-indicator-text-color":'var(--color-text-chart-color-indicator)'
         }
       },
       backgroundColor: {

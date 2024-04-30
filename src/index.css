@@ -51,6 +51,7 @@
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
     --color-text-coin-search-result-list: rgba(255, 255, 255, 1);
     --color-text-coin-search-input: rgba(255, 255, 255, 1);
+    --color-text-chart-color-indicator: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -120,6 +121,7 @@
     --color-text-portfolio-item-buttons: rgba(255, 255, 255, 1);
     --color-text-coin-search-result-list: rgba(24, 24, 37, 1);
     --color-text-coin-search-input: rgba(24, 24, 37, 1);
+    --color-text-chart-color-indicator: rgba(24, 24, 37, 1);
     --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);

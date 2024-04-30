@@ -260,7 +260,7 @@ export default function App() {
           </div>
         </div>
       </div>
-      <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"} `}>
+      <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"}`}>
         <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-5 sm:px-10">
           <div
             className={`flex items-center font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
