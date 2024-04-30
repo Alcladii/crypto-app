@@ -4,6 +4,14 @@ import { CryptoContext } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
 import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
 
+const daysSelectionData = [
+  { days: "2", buttonText: "1D" },
+  { days: "7", buttonText: "7D" },
+  { days: "30", buttonText: "1M" },
+  { days: "90", buttonText: "90D" },
+  { days: "180", buttonText: "180D" },
+  { days: "365", buttonText: "1Y" },
+];
 export const CurrencyConverter = () => {
   const {
     useLocalState,
@@ -245,16 +253,16 @@ export const CurrencyConverter = () => {
           <div className="text-skin-loading-and-error-message-currency-converter-text-color">Error in loading coin data, unable to update coin price</div>
         )}
       </div>
-      <div className="flex relative">
-        <div className="w-[50%] p-6 mr-3 h-48 bg-skin-left-currency-background-color rounded-md">
+      <div className="flex relative flex-col md:flex-row">
+        <div className="w-full md:w-[50%] p-6 mb-2 md:mr-3 h-48 bg-skin-left-currency-background-color rounded-md">
           <div className="text-sm text-skin-you-sell-you-buy-text-color">
             You sell
           </div>
           <div className="flex items-center border-b-2 border-skin-currency-converter-border-color py-3 mt-6">
-            <div className="w-[5%] mr-2.5">
-              <img className="h-7 w-auto" src={leftCurrencyIcon} />
+            <div className="w-[5%] min-w-7 mr-2.5">
+              <img className="h-7 w-7" src={leftCurrencyIcon} />
             </div>
-            <div className="w-[95%]">
+            <div className="w-[92%]">
               <select
                 className="w-[45%] appearance-none font-space-grotesk bg-transparent text-skin-selected-coin-currency-converter-left-right-text-color"
                 value={leftCurrency}
@@ -322,13 +330,13 @@ export const CurrencyConverter = () => {
             </g>
           </svg>
         </div>
-        <div className="w-[50%] p-6 ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
+        <div className="w-full md:w-[50%] p-6 mt-2 md:ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
           <div className="text-sm text-skin-you-sell-you-buy-text-color">
             You buy
           </div>
           <div className="flex items-center border-b-2 border-skin-currency-converter-border-color py-3 mt-6">
-            <div className="w-[5%] mr-2.5">
-              <img className="h-7 w-auto" src={rightCurrencyIcon} />
+            <div className="w-[5%] min-w-7 mr-2.5">
+              <img className="h-7 w-7" src={rightCurrencyIcon} />
             </div>
             <select
               className="w-[45%] appearance-none font-space-grotesk bg-transparent text-skin-selected-coin-currency-converter-left-right-text-color"
@@ -383,13 +391,10 @@ export const CurrencyConverter = () => {
         )}
       </div>
 
-      <div className="flex my-5 w-fit h-auto bg-skin-days-button-bar-currency-converter-background-color rounded-md">
-        <DaysButtonInCurrencyConverter days="2" buttonText="1D" />
-        <DaysButtonInCurrencyConverter days="7" buttonText="7D" />
-        <DaysButtonInCurrencyConverter days="30" buttonText="1M" />
-        <DaysButtonInCurrencyConverter days="90" buttonText="90D" />
-        <DaysButtonInCurrencyConverter days="180" buttonText="180D" />
-        <DaysButtonInCurrencyConverter days="365" buttonText="1Y" />
+      <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-button-bar-currency-converter-background-color rounded-md">
+          {daysSelectionData.map((item) => (
+          <DaysButtonInCurrencyConverter days={item.days} buttonText={item.buttonText} />
+        ))}
       </div>
     </div>
   );

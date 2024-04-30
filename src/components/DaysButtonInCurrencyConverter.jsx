@@ -7,11 +7,11 @@ export const DaysButtonInCurrencyConverter = ({ days, buttonText }) => {
     useContext(CryptoContext);
 
   return (
-    <div>
+    <div className="w-[17%] sm:w-16">
       <div
         className={`${
           currencyConverterDays === days ? "bg-skin-days-button-background-color" : "bg-transparent"
-        } ${currencyConverterDays === days ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"} w-16 h-10 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer`}
+        } ${currencyConverterDays === days ? "text-skin-days-button-top-bottom-fifty-text-color" : "text-skin-unselected-days-top-bottom-fifty-button-text-color"} h-10 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer`}
         onClick={() => {
           setCurrencyConverterDays(days);
         }}
