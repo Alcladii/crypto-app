@@ -5,8 +5,10 @@ html,body /*fixed white space on the right of page */
     height: 100%;
     margin: 0px;
     padding: 0px;
-    overflow-x: hidden;    
+   /*overflow-x: hidden;*/
 }
+
+ 
 
 .home-Or-Portfolio-Selected{
   background-color: purple;

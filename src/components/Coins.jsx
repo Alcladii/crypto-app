@@ -606,11 +606,11 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="overflow-x-scroll no-scrollbar">
+        <div className="no-scrollbar"> {/*overflow-x-scroll*/} 
           <div
             className={`flex ${
               darkMode ? "" : "theme-light"
-            } text-skin-coin-list-titles-text-color`}
+            } text-skin-coin-list-titles-text-color sticky top-0`}
           >
             <div className="w-[4%] min-w-12 pl-3 flex items-center">#</div>
             <div className="w-[15%] min-w-32 pr-2 flex justify-start items-center">
