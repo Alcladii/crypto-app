@@ -492,10 +492,6 @@ function Coins() {
     );
 
     observer.observe(tableRef.current);
-
-    /*return () => {
-      observer.unobserve(tableRef.current);
-    };*/
   }, []);
 
   return (
@@ -577,7 +573,11 @@ function Coins() {
       )}
       <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         {daysSelectionData.map((item) => (
-          <DaysButton key={item.days} days={item.days} buttonText={item.buttonText} />
+          <DaysButton
+            key={item.days}
+            days={item.days}
+            buttonText={item.buttonText}
+          />
         ))}
       </div>
       <div>
@@ -948,7 +948,14 @@ function Coins() {
                 <div className="flex items-center text-skin-coin-list-text-color">
                   <CoinTag src={singleCoin.image} />
                   &nbsp;&nbsp;
-                  <div>{singleCoin.name}</div>
+                  <div className="flex flex-col-reverse md:flex-col">
+                    <div className="text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">{singleCoin.name}</div>
+                    <div className="sm:flex">
+                      <span className="hidden sm:block">(</span>
+                      {singleCoin.symbol.toUpperCase()}
+                      <span className="hidden sm:block">)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-lg text-skin-coin-list-text-color">

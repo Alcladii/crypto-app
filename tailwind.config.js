@@ -132,6 +132,7 @@ export default {
         "placeholder-dark": "rgba(209, 209, 209, 1)", //don't delete this
         "coin-page-progress-bar-outter": "#F8D2A6",
         "coin-page-progress-bar-inner": "#D4770C",
+        "mobile-view-coin-name-text-color": "rgba(255, 255, 255, 0.5)"
       },
       
       fontFamily: {
