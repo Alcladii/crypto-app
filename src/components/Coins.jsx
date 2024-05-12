@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
+import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -111,18 +112,14 @@ function Coins() {
     displaySelectCoinToSeeChartMessage,
     setDisplaySelectCoinToSeeChartMessage,
   ] = useState(true);
+  const tableRef = useRef();
+  const [isSticky, setIsticky] = useState(false);
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
   const showTopFifty = queryParams.show_top_fifty === "true";
 
   const getCoinList = async () => {
     try {
-      // save for making real API calls in the future
-      /*setIsLoading(true);
-      const {data}  = await axios(      
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${coinPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-      );
-      setCoinList(coinList.concat(data))
-      setCoinPage(coinPage + 1)*/
       let coins;
       const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
@@ -480,6 +477,22 @@ function Coins() {
     return displayCoinList.indexOf(coin) % progressBarColors.length;
   };
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([e]) => setIsticky(e.intersectionRatio < 1),
+      {
+        rootMargin: "0px 0px 100% 0px",
+        threshold: [1],
+      }
+    );
+
+    observer.observe(tableRef.current);
+
+    return () => {
+      observer.unobserve(tableRef.current);
+    }
+  }, []);
+
   return (
     <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px]`}>
       <div className="my-5">
@@ -559,7 +572,11 @@ function Coins() {
       )}
       <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         {daysSelectionData.map((item) => (
-          <DaysButton days={item.days} buttonText={item.buttonText} />
+          <DaysButton
+            key={item.days}
+            days={item.days}
+            buttonText={item.buttonText}
+          />
         ))}
       </div>
       <div>
@@ -595,6 +612,10 @@ function Coins() {
             Bottom 50{" "}
           </div>
         </div>
+        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color font-space-grotesk ">
+          <div className="text-xl">Market Overview</div>
+          <UpAndDownPercentagePeriodSelector selectedTimePeriod={selectedTimePeriod} setSelectedTimePeriod={setSelectedTimePeriod}/>
+        </div>
         {coinListIsLoading && (
           <div className="flex justify-center my-5">Loading Coin List</div>
         )}
@@ -606,15 +627,22 @@ function Coins() {
             hasMore={true}
             loader={<h4>Infinite coins loading</h4>}
           >*/}
-        <div className="overflow-x-scroll no-scrollbar">
+        <div className="no-scrollbar">
           <div
+            ref={tableRef}
             className={`flex ${
               darkMode ? "" : "theme-light"
-            } text-skin-coin-list-titles-text-color`}
+            } text-skin-coin-list-titles-text-color w-full sticky  -top-[2px] ${
+              isSticky
+                ? "bg-skin-sticky-coins-table-title-bar-bakkground-color h-16"
+                : ""
+            }`}
           >
-            <div className="w-[4%] min-w-12 pl-3 flex items-center">#</div>
-            <div className="w-[15%] min-w-32 pr-2 flex justify-start items-center">
-              <div className="mr-1">Name</div>
+            <div className="md:w-[6%] lg:w-[5%] xl:w-[4%] min-w-12 pl-3 items-center hidden md:flex ">
+              #
+            </div>
+            <div className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center">
+              <div className="mr-1 pl-3 md:pl-0">Name</div>
               <div onClick={handleSortByName}>
                 {sortOrderByNameInQueryParams === "default" ? (
                   <svg
@@ -670,7 +698,10 @@ function Coins() {
                 )}
               </div>
             </div>
-            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+            <div className="w-[35%] sm:hidden min-w-32 flex justify-start items-center">
+              Last 7d
+            </div>
+            <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 flex justify-start items-center">
               <div className="mr-1">Price</div>
               <div onClick={handleSortByPrice}>
                 {sortOrderByPriceInQueryParams === "default" ? (
@@ -727,7 +758,7 @@ function Coins() {
                 )}
               </div>
             </div>
-            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+            <div className="w-[25%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
               <div className="mr-1">1h%</div>
               <div onClick={handleSortByOneHour}>
                 {sortOrderByPriceChange1hInQueryParams === "default" ? (
@@ -784,7 +815,7 @@ function Coins() {
                 )}
               </div>
             </div>
-            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+            <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
               <div className="mr-1">24h%</div>
               <div onClick={handleSortByTwentyFourHours}>
                 {sortOrderByPriceChange24hInQueryParams === "default" ? (
@@ -841,7 +872,7 @@ function Coins() {
                 )}
               </div>
             </div>
-            <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+            <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
               <div className="mr-1">7d%</div>
               <div onClick={handleSortBySevenDays}>
                 {sortOrderByPriceChange7dInQueryParams === "default" ? (
@@ -898,40 +929,61 @@ function Coins() {
                 )}
               </div>
             </div>
-            <div className="w-[20%] min-w-44 pr-3.5 flex justify-start items-center">
+            <div className="xl:w-[20%] lg:w-[24%] min-w-44 pr-3.5 justify-start items-center hidden lg:flex">
               24h volume/Market Cap
             </div>
-            <div className="w-[20%] min-w-44 pl-3.5 flex justify-start items-center">
+            <div className="w-[20%] min-w-44 pl-3.5 justify-start items-center hidden xl:flex">
               Circulating/Total supply
             </div>
-            <div className="w-[15%] min-w-32 flex pl-7 justify-start items-center">
+            <div className="hidden sm:flex sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pl-7 justify-start items-center">
               Last 7d
             </div>
           </div>
           {displayCoinList.map((singleCoin) => (
             <div
               key={singleCoin.id}
-              className="flex items-center h-20 my-2.5 w-fit lg:w-full bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
+              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
             >
-              <div className="w-[4%] min-w-12 pl-3 flex items-center text-skin-coin-list-text-color">
+              <div className="md:w-[6%] lg:w-[5%] xl:w-[4%] min-w-12 pl-3 items-center text-skin-coin-list-text-color hidden md:flex">
                 {displayCoinList.indexOf(singleCoin) + 1}
               </div>
               <div
-                className="w-[15%] min-w-32 pr-2 flex justify-start items-center"
+                className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center pl-3 md:pl-0"
                 onClick={() => handleClick(singleCoin)}
               >
                 <div className="flex items-center text-skin-coin-list-text-color">
                   <CoinTag src={singleCoin.image} />
                   &nbsp;&nbsp;
-                  <div>{singleCoin.name}</div>
+                  <div className="flex flex-col-reverse md:flex-col">
+                    <div className="text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">{singleCoin.name}</div>
+                    <div className="sm:flex text-xl sm:text-lg">
+                      <span className="hidden sm:block">(</span>
+                      {singleCoin.symbol.toUpperCase()}
+                      <span className="hidden sm:block">)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center text-lg text-skin-coin-list-text-color">
+              <div className="w-[35%] sm:hidden min-w-32 pr-3 flex justify-start items-center">
+                <div className="w-5/6 pt-6">
+                  <LineChartIndividualCoin
+                    priceList={singleCoin.sparkline_in_7d.price}
+                    color={progressBarColors[calculateColorIndex(singleCoin)]}
+                  />
+                </div>
+              </div>
+              <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-lg text-skin-coin-list-text-color">
+                <div className="text-lg">
                 {currencySymbol}
                 {singleCoin.current_price &&
                   singleCoin.current_price.toLocaleString()}
+                </div>
+                <div className="text-md flex items-center sm:hidden ">
+                  <Arrow priceChange={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>&nbsp;
+                  <PriceChangePercentageText coin={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>
+                </div>
               </div>
-              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
                 {
                   <Arrow
                     priceChange={
@@ -945,7 +997,7 @@ function Coins() {
                   />
                 </div>
               </div>
-              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
                 {
                   <Arrow
                     priceChange={
@@ -959,7 +1011,7 @@ function Coins() {
                   />
                 </div>
               </div>
-              <div className="w-[9%] min-w-24 pl-2 flex justify-start items-center">
+              <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
                 {
                   <Arrow
                     priceChange={
@@ -973,7 +1025,7 @@ function Coins() {
                   />
                 </div>
               </div>
-              <div className="w-[20%] min-w-44 pr-3.5 flex justify-start items-center text-skin-coin-list-text-color">
+              <div className="xl:w-[20%] lg:w-[24%] min-w-44 pr-3.5 justify-start items-center text-skin-coin-list-text-color hidden lg:flex">
                 <div className="w-full">
                   <div className="flex w-full items-center justify-between text-sm">
                     <span>
@@ -1001,7 +1053,7 @@ function Coins() {
                   </ProgressBarOuter>
                 </div>
               </div>
-              <div className="w-[20%] min-w-44 pl-3.5 flex justify-start items-center text-skin-coin-list-text-color">
+              <div className="w-[20%] min-w-44 pl-3.5 justify-start items-center text-skin-coin-list-text-color hidden xl:flex">
                 <div className="w-full">
                   <div className="flex w-full items-center justify-between text-sm">
                     <span>
@@ -1029,7 +1081,7 @@ function Coins() {
                   </ProgressBarOuter>
                 </div>
               </div>
-              <div className="w-[15%] min-w-32 pr-3 flex justify-end items-center">
+              <div className="hidden sm:flex sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-3 justify-end items-center">
                 <div className="w-5/6 pt-6">
                   <LineChartIndividualCoin
                     priceList={singleCoin.sparkline_in_7d.price}
@@ -1039,8 +1091,7 @@ function Coins() {
               </div>
             </div>
           ))}
-        </div>        
-        {/*</InfiniteScroll>*/}
+        </div>
         {coinListLoadingHasError && <div>Error in fetching Coins List</div>}
       </div>
     </div>

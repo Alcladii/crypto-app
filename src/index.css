@@ -81,6 +81,7 @@
     --color-background-search-popup: rgba(97, 97, 214, 0.5);
     --color-background-coin-search-result-list: rgba(25, 25, 37, 1);
     --color-bakcground-home-porfolio-button-wrapper: rgba(25, 25, 37, 1);
+    --color-background-sticky-coins-table-title-bar: rgba(97, 97, 214, 1);
     --color-border-currency-converter: rgba(255, 255, 255, 1);
     --color-border-portfolio-item-frames: rgba(45, 45, 81, 1);
   } 
@@ -152,6 +153,7 @@
     --color-background-search-popup: rgba(204, 204, 250, 0.4);
     --color-background-coin-search-result-list: rgba(255, 255, 255, 1);
     --color-bakcground-home-porfolio-button-wrapper: rgba(255, 255, 255, 1);
+    --color-background-sticky-coins-table-title-bar: rgba(204, 204, 250, 1);
     --color-border-currency-converter: rgba(53, 53, 112, 1);
     --color-border-portfolio-item-frames: rgba(204, 204, 250, 0.4);
   }

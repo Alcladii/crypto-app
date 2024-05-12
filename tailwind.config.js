@@ -26,7 +26,8 @@ export default {
     "./src/App.jsx",
     "./src/components/CoinPagePlusInCircleIcon.jsx",
     "./src/components/DaysButton.jsx",
-    "./src/components/PriceChangePercentageText.jsx"
+    "./src/components/PriceChangePercentageText.jsx",
+    "./src/components/UpAndDownPercentagePeriodSelector.jsx"
   ],
   theme: {
     extend: {
@@ -102,7 +103,8 @@ export default {
           "portfolio-item-buttons-background-color":'var(--color-background-portfolio-item-buttons)',
           "search-popup-background-color":'var(--color-background-search-popup)',
           "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)',
-          "home-porfolio-button-wrapper-background-color":'var(--color-bakcground-home-porfolio-button-wrapper)'
+          "home-porfolio-button-wrapper-background-color":'var(--color-bakcground-home-porfolio-button-wrapper)',
+          "sticky-coins-table-title-bar-bakkground-color":'var(--color-background-sticky-coins-table-title-bar)'
         }
       },
       borderColor: {
@@ -131,6 +133,7 @@ export default {
         "placeholder-dark": "rgba(209, 209, 209, 1)", //don't delete this
         "coin-page-progress-bar-outter": "#F8D2A6",
         "coin-page-progress-bar-inner": "#D4770C",
+        "mobile-view-coin-name-text-color": "rgba(255, 255, 255, 0.5)"
       },
       
       fontFamily: {
