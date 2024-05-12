@@ -120,13 +120,6 @@ function Coins() {
 
   const getCoinList = async () => {
     try {
-      // save for making real API calls in the future
-      /*setIsLoading(true);
-      const {data}  = await axios(      
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${coinPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-      );
-      setCoinList(coinList.concat(data))
-      setCoinPage(coinPage + 1)*/
       let coins;
       const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
@@ -494,6 +487,10 @@ function Coins() {
     );
 
     observer.observe(tableRef.current);
+
+    return () => {
+      observer.unobserve(tableRef.current);
+    }
   }, []);
 
   return (
@@ -1095,7 +1092,6 @@ function Coins() {
             </div>
           ))}
         </div>
-        {/*</InfiniteScroll>*/}
         {coinListLoadingHasError && <div>Error in fetching Coins List</div>}
       </div>
     </div>

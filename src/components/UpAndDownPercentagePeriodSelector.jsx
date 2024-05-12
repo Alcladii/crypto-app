@@ -21,6 +21,7 @@ export const UpAndDownPercentagePeriodSelector = ({
     >
       {timePeriod.map((item) => (
         <div
+          key={item.time}
           className={`h-10 w-16 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer ${
             item.time === selectedTimePeriod
               ? "bg-skin-days-button-background-color"
