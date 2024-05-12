@@ -26,7 +26,8 @@ export default {
     "./src/App.jsx",
     "./src/components/CoinPagePlusInCircleIcon.jsx",
     "./src/components/DaysButton.jsx",
-    "./src/components/PriceChangePercentageText.jsx"
+    "./src/components/PriceChangePercentageText.jsx",
+    "./src/components/UpAndDownPercentagePeriodSelector.jsx"
   ],
   theme: {
     extend: {

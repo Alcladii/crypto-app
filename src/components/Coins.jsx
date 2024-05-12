@@ -15,6 +15,7 @@ import { SlickCarousel } from "../components/SlickCarousel";
 import { Arrow } from "../components/Arrow";
 import { DaysButton } from "../components/DaysButton";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
+import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -113,6 +114,7 @@ function Coins() {
   ] = useState(true);
   const tableRef = useRef();
   const [isSticky, setIsticky] = useState(false);
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
   const showTopFifty = queryParams.show_top_fifty === "true";
 
@@ -613,6 +615,10 @@ function Coins() {
             Bottom 50{" "}
           </div>
         </div>
+        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color font-space-grotesk ">
+          <div className="text-xl">Market Overview</div>
+          <UpAndDownPercentagePeriodSelector selectedTimePeriod={selectedTimePeriod} setSelectedTimePeriod={setSelectedTimePeriod}/>
+        </div>
         {coinListIsLoading && (
           <div className="flex justify-center my-5">Loading Coin List</div>
         )}
@@ -694,6 +700,9 @@ function Coins() {
                   </svg>
                 )}
               </div>
+            </div>
+            <div className="w-[35%] sm:hidden min-w-32 flex justify-start items-center">
+              Last 7d
             </div>
             <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 flex justify-start items-center">
               <div className="mr-1">Price</div>
@@ -929,7 +938,7 @@ function Coins() {
             <div className="w-[20%] min-w-44 pl-3.5 justify-start items-center hidden xl:flex">
               Circulating/Total supply
             </div>
-            <div className="w-[35%] sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 flex pl-7 justify-start items-center">
+            <div className="hidden sm:flex sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pl-7 justify-start items-center">
               Last 7d
             </div>
           </div>
@@ -950,7 +959,7 @@ function Coins() {
                   &nbsp;&nbsp;
                   <div className="flex flex-col-reverse md:flex-col">
                     <div className="text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">{singleCoin.name}</div>
-                    <div className="sm:flex">
+                    <div className="sm:flex text-xl sm:text-lg">
                       <span className="hidden sm:block">(</span>
                       {singleCoin.symbol.toUpperCase()}
                       <span className="hidden sm:block">)</span>
@@ -958,10 +967,24 @@ function Coins() {
                   </div>
                 </div>
               </div>
+              <div className="w-[35%] sm:hidden min-w-32 pr-3 flex justify-start items-center">
+                <div className="w-5/6 pt-6">
+                  <LineChartIndividualCoin
+                    priceList={singleCoin.sparkline_in_7d.price}
+                    color={progressBarColors[calculateColorIndex(singleCoin)]}
+                  />
+                </div>
+              </div>
               <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-lg text-skin-coin-list-text-color">
+                <div className="text-lg">
                 {currencySymbol}
                 {singleCoin.current_price &&
                   singleCoin.current_price.toLocaleString()}
+                </div>
+                <div className="text-md flex items-center sm:hidden ">
+                  <Arrow priceChange={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>&nbsp;
+                  <PriceChangePercentageText coin={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>
+                </div>
               </div>
               <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
                 {
@@ -1061,7 +1084,7 @@ function Coins() {
                   </ProgressBarOuter>
                 </div>
               </div>
-              <div className="w-[35%] sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-3 flex justify-end items-center">
+              <div className="hidden sm:flex sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-3 justify-end items-center">
                 <div className="w-5/6 pt-6">
                   <LineChartIndividualCoin
                     priceList={singleCoin.sparkline_in_7d.price}
