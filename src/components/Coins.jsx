@@ -488,9 +488,6 @@ function Coins() {
 
     observer.observe(tableRef.current);
 
-    return () => {
-      observer.unobserve(tableRef.current);
-    }
   }, []);
 
   return (
