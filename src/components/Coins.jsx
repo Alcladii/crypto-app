@@ -487,7 +487,6 @@ function Coins() {
     );
 
     observer.observe(tableRef.current);
-    
   }, []);
 
   return (
