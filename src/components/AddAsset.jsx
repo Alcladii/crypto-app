@@ -100,7 +100,7 @@ export const AddAsset = ({ addCoin }) => {
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div
-            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[820px] h-[80%] md:h-96 bg-skin-app ${
+            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[80%] md:h-96 bg-skin-app ${
               darkMode ? "" : "theme-light"
             } rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}
           >
@@ -152,7 +152,7 @@ export const AddAsset = ({ addCoin }) => {
                   </div>
                 )}
               </div>
-              <div className="w-[90%] md:w-[65%] md:ml-5 flex flex-col justify-between h-[60%] mt-9">
+              <div className="w-[90%] md:w-[65%] md:ml-5 flex flex-col justify-between h-[60%] md:h-full mt-9 md:mt-0">
                 <select
                   className="w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-asset-popup-coin-selector-text-color outline-none appearance-none rounded-md h-12 pl-3"
                   value={selectedCoin.id}
