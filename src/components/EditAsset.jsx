@@ -102,7 +102,7 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
               {selectedItem && (
                 <div className="flex items-center">
                   <img
-                    className="w-8"
+                    className="w-8 mr-2"
                     src={selectedItem.coinData.image.large}
                   />
                   <div className="flex items-center h-10 text-skin-edit-asset-popup-buttons-title-text-color" key={selectedItem.id}>
