@@ -91,26 +91,32 @@ export const AddAsset = ({ addCoin }) => {
 
   return (
     <div>
-      <div className="flex justify-center items-center w-28 h-10 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color" onClick={togglePopup}>Add Asset</div>
+      <div
+        className="flex justify-center items-center w-28 h-10 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color"
+        onClick={togglePopup}
+      >
+        Add Asset
+      </div>
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div
-            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[820px] h-96 bg-skin-app ${
+            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[80%] md:h-96 bg-skin-app ${
               darkMode ? "" : "theme-light"
             } rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}
           >
-            <div className="flex h-[12%] justify-between items-center">
+            <div className="flex h-[7%] md:h-[12%] justify-between items-center">
               <div className="font-space-grotesk text-lg font-semibold text-skin-add-asset-popup-buttons-title-text-color">
                 Select Coins
               </div>
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                fill={darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"}
+                fill={
+                  darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"
+                }
                 class="w-8 h-8 cursor-pointer"
                 onClick={togglePopup}
               >
-                
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
@@ -127,8 +133,8 @@ export const AddAsset = ({ addCoin }) => {
                 </g>
               </svg>
             </div>
-            <div className="flex h-[88%] pt-6">
-              <div className="w-[38%] bg-skin-add-asset-popup-coin-name-icon-wrapper-background-color rounded-lg flex justify-center items-center">
+            <div className="h-[93%] md:h-[88%] pt-6 flex flex-col md:flex-row items-center">
+              <div className="w-52 h-52 md:w-[38%] md:h-full bg-skin-add-asset-popup-coin-name-icon-wrapper-background-color rounded-lg flex justify-center items-center">
                 {selectedCoin && (
                   <div className="flex-col justify-center items-center">
                     <div className="w-32 flex justify-center items-center mb-2">
@@ -146,7 +152,7 @@ export const AddAsset = ({ addCoin }) => {
                   </div>
                 )}
               </div>
-              <div className="w-[65%] ml-5 flex flex-col justify-between ">
+              <div className="w-[90%] md:w-[65%] md:ml-5 flex flex-col justify-between h-[60%] md:h-full mt-9 md:mt-0">
                 <select
                   className="w-full bg-skin-add-edit-asset-popup-items-background-color text-skin-add-asset-popup-coin-selector-text-color outline-none appearance-none rounded-md h-12 pl-3"
                   value={selectedCoin.id}
@@ -164,13 +170,13 @@ export const AddAsset = ({ addCoin }) => {
                 <PurchaseDate />
                 <div className="flex justify-between">
                   <div
-                    className="w-1/2 bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 mr-2 flex justify-center items-center"
+                    className="w-1/2 cursor-pointer bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 mr-2 flex justify-center items-center"
                     onClick={togglePopup}
                   >
                     Cancel
                   </div>
                   <div
-                    className="w-1/2 bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 ml-2 flex justify-center items-center"
+                    className="w-1/2 cursor-pointer bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 ml-2 flex justify-center items-center"
                     onClick={() => {
                       handleAddClick(selectedCoin.id);
                     }}
