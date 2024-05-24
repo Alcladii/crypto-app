@@ -1,14 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import api from "../api";
+import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { ResultList } from "../components/ResultList";
+import { useDebounce } from "../hooks/useDebounce";
 
 export const SearchItemInput = () => {
   const { darkMode } = useContext(CryptoContext);
   const [inputValue, setInputValue] = useState("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState(false);
   const [results, setResults] = useState([]);
-
+  const key = import.meta.env.VITE_API_KEY_CRYPTO
+  const debouncedSearchValue = useDebounce(inputValue)
   let searchInputRef = useRef();
 
   useEffect(() => {
@@ -26,21 +28,19 @@ export const SearchItemInput = () => {
     };
   });
 
-  const fetchData = async (value) => {
-    const response = await api(
-      "/coins/markets",
-      "vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
-    );
-    const coins = response.data;
-    const results = coins.filter((coin) => (
-      coin.name.toLowerCase().includes(value.toLowerCase())
-    ));
+  const fetchSearchData = async (value) => {
+    const response = await axios(`https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`)
+    const results = response.data.coins
     setResults(results);
   };
+ 
+  useEffect(()=>{
+    fetchSearchData(debouncedSearchValue)
+  },[debouncedSearchValue])
+  
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
-    fetchData(e.target.value);
   };
 
   const toggleSearchInputPopup = () => {
