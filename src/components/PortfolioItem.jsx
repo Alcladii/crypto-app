@@ -207,7 +207,7 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
             <div className="flex justify-end my-3">
               <div
                 className="flex justify-center items-center w-24 h-10 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color rounded-md mr-4"
-                onClick={() => handleClick(item.id)}
+                onClick={() => handleRemove(item.id)}
               >
                 Remove
               </div>

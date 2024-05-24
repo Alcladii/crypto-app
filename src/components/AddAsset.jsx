@@ -100,9 +100,9 @@ export const AddAsset = ({ addCoin }) => {
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div
-            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[80%] md:h-96 bg-skin-app ${
+            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[620px] md:h-96 bg-skin-app ${
               darkMode ? "" : "theme-light"
-            } rounded-lg border-gray-300 shadow-md pt-5 pb-9 px-10`}
+            } rounded-lg border-gray-300 shadow-md py-10 md:pt-6 md:pb-10 px-6 md:px-10`}
           >
             <div className="flex h-[7%] md:h-[12%] justify-between items-center">
               <div className="font-space-grotesk text-lg font-semibold text-skin-add-asset-popup-buttons-title-text-color">
