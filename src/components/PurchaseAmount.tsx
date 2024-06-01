@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 
 export const PurchaseAmount = ({ amount }) => {
+
   const { setPurchasedAmount, darkMode } =
     useContext(CryptoContext);
 

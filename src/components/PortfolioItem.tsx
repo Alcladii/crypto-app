@@ -1,9 +1,9 @@
-import react, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
-import { EditAsset } from "../components/EditAsset";
+import { EditAsset } from "./EditAsset";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
 import { Arrow } from "./Arrow";
 
@@ -21,7 +21,7 @@ const ProgressBarOuter = styled.div`
   width: 100%;
 `;
 
-const ProgressBarInner = styled.div`
+const ProgressBarInner = styled.div<{ width: number}>`
   border-radius: 99px;
   height: 10px;
   width: ${(props) => props.width * 100}%;

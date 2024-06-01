@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
-import { PurchaseAmount } from "../components/PurchaseAmount";
-import { PurchaseDate } from "../components/PurchaseDate";
+import { PurchaseAmount } from "./PurchaseAmount";
+import { PurchaseDate } from "./PurchaseDate";
 
 export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
   const {
@@ -67,7 +67,7 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
   };
 
   const handleSaveClick = (coin) => {
-    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount);
+    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount.toString());
     if (!isValidNumber) {
       setShowPopup(true);
       setIsNumber(false);

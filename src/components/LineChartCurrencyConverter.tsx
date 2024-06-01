@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -41,6 +41,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
     }
 
     const maxTicksLimit = setMaxTicksLimit(currencyConverterDays);
+
     const options = {
       responsive: true,
       plugins: {
@@ -59,7 +60,6 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
             display: false,
             drawBorder: false,
           },
-          type: "logarithmic",
         },
         x: {
           display: true,

@@ -18,7 +18,7 @@ export const DeleteAsset = () => {
   
   return (
     <div>
-      <button onClick={() => handleClick()}>Delete</button>
+      <button onClick={() => handleClick("")}>Delete</button>
     </div>
   )
 }

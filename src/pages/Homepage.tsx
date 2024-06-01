@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 import Coins from "../components/Coins";
@@ -25,7 +25,7 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    handleSearchParams("load_coins_page", loadCoins);
+    handleSearchParams("load_coins_page", "true");
   }, []);
 
   const loadCoinsPageFromUrl = queryParams.load_coins_page === "true";

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CryptoContext } from "../contexts/cryptoContext";
-import LineChartCurrencyConverter from "../components/LineChartCurrencyConverter";
+import LineChartCurrencyConverter from "./LineChartCurrencyConverter";
 import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
 
 const daysSelectionData = [
@@ -68,7 +68,7 @@ export const CurrencyConverter = () => {
     ""
   );
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setInputValue(e.target.value);
   };
 
@@ -85,7 +85,7 @@ export const CurrencyConverter = () => {
         rightCurrencyData.market_data.current_price[displayCurrency] /
         leftCurrencyData.market_data.current_price[displayCurrency];
 
-      const result = (inputValue / conversionRate).toFixed(6);
+      const result = (parseFloat(inputValue) / conversionRate).toFixed(6);
       setConvertedResult(result);
     }
   };
@@ -317,7 +317,7 @@ export const CurrencyConverter = () => {
                 height="788.48"
                 rx="394.24"
                 fill={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(53, 53, 112, 1)"}
-                strokewidth="0"
+                strokeWidth="0"
               ></rect>
             </g>
             <g
@@ -349,7 +349,7 @@ export const CurrencyConverter = () => {
               {currencyOptions}
             </select>
             <div className="w-[55%] text-right text-lg font-semibold bg-transparent focus:outline-none">
-              {convertedResult != 0 ? convertedResult : ""}
+              {convertedResult !== "0" ? convertedResult : ""}
             </div>
           </div>
           <div className="mt-3 text-sm">

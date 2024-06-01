@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 import { CryptoContext } from "../contexts/cryptoContext";

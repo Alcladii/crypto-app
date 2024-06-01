@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import currencies from "../mocks/currencies.json";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
@@ -36,7 +36,7 @@ export const CurrencySelector = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(66, 66, 134, 1)"}
-          class="w-6 h-6 "
+          className="w-6 h-6 "
         >
           <path d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 0 1-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004ZM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 0 1-.921.42Z" />
           <path
@@ -64,9 +64,9 @@ export const CurrencySelector = () => {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="2"
+          strokeWidth="2"
           stroke={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(66, 66, 134, 1)"}
-          class="w-4 h-4"
+          className="w-4 h-4"
         >
           <path
             stroke-linecap="round"
