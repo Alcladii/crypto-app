@@ -44,7 +44,7 @@ const ColorIndicator = styled.div<{ background: string }>`
   background: ${(props) => props.background};
 `;
 
-interface DaysSelectionData {
+type DaysSelectionData = {
   days: string;
   buttonText: string;
 }
@@ -58,7 +58,7 @@ const daysSelectionData: DaysSelectionData[] = [
   { days: "365", buttonText: "1Y" },
 ];
 
-interface Coin {
+type Coin = {
   id: string;
   name: string;
   symbol: string;

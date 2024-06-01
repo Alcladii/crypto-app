@@ -4,7 +4,7 @@ import axios from "axios";
 import queryString from "query-string";
 import currencies from "../mocks/currencies.json";
 
-interface Currency {
+type Currency = {
   symbol: string;
   name?: string;
   symbol_native?: string;
@@ -14,14 +14,13 @@ interface Currency {
   name_plural?: string;
 }
 
-// Define the type for the currencies object
 type Currencies = {
   [key: string]: Currency;
 };
 
 const currenciesTyped = currencies as Currencies;
 
-export interface CryptoContextProps {
+export type CryptoContextProps = {
   //useLocalState: <T>(key: string, initialValue: T) => [T, (value: T) => void];
   useLocalState: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;

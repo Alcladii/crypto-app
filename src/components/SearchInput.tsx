@@ -4,11 +4,10 @@ import { CryptoContext } from "../contexts/cryptoContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 
-interface Coin {
+type Coin = {
   id: string;
   name: string;
   symbol: string;
-  // Add other properties as needed
 }
 
 export const SearchItemInput: React.FC = () => {

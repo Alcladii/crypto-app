@@ -5,7 +5,7 @@ import { CryptoContext } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "./PurchaseAmount";
 import { PurchaseDate } from "./PurchaseDate";
 
-interface Coin {
+type Coin = {
   id: string;
   name: string;
   symbol: string;
@@ -14,7 +14,7 @@ interface Coin {
   };
 }
 
-interface AddAssetProps {
+type AddAssetProps = {
   addCoin: (
     coin: Coin | null,
     purchasedAmount: number,
@@ -23,10 +23,10 @@ interface AddAssetProps {
   ) => void;
 }
 
-interface PurchaseAmountProps {
+/*type PurchaseAmountProps = {
   amount: number | string;
   setAmount: (amount: number | string) => void;
-}
+}*/
 
 export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   const {

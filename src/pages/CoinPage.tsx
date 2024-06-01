@@ -6,7 +6,7 @@ import { PriceChangePercentageText } from "../components/PriceChangePercentageTe
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
 
-interface ProgressBarProps {
+type ProgressBarProps = {
   background: string;
   width?: number;
 }
@@ -25,11 +25,11 @@ const ProgressBarInner = styled.div<ProgressBarProps>`
   background: ${(props) => props.background};
 `;
 
-interface CoinPageProps {
+type CoinPageProps = {
   portfolioList: any[];
 }
 
-interface CoinParams {
+type CoinParams = {
   coinId: string;
 }
 

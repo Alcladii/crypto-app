@@ -5,7 +5,7 @@ import "../App.css";
 export const ResultList = ({ results }) => {
   const history = useHistory();
 
-  const handleClick = (item) => {
+  const handleClick = (item: { id: any; }) => {
     history.push(`/coin-page/${item.id}`);
   };
 

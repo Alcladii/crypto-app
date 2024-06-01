@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { CryptoContext } from "../contexts/cryptoContext";
 import { Arrow } from "./Arrow";
 
-interface Coin {
+type Coin = {
   id: string;
   name: string;
   symbol: string;
@@ -14,7 +14,7 @@ interface Coin {
   selected?: boolean;
 }
 
-interface SlickCarouselProps {
+type SlickCarouselProps = {
   coinList: Coin[];
   setDisplaySelectCoinToSeeChartMessage: (value: boolean) => void;
 }

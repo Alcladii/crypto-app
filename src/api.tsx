@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders, AxiosResponse } from "axios";
 
-interface ApiResponse {
+type ApiResponse = {
   data: any;
 }
 

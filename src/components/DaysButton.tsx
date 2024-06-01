@@ -2,7 +2,7 @@ import { useContext } from "react";
 import "../App.css";
 import { CryptoContext } from "../contexts/cryptoContext";
 
-interface DaysButtonProps {
+type DaysButtonProps = {
   days: string;
   buttonText: string;
 }

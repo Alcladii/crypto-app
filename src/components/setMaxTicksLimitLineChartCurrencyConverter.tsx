@@ -1,5 +1,5 @@
 export const setMaxTicksLimit = (numOfDays) => {
-    let maxTicksLimit;
+    let maxTicksLimit
   
     if (numOfDays === "2") {
       maxTicksLimit = 24;
