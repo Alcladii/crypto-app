@@ -23,12 +23,12 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
 const BarChart = ({ priceVolumeList }) => {
-  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext);
+  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
   const maxTicksLimit = setMaxTicksLimit(numOfDays);
   const options = {
     responsive: true,

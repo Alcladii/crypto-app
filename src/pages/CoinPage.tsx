@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
@@ -26,7 +26,7 @@ const ProgressBarInner = styled.div<ProgressBarProps>`
 `;
 
 type CoinPageProps = {
-  portfolioList: any[];
+  portfolioList?: any[];
 }
 
 type CoinParams = {
@@ -52,7 +52,7 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
     setSingleCoin,
     darkMode,
     redirectedFromPortfolioPage,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
 
   useEffect(() => {
     getSingleCoinData(coinId.coinId);
@@ -463,8 +463,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
                   {singleCoin.links &&
                     singleCoin.links.homepage
-                      .filter((e) => e !== "")
-                      .map((item) => (
+                      .filter((e: string) => e !== "")
+                      .map((item: string) => (
                         <div key={item}>
                           <a
                             className="text-skin-single-coin-link-text-color"
@@ -480,8 +480,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
                   {singleCoin.links &&
                     singleCoin.links.blockchain_site
-                      .filter((item) => item.includes("blockchair"))
-                      .map((item) => (
+                      .filter((item:string) => item.includes("blockchair"))
+                      .map((item: string) => (
                         <div key={item}>
                           <a
                             className="text-skin-single-coin-link-text-color"
@@ -497,8 +497,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
                   {singleCoin.links &&
                     singleCoin.links.blockchain_site
-                      .filter((item) => item.includes("tokenview"))
-                      .map((item) => (
+                      .filter((item: string) => item.includes("tokenview"))
+                      .map((item: string) => (
                         <div key={item}>
                           <a
                             className="text-skin-single-coin-link-text-color"

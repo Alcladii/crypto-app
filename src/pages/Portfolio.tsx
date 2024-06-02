@@ -1,18 +1,18 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 
 function Portfolio() {
-  const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext);
+  const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
   const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
     useState(false);
   const [portfolioListNeedsUpdate, setPortfolioListNeedsUpdate] = useState(false)
 
-  const addCoin = (coin, purchaseAmount, purchaseDate, history) => {
+  const addCoin = (coin: any, purchaseAmount: any, purchaseDate: any, history: any) => {
     const newPortfolioList = [
       ...portfolioList,
       {
@@ -48,7 +48,7 @@ function Portfolio() {
     }
   };
 
-  const updateToLatestCoinDataOnLoad = (coinData) => {
+  const updateToLatestCoinDataOnLoad = (coinData: any[]) => {
     const newPortfolioList = portfolioList.map((item) => {
       coinData.forEach((item1) => {
         if (item.coinData.id === item1.data.id) {

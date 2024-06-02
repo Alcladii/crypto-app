@@ -369,7 +369,7 @@ export default function App() {
           {redirectedFromPortfolioPage ? (
             <CoinPage portfolioList={portfolioList} />
           ) : (
-            <CoinPage portfolioList={null}/>
+            <CoinPage />
           )}
         </Route>
       </Switch>

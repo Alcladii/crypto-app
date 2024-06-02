@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "./PurchaseAmount";
 import { PurchaseDate } from "./PurchaseDate";
 
@@ -17,8 +17,8 @@ type Coin = {
 type AddAssetProps = {
   addCoin: (
     coin: Coin | null,
-    purchasedAmount: number,
-    purchaseDate: string,
+    purchasedAmount: number | null,
+    purchaseDate: string | null,
     singleCoinHistoryData: any
   ) => void;
 }
@@ -28,18 +28,18 @@ type AddAssetProps = {
   setAmount: (amount: number | string) => void;
 }*/
 
-export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
+
+export const AddAsset :React.FC<AddAssetProps> = ({ addCoin }) => {
   const {
     coinList,
     purchasedAmount,
-    setPurchasedAmount,
     purchaseDate,
     formattedDateForHistoryApiCall,
     isNumber,
     setIsNumber,
     setEditAsset,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
@@ -95,7 +95,8 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   };
 
   const handleAddClick = (coinId: string) => {
-    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount.toString());
+    const amount = purchasedAmount !== null ? purchasedAmount.toString() : '';
+    const isValidNumber = /^\d*\.?\d+$/.test(amount);
     if (!isValidNumber) {
       setIsNumber(false);
       setShowPopup(true);

@@ -1,4 +1,8 @@
-export const Arrow = ({ priceChange }) => {
+interface ArrowProps {
+  priceChange: number;
+}
+
+export const Arrow: React.FC<ArrowProps> = ({priceChange}) => {
   return priceChange > 0 ? (
     <svg
       viewBox="0 0 20 20"

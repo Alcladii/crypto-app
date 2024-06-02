@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
 
@@ -11,7 +11,7 @@ export const Home = () => {
     queryParams,
     changeSearchParams,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
 
   const handleCoinsListClick = () => {
