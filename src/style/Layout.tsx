@@ -1,6 +1,10 @@
 //import React from "react";
 
-export const Layout = ({ children }) => {
+type LayoutProps = {
+  children: any
+}
+
+export const Layout: React.FC<LayoutProps>= ({ children }) => {
   return (
     <>
       <head>

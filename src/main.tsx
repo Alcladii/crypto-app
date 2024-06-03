@@ -5,8 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import App from "./App.jsx";
 import "./index.css";
-import { CryptoProvider } from "./contexts/cryptoContext.jsx";
-import { Layout } from "./style/Layout.js";
+import { CryptoProvider } from "./contexts/cryptoContext";
+import { Layout } from "./style/Layout";
 
 //put the style in main when using external library style, for example import "slick-carousel/slick/slick.css";
 

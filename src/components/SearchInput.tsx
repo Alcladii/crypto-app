@@ -16,7 +16,7 @@ export const SearchItemInput = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
   const [results, setResults] = useState<Coin[]>([]);
-  const key = import.meta.env.VITE_API_KEY_CRYPTO as string;
+  const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
   let searchInputRef = useRef<HTMLDivElement>(null);
 
