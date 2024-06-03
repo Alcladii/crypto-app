@@ -3,12 +3,12 @@ import { BrowserRouter as Switch, Route, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
-import { Home } from "./pages/Homepage";
-import Portfolio from "./pages/Portfolio";
-import CoinPage from "./pages/CoinPage";
+import { Home } from "./pages/Homepage.tsx";
+import Portfolio from "./pages/Portfolio.tsx";
+import CoinPage from "./pages/CoinPage.tsx";
 //import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
-import { SearchItemInput } from "./components/SearchInput";
-import { CurrencySelector } from "./components/CurrencySelector";
+import { SearchItemInput } from "./components/SearchInput.tsx";
+import { CurrencySelector } from "./components/CurrencySelector.tsx";
 
 // const ProgressBarOuter = styled.div`
 //   border-radius: 99px;
