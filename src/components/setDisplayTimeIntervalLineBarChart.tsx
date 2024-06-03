@@ -1,5 +1,9 @@
-export const setDisplayIntervalLineBarChart = (numOfDays, item) => {
+export const setDisplayIntervalLineBarChart = (
+  numOfDays: string | undefined,
+  item: [number, number],
+) => {
   const date = new Date(item[0]);
+  
   if (numOfDays === "2") {
     return date.toLocaleTimeString(undefined, {
       hour: "numeric",

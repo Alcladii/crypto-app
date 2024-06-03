@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
-import { Arrow } from "../components/Arrow";
+import { Arrow } from "../components/UI/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
 
 type ProgressBarProps = {
@@ -100,13 +100,11 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
   };*/
 
   const calculateProfit = (item: any): number => {
-    return parseFloat(
-      retainTwoDigits(
+     return retainTwoDigits(
         (item.coinData.market_data.current_price[displayCurrency] -
           item.historyData.market_data.current_price[displayCurrency]) *
           item.purchaseAmount1
-      )
-    );
+      )  
   };
 
   let htmlContent = singleCoin ? singleCoin.description.en : "";

@@ -1,4 +1,4 @@
-export const setMaxTicksLimit = (numOfDays) => {
+export const setMaxTicksLimit = (numOfDays: string | undefined) => {
     let maxTicksLimit
   
     if (numOfDays === "2") {

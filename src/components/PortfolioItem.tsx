@@ -1,11 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { DeleteAsset } from "./DeleteAsset";
 import { EditAsset } from "./EditAsset";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
-import { Arrow } from "./Arrow";
+import { Arrow } from "./UI/Arrow";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -28,24 +29,27 @@ const ProgressBarInner = styled.div<{ width: number}>`
   background: #01f1e3;
 `;
 
-export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
+type PortfolioItemProps = {
+  setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNeedsUpdate }) => {
   const {
     displayCurrency,
     currencySymbol,
     retainTwoDigits,
     portfolioList,
-    setPortfolioList,
     darkMode,
     setRedirectedFromPortfolioPage,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
 
-  const handleRemove= (id) => {
+  /*const handleRemove= (id) => {
     const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     setPortfolioList(newPortfolioList);
     setPortfolioListNeedsUpdate(true);
-  };
+  };*/
 
-  const profitPercentage = (item) => {
+  const profitPercentage = (item: { historyData: { market_data: { current_price: { [x: string]: number; }; }; }; coinData: { market_data: { current_price: { [x: string]: number; }; }; }; }) => {
     if (item.historyData.market_data) {
       return retainTwoDigits(
         ((item.coinData.market_data.current_price[displayCurrency] -
@@ -54,11 +58,12 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
           100
       );
     }
+    return 0
   };
 
   const history = useHistory();
 
-  const handleClick = (item) => {
+  const handleClick = (item: any) => {
     history.push(`/coin-page/${item.id}`);
     setRedirectedFromPortfolioPage(true);
   };
@@ -205,12 +210,13 @@ export const PortfolioItem = ({ setPortfolioListNeedsUpdate }) => {
               </div>
             </div>
             <div className="flex justify-end my-3">
-              <div
+              {/*<div
                 className="flex justify-center items-center w-24 h-10 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color rounded-md mr-4"
                 onClick={() => handleRemove(item.id)}
               >
                 Remove
-              </div>
+                        </div>*/}
+              <DeleteAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>
               <EditAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate} />
             </div>
           </div>

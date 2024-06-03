@@ -1,11 +1,16 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "./PurchaseAmount";
 import { PurchaseDate } from "./PurchaseDate";
 
-export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
+type EditAssetProps = {
+  id: string;
+  setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const EditAsset: React.FC<EditAssetProps> = ({ id, setPortfolioListNeedsUpdate }) => {
   const {
     portfolioList,
     setPortfolioList,
@@ -16,7 +21,7 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
     formattedDateForHistoryApiCall,
     setEditAsset,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
@@ -30,7 +35,7 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
 
   const selectedItem = portfolioList.find((item) => item.id === id);
 
-  const editItem = (currentData, amount, date, historyData) => {
+  const editItem = (currentData: any, amount: string | null, date: string | null, historyData: any) => {
     const newPortfolioList = portfolioList.map((item) => {
       if (item.id === id) {
         item.coinData = currentData;
@@ -43,16 +48,16 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
     setPortfolioList(newPortfolioList);
   };
 
-  const updateSelectedCoinData = async (coin) => {
+  const updateSelectedCoinData = async (coinId: string) => {
     try {
       setSelectedCoinIsLoading(true);
       const updatedSingleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
       const updatedSingleCoinHistoryData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${formattedDateForHistoryApiCall}&localization=false`
+        `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
       );
-      editItem(
+     editItem (
         updatedSingleCoinData.data,
         purchasedAmount,
         purchaseDate,
@@ -66,14 +71,15 @@ export const EditAsset = ({ id, setPortfolioListNeedsUpdate }) => {
     }
   };
 
-  const handleSaveClick = (coin) => {
-    const isValidNumber = /^\d*\.?\d+$/.test(purchasedAmount.toString());
+  const handleSaveClick = (coinId: string) => {
+    const amount = purchasedAmount !== null ? purchasedAmount : '';
+    const isValidNumber = /^\d*\.?\d+$/.test(amount);
     if (!isValidNumber) {
       setShowPopup(true);
       setIsNumber(false);
     } else {
       setShowPopup(false);
-      updateSelectedCoinData(coin);
+      updateSelectedCoinData(coinId);
       setIsNumber(true);
       setPortfolioListNeedsUpdate(true)
     }

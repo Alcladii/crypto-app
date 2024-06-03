@@ -27,7 +27,11 @@ import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
-const BarChart = ({ priceVolumeList }) => {
+type BarChartProps = {
+  priceVolumeList: any; 
+}
+
+const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
   const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
   const maxTicksLimit = setMaxTicksLimit(numOfDays);
   const options = {
@@ -67,17 +71,23 @@ const BarChart = ({ priceVolumeList }) => {
 
   const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
+  type Volume = [number, number];
+
+  type PriceVolume = {
+    total_volumes: Volume[]; // An array of volumes
+  };
+
   const volumeData = {
     labels:
       priceVolumeList !== null &&
-      priceVolumeList[0].total_volumes.map((item) => {
+      priceVolumeList[0].total_volumes.map((item: Volume) => {
         return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
-    datasets: priceVolumeList.map((item) => {
+    datasets: priceVolumeList.map((item: PriceVolume) => {
       const backgroundColor = colors[priceVolumeList.indexOf(item)];
       return {
         label: `Trade Price`,
-        data: item.total_volumes.map((volume) => volume[1]),
+        data: item.total_volumes.map((volume: Volume) => volume[1]),
         backgroundColor,
         pointRadius: 3,
         borderWidth: 0,

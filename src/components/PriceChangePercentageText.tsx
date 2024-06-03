@@ -1,8 +1,12 @@
 import { useContext } from "react";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
-export const PriceChangePercentageText = ({ coin }) => {
-  const { retainTwoDigits } = useContext(CryptoContext);
+type PriceChangePercentageTextProps = {
+  coin: number;
+}
+
+export const PriceChangePercentageText: React.FC<PriceChangePercentageTextProps> = ({ coin }) => {
+  const { retainTwoDigits } = useContext(CryptoContext) as CryptoContextProps;
 
   return (
     <div

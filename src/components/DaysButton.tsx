@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
 type DaysButtonProps = {
   days: string;
@@ -9,7 +9,7 @@ type DaysButtonProps = {
 
 export const DaysButton: React.FC<DaysButtonProps> = ({ days, buttonText }) => {
   const { setNumOfDays, changeSearchParams, queryParams, darkMode } =
-    useContext(CryptoContext);
+    useContext(CryptoContext) as CryptoContextProps;
 
   const daysInChart: string = queryParams.days as string;
 

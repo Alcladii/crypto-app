@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,15 +23,22 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineChartCurrencyConverter";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
-const LineChartCurrencyConverter = ({ priceVolumeList }) => {
+
+type LineChartCurrencyConverterProps = {
+  priceVolumeList: any; 
+}
+
+type Price = [number, number]
+
+const LineChartCurrencyConverter: React.FC<LineChartCurrencyConverterProps> = ({ priceVolumeList }) => {
   if (priceVolumeList[0].length !== 0 && priceVolumeList[1].length !== 0) {
-    const priceLeft = priceVolumeList[0].prices.map((price) => price[1]);
-    const priceRight = priceVolumeList[1].prices.map((price) => price[1]);
-    const { currencyConverterDays } = useContext(CryptoContext);
+    const priceLeft = priceVolumeList[0].prices.map((price: Price) => price[1]);
+    const priceRight = priceVolumeList[1].prices.map((price: Price) => price[1]);
+    const { currencyConverterDays } = useContext(CryptoContext) as CryptoContextProps;
 
     const convertionRate = [];
 
@@ -78,7 +85,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
     const priceData = {
       labels:
         priceVolumeList.length !== 0 &&
-        priceVolumeList[0].prices.map((item) => {
+        priceVolumeList[0].prices.map((item: Price) => {
           return setDisplayIntervalLineBarChart(currencyConverterDays, item);
         }),
 
@@ -87,7 +94,7 @@ const LineChartCurrencyConverter = ({ priceVolumeList }) => {
           label: `Currency Converter Line Chart`,
           data: convertionRate,
           borderColor: "#7878FA",
-          backgroundColor: (context) => {
+          backgroundColor: (context: any) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 350);
             gradient.addColorStop(0, "rgba(116, 116, 242, 0.6)");

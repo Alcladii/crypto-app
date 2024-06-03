@@ -17,7 +17,7 @@ type Coin = {
 type AddAssetProps = {
   addCoin: (
     coin: Coin | null,
-    purchasedAmount: number | null,
+    purchasedAmount: string | null,
     purchaseDate: string | null,
     singleCoinHistoryData: any
   ) => void;
@@ -29,7 +29,7 @@ type AddAssetProps = {
 }*/
 
 
-export const AddAsset :React.FC<AddAssetProps> = ({ addCoin }) => {
+export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   const {
     coinList,
     purchasedAmount,
@@ -95,7 +95,7 @@ export const AddAsset :React.FC<AddAssetProps> = ({ addCoin }) => {
   };
 
   const handleAddClick = (coinId: string) => {
-    const amount = purchasedAmount !== null ? purchasedAmount.toString() : '';
+    const amount = purchasedAmount !== null ? purchasedAmount : '';
     const isValidNumber = /^\d*\.?\d+$/.test(amount);
     if (!isValidNumber) {
       setIsNumber(false);
@@ -171,9 +171,9 @@ export const AddAsset :React.FC<AddAssetProps> = ({ addCoin }) => {
                   </option>
                   {coinsOptions}
                 </select>
-                <PurchaseAmount amount={null} />
+                <PurchaseAmount />
                 {!isNumber && <div>Put in a number</div>}
-                <PurchaseDate date={null}/>
+                <PurchaseDate />
                 <div className="flex justify-between">
                   <div
                     className="w-1/2 cursor-pointer bg-skin-add-asset-popup-buttons-background-color text-skin-add-asset-popup-buttons-title-text-color outline-none appearance-none rounded-md h-12 mr-2 flex justify-center items-center"

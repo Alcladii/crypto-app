@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import { CryptoContext } from "../contexts/cryptoContext";
-import { Arrow } from "./Arrow";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { Arrow } from "./UI/Arrow";
 
 type Coin = {
   id: string;
@@ -37,7 +37,6 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     currencySymbol,
     retainTwoDigits,
     useLocalState,
-    numOfDays,
     getCoinPriceVolume,
     setPriceVolumeList,
     slidesData,
@@ -45,15 +44,10 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     selectedCoinData,
     setSelectedCoinData,
     displayCurrency,
-    handleSearchParams,
-    location,
-    queryParams,
-    historyURL,
     setPriceVolumeChartIsLoadingHasError,
-    changeSearchParams,
     numOfDaysFromUrl,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps ;
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState<boolean>(
     "comparisonModeOn",

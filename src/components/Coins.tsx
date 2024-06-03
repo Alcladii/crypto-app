@@ -1,10 +1,7 @@
-import { useState, useEffect, useContext, useRef, ReactNode } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import axios from "axios";
+import { useState, useEffect, useContext, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import queryString from "query-string";
 import InfiniteScroll from "react-infinite-scroll-component";
-import currencies from "../mocks/currencies.json";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import "../App.css";
 import LineChart from "./LineChart";
@@ -12,7 +9,7 @@ import BarChart from "./BarChart";
 import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "./SlickCarousel";
-import { Arrow } from "./Arrow";
+import { Arrow } from "./UI/Arrow";
 import { DaysButton } from "./DaysButton";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
 import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
@@ -928,8 +925,8 @@ function Coins() {
                     singleCoin.current_price.toLocaleString()}
                 </div>
                 <div className="text-md flex items-center sm:hidden ">
-                  <Arrow priceChange={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>&nbsp;
-                  <PriceChangePercentageText coin={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency`]}/>
+                  <Arrow priceChange={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin] as number}/>&nbsp;
+                  <PriceChangePercentageText coin={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin] as number}/>
                 </div>
               </div>
               <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
@@ -1024,10 +1021,6 @@ function Coins() {
 }
 
 export default Coins;
-
-
-
-
 /*import React, { useState, useEffect, useContext, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";

@@ -1,22 +1,18 @@
-import { useState, useContext, useEffect } from "react";
-import currencies from "../mocks/currencies.json";
+import { useContext, useEffect } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
 export const CurrencySelector = () => {
   const {
     displayCurrency,
     setDisplayCurrency,
     currencyList,
-    location,
-    queryParams,
-    historyURL,
     handleSearchParams,
     changeSearchParams,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDisplayCurrency(e.target.value);
     changeSearchParams("displaycurrency", e.target.value)
   };

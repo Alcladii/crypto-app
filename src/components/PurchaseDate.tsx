@@ -1,13 +1,17 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
-export const PurchaseDate = ({ date }) => {
+type PurchaseDateProps = {
+  date?: string;
+}
+
+export const PurchaseDate: React.FC<PurchaseDateProps> = ({ date }) => {
   const [localDate, setLocalDate] = useState(date);
   const { setPurchaseDate, setFormattedDateForHistoryApiCall, editAsset, darkMode, } =
-    useContext(CryptoContext);
+    useContext(CryptoContext) as CryptoContextProps;
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const dateObject = new Date(dateString);
     const formattedDate = `${dateObject.getDate()}-${
       dateObject.getMonth() + 1
@@ -15,7 +19,7 @@ export const PurchaseDate = ({ date }) => {
     setFormattedDateForHistoryApiCall(formattedDate);
   };
 
-  const handleInput = (value) => {
+  const handleInput = (value: string) => {
     formatDate(value);
     setLocalDate(value); 
     setPurchaseDate(value);

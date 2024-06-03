@@ -1,10 +1,15 @@
 import { useContext } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
-export const DaysButtonInCurrencyConverter = ({ days, buttonText }) => {
+type DaysButtonInCurrencyConverterProps = {
+  days: string,
+  buttonText: string,
+}
+
+export const DaysButtonInCurrencyConverter: React.FC< DaysButtonInCurrencyConverterProps > = ({ days, buttonText }) => {
   const { currencyConverterDays, setCurrencyConverterDays } =
-    useContext(CryptoContext);
+    useContext(CryptoContext) as CryptoContextProps;
 
   return (
     <div className="w-[17%] sm:w-16">

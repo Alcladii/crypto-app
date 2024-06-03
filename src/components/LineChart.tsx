@@ -23,13 +23,17 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
-const LineChart = ({ priceVolumeList, }) => {
+type LineChartProps = {
+  priceVolumeList: any; 
+}
+
+const LineChart: React.FC<LineChartProps> = ({ priceVolumeList }) => {
   
-  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext);
+  const { numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
   const maxTicksLimit = setMaxTicksLimit(numOfDaysFromUrl);
   const options = {
     responsive: true,
@@ -85,18 +89,24 @@ const LineChart = ({ priceVolumeList, }) => {
     ["rgba(30, 213, 191, 0.1)", "rgba(145, 252, 228, 0.01)"],
   ];
 
+  type Price = [number, number]
+
+  type PriceVolume = {
+    prices: Price[];
+  };
+
   const priceData = {
     labels:
       priceVolumeList.length !== 0 &&
-      priceVolumeList[0].prices.map((item) => {
+      priceVolumeList[0].prices.map((item: Price) => {
         return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
-    datasets: priceVolumeList.map((item) => {
+    datasets: priceVolumeList.map((item: PriceVolume) => {
       return {
         label: `Trade Price`,
-        data: item.prices.map((price) => price[1]),
+        data: item.prices.map((price: Price) => price[1]),
         borderColor: borderColors[priceVolumeList.indexOf(item)],
-        backgroundColor: (context) => {
+        backgroundColor: (context: any) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 350);
           gradient.addColorStop(

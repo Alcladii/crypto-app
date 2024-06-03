@@ -1,12 +1,17 @@
 import { useState, useContext } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 
-export const UpAndDownPercentagePeriodSelector = ({
+type UpAndDownPercentagePeriodSelectorProps = {
+  selectedTimePeriod: string;
+  setSelectedTimePeriod: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const UpAndDownPercentagePeriodSelector: React.FC<UpAndDownPercentagePeriodSelectorProps>= ({
   selectedTimePeriod,
   setSelectedTimePeriod,
 }) => {
-  const { darkMode } = useContext(CryptoContext);
+  const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const timePeriod = [
     { time: "1h", buttonText: "1h" },
     { time: "24h", buttonText: "24h" },

@@ -24,7 +24,7 @@ export type CryptoContextProps = {
   //useLocalState: <T>(key: string, initialValue: T) => [T, (value: T) => void];
   useLocalState: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;
-  retainTwoDigits: (number: number) => string;
+  retainTwoDigits: (number: number) => number;
   getSingleCoinData: (item: string) => Promise<void>;
   singleCoin: any;
   setSingleCoin: Dispatch<SetStateAction<any>>;
@@ -51,8 +51,8 @@ export type CryptoContextProps = {
   setCoinList: Dispatch<SetStateAction<any[]>>;
   portfolioList: any[];
   setPortfolioList: Dispatch<SetStateAction<any[]>>;
-  purchasedAmount: number | null;
-  setPurchasedAmount: Dispatch<SetStateAction<number | null>>;
+  purchasedAmount: string | null;
+  setPurchasedAmount: Dispatch<SetStateAction<string | null>>;
   purchaseDate: string | null;
   setPurchaseDate: Dispatch<SetStateAction<string | null>>;
   formattedDateForHistoryApiCall: string | null;
@@ -65,8 +65,8 @@ export type CryptoContextProps = {
   queryParams: queryString.ParsedQuery<string>;
   historyURL: ReturnType<typeof useHistory>;
   setPriceVolumeChartIsLoadingHasError: Dispatch<SetStateAction<boolean>>;
-  currencyConverterDays: number;
-  setCurrencyConverterDays: Dispatch<SetStateAction<number>>;
+  currencyConverterDays: string;
+  setCurrencyConverterDays: Dispatch<SetStateAction<string>>;
   editAsset: boolean;
   setEditAsset: Dispatch<SetStateAction<boolean>>;
   darkMode: boolean;
@@ -75,7 +75,7 @@ export type CryptoContextProps = {
   setSingleCoinLoadingHasError: Dispatch<SetStateAction<boolean>>;
   singleCoinLoadingHasError: boolean;
   changeSearchParams: (conditionKey: string, conditionValue: string) => void;
-  numOfDaysFromUrl?: string;
+  numOfDaysFromUrl: string;
   redirectedFromPortfolioPage: boolean;
   setRedirectedFromPortfolioPage: Dispatch<SetStateAction<boolean>>;
   currencyListIsLoading: boolean;
@@ -125,11 +125,11 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] = useState<boolean>(false);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
   const [portfolioList, setPortfolioList] = useLocalState<any[]>("portfolioList", []);
-  const [purchasedAmount, setPurchasedAmount] = useState<number | null>(null);
+  const [purchasedAmount, setPurchasedAmount] = useState<string | null>(null);
   const [purchaseDate, setPurchaseDate] = useState<string | null>(null);
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] = useState<string | null>(null);
   const [isNumber, setIsNumber] = useState<boolean>(true);
-  const [currencyConverterDays, setCurrencyConverterDays] = useLocalState<number>("currencyConverterDays", 7);
+  const [currencyConverterDays, setCurrencyConverterDays] = useLocalState<string>("currencyConverterDays", "7");
   const [editAsset, setEditAsset] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useLocalState<boolean>("darkMode", true);
   const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] = useLocalState<boolean>("redirectFromPortfolioPage", false);
@@ -142,8 +142,8 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     return (number / 1000000000000).toFixed(2);
   };
 
-  const retainTwoDigits = (number: number): string => {
-    return number.toFixed(2);
+  const retainTwoDigits = (number: number): number => {
+    return parseFloat(number.toFixed(2));
   };
 
   const getSingleCoinData = async (item: string) => {
@@ -203,7 +203,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const historyURL = useHistory();
   let queryParams = queryString.parse(location.search);
 
-  const numOfDaysFromUrl = queryParams.days as string | undefined;
+  const numOfDaysFromUrl = queryParams.days as string;
 
   const handleSearchParams = (conditionKey: string, conditionValue: string) => {
     if (!(conditionKey in queryParams)) {

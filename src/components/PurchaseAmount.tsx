@@ -1,16 +1,18 @@
 import { useState, useContext } from "react";
 import "../App.css";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
-export const PurchaseAmount = ({ amount }) => {
+type PurchaseAmountProps = {
+  amount?: string;
+}
 
+export const PurchaseAmount: React.FC<PurchaseAmountProps> = ({ amount }) => {
   const { setPurchasedAmount, darkMode } =
-    useContext(CryptoContext);
-
+    useContext(CryptoContext) as CryptoContextProps;
   const [inputPurchasedAmount, setInputPurchasedAmount] = useState(amount);
   const [placeholder, setPlaceholder] = useState('Purchased Amount');
 
-  const handleChange = (value) => {
+  const handleChange = (value: string) => {
     setInputPurchasedAmount(value);
     setPurchasedAmount(value);
   };
@@ -19,7 +21,7 @@ export const PurchaseAmount = ({ amount }) => {
     setPlaceholder('');
   };
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: any) => {
     if (e.target.value === '') {
       setPlaceholder('Purchased Amount');
     }

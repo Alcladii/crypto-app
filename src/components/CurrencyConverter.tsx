@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "./LineChartCurrencyConverter";
 import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
 
@@ -21,24 +21,24 @@ export const CurrencyConverter = () => {
     currencySymbol,
     currencyConverterDays,
     darkMode,
-  } = useContext(CryptoContext);
+  } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState("");
-  const [leftCurrency, setLeftCurrency] = useLocalState(
+  const [leftCurrency, setLeftCurrency] = useLocalState<string>(
     "leftCurrency",
     "bitcoin"
   );
-  const [rightCurrency, setRightCurrency] = useLocalState(
+  const [rightCurrency, setRightCurrency] = useLocalState<string>(
     "rightCurrency",
     "bitcoin"
   );
-  const [leftCurrencyData, setLeftCurrencyData] = useLocalState(
+  const [leftCurrencyData, setLeftCurrencyData] = useLocalState<CurrencyData | null>(
     "leftCurrencyData",
     null
   );
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
-  const [rightCurrencyData, setRightCurrencyData] = useLocalState(
+  const [rightCurrencyData, setRightCurrencyData] = useLocalState<CurrencyData | null>(
     "rightCurrencyData",
     null
   );
@@ -68,6 +68,17 @@ export const CurrencyConverter = () => {
     ""
   );
 
+  interface CurrencyData {
+    name: string;
+    market_data: {
+      current_price: {
+        [key: string]: number;
+      };
+    };
+    symbol: string;
+  }
+  
+
   const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setInputValue(e.target.value);
   };
@@ -90,7 +101,7 @@ export const CurrencyConverter = () => {
     }
   };
 
-  const getSelectedLeftCurrencyData = async (item) => {
+  const getSelectedLeftCurrencyData = async (item : string) => {
     try {
       setSingleCoinIsLoading(true);
       setSingleCoinLoadingHasError(false);
@@ -110,7 +121,7 @@ export const CurrencyConverter = () => {
     }
   };
 
-  const getSelectedRightCurrencyData = async (item) => {
+  const getSelectedRightCurrencyData = async (item : string) => {
     try {
       setSingleCoinIsLoading(true);
       setSingleCoinLoadingHasError(false);
@@ -130,11 +141,11 @@ export const CurrencyConverter = () => {
     }
   };
 
-  const handleLeftCurrencySelect = (value) => {
+  const handleLeftCurrencySelect = (value : string) => {
     setLeftCurrency(value);
   };
 
-  const handleRightCurrencySelect = (value) => {
+  const handleRightCurrencySelect = (value : string) => {
     setRightCurrency(value);
   };
 
@@ -147,9 +158,9 @@ export const CurrencyConverter = () => {
   }, [rightCurrency]);
 
   const getLeftCurrencyPriceVolume = async (
-    leftCurrency,
-    displayCurrency,
-    currencyConverterDays
+    leftCurrency: string,
+    displayCurrency: string,
+    currencyConverterDays: string,
   ) => {
     try {
       const response = await getCoinPriceVolume(
@@ -168,9 +179,9 @@ export const CurrencyConverter = () => {
   };
 
   const getRightCurrencyPriceVolume = async (
-    rightCurrency,
-    displayCurrency,
-    currencyConverterDays
+    rightCurrency: string,
+    displayCurrency: string, 
+    currencyConverterDays: string,
   ) => {
     try {
       const response = await getCoinPriceVolume(
@@ -244,6 +255,8 @@ export const CurrencyConverter = () => {
       }
     });
   }, [rightCurrency]);
+
+  
 
   return (
     <div className={`${darkMode ? "" : "theme-light"}`}>

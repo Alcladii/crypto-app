@@ -22,7 +22,12 @@ ChartJS.register(
   Legend
 );
 
-const LineChartIndividualCoin = ({ priceList, color }) => {
+type LineChartIndividualCoinProps = {
+  priceList: any;
+  color: string;
+}
+
+const LineChartIndividualCoin: React.FC<LineChartIndividualCoinProps> = ({ priceList, color }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -61,7 +66,7 @@ const LineChartIndividualCoin = ({ priceList, color }) => {
         data: priceList,
         borderColor: color,
         //here is the part for the gradient fill
-        backgroundColor: (context) => {
+        backgroundColor: (context: any) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 350);
           gradient.addColorStop(0, `${color}`);

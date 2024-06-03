@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef, ChangeEvent } from "react";
 import axios from "axios";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 
@@ -8,10 +8,11 @@ type Coin = {
   id: string;
   name: string;
   symbol: string;
+  large: string;
 }
 
-export const SearchItemInput: React.FC = () => {
-  const { darkMode } = useContext(CryptoContext);
+export const SearchItemInput = () => {
+  const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
   const [results, setResults] = useState<Coin[]>([]);
