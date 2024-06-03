@@ -11,13 +11,13 @@ import { Layout } from "./style/Layout";
 //put the style in main when using external library style, for example import "slick-carousel/slick/slick.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
-      <CryptoProvider>
-        <Layout>
+      {/* <CryptoProvider> */}
+        {/* <Layout> */}
           <App />
-        </Layout>
-      </CryptoProvider>
+        {/* </Layout> */}
+      {/* </CryptoProvider> */}
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

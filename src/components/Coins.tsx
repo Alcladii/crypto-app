@@ -115,8 +115,6 @@ function Coins() {
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
-  console.log("isSticky", isSticky)
-
   const showTopFifty = queryParams.show_top_fifty === "true";
 
   const getCoinList = async () => {
@@ -153,7 +151,6 @@ function Coins() {
   }, [coinListDsc]);
 
   useEffect(() => {
-    console.log("fun run")
     getCoinList();
 
     const minute = 60000;
