@@ -74,7 +74,7 @@ const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
   type Volume = [number, number];
 
   type PriceVolume = {
-    total_volumes: Volume[]; // An array of volumes
+    total_volumes: Volume[];
   };
 
   const volumeData = {
