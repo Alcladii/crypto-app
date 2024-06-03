@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { BrowserRouter as Switch, Route, Link } from "react-router-dom";
+import { Routes, Route, Link} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
@@ -361,13 +361,10 @@ export default function App() {
           </div> */}
         </div>
       </div>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route exact path="/portfolio">
-          <Portfolio />
-        </Route>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/portfolio" element={<Portfolio />}/>
+          
         {/* <Route exact path="/coin-page/:coinId">
           {redirectedFromPortfolioPage ? (
             <CoinPage portfolioList={portfolioList} />
@@ -375,7 +372,7 @@ export default function App() {
             <CoinPage />
           )}
         </Route> */}
-      </Switch>
+      </Routes>
     </div>
   );
 }
