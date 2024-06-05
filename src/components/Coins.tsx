@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
@@ -94,7 +94,7 @@ function Coins() {
     clearSearchParams,
     location,
     queryParams,
-    historyURL,
+    navigateURL,
     changeSearchParams,
     darkMode,
     setRedirectedFromPortfolioPage,
@@ -166,10 +166,10 @@ function Coins() {
     getCurrencyList();
   }, []);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = (item: Coin) => {
-    history.push(`/coin-page/${item.id}`);
+    navigate(`/coin-page/${item.id}`);
     setRedirectedFromPortfolioPage(false);
   };
 
@@ -1021,6 +1021,7 @@ function Coins() {
 }
 
 export default Coins;
+
 /*import React, { useState, useEffect, useContext, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";

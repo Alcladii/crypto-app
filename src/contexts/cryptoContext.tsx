@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import queryString from "query-string";
 import currencies from "../mocks/currencies.json";
@@ -63,7 +63,7 @@ export type CryptoContextProps = {
   clearSearchParams: () => void;
   location: ReturnType<typeof useLocation>;
   queryParams: queryString.ParsedQuery<string>;
-  historyURL: ReturnType<typeof useHistory>;
+  navigateURL: ReturnType<typeof useNavigate>;
   setPriceVolumeChartIsLoadingHasError: Dispatch<SetStateAction<boolean>>;
   currencyConverterDays: string;
   setCurrencyConverterDays: Dispatch<SetStateAction<string>>;
@@ -200,7 +200,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   };
 
   const location = useLocation();
-  const historyURL = useHistory();
+  const navigateURL = useNavigate();
   let queryParams = queryString.parse(location.search);
 
   const numOfDaysFromUrl = queryParams.days as string;
@@ -209,20 +209,20 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     if (!(conditionKey in queryParams)) {
       const updatedParams = { ...queryParams, [conditionKey]: conditionValue };
       queryParams = updatedParams;
-      historyURL.push(`?${queryString.stringify(queryParams)}`);
+      navigateURL(`?${queryString.stringify(queryParams)}`);
     }
   };
 
   const changeSearchParams = (conditionKey: string, conditionValue: string) => {
     if (conditionValue !== queryParams[conditionKey]) {
       queryParams[conditionKey] = conditionValue;
-      historyURL.push(`?${queryString.stringify(queryParams)}`);
+      navigateURL(`?${queryString.stringify(queryParams)}`);
     }
   };
 
   const clearSearchParams = () => {
     const updatedParams = {};
-    historyURL.push(`?${queryString.stringify(updatedParams)}`);
+    navigateURL(`?${queryString.stringify(updatedParams)}`);
   };
 
   return (
@@ -269,7 +269,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         clearSearchParams,
         location,
         queryParams,
-        historyURL,
+        navigateURL,
         setPriceVolumeChartIsLoadingHasError,
         currencyConverterDays,
         setCurrencyConverterDays,

@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from "react";
-import { Routes, Route, Link} from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
 import { Home } from "./pages/Homepage.tsx";
 import Portfolio from "./pages/Portfolio.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
-//import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput.tsx";
 import { CurrencySelector } from "./components/CurrencySelector.tsx";
 
@@ -17,7 +17,7 @@ import { CurrencySelector } from "./components/CurrencySelector.tsx";
 //   width: 100px;
 // `;
 
-// // const ProgressBarInner = styled.div<{ width: number; background: string }>`
+// const ProgressBarInner = styled.div<{ width: number; background: string }>`
 //   border-radius: 99px;
 //   height: 10px;
 //   width: ${(props) => (props.width / 100) * 100}px;
@@ -25,64 +25,67 @@ import { CurrencySelector } from "./components/CurrencySelector.tsx";
 // `;
 
 export default function App() {
-  // // const {
-  //   useLocalState,
-  //   displayCurrency,
-  //   convertToTrillion,
-  //   convertToBillion,
-  //   retainTwoDigits,
-  //   darkMode,
-  //   setDarkMode,
-  //   handleSearchParams,
-  //   changeSearchParams,
-  //   queryParams,
-  //   portfolioList,
-  //   redirectedFromPortfolioPage,
-  // } = useContext(CryptoContext) as CryptoContextProps;
 
-  // //const [loadHomePage, setLoadHomePage] = useLocalState<boolean>("loadHomePage", true);
-  // const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
-  // //const [marketData, setMarketData] = useLocalState<any>("marketData", null);
-  // const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
-  // const [marketDataIsLoading, setMarketDataIsLoading] = useState<boolean>(false);
-  // const [marketDataLoadingHasError, setMarketDataLoadingHasError] = useState<boolean>(false);
+  // const navigate = useNavigate();
 
-  // const handleHomePageClick = () => {
-  //   setLoadHomePage(true);
-  //   //changeSearchParams("load_home_page", "true");
-  // };
+  const {
+    useLocalState,
+    displayCurrency,
+    convertToTrillion,
+    convertToBillion,
+    retainTwoDigits,
+    darkMode,
+    setDarkMode,
+    handleSearchParams,
+    changeSearchParams,
+    queryParams,
+    portfolioList,
+    redirectedFromPortfolioPage,
+  } = useContext(CryptoContext) as CryptoContextProps;
 
-  // const handlePortfolioPageClick = () => {
-  //   setLoadHomePage(false);
-  //   //changeSearchParams("load_home_page", "false");
-  // };
+  const [loadHomePage, setLoadHomePage] = useLocalState<boolean>("loadHomePage", true);
+  //const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
+  const [marketData, setMarketData] = useLocalState<any>("marketData", null);
+  //const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
+  const [marketDataIsLoading, setMarketDataIsLoading] = useState<boolean>(false);
+  const [marketDataLoadingHasError, setMarketDataLoadingHasError] = useState<boolean>(false);
 
-  // const toggleDarkMode = () => {
-  //   setDarkMode(!darkMode);
-  // };
+  const handleHomePageClick = () => {
+    setLoadHomePage(true);
+    //changeSearchParams("load_home_page", "true");
+  };
 
-  // const getMarketData = async () => {
-  //   try {
-  //     setMarketDataIsLoading(true);
-  //     const marketDataResponse = await axios.get("https://api.coingecko.com/api/v3/global");
-  //     setMarketDataIsLoading(false);
-  //     setMarketData(marketDataResponse.data.data);
-  //     setMarketDataLoadingHasError(false);
-  //   } catch (err) {
-  //     setMarketDataLoadingHasError(true);
-  //     setMarketDataIsLoading(false);
-  //   }
-  // };
+  const handlePortfolioPageClick = () => {
+    setLoadHomePage(false);
+    changeSearchParams("load_home_page", "false");
+  };
 
-  // useEffect(() => {
-  //   getMarketData();
-  // }, []);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
-  // useEffect(() => {
-  //   handleSearchParams("load_home_page", "true");
-  // }, []);
+  const getMarketData = async () => {
+    try {
+      setMarketDataIsLoading(true);
+      const marketDataResponse = await axios.get("https://api.coingecko.com/api/v3/global");
+      setMarketDataIsLoading(false);
+      setMarketData(marketDataResponse.data.data);
+      setMarketDataLoadingHasError(false);
+    } catch (err) {
+      setMarketDataLoadingHasError(true);
+      setMarketDataIsLoading(false);
+    }
+  };
 
-  // const loadHomePageInUrl = queryParams.load_home_page === "true";
+  useEffect(() => {
+    getMarketData();
+  }, []);
+
+  /*useEffect(() => {
+    handleSearchParams("load_home_page", "true");
+  }, []);*/
+
+  //const loadHomePageInUrl = queryParams.load_home_page === "true";
 
   return (
     <div>
@@ -213,7 +216,7 @@ export default function App() {
           </div>
         </div>
       </div> */}
-      <div /*className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"}`}*/>
+      <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"}`}>
         <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-5 sm:px-10">
           <div className={`flex items-center font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}>
             <svg width="36" height="24" viewBox="0 -2 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,30 +242,31 @@ export default function App() {
           </div>
           <div className="w-40 sm:w-60 lg:w-68 xl:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
             <div
-              /*onClick={handleHomePageClick}
+              
               className={`flex items-center justify-center h-10 w-[30%] sm:w-1/2 lg:w-1/2  xl:w-1/2 mr-0.5 rounded-md ${
-                loadHomePageInUrl
+                loadHomePage
                   ? "bg-skin-coins-converter-selected-button-background"
                   : "bg-skin-coins-converter-unselected-button-background"
-              }`}*/
+              }`}
             >
               <Link
                 to="/"
-                /*className={`${
-                  loadHomePageInUrl
+                onClick={handleHomePageClick}
+                className={`${
+                  loadHomePage
                     ? "text-skin-selected-button-app-name-text"
                     : "text-skin-unselected-button-text"
-                } flex items-center justify-center`}*/
+                } flex items-center justify-center`}
               >
-                {/*<svg
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill={
                     darkMode
-                      ? loadHomePageInUrl
+                      ? loadHomePage
                         ? "rgba(255, 255, 255, 1)"
                         : "rgba(255, 255, 255, 0.5)"
-                      : loadHomePageInUrl
+                      : loadHomePage
                       ? "rgba(53, 53, 112, 1)"
                       : "rgba(161, 161, 170, 1)"
                   }
@@ -271,35 +275,36 @@ export default function App() {
                   <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                   <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>
-                <span className="hidden sm:block">&nbsp;Home</span>*/}
+                <span className="hidden sm:block">&nbsp;Home</span>
                 Home&nbsp;
               </Link>
             </div>
             <div
-              // onClick={handlePortfolioPageClick}
-              // className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 lg:w-1/2 xl:w-1/2 ml-0.5 rounded-md ${
-              //   !loadHomePageInUrl
-              //     ? "bg-skin-coins-converter-selected-button-background"
-              //     : "bg-skin-coins-converter-unselected-button-background"
-              // }`}}
+              
+              className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 lg:w-1/2 xl:w-1/2 ml-0.5 rounded-md ${
+                !loadHomePage
+                  ? "bg-skin-coins-converter-selected-button-background"
+                  : "bg-skin-coins-converter-unselected-button-background"
+              }`}
             >
               <Link
                 to="/portfolio"
-                // className={`${
-                //   !loadHomePageInUrl
-                //     ? "text-skin-selected-button-app-name-text"
-                //     : "text-skin-unselected-button-text"
-                // } flex items-center justify-center`}
+                onClick={handlePortfolioPageClick}
+                className={`${
+                  !loadHomePage
+                    ? "text-skin-selected-button-app-name-text"
+                    : "text-skin-unselected-button-text"
+                } flex items-center justify-center`}
               >
-                {/*<svg
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill={
                     darkMode
-                      ? !loadHomePageInUrl
+                      ? !loadHomePage
                         ? "rgba(255, 255, 255, 1)"
                         : "rgba(255, 255, 255, 0.5)"
-                      : !loadHomePageInUrl
+                      : !loadHomePage
                       ? "rgba(53, 53, 112, 1)"
                       : "rgba(161, 161, 170, 1)"
                   }
@@ -308,12 +313,12 @@ export default function App() {
                   <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
                   <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
                   <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
-                </svg>*/}
+                </svg>
                 &nbsp;Portfolio
               </Link>
             </div>
           </div>
-          {/* <div className="flex items-center md:space-x-5">
+          <div className="flex items-center md:space-x-5">
             <div className="flex flex-col relative">
               <SearchItemInput />
             </div>
@@ -358,20 +363,18 @@ export default function App() {
                 </svg>
               )}
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio" element={<Portfolio />}/>
           
-        {/* <Route exact path="/coin-page/:coinId">
-          {redirectedFromPortfolioPage ? (
+        {/* <Route path="/coin-page/:coinId" element={redirectedFromPortfolioPage ? (
             <CoinPage portfolioList={portfolioList} />
           ) : (
             <CoinPage />
-          )}
-        </Route> */}
+          )}/> */}
       </Routes>
     </div>
   );

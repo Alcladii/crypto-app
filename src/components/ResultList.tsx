@@ -1,5 +1,5 @@
 //import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 interface ResultListProps {
@@ -11,10 +11,10 @@ interface ResultListProps {
 }
 
 export const ResultList: React.FC<ResultListProps>= ({ results }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = (item: any) => {
-    history.push(`/coin-page/${item.id}`);
+    navigate(`/coin-page/${item.id}`);
   };
 
   return (

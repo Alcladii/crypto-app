@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
@@ -33,11 +33,11 @@ type CoinParams = {
   coinId: string;
 }
 
-const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const coinId = useParams<CoinParams>();
+ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
+   const [isExpanded, setIsExpanded] = useState(false);
+   const coinId = useParams<CoinParams>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     convertToBillion,
@@ -55,7 +55,7 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
   } = useContext(CryptoContext) as CryptoContextProps;
 
   useEffect(() => {
-    getSingleCoinData(coinId.coinId);
+    getSingleCoinData(coinId.coinId as string);
   }, [coinId.coinId, getSingleCoinData]);
 
   useEffect(() => {
@@ -64,12 +64,12 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
 
   const handleClick = () => {
     setSingleCoin(null);
-    history.push("/");
+    navigate("/");
   };
 
   const naviBackToPortfolio = () => {
     setSingleCoin(null);
-    history.push("/portfolio");
+    navigate("/portfolio");
   };
 
   const createMarkup = (htmlContent: string) => {

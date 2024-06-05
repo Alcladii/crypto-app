@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
@@ -61,10 +61,10 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
     return 0
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = (item: any) => {
-    history.push(`/coin-page/${item.id}`);
+    navigate(`/coin-page/${item.id}`);
     setRedirectedFromPortfolioPage(true);
   };
 
