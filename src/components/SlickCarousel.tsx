@@ -23,12 +23,6 @@ const CoinTag = styled.img`
   width: 30px;
 `;
 
-const SlidesContainer = styled.div<{ selected: boolean }>`
-  background-color: ${(props) => (props.selected ? "purple" : "grey")};
-  cursor: pointer;
-  height: 70px;
-`;
-
 export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   coinList,
   setDisplaySelectCoinToSeeChartMessage,
@@ -209,9 +203,8 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
           <Slider {...settings}>
             {slidesData.map((coin: Coin) => (
               <div key={coin.id}>
-                <SlidesContainer
+                <div
                   onClick={() => handleClick(coin.id)}
-                  selected={coin.selected || false}
                   className={`${
                     coin.selected
                       ? "bg-skin-carousel-selected-button-background-color"
@@ -259,8 +252,8 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
                       </div>
                     </div>
                   </div>
-                </SlidesContainer>
-              </div>
+                </div>
+              </div >
             ))}
           </Slider>
         )}
