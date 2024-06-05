@@ -10,19 +10,19 @@ import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput.tsx";
 import { CurrencySelector } from "./components/CurrencySelector.tsx";
 
-// const ProgressBarOuter = styled.div`
-//   border-radius: 99px;
-//   background: rgba(255, 255, 255, 0.4);
-//   height: 10px;
-//   width: 100px;
-// `;
+const ProgressBarOuter = styled.div`
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.4);
+  height: 10px;
+  width: 100px;
+`;
 
-// const ProgressBarInner = styled.div<{ width: number; background: string }>`
-//   border-radius: 99px;
-//   height: 10px;
-//   width: ${(props) => (props.width / 100) * 100}px;
-//   background: ${(props) => props.background};
-// `;
+const ProgressBarInner = styled.div<{ width: number; background: string }>`
+  border-radius: 99px;
+  height: 10px;
+  width: ${(props) => (props.width / 100) * 100}px;
+  background: ${(props) => props.background};
+`;
 
 export default function App() {
 
@@ -89,7 +89,7 @@ export default function App() {
 
   return (
     <div>
-      {/* <div className="bg-right-currency-background w-screen text-white">
+      <div className="bg-right-currency-background w-screen text-white">
         <div className="max-w-[1296px] h-20 mx-auto flex items-center justify-center py-8 px-10 font-space-grotesk font-lg">
           <div className="flex items-center md:w-[70%] w-full justify-between overflow-x-scroll no-scrollbar">
             <div className="flex items-center text-[rgba(209, 209, 209, 1)] mr-4 xl:mr-0 min-w-32">
@@ -215,7 +215,7 @@ export default function App() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"}`}>
         <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-5 sm:px-10">
           <div className={`flex items-center font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}>
