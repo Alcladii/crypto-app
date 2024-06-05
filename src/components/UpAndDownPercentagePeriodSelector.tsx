@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import "../App.css";
 import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 
