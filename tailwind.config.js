@@ -2,32 +2,7 @@
 export default {
   content: [
     "./index.html",
-    "./src/components/AddAsset.jsx",
-    "./src/components/Arrow.jsx",
-    "./src/components/BarChart.jsx",
-    "./src/components/Coins.jsx",
-    "./src/components/CurrencyConverter.jsx",
-    "./src/components/CurrencySelector.jsx",
-    "./src/components/DeleteAsset.jsx",
-    "./src/components/EditAsset.jsx",
-    "./src/components/LineChart.jsx",
-    "./src/components/LineChartCurrencyConverter.jsx",
-    "./src/components/LineChartIndividualCoin.jsx",
-    "./src/components/PortfolioItem.jsx",
-    "./src/components/PurchaseAmount.jsx",
-    "./src/components/PurchaseDate.jsx",
-    "./src/components/ResultList.jsx",
-    "./src/components/SearchInput.jsx",
-    "./src/components/SlickCarousel.jsx",
-    "./src/contexts/cryptoContext.jsx",
-    "./src/pages/CoinPage.jsx",
-    "./src/pages/Homepage.jsx",
-    "./src/pages/Portfolio.jsx",
-    "./src/App.jsx",
-    "./src/components/CoinPagePlusInCircleIcon.jsx",
-    "./src/components/DaysButton.jsx",
-    "./src/components/PriceChangePercentageText.jsx",
-    "./src/components/UpAndDownPercentagePeriodSelector.jsx"
+    "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {
@@ -104,7 +79,7 @@ export default {
           "search-popup-background-color":'var(--color-background-search-popup)',
           "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)',
           "home-porfolio-button-wrapper-background-color":'var(--color-bakcground-home-porfolio-button-wrapper)',
-          "sticky-coins-table-title-bar-bakkground-color":'var(--color-background-sticky-coins-table-title-bar)'
+          "sticky-coins-table-title-bar-background-color":'var(--color-background-sticky-coins-table-title-bar)'
         }
       },
       borderColor: {
