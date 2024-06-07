@@ -141,8 +141,9 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   };
 
   const getSingleCoinData = async (item: string) => {
-    setSingleCoinIsLoading(true);
+    console.log("getSingleCoinData ran in cryptoContext.tsx")
     setSingleCoinLoadingHasError(false);
+    setSingleCoinIsLoading(true);   
     try {     
       const singleCoinData = await axios(`https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`);
       setSingleCoinIsLoading(false);
@@ -154,6 +155,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   };
 
   const getCurrencyList = async () => {
+    console.log("getCurrencyList ran in cryptoContext.tsx")
     setCurrencyLoadingHasError(false);
     setCurrencyListIsLoading(true);    
     try {
@@ -169,13 +171,14 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     getCurrencyList();
-  }, [currencyList]);
+  }, [currencyList]);*/
 
   const currencySymbol = currenciesTyped[displayCurrency.toUpperCase()]?.symbol;
 
   const getCoinPriceVolume = async (coinId: string, currency: string, numOfDays: string) => {
+    console.log("getCoinPriceVolume ran in cryptoContext.tsx")
     setPriceVolumeChartIsLoadingHasError(false);
     setPriceVolumeChartIsLoading(true);
     try {

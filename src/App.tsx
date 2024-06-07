@@ -60,14 +60,16 @@ export default function App() {
   };
 
   const getMarketData = async () => {
-    try {
-      setMarketDataIsLoading(true);
+    console.log("getMarketData ran in App.tsx")
+    setMarketDataLoadingHasError(false);
+    setMarketDataIsLoading(true);   
+    try {     
       const marketDataResponse = await axios.get(
         "https://api.coingecko.com/api/v3/global"
       );
       setMarketDataIsLoading(false);
       setMarketData(marketDataResponse.data.data);
-      setMarketDataLoadingHasError(false);
+      
     } catch (err) {
       setMarketDataLoadingHasError(true);
       setMarketDataIsLoading(false);

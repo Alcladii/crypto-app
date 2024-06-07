@@ -16,6 +16,7 @@ export const SearchItemInput = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
   const [results, setResults] = useState<Coin[]>([]);
+  const [fecthingData, setFetchingData] = useState<boolean>(false)
   const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
   const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
@@ -37,14 +38,19 @@ export const SearchItemInput = () => {
   }, []);
 
   const fetchSearchData = async (value: string) => {
+    console.log("fetchSearchData ran in SearchInput.tsx")
+    setFetchSearchDataHasError(false)
+    setFetchingData(true)
     try {
       const response = await axios <{ coins: Coin[] }>(
         `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
       );
       const results = response.data.coins;
       setResults(results);
+      setFetchingData(false)
     } catch (error) {
-      setFetchSearchDataHasError(true)
+      setFetchingData(false)
+      setFetchSearchDataHasError(true)      
     }
   };
 

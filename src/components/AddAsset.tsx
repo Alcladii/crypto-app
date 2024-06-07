@@ -59,9 +59,10 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
     ));
 
   const handleCoinSelect = async (coinId: string) => {
-    try {
-      setSelectCoinDataHasError(false);
-      setSelectCoinIsLoading(true);
+    console.log("handleCoinSelect in AddAsset.tsx ran")   
+    setSelectCoinDataHasError(false);
+    setSelectCoinIsLoading(true);
+    try {    
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
@@ -74,14 +75,15 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   };
 
   const getSelectedCoinData = async (coinId: string) => {
-    try {
-      setSelectedCoinIsLoading(true);
+    console.log("getSelectedCoinData in AddAsset.tsx ran")
+    setSelectedCoinLoadingHasError(false);
+    setSelectedCoinIsLoading(true);
+    try {   
       const singleCoinHistory = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
       );
       addCoin(selectedCoin, purchasedAmount, purchaseDate, singleCoinHistory.data);
-      setSelectedCoinIsLoading(false);
-      setSelectedCoinLoadingHasError(false);
+      setSelectedCoinIsLoading(false);      
     } catch (err) {
       setSelectedCoinLoadingHasError(true);
       setSelectedCoinIsLoading(false);
