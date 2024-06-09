@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
+import { InvestmentCalculator } from "../components/InvestmentCalculator";
 
 function Portfolio() {
   const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext) as CryptoContextProps;

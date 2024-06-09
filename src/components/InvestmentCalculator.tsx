@@ -14,7 +14,7 @@ export const InvestmentCalculator = () => {
   );
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<any>(null);
   //console.log(selectedOption);
 
   const getCoinList = useCallback(() => {

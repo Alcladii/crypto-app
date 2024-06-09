@@ -24,7 +24,7 @@ export type CryptoContextProps = {
   useLocalState: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;
   retainTwoDigits: (number: number) => number;
-  getSingleCoinData: (item: string) => Promise<void>;
+  getSingleCoinData: (item: string, setSingleCoin: React.Dispatch<React.SetStateAction<any>>) => Promise<void>;
   singleCoin: any;
   setSingleCoin: Dispatch<SetStateAction<any>>;
   displayCurrency: string;
@@ -140,7 +140,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     return parseFloat(number.toFixed(2));
   };
 
-  const getSingleCoinData = async (item: string) => {
+  const getSingleCoinData = async (item: string, setSingleCoin: React.Dispatch<React.SetStateAction<any>>) => {
     setSingleCoinIsLoading(true);
     setSingleCoinLoadingHasError(false);
     try {     

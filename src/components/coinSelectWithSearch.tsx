@@ -12,7 +12,8 @@ export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({ coin
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   //const [filteredResult, setFilteredResult] = useState([])
-  let searchInputRef = useRef();
+
+  let searchInputRef = useRef<HTMLInputElement | null> ();
 
   console.log(isFocused);
 
@@ -37,7 +38,7 @@ export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({ coin
     setSelectedOption(option);
   };*/
 
-  const handleCoinSelect = (coin) => {
+  const handleCoinSelect = (coin: any) => {
     getSingleCoinData(coin.id, setSelectedOption);
   };
 
@@ -82,7 +83,7 @@ export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({ coin
     <div className="w-[75%]">
         <input
           className="relative px-2 w-full"
-          ref={searchInputRef}
+          ref={searchInputRef as React.MutableRefObject<HTMLInputElement>}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={handleChange}
