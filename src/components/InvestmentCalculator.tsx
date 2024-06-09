@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { CryptoContext } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { CoinSelectWithSearch } from "./coinSelectWithSearch";
 
 export const InvestmentCalculator = () => {
   const { useLocalState, getSingleCoinData, darkMode } =
-    useContext(CryptoContext);
+    useContext(CryptoContext) as CryptoContextProps;
 
   const [showPopup, setShowPopup] = useState(false);
   const [coinListInCalculator, setCoinListInCalculator] = useLocalState(

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { CryptoContext } from "../contexts/cryptoContext";
-import Select from "react-select";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
 export const CoinSelectWithSearch = ({ coinList, setSelectedOption }) => {
   const { useLocalState, getSingleCoinData, selectedOption, darkMode } =
-    useContext(CryptoContext);
+    useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   //const [filteredResult, setFilteredResult] = useState([])
@@ -49,7 +48,7 @@ export const CoinSelectWithSearch = ({ coinList, setSelectedOption }) => {
     setInputValue(e.target.value);
   };
 
-  const filteredCoinsOptions = coinList.filter((item) =>
+  const filteredCoinsOptions = coinList.filter((item: any) =>
     item.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
