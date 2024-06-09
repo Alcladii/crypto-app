@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
-export const CoinSelectWithSearch = ({ coinList, setSelectedOption }) => {
-  const { useLocalState, getSingleCoinData, selectedOption, darkMode } =
+type CoinSelectWithSearchProps = {
+  coinList: any,
+  setSelectedOption: React.Dispatch<React.SetStateAction<any>>, 
+}
+
+export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({ coinList, setSelectedOption }) => {
+  const { useLocalState, getSingleCoinData, darkMode } =
     useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -44,7 +49,7 @@ export const CoinSelectWithSearch = ({ coinList, setSelectedOption }) => {
     setIsFocused(false);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
@@ -86,7 +91,7 @@ export const CoinSelectWithSearch = ({ coinList, setSelectedOption }) => {
         />
         {isFocused ? (
           <div className="h-60 absolute overflow-y-scroll">
-            {filteredCoinsOptions.map((item) => (
+            {filteredCoinsOptions.map((item: any) => (
               <div onMouseDown={()=>handleCoinSelect(item)} className="border" key={item.id}>
                 {" "}
                 {item.name}

@@ -41,7 +41,7 @@ export const InvestmentCalculator = () => {
     if (!coinListInCalculator) {
       getCoinList();
     }
-  }, [coinListInCalculator, getCoinList]);
+  }, [coinListInCalculator]);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -84,7 +84,7 @@ export const InvestmentCalculator = () => {
                 fill={
                   darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"
                 }
-                class="w-8 h-8 cursor-pointer"
+                className="w-8 h-8 cursor-pointer"
                 onClick={togglePopup}
               >
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
