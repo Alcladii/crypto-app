@@ -49,7 +49,6 @@ export const EditAsset: React.FC<EditAssetProps> = ({ id, setPortfolioListNeedsU
   };
 
   const updateSelectedCoinData = async (coinId: string) => {
-    console.log("updateSelectedCoinData ran in EditAsseet.tsx")
     setSelectedCoinLoadingHasError(false);
     setSelectedCoinIsLoading(true);   
     try {   

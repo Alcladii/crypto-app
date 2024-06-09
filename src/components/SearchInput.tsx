@@ -4,19 +4,14 @@ import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 
-type Coin = {
-  id: string;
-  name: string;
-  symbol: string;
-  large: string;
-}
+
 
 export const SearchItemInput = () => {
-  const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
+  const { darkMode, fetchSearchData } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
-  const [results, setResults] = useState<Coin[]>([]);
-  const [fecthingData, setFetchingData] = useState<boolean>(false)
+  const [results, setResults] = useState<any>([]);
+  const [fecthingSearchData, setFetchingSearchData] = useState<boolean>(false)
   const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
   const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
@@ -37,26 +32,9 @@ export const SearchItemInput = () => {
     };
   }, []);
 
-  const fetchSearchData = async (value: string) => {
-    console.log("fetchSearchData ran in SearchInput.tsx")
-    setFetchSearchDataHasError(false)
-    setFetchingData(true)
-    try {
-      const response = await axios <{ coins: Coin[] }>(
-        `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
-      );
-      const results = response.data.coins;
-      setResults(results);
-      setFetchingData(false)
-    } catch (error) {
-      setFetchingData(false)
-      setFetchSearchDataHasError(true)      
-    }
-  };
-
   useEffect(() => {
     if (debouncedSearchValue) {
-      fetchSearchData(debouncedSearchValue);
+      fetchSearchData(key, debouncedSearchValue, setFetchingSearchData, setFetchSearchDataHasError, setResults);
     }
   }, [debouncedSearchValue]);
 

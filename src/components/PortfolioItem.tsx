@@ -43,12 +43,6 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
     setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  /*const handleRemove= (id) => {
-    const newPortfolioList = portfolioList.filter((item) => item.id !== id);
-    setPortfolioList(newPortfolioList);
-    setPortfolioListNeedsUpdate(true);
-  };*/
-
   const profitPercentage = (item: { historyData: { market_data: { current_price: { [x: string]: number; }; }; }; coinData: { market_data: { current_price: { [x: string]: number; }; }; }; }) => {
     if (item.historyData.market_data) {
       return retainTwoDigits(

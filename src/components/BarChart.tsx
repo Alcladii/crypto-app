@@ -28,11 +28,13 @@ import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 
 type BarChartProps = {
-  priceVolumeList: any; 
-}
+  priceVolumeList: any;
+};
 
 const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
-  const { numOfDays, numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
+  const { numOfDays, numOfDaysFromUrl } = useContext(
+    CryptoContext
+  ) as CryptoContextProps;
   const maxTicksLimit = setMaxTicksLimit(numOfDays);
   const options = {
     responsive: true,

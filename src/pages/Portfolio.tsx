@@ -31,7 +31,6 @@ function Portfolio() {
   //So it gives the accurate profit
 
   const getLatestCoinDataOnLoad = async () => {   
-    console.log("getLatestCoinDataOnLoad ran in Portfolio.tsx")
     setFetchingLatestCoinDataHasError(false);
     setFetchingLatestCoinData(true);
     try {        

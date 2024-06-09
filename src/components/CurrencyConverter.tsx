@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "./LineChartCurrencyConverter";
 import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
 
@@ -31,17 +31,13 @@ export const CurrencyConverter = () => {
     "rightCurrency",
     "bitcoin"
   );
-  const [leftCurrencyData, setLeftCurrencyData] = useLocalState<CurrencyData | null>(
-    "leftCurrencyData",
-    null
-  );
+  const [leftCurrencyData, setLeftCurrencyData] =
+    useLocalState<CurrencyData | null>("leftCurrencyData", null);
   const [singleCoinIsLoading, setSingleCoinIsLoading] = useState(false);
   const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
     useState(false);
-  const [rightCurrencyData, setRightCurrencyData] = useLocalState<CurrencyData | null>(
-    "rightCurrencyData",
-    null
-  );
+  const [rightCurrencyData, setRightCurrencyData] =
+    useLocalState<CurrencyData | null>("rightCurrencyData", null);
   const [convertedResult, setConvertedResult] = useState("");
   const [leftCurrencyPriceVolume, setLeftCurrencyPriceVolume] = useLocalState(
     "leftCurrencyPriceVolume",
@@ -77,9 +73,10 @@ export const CurrencyConverter = () => {
     };
     symbol: string;
   }
-  
 
-  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setInputValue(e.target.value);
   };
 
@@ -101,68 +98,54 @@ export const CurrencyConverter = () => {
     }
   };
 
-  const getSelectedLeftCurrencyData = async (item : string) => {
-    try {
-      console.log("getSelectedLeftCurrencyData in CurrencyConverter.tsx ran")
-      setSingleCoinIsLoading(true);
-      setSingleCoinLoadingHasError(false);
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
-      setSingleCoinIsLoading(false);
-      // if (!singleCoinData) {
-      //   setSingleCoinLoadingHasError(true);
-      //   return;
-      // } else {
+  const getSelectedLeftCurrencyData = useCallback(
+    async (item: string) => {
+      try {
+        setSingleCoinIsLoading(true);
+        setSingleCoinLoadingHasError(false);
+        const singleCoinData = await axios(
+          `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        );
+        setSingleCoinIsLoading(false);
         setLeftCurrencyData(singleCoinData.data);
-      //}
-    } catch (err) {
-      setSingleCoinLoadingHasError(true);
-      setSingleCoinIsLoading(false);
-    }
-  };
+      } catch (err) {
+        setSingleCoinLoadingHasError(true);
+        setSingleCoinIsLoading(false);
+      }
+    },
+    [leftCurrency]
+  );
 
-  const getSelectedRightCurrencyData = async (item : string) => {
-    console.log("getSelectedRightCurrencyData in CurrencyConverter.tsx ran") 
+  const getSelectedRightCurrencyData = async (item: string) => {
+    console.log("getSelectedRightCurrencyData in CurrencyConverter.tsx ran");
     setSingleCoinLoadingHasError(false);
     setSingleCoinIsLoading(true);
-    try {       
+    try {
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
       setSingleCoinIsLoading(false);
-      // if (!singleCoinData) {
-      //   setSingleCoinLoadingHasError(true);
-      //   return;
-      // } else {
-        setRightCurrencyData(singleCoinData.data);
-      //}
+      setRightCurrencyData(singleCoinData.data);
     } catch (err) {
       setSingleCoinLoadingHasError(true);
       setSingleCoinIsLoading(false);
     }
   };
 
-  const handleLeftCurrencySelect = (value : string) => {
+  const handleLeftCurrencySelect = (value: string) => {
     setLeftCurrency(value);
-  };
-
-  const handleRightCurrencySelect = (value : string) => {
-    setRightCurrency(value);
-  };
-
-  useEffect(() => {
     getSelectedLeftCurrencyData(leftCurrency);
-  }, [leftCurrency]);
+  };
 
-  useEffect(() => {
-    getSelectedRightCurrencyData(rightCurrency);
-  }, [rightCurrency]);
+  const handleRightCurrencySelect = (value: string) => {
+    setRightCurrency(value);
+    getSelectedRightCurrencyData(value);
+  };
 
   const getLeftCurrencyPriceVolume = async (
     leftCurrency: string,
     displayCurrency: string,
-    currencyConverterDays: string,
+    currencyConverterDays: string
   ) => {
     try {
       const response = await getCoinPriceVolume(
@@ -182,8 +165,8 @@ export const CurrencyConverter = () => {
 
   const getRightCurrencyPriceVolume = async (
     rightCurrency: string,
-    displayCurrency: string, 
-    currencyConverterDays: string,
+    displayCurrency: string,
+    currencyConverterDays: string
   ) => {
     try {
       const response = await getCoinPriceVolume(
@@ -258,18 +241,22 @@ export const CurrencyConverter = () => {
     });
   }, [rightCurrency]);
 
-  
-
   return (
     <div className={`${darkMode ? "" : "theme-light"}`}>
       <div className="flex justify-center my-6">
-        {singleCoinIsLoading && <div className="text-skin-loading-and-error-message-currency-converter-text-color">Loading Single Coin</div>}
+        {singleCoinIsLoading && (
+          <div className="text-skin-loading-and-error-message-currency-converter-text-color">
+            Loading Single Coin
+          </div>
+        )}
         {singleCoinLoadingHasError && (
-          <div className="text-skin-loading-and-error-message-currency-converter-text-color">Error in loading coin data, unable to update coin price</div>
+          <div className="text-skin-loading-and-error-message-currency-converter-text-color">
+            Error in loading coin data, unable to update coin price
+          </div>
         )}
       </div>
       <div className="flex relative flex-col md:flex-row">
-        <div className="w-full md:w-[50%] p-6 mb-2 md:mr-3 h-48 bg-skin-left-currency-background-color rounded-md">
+        <div className="w-full md:w-[50%] p-6 mb-2 md:mb-0 md:mr-3 h-48 bg-skin-left-currency-background-color rounded-md">
           <div className="text-sm text-skin-you-sell-you-buy-text-color">
             You sell
           </div>
@@ -331,7 +318,9 @@ export const CurrencyConverter = () => {
                 width="788.48"
                 height="788.48"
                 rx="394.24"
-                fill={darkMode ? "rgba(255, 255, 255, 1)" : "rgba(53, 53, 112, 1)"}
+                fill={
+                  darkMode ? "rgba(255, 255, 255, 1)" : "rgba(53, 53, 112, 1)"
+                }
                 strokeWidth="0"
               ></rect>
             </g>
@@ -345,7 +334,7 @@ export const CurrencyConverter = () => {
             </g>
           </svg>
         </div>
-        <div className="w-full md:w-[50%] p-6 mt-2 md:ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
+        <div className="w-full md:w-[50%] p-6 mt-2 md:mt-0 md:ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
           <div className="text-sm text-skin-you-sell-you-buy-text-color">
             You buy
           </div>
@@ -380,7 +369,7 @@ export const CurrencyConverter = () => {
           </div>
         </div>
       </div>
-      <div className="mt-16 bg-skin-currency-converter-chart-background-color rounded-md p-6">
+      <div className="mt-12 bg-skin-currency-converter-chart-background-color rounded-md p-6">
         <div className="font-space-grotesk">
           {leftCurrencyData !== null && (
             <span className="text-skin-currency-inside-chart-text-color">
@@ -407,8 +396,11 @@ export const CurrencyConverter = () => {
       </div>
 
       <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-button-bar-currency-converter-background-color rounded-md">
-          {daysSelectionData.map((item) => (
-          <DaysButtonInCurrencyConverter days={item.days} buttonText={item.buttonText} />
+        {daysSelectionData.map((item) => (
+          <DaysButtonInCurrencyConverter
+            days={item.days}
+            buttonText={item.buttonText}
+          />
         ))}
       </div>
     </div>
