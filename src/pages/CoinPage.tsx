@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/UI/Arrow";
@@ -37,6 +36,8 @@ type CoinParams = {
  const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
    const [isExpanded, setIsExpanded] = useState(false);
    const [singleCoinInCoinPage, setSingleCoinInCoinPage] = useState<any>()
+   const [coinDataIsLoading, setCoinDataIsLoading] = useState<boolean>(false)
+   const [coinDataLoadingHasError, setCoinDataLoadingHasError] = useState<boolean>(false)
    const coinId = useParams<CoinParams>();
 
   const navigate = useNavigate();
@@ -44,20 +45,16 @@ type CoinParams = {
   const {
     convertToBillion,
     getSingleCoinData,
-    //singleCoinInCoinPage,
-    singleCoinIsLoading,
-    singleCoinLoadingHasError,
     displayCurrency,
     currencySymbol,
     retainTwoDigits,
-    //setSingleCoin,
     darkMode,
     redirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
 
   useEffect(() => {
-    getSingleCoinData(coinId.coinId as string, setSingleCoinInCoinPage);
+    getSingleCoinData(coinId.coinId as string, setSingleCoinInCoinPage, setCoinDataIsLoading, setCoinDataLoadingHasError);
   }, [coinId.coinId]);
 
   const handleClick = () => {
@@ -117,10 +114,10 @@ type CoinParams = {
             Back to Portfolio
           </div>
         )}
-        {singleCoinIsLoading && (
+        {coinDataIsLoading && (
           <div className="my-5 flex justify-center items-center">Loading Coin</div>
         )}
-        {singleCoinLoadingHasError && (
+        {coinDataLoadingHasError && (
           <div className="my-10 flex justify-center items-center text-2xl">
             Error in fetching Coin
           </div>

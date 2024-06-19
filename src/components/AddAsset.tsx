@@ -104,7 +104,7 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   return (
     <div>
       <div
-        className="flex justify-center items-center w-28 h-10 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color"
+        className="flex justify-center items-center w-28 h-10 ml-2 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color"
         onClick={togglePopup}
       >
         Add Asset

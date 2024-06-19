@@ -52,6 +52,9 @@
     --color-text-coin-search-result-list: rgba(255, 255, 255, 1);
     --color-text-coin-search-input: rgba(255, 255, 255, 1);
     --color-text-chart-color-indicator: rgba(255, 255, 255, 1);
+    --color-text-selected-calculator-option: rgba(255, 255, 255, 1);
+    --color-text-unselected-calculator-option: rgba(255, 255, 255, 1);
+    --color-text-calculator-general: rgba(255, 255, 255, 1);
     --color-background-app: rgba(19, 18, 26, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(25, 25, 37, 1);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -82,8 +85,14 @@
     --color-background-coin-search-result-list: rgba(25, 25, 37, 1);
     --color-bakcground-home-porfolio-button-wrapper: rgba(25, 25, 37, 1);
     --color-background-sticky-coins-table-title-bar: rgba(97, 97, 214, 1);
+    --color-background-calculator-items-container-dates-selector:rgba(30, 25, 50, 1);
+    --color-background-calculator-pop-up: rgba(19, 18, 26, 1);
+    --color-background-calculator-search-bar-unselected-calculator-option: rgba(25, 25, 37, 1);
+    --color-background-calculator-selected-coin-wrapper: rgba(25, 25, 50, 1);
+    --color-background-calculator-search-drop-down:rgba(25, 25, 50, 1);
     --color-border-currency-converter: rgba(255, 255, 255, 1);
     --color-border-portfolio-item-frames: rgba(45, 45, 81, 1);
+    --color-border-calculator-search-drop-down: rgba(255, 255, 255, 0.05);
   } 
 
   .theme-light {
@@ -123,6 +132,9 @@
     --color-text-coin-search-result-list: rgba(24, 24, 37, 1);
     --color-text-coin-search-input: rgba(24, 24, 37, 1);
     --color-text-chart-color-indicator: rgba(24, 24, 37, 1);
+    --color-text-selected-calculator-option: rgba(255, 255, 255, 1);
+    --color-text-unselected-calculator-option: rgba(176, 176, 235, 1);
+    --color-text-calculator-general: rgba(66, 66, 134, 1);
     --color-background-app: rgba(243, 245, 249, 1);
     --color-background-unselected-button-search-bar-currency-selector: rgba(204, 204, 250, 0.4);
     --color-background-carousel-selected-button: rgba(97, 97, 214, 0.5);
@@ -154,7 +166,13 @@
     --color-background-coin-search-result-list: rgba(255, 255, 255, 1);
     --color-bakcground-home-porfolio-button-wrapper: rgba(255, 255, 255, 1);
     --color-background-sticky-coins-table-title-bar: rgba(204, 204, 250, 1);
+    --color-background-calculator-items-container-dates-selector: rgba(243, 245, 249, 1);
+    --color-background-calculator-pop-up: rgba(255, 255, 255, 1);
+    --color-background-calculator-search-bar-unselected-calculator-option: rgba(235, 235, 253, 1);
+    --color-background-calculator-selected-coin-wrapper: rgba(235, 235, 253, 1);
+    --color-background-calculator-search-drop-down:rgba(255, 255, 255, 1);
     --color-border-currency-converter: rgba(53, 53, 112, 1);
     --color-border-portfolio-item-frames: rgba(204, 204, 250, 0.4);
+    --color-border-calculator-search-drop-down: rgba(255, 255, 255, 0.05);
   }
 }
