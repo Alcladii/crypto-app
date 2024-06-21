@@ -3,6 +3,7 @@ import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { CoinSelectWithSearch } from "./coinSelectWithSearch";
 import { InvestmentCalculatorItems } from "./InvestmentCalculatorItems";
+import { CloseIcon } from "../components/UI/Svg";
 
 export const InvestmentCalculator = () => {
   const { useLocalState, displayCurrency, darkMode } = useContext(
@@ -242,30 +243,7 @@ export const InvestmentCalculator = () => {
               <div className="font-space-grotesk text-lg font-semibold">
                 Investment Calculator
               </div>
-              <svg
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                fill={
-                  darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(66, 66, 134, 1)"
-                }
-                className="w-8 h-8 cursor-pointer"
-                onClick={togglePopup}
-              >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <rect x="0" fill="none" width="24" height="24"></rect>{" "}
-                  <g>
-                    {" "}
-                    <path d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0 4-10.3.1-14.2zm-4.3 11.3L12 13.4l-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8-1.4 1.4z"></path>{" "}
-                  </g>{" "}
-                </g>
-              </svg>
+              <CloseIcon togglePopup={togglePopup} />
             </div>
             <div id="coin-select" className="flex items-center">
               <div className="flex justify-center items-center h-12 w-[25%] mr-2 rounded-md bg-skin-calculator-search-bar-unselected-calculator-option-background-color">

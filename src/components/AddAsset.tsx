@@ -4,6 +4,7 @@ import "../App.css";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "./PurchaseAmount";
 import { PurchaseDate } from "./PurchaseDate";
+import { CloseIcon } from "../components/UI/Svg";
 
 type Coin = {
   id: string;
@@ -120,22 +121,7 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
               <div className="font-space-grotesk text-lg font-semibold text-skin-add-asset-popup-buttons-title-text-color">
                 Select Coins
               </div>
-              <svg
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                fill={darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"}
-                className="w-8 h-8 cursor-pointer"
-                onClick={togglePopup}
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <rect x="0" fill="none" width="24" height="24"></rect>
-                  <g>
-                    <path d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0 4-10.3.1-14.2zm-4.3 11.3L12 13.4l-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8-1.4 1.4z"></path>
-                  </g>
-                </g>
-              </svg>
+              <CloseIcon togglePopup={togglePopup} />
             </div>
             <div className="h-[93%] md:h-[88%] pt-6 flex flex-col md:flex-row items-center">
               <div className="w-52 h-52 md:w-[38%] md:h-full bg-skin-add-asset-popup-coin-name-icon-wrapper-background-color rounded-lg flex justify-center items-center">
