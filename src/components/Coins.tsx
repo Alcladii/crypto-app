@@ -75,26 +75,19 @@ function Coins() {
   const {
     useLocalState,
     convertToBillion,
-    retainTwoDigits,
     displayCurrency,
     currencySymbol,
     getCurrencyList,
+    currencyList,
     numOfDays,
-    setNumOfDays,
     priceVolumeChartIsLoading,
     priceVolumeChartIsLoadingHasError,
     priceVolumeList,
     selectedCoinData,
-    slidesData,
     coinList,
     setCoinList,
-    setPriceVolumeList,
-    getCoinPriceVolume,
     handleSearchParams,
-    clearSearchParams,
-    location,
     queryParams,
-    navigateURL,
     changeSearchParams,
     darkMode,
     setRedirectedFromPortfolioPage,
@@ -120,7 +113,7 @@ function Coins() {
   const getCoinList = async () => {
     try {
       let coins;
-      const order = showTopFifty ? "market_cap_desc" : "market_cap_asc";
+      const order = (showTopFifty || !queryParams.show_top_fifty) ? "market_cap_desc" : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
         `/coins/markets`,
@@ -163,7 +156,9 @@ function Coins() {
   }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
-    getCurrencyList();
+    if (currencyList.length === 0){
+      getCurrencyList();
+    }   
   }, []);
 
   const navigate = useNavigate();
@@ -508,7 +503,7 @@ function Coins() {
                   ))}
               </div>
             </div>
-            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mb-0 bg-skin-charts-background-color rounded-md">
+            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (

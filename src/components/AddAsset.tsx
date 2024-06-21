@@ -12,7 +12,7 @@ type Coin = {
   image: {
     large: string;
   };
-}
+};
 
 type AddAssetProps = {
   addCoin: (
@@ -21,7 +21,7 @@ type AddAssetProps = {
     purchaseDate: string | null,
     singleCoinHistoryData: any
   ) => void;
-}
+};
 
 export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   const {
@@ -39,7 +39,8 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [selectedAmount, setSelectedAmount] = useState("");
   const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
-  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] = useState(false);
+  const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] =
+    useState(false);
   const [selectCoinIsLoading, setSelectCoinIsLoading] = useState(false);
   const [selectCoinDataHasError, setSelectCoinDataHasError] = useState(false);
 
@@ -59,9 +60,9 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
     ));
 
   const handleCoinSelect = async (coinId: string) => {
+    setSelectCoinDataHasError(false);
+    setSelectCoinIsLoading(true);
     try {
-      setSelectCoinDataHasError(false);
-      setSelectCoinIsLoading(true);
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
@@ -74,14 +75,19 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   };
 
   const getSelectedCoinData = async (coinId: string) => {
+    setSelectedCoinLoadingHasError(false);
+    setSelectedCoinIsLoading(true);
     try {
-      setSelectedCoinIsLoading(true);
       const singleCoinHistory = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
       );
-      addCoin(selectedCoin, purchasedAmount, purchaseDate, singleCoinHistory.data);
+      addCoin(
+        selectedCoin,
+        purchasedAmount,
+        purchaseDate,
+        singleCoinHistory.data
+      );
       setSelectedCoinIsLoading(false);
-      setSelectedCoinLoadingHasError(false);
     } catch (err) {
       setSelectedCoinLoadingHasError(true);
       setSelectedCoinIsLoading(false);
@@ -89,7 +95,7 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   };
 
   const handleAddClick = (coinId: string) => {
-    const amount = purchasedAmount !== null ? purchasedAmount : '';
+    const amount = purchasedAmount !== null ? purchasedAmount : "";
     const isValidNumber = /^\d*\.?\d+$/.test(amount);
     if (!isValidNumber) {
       setIsNumber(false);
@@ -123,12 +129,18 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
               <svg
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                fill={darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"}
+                fill={
+                  darkMode ? "rgba(255 ,255 ,255 ,1)" : "rgba(24, 24, 37, 1)"
+                }
                 className="w-8 h-8 cursor-pointer"
                 onClick={togglePopup}
               >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
                 <g id="SVGRepo_iconCarrier">
                   <rect x="0" fill="none" width="24" height="24"></rect>
                   <g>
@@ -143,11 +155,15 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
                   <div className="flex-col justify-center items-center">
                     <div className="w-32 flex justify-center items-center mb-2">
                       <div className="w-14 h-14 flex justify-center items-center rounded-md pb-2 bg-skin-add-asset-popup-icon-wrapper-background-color">
-                        <img className="w-8 mt-2" src={selectedCoin.image.large} />
+                        <img
+                          className="w-8 mt-2"
+                          src={selectedCoin.image.large}
+                        />
                       </div>
                     </div>
                     <div className="w-32 flex justify-center mt-4 text-2xl font-bold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
-                      {selectedCoin.name}&nbsp;({selectedCoin.symbol.toUpperCase()})
+                      {selectedCoin.name}&nbsp;(
+                      {selectedCoin.symbol.toUpperCase()})
                     </div>
                   </div>
                 )}
@@ -192,4 +208,3 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
     </div>
   );
 };
-

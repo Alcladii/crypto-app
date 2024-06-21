@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
@@ -60,14 +60,15 @@ export default function App() {
   };
 
   const getMarketData = async () => {
-    try {
-      setMarketDataIsLoading(true);
+    setMarketDataLoadingHasError(false);
+    setMarketDataIsLoading(true);   
+    try {     
       const marketDataResponse = await axios.get(
         "https://api.coingecko.com/api/v3/global"
       );
       setMarketDataIsLoading(false);
       setMarketData(marketDataResponse.data.data);
-      setMarketDataLoadingHasError(false);
+      
     } catch (err) {
       setMarketDataLoadingHasError(true);
       setMarketDataIsLoading(false);
@@ -321,7 +322,6 @@ export default function App() {
                   <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>
                 <span className="hidden sm:block">&nbsp;Home</span>
-                Home&nbsp;
               </Link>
             </div>
             <div

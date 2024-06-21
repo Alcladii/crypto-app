@@ -50,6 +50,7 @@ const LineChartCurrencyConverter: React.FC<LineChartCurrencyConverterProps> = ({
     const maxTicksLimit = setMaxTicksLimit(currencyConverterDays);
 
     const options = {
+      aspectRatio: 2,
       responsive: true,
       plugins: {
         legend: {
@@ -80,6 +81,7 @@ const LineChartCurrencyConverter: React.FC<LineChartCurrencyConverterProps> = ({
         },
       },
       tension: 0.5,
+       
     };
 
     const priceData = {
@@ -108,7 +110,12 @@ const LineChartCurrencyConverter: React.FC<LineChartCurrencyConverterProps> = ({
       ],
     };
 
-    return <Line data={priceData} options={options} />;
+    return (
+      <div className="w-full">
+        <Line data={priceData} options={options} />
+      </div>
+        
+    ) 
   }
 };
 

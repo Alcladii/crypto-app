@@ -31,7 +31,9 @@ export const Home = () => {
   const loadCoinsPageFromUrl = queryParams.load_coins_page === "true";
 
   return (
-    <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}>
+    <div
+      className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
+    >
       <div className="max-w-[1296px] mx-auto px-10 py-8">
         <div className="flex justify-center sm:justify-start items-center">
           <div
@@ -67,7 +69,7 @@ export const Home = () => {
             Currency Converter
           </div>
         </div>
-        {loadCoinsPageFromUrl ? <Coins /> : <CurrencyConverter />}
+        {(loadCoinsPageFromUrl || !queryParams.load_coins_page) ? <Coins /> : <CurrencyConverter />}
       </div>
     </div>
   );
