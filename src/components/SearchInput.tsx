@@ -18,7 +18,6 @@ export const SearchItemInput = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
   const [results, setResults] = useState<Coin[]>([]);
-  const [fecthingSearchData, setFetchingSearchData] = useState<boolean>(false)
   const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
   const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
@@ -50,12 +49,6 @@ export const SearchItemInput = () => {
       setFetchSearchDataHasError(true)
     }
   };
-
-  // useEffect(() => {
-  //   if (debouncedSearchValue) {
-  //     fetchSearchData(debouncedSearchValue);
-  //   }
-  // }, [debouncedSearchValue]);
 
   useEffect(() => {
     if (debouncedSearchValue) {
