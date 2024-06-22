@@ -11,7 +11,7 @@ export const SearchItemInput = () => {
   const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
-  const [results, setResults] = useState<any>([]);
+  const [results, setResults] = useState<Coin[]>([]);
   const [fecthingSearchData, setFetchingSearchData] = useState<boolean>(false)
   const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
   const key = import.meta.env.VITE_API_KEY_CRYPTO;
