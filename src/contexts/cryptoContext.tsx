@@ -273,28 +273,6 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     navigateURL(`?${queryString.stringify(updatedParams)}`);
   };
 
-  const fetchSearchData = async (
-    key: string,
-    value: string,
-    setFetchingSearchData: React.Dispatch<React.SetStateAction<boolean>>,
-    setFetchSearchDataHasError: React.Dispatch<React.SetStateAction<boolean>>,
-    setSearchResults: React.Dispatch<React.SetStateAction<any>>
-  ) => {
-    setFetchSearchDataHasError(false);
-    setFetchingSearchData(true);
-    try {
-      const response = await axios(
-        `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
-      );
-      const results = response.data.coins;
-      setSearchResults(results);
-      setFetchingSearchData(false);
-    } catch (error) {
-      setFetchingSearchData(false);
-      setFetchSearchDataHasError(true);
-    }
-  };
-
   return (
     <CryptoContext.Provider
       value={{
