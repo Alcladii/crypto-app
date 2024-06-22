@@ -13,6 +13,9 @@ import { Arrow } from "./UI/Arrow";
 import { DaysButton } from "./DaysButton";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
 import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
+import { SortArrowAccent } from "../components/UI/Svg";
+import { SortArrowDescent } from "../components/UI/Svg";
+import { SortArrowOriginal } from "../components/UI/Svg";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -44,7 +47,7 @@ const ColorIndicator = styled.div<{ background: string }>`
 type DaysSelectionData = {
   days: string;
   buttonText: string;
-}
+};
 
 const daysSelectionData: DaysSelectionData[] = [
   { days: "2", buttonText: "1D" },
@@ -69,7 +72,7 @@ type Coin = {
   market_cap: number;
   circulating_supply: number;
   total_supply: number;
-}
+};
 
 function Coins() {
   const {
@@ -95,15 +98,33 @@ function Coins() {
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
-  const [coinListDsc, setCoinListDsc] = useLocalState<boolean>("coinListDsc", true);
+  const [coinListDsc, setCoinListDsc] = useLocalState<boolean>(
+    "coinListDsc",
+    true
+  );
   const [sortBy, setSortBy] = useLocalState<string>("sortBy", "default");
-  const [displayCoinList, setDisplayCoinList] = useLocalState<Coin[]>("displayCoinList", []);
-  const [sortOrderByName, setSortOrderByName] = useLocalState<string>("sortOrderByName", "default");
-  const [sortOrderByPrice, setSortOrderByPrice] = useLocalState<string>("sortOrderByPrice", "default");
-  const [sortOrderByPriceChange1h, setSortOrderByPriceChange1h] = useLocalState<string>("sortOrderByPriceChange1h", "default");
-  const [sortOrderByPriceChange24h, setSortOrderByPriceChange24h] = useLocalState<string>("sortOrderByPriceChange24h", "default");
-  const [sortOrderByPriceChange7d, setSortOrderByPriceChange7d] = useLocalState<string>("sortOrderByPriceChange7d", "default");
-  const [displaySelectCoinToSeeChartMessage, setDisplaySelectCoinToSeeChartMessage] = useState(true);
+  const [displayCoinList, setDisplayCoinList] = useLocalState<Coin[]>(
+    "displayCoinList",
+    []
+  );
+  const [sortOrderByName, setSortOrderByName] = useLocalState<string>(
+    "sortOrderByName",
+    "default"
+  );
+  const [sortOrderByPrice, setSortOrderByPrice] = useLocalState<string>(
+    "sortOrderByPrice",
+    "default"
+  );
+  const [sortOrderByPriceChange1h, setSortOrderByPriceChange1h] =
+    useLocalState<string>("sortOrderByPriceChange1h", "default");
+  const [sortOrderByPriceChange24h, setSortOrderByPriceChange24h] =
+    useLocalState<string>("sortOrderByPriceChange24h", "default");
+  const [sortOrderByPriceChange7d, setSortOrderByPriceChange7d] =
+    useLocalState<string>("sortOrderByPriceChange7d", "default");
+  const [
+    displaySelectCoinToSeeChartMessage,
+    setDisplaySelectCoinToSeeChartMessage,
+  ] = useState(true);
   const tableRef = useRef<HTMLDivElement>(null);
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
@@ -328,23 +349,35 @@ function Coins() {
   }, [sortOrderByPrice]);
 
   useEffect(() => {
-    handleSearchParams("sort_order_by_price_change_1h", sortOrderByPriceChange1h);
+    handleSearchParams(
+      "sort_order_by_price_change_1h",
+      sortOrderByPriceChange1h
+    );
   }, [sortOrderByPriceChange1h]);
 
   useEffect(() => {
-    handleSearchParams("sort_order_by_price_change_24h", sortOrderByPriceChange24h);
+    handleSearchParams(
+      "sort_order_by_price_change_24h",
+      sortOrderByPriceChange24h
+    );
   }, [sortOrderByPriceChange24h]);
 
   useEffect(() => {
-    handleSearchParams("sort_order_by_price_change_7d", sortOrderByPriceChange7d);
+    handleSearchParams(
+      "sort_order_by_price_change_7d",
+      sortOrderByPriceChange7d
+    );
   }, [sortOrderByPriceChange7d]);
 
   const sortByInQueryParams = queryParams.sort_by;
   const sortOrderByNameInQueryParams = queryParams.sort_order_by_name;
   const sortOrderByPriceInQueryParams = queryParams.sort_order_by_price;
-  const sortOrderByPriceChange1hInQueryParams = queryParams.sort_order_by_price_change_1h;
-  const sortOrderByPriceChange24hInQueryParams = queryParams.sort_order_by_price_change_24h;
-  const sortOrderByPriceChange7dInQueryParams = queryParams.sort_order_by_price_change_7d;
+  const sortOrderByPriceChange1hInQueryParams =
+    queryParams.sort_order_by_price_change_1h;
+  const sortOrderByPriceChange24hInQueryParams =
+    queryParams.sort_order_by_price_change_24h;
+  const sortOrderByPriceChange7dInQueryParams =
+    queryParams.sort_order_by_price_change_7d;
 
   const sortCoinList = () => {
     const sortedCoinList = [...coinList];
@@ -580,7 +613,10 @@ function Coins() {
         </div>
         <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color font-space-grotesk ">
           <div className="text-xl">Market Overview</div>
-          <UpAndDownPercentagePeriodSelector selectedTimePeriod={selectedTimePeriod} setSelectedTimePeriod={setSelectedTimePeriod}/>
+          <UpAndDownPercentagePeriodSelector
+            selectedTimePeriod={selectedTimePeriod}
+            setSelectedTimePeriod={setSelectedTimePeriod}
+          />
         </div>
         {coinListIsLoading && (
           <div className="flex justify-center my-5">Loading Coin List</div>
@@ -603,56 +639,11 @@ function Coins() {
               <div className="mr-1 pl-3 md:pl-0">Name</div>
               <div onClick={handleSortByName}>
                 {sortOrderByNameInQueryParams === "default" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowAccent />
                 ) : sortOrderByNameInQueryParams === "ascent" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowDescent />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowOriginal />
                 )}
               </div>
             </div>
@@ -663,56 +654,11 @@ function Coins() {
               <div className="mr-1">Price</div>
               <div onClick={handleSortByPrice}>
                 {sortOrderByPriceInQueryParams === "default" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowAccent />
                 ) : sortOrderByPriceInQueryParams === "ascent" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowDescent />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowOriginal />
                 )}
               </div>
             </div>
@@ -720,39 +666,11 @@ function Coins() {
               <div className="mr-1">1h%</div>
               <div onClick={handleSortByOneHour}>
                 {sortOrderByPriceChange1hInQueryParams === "default" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowAccent />
+                ) : sortOrderByPriceChange1hInQueryParams === "ascent" ? (
+                  <SortArrowDescent />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowOriginal />
                 )}
               </div>
             </div>
@@ -760,56 +678,11 @@ function Coins() {
               <div className="mr-1">24h%</div>
               <div onClick={handleSortByTwentyFourHours}>
                 {sortOrderByPriceChange24hInQueryParams === "default" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowAccent />
                 ) : sortOrderByPriceChange24hInQueryParams === "ascent" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowDescent />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowOriginal />
                 )}
               </div>
             </div>
@@ -817,56 +690,11 @@ function Coins() {
               <div className="mr-1">7d%</div>
               <div onClick={handleSortBySevenDays}>
                 {sortOrderByPriceChange7dInQueryParams === "default" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm.53 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v5.69a.75.75 0 0 0 1.5 0v-5.69l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowAccent />
                 ) : sortOrderByPriceChange7dInQueryParams === "ascent" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowDescent />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={
-                      darkMode
-                        ? "rgba(209, 209, 209, 1)"
-                        : "rgba(66, 66, 134, 1)"
-                    }
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 0 1-1.313-1.313V9.564Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SortArrowOriginal />
                 )}
               </div>
             </div>
@@ -896,7 +724,9 @@ function Coins() {
                   <CoinTag src={singleCoin.image} />
                   &nbsp;&nbsp;
                   <div className="flex flex-col-reverse md:flex-col">
-                    <div className="text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">{singleCoin.name}</div>
+                    <div className="text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">
+                      {singleCoin.name}
+                    </div>
                     <div className="sm:flex text-xl sm:text-lg">
                       <span className="hidden sm:block">(</span>
                       {singleCoin.symbol.toUpperCase()}
@@ -920,26 +750,57 @@ function Coins() {
                     singleCoin.current_price.toLocaleString()}
                 </div>
                 <div className="text-md flex items-center sm:hidden ">
-                  <Arrow priceChange={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin] as number}/>&nbsp;
-                  <PriceChangePercentageText coin={singleCoin[`price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin] as number}/>
+                  <Arrow
+                    priceChange={
+                      singleCoin[
+                        `price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin
+                      ] as number
+                    }
+                  />
+                  &nbsp;
+                  <PriceChangePercentageText
+                    coin={
+                      singleCoin[
+                        `price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin
+                      ] as number
+                    }
+                  />
                 </div>
               </div>
               <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
-                <Arrow priceChange={singleCoin.price_change_percentage_1h_in_currency} />
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_1h_in_currency
+                  }
+                />
                 <div className="ml-1">
-                  <PriceChangePercentageText coin={singleCoin.price_change_percentage_1h_in_currency} />
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_1h_in_currency}
+                  />
                 </div>
               </div>
               <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
-                <Arrow priceChange={singleCoin.price_change_percentage_24h_in_currency} />
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_24h_in_currency
+                  }
+                />
                 <div className="ml-1">
-                  <PriceChangePercentageText coin={singleCoin.price_change_percentage_24h_in_currency} />
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_24h_in_currency}
+                  />
                 </div>
               </div>
               <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
-                <Arrow priceChange={singleCoin.price_change_percentage_7d_in_currency} />
+                <Arrow
+                  priceChange={
+                    singleCoin.price_change_percentage_7d_in_currency
+                  }
+                />
                 <div className="ml-1">
-                  <PriceChangePercentageText coin={singleCoin.price_change_percentage_7d_in_currency} />
+                  <PriceChangePercentageText
+                    coin={singleCoin.price_change_percentage_7d_in_currency}
+                  />
                 </div>
               </div>
               <div className="xl:w-[20%] lg:w-[24%] min-w-44 pr-3.5 justify-start items-center text-skin-coin-list-text-color hidden lg:flex">

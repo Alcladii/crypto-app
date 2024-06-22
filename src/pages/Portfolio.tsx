@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
+import { InvestmentCalculator } from "../components/InvestmentCalculator";
 
 function Portfolio() {
   const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext) as CryptoContextProps;
@@ -79,7 +80,11 @@ function Portfolio() {
       <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk  ">
         <div className="flex justify-between">
           <h2 className="text-xl text-skin-portfolio-item-coin-name-total-value-current-price-text-color">Portfolio</h2>
+          <div className="flex justify-end">
+          <InvestmentCalculator />
           <AddAsset addCoin={addCoin} />
+          </div>
+          
         </div>
         {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
         <PortfolioItem setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>

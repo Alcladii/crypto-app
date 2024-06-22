@@ -5,8 +5,6 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
-  memo,
-  useCallback,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -36,7 +34,12 @@ export type CryptoContextProps = {
   ) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;
   retainTwoDigits: (number: number) => number;
-  getSingleCoinData: (item: string) => Promise<void>;
+  getSingleCoinData: (
+    item: string,
+    setSingleCoin: React.Dispatch<React.SetStateAction<any>>,
+    setSingleCoinIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>
+  ) => Promise<void>;
   singleCoin: any;
   setSingleCoin: Dispatch<SetStateAction<any>>;
   displayCurrency: string;
@@ -87,22 +90,12 @@ export type CryptoContextProps = {
   darkMode: boolean;
   setDarkMode: Dispatch<SetStateAction<boolean>>;
   convertToTrillion: (number: number) => string;
-  setSingleCoinLoadingHasError: Dispatch<SetStateAction<boolean>>;
-  singleCoinLoadingHasError: boolean;
   changeSearchParams: (conditionKey: string, conditionValue: string) => void;
   numOfDaysFromUrl: string;
   redirectedFromPortfolioPage: boolean;
   setRedirectedFromPortfolioPage: Dispatch<SetStateAction<boolean>>;
   currencyListIsLoading: boolean;
   currencyLoadingHasError: boolean;
-  singleCoinIsLoading: boolean;
-  fetchSearchData: (
-    key: string,
-    value: string,
-    setFetchingSearchData: React.Dispatch<React.SetStateAction<boolean>>,
-    setFetchSearchDataHasError: React.Dispatch<React.SetStateAction<boolean>>,
-    setSearchResults: React.Dispatch<React.SetStateAction<boolean>>
-  ) => void;
 };
 
 interface CryptoProviderProps {
@@ -163,10 +156,6 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     []
   );
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
-  const [singleCoinIsLoading, setSingleCoinIsLoading] =
-    useState<boolean>(false);
-  const [singleCoinLoadingHasError, setSingleCoinLoadingHasError] =
-    useState<boolean>(false);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
   const [portfolioList, setPortfolioList] = useLocalState<any[]>(
     "portfolioList",
@@ -196,9 +185,14 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     return parseFloat(number.toFixed(2));
   };
 
-  const getSingleCoinData = async (item: string) => {
-    setSingleCoinLoadingHasError(false);
+  const getSingleCoinData = async (
+    item: string,
+    setSingleCoin: React.Dispatch<React.SetStateAction<any>>,
+    setSingleCoinIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     setSingleCoinIsLoading(true);
+    setSingleCoinLoadingHasError(false);
     try {
       const singleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
@@ -354,16 +348,12 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         darkMode,
         setDarkMode,
         convertToTrillion,
-        setSingleCoinLoadingHasError,
-        singleCoinLoadingHasError,
         changeSearchParams,
         numOfDaysFromUrl,
         redirectedFromPortfolioPage,
         setRedirectedFromPortfolioPage,
         currencyListIsLoading,
         currencyLoadingHasError,
-        singleCoinIsLoading,
-        fetchSearchData,
       }}
     >
       {children}

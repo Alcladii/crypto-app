@@ -3,6 +3,7 @@ import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import LineChartCurrencyConverter from "./LineChartCurrencyConverter";
 import { DaysButtonInCurrencyConverter } from "./DaysButtonInCurrencyConverter";
+import { ConvertButton } from "../components/UI/Svg"
 
 const daysSelectionData = [
   { days: "2", buttonText: "1D" },
@@ -298,41 +299,7 @@ export const CurrencyConverter = () => {
           onClick={handleReverse}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center h-12 w-12 rounded-full cursor-pointer bg-transparent"
         >
-          <svg
-            fill={darkMode ? "rgba(61, 61, 126, 1)" : "rgba(255, 255, 255, 1)"}
-            width="48"
-            height="48"
-            viewBox="-138.24 -138.24 788.48 788.48"
-            xmlns="http://www.w3.org/2000/svg"
-            stroke="#000000"
-            stroke-width="0.00512"
-          >
-            <g
-              id="SVGRepo_bgCarrier"
-              stroke-width="0"
-              transform="translate(0,0), scale(1)"
-            >
-              <rect
-                x="-138.24"
-                y="-138.24"
-                width="788.48"
-                height="788.48"
-                rx="394.24"
-                fill={
-                  darkMode ? "rgba(255, 255, 255, 1)" : "rgba(53, 53, 112, 1)"
-                }
-                strokeWidth="0"
-              ></rect>
-            </g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <path d="M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z"></path>
-            </g>
-          </svg>
+          <ConvertButton />
         </div>
         <div className="w-full md:w-[50%] p-6 mt-2 md:mt-0 md:ml-3 h-48 bg-skin-right-currency-background-color rounded-md">
           <div className="text-sm text-skin-you-sell-you-buy-text-color">

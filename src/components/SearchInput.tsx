@@ -3,6 +3,7 @@ import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
+import { MagnifyGlass } from "./UI/Svg";
 
 
 
@@ -65,22 +66,7 @@ export const SearchItemInput = () => {
           className={`lg:hidden flex items-center justify-center h-10 w-6 appearance-none rounded-md bg-transparent`}
           onClick={toggleSearchInputPopup}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke={
-              darkMode ? "rgba(209, 209, 214, 1)" : "rgba(66, 66, 134, 1)"
-            }
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            />
-          </svg>
+          <MagnifyGlass />
         </button>
         <div
           className={`border ${

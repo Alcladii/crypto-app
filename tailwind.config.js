@@ -44,7 +44,10 @@ export default {
           "portfolio-item-buttons-text-color":'var(--color-text-portfolio-item-buttons)',
           "coin-search-result-list-text-color":'var(--color-text-coin-search-result-list)',
           "coin-search-input-text-color":'var(--color-text-coin-search-input)',
-          "chart-color-indicator-text-color":'var(--color-text-chart-color-indicator)'
+          "chart-color-indicator-text-color":'var(--color-text-chart-color-indicator)',
+          "selected-calculator-option-text-color":'var(--color-text-selected-calculator-option)',
+          "unselected-calculator-option-text-color":'var(--color-text-unselected-calculator-option)',
+          "calculator-general-text-color":'var(--color-text-calculator-general)'
         }
       },
       backgroundColor: {
@@ -79,13 +82,19 @@ export default {
           "search-popup-background-color":'var(--color-background-search-popup)',
           "coin-search-result-list-background-color":'var(--color-background-coin-search-result-list)',
           "home-porfolio-button-wrapper-background-color":'var(--color-bakcground-home-porfolio-button-wrapper)',
-          "sticky-coins-table-title-bar-background-color":'var(--color-background-sticky-coins-table-title-bar)'
+          "sticky-coins-table-title-bar-background-color":'var(--color-background-sticky-coins-table-title-bar)',
+          "calculator-items-container-dates-selector-background-color":'var(--color-background-calculator-items-container-dates-selector)',
+          "calculator-pop-up-background-color":'var(--color-background-calculator-pop-up)',
+          "calculator-search-bar-unselected-calculator-option-background-color":'var(--color-background-calculator-search-bar-unselected-calculator-option)',
+          "calculator-selected-coin-wrapper":'var(--color-background-calculator-selected-coin-wrapper)',
+          "calculator-search-drop-down-background-color":'var(--color-background-calculator-search-drop-down)',
         }
       },
       borderColor: {
         skin: {
           "currency-converter-border-color": 'var(--color-border-currency-converter)',
           "portfolio-item-frames-border-color":'var(--color-border-portfolio-item-frames)',
+          "calculator-search-drop-down-border-color":'var(--color-border-calculator-search-drop-down)'
         }
       },
       colors: {      
@@ -108,7 +117,8 @@ export default {
         "placeholder-dark": "rgba(209, 209, 209, 1)", //don't delete this
         "coin-page-progress-bar-outter": "#F8D2A6",
         "coin-page-progress-bar-inner": "#D4770C",
-        "mobile-view-coin-name-text-color": "rgba(255, 255, 255, 0.5)"
+        "mobile-view-coin-name-text-color": "rgba(255, 255, 255, 0.5)",
+        "calculator-date-seletors-text-color": "rgba(1, 241, 227, 1)", //don't delete this
       },
       
       fontFamily: {

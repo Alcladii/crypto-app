@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/UI/Arrow";
-import { CoinPagePlusInCircleIcon } from "../components/CoinPagePlusInCircleIcon";
+import { CoinPagePlusInCircleIcon } from "../components/UI/Svg";
 
 type ProgressBarProps = {
   background: string;
   width?: number;
-}
+};
 
 const ProgressBarOuter = styled.div<ProgressBarProps>`
   border-radius: 99px;
@@ -27,44 +27,48 @@ const ProgressBarInner = styled.div<ProgressBarProps>`
 
 type CoinPageProps = {
   portfolioList?: any[];
-}
+};
 
 type CoinParams = {
   coinId: string;
-}
+};
 
- const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
-   const [isExpanded, setIsExpanded] = useState(false);
-   const coinId = useParams<CoinParams>();
+const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [singleCoinInCoinPage, setSingleCoinInCoinPage] = useState<any>();
+  const [coinDataIsLoading, setCoinDataIsLoading] = useState<boolean>(false);
+  const [coinDataLoadingHasError, setCoinDataLoadingHasError] =
+    useState<boolean>(false);
+  const coinId = useParams<CoinParams>();
 
   const navigate = useNavigate();
 
   const {
     convertToBillion,
     getSingleCoinData,
-    singleCoin,
-    singleCoinIsLoading,
-    singleCoinLoadingHasError,
     displayCurrency,
     currencySymbol,
     retainTwoDigits,
-    setSingleCoin,
     darkMode,
     redirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-
   useEffect(() => {
-    getSingleCoinData(coinId.coinId as string);
+    getSingleCoinData(
+      coinId.coinId as string,
+      setSingleCoinInCoinPage,
+      setCoinDataIsLoading,
+      setCoinDataLoadingHasError
+    );
   }, [coinId.coinId]);
 
   const handleClick = () => {
-    setSingleCoin(null);
+    setSingleCoinInCoinPage(null);
     navigate("/");
   };
 
   const naviBackToPortfolio = () => {
-    setSingleCoin(null);
+    setSingleCoinInCoinPage(null);
     navigate("/portfolio");
   };
 
@@ -88,17 +92,21 @@ type CoinParams = {
   };
 
   const calculateProfit = (item: any): number => {
-     return retainTwoDigits(
-        (item.coinData.market_data.current_price[displayCurrency] -
-          item.historyData.market_data.current_price[displayCurrency]) *
-          item.purchaseAmount1
-      )  
+    return retainTwoDigits(
+      (item.coinData.market_data.current_price[displayCurrency] -
+        item.historyData.market_data.current_price[displayCurrency]) *
+        item.purchaseAmount1
+    );
   };
 
-  let htmlContent = singleCoin ? singleCoin.description.en : "";
+  let htmlContent = singleCoinInCoinPage
+    ? singleCoinInCoinPage.description.en
+    : "";
 
   return (
-    <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}>
+    <div
+      className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
+    >
       <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
         {!redirectedFromPortfolioPage ? (
           <div
@@ -115,68 +123,77 @@ type CoinParams = {
             Back to Portfolio
           </div>
         )}
-        {singleCoinIsLoading && (
-          <div className="my-5 flex justify-center items-center">Loading Coin</div>
+        {coinDataIsLoading && (
+          <div className="my-5 flex justify-center items-center">
+            Loading Coin
+          </div>
         )}
-        {singleCoinLoadingHasError && (
+        {coinDataLoadingHasError && (
           <div className="my-10 flex justify-center items-center text-2xl">
             Error in fetching Coin
           </div>
         )}
-        {singleCoin && (
+        {singleCoinInCoinPage && (
           <div className="flex w-full my-5">
             <div className="column-1 flex flex-col w-[55%] mr-6">
               <div className="flex">
                 <div className="flex w-[45%] h-96 flex flex-col items-center mr-3">
                   <div className="w-full h-[80%] flex flex-col justify-center items-center rounded-lg bg-skin-single-coin-page-modules-background-color mb-3">
-                    {singleCoin.image && (
+                    {singleCoinInCoinPage.image && (
                       <div className="p-3 rounded-lg bg-skin-coin-icon-wrapper-background-color">
-                        <img src={singleCoin.image.small} alt={singleCoin.name} />
+                        <img
+                          src={singleCoinInCoinPage.image.small}
+                          alt={singleCoinInCoinPage.name}
+                        />
                       </div>
                     )}
                     <div className="mt-6 text-2xl font-semibold">
-                      <span>{singleCoin.name}</span>&nbsp;
-                      {singleCoin.symbol && (
-                        <span>({singleCoin.symbol.toUpperCase()})</span>
+                      <span>{singleCoinInCoinPage.name}</span>&nbsp;
+                      {singleCoinInCoinPage.symbol && (
+                        <span>
+                          ({singleCoinInCoinPage.symbol.toUpperCase()})
+                        </span>
                       )}
                     </div>
                   </div>
                   <div className="h-[20%] w-full flex justify-center items-center mt-3 bg-skin-single-coin-page-modules-background-color rounded-lg">
-                    {singleCoin.links && (
+                    {singleCoinInCoinPage.links && (
                       <a
                         className="text-skin-single-coin-link-text-color"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={singleCoin.links.homepage[0]}
+                        href={singleCoinInCoinPage.links.homepage[0]}
                       >
-                        {singleCoin.links.homepage[0]}
+                        {singleCoinInCoinPage.links.homepage[0]}
                       </a>
                     )}
                   </div>
                 </div>
                 <div className="flex w-[55%] h-96 flex flex-col items-center ml-3 bg-skin-single-coin-page-modules-background-color rounded-lg">
                   <div className="flex justify-center items-center h-[36%]">
-                    {singleCoin.market_data && (
+                    {singleCoinInCoinPage.market_data && (
                       <div className="mr-4 text-3xl font-semibold">
                         {currencySymbol}
-                        {singleCoin.market_data.current_price[
+                        {singleCoinInCoinPage.market_data.current_price[
                           displayCurrency
                         ].toLocaleString()}
                       </div>
                     )}
-                    {singleCoin.market_data && (
+                    {singleCoinInCoinPage.market_data && (
                       <div className="flex items-center">
                         <div className="mr-2">
                           <Arrow
                             priceChange={
-                              singleCoin.market_data.price_change_percentage_24h
+                              singleCoinInCoinPage.market_data
+                                .price_change_percentage_24h
                             }
                           />
                         </div>
                         <div className="text-lg font-semibold">
                           <PriceChangePercentageText
                             coin={
-                              singleCoin.market_data.price_change_percentage_24h
+                              singleCoinInCoinPage.market_data
+                                .price_change_percentage_24h
                             }
                           />
                         </div>
@@ -206,38 +223,39 @@ type CoinParams = {
                     <div className="flex flex-col justify-center items-center h-[50%]">
                       <div className="flex items-center">
                         <div className="mr-2">
-                          {singleCoin.market_data && (
+                          {singleCoinInCoinPage.market_data && (
                             <Arrow
                               priceChange={
-                                singleCoin.market_data.ath_change_percentage[
-                                  displayCurrency
-                                ]
+                                singleCoinInCoinPage.market_data
+                                  .ath_change_percentage[displayCurrency]
                               }
                             />
                           )}
                         </div>
                         All Time High:
-                        {singleCoin.market_data && (
+                        {singleCoinInCoinPage.market_data && (
                           <div className="mx-2">
                             {currencySymbol}
-                            {singleCoin.market_data.ath[
+                            {singleCoinInCoinPage.market_data.ath[
                               displayCurrency
                             ].toLocaleString()}
                           </div>
                         )}
-                        {singleCoin.market_data && (
+                        {singleCoinInCoinPage.market_data && (
                           <div>
-                            {singleCoin.market_data.ath_change_percentage[
+                            {singleCoinInCoinPage.market_data.ath_change_percentage[
                               displayCurrency
                             ].toFixed(2)}
                             %
                           </div>
                         )}
                       </div>
-                      {singleCoin.market_data && (
+                      {singleCoinInCoinPage.market_data && (
                         <div className="text-skin-single-coin-time-text-color">
                           {new Date(
-                            singleCoin.market_data.ath_date[displayCurrency]
+                            singleCoinInCoinPage.market_data.ath_date[
+                              displayCurrency
+                            ]
                           ).toLocaleDateString("en-US", {
                             month: "2-digit",
                             day: "2-digit",
@@ -254,29 +272,28 @@ type CoinParams = {
                     <div className="flex flex-col justify-center items-center h-[50%]">
                       <div className="flex items-center">
                         <div className="mr-2">
-                          {singleCoin.market_data && (
+                          {singleCoinInCoinPage.market_data && (
                             <Arrow
                               priceChange={
-                                singleCoin.market_data.atl_change_percentage[
-                                  displayCurrency
-                                ]
+                                singleCoinInCoinPage.market_data
+                                  .atl_change_percentage[displayCurrency]
                               }
                             />
                           )}
                         </div>
                         All Time Low:
-                        {singleCoin.market_data && (
+                        {singleCoinInCoinPage.market_data && (
                           <div className="mx-2">
                             {currencySymbol}
-                            {singleCoin.market_data.atl[
+                            {singleCoinInCoinPage.market_data.atl[
                               displayCurrency
                             ].toLocaleString()}
                           </div>
                         )}
-                        {singleCoin.market_data && (
+                        {singleCoinInCoinPage.market_data && (
                           <div>
                             <div>
-                              {singleCoin.market_data.atl_change_percentage[
+                              {singleCoinInCoinPage.market_data.atl_change_percentage[
                                 displayCurrency
                               ].toFixed(2)}
                               %
@@ -284,10 +301,12 @@ type CoinParams = {
                           </div>
                         )}
                       </div>
-                      {singleCoin.market_data && (
+                      {singleCoinInCoinPage.market_data && (
                         <div className="text-skin-single-coin-time-text-color">
                           {new Date(
-                            singleCoin.market_data.atl_date[displayCurrency]
+                            singleCoinInCoinPage.market_data.atl_date[
+                              displayCurrency
+                            ]
                           ).toLocaleDateString("en-US", {
                             month: "2-digit",
                             day: "2-digit",
@@ -307,10 +326,8 @@ type CoinParams = {
               <div className="mt-36">
                 <div className="mb-4 text-xl font-semibold">Description</div>
                 <p>
-                  {singleCoin && (
-                    <span
-                      dangerouslySetInnerHTML={createMarkup(htmlContent)}
-                    />
+                  {singleCoinInCoinPage && (
+                    <span dangerouslySetInnerHTML={createMarkup(htmlContent)} />
                   )}
                   {htmlContent.length > 996 && (
                     <span
@@ -330,101 +347,112 @@ type CoinParams = {
 
             <div className="column-2 flex flex-col w-[45%] ml-6 ">
               <div className="h-[500px] w-full px-14 py-14 bg-skin-single-coin-page-modules-background-color rounded-lg flex flex-col justify-between text-lg">
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Market Cap: {currencySymbol}
                     {convertToBillion(
-                      singleCoin.market_data.market_cap[displayCurrency]
+                      singleCoinInCoinPage.market_data.market_cap[
+                        displayCurrency
+                      ]
                     )}
                     B&nbsp;&nbsp;
-                    {singleCoin.market_data.price_change_percentage_24h.toFixed(
+                    {singleCoinInCoinPage.market_data.price_change_percentage_24h.toFixed(
                       2
                     )}
                     %
                   </div>
                 )}
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Fully Diluted Valuation: {currencySymbol}
                     {convertToBillion(
-                      singleCoin.market_data.fully_diluted_valuation[
+                      singleCoinInCoinPage.market_data.fully_diluted_valuation[
                         displayCurrency
                       ]
                     )}
                     B
                   </div>
                 )}
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Volume 24h: {currencySymbol}
                     {convertToBillion(
-                      singleCoin.market_data.market_cap_change_24h_in_currency[
-                        displayCurrency
-                      ]
+                      singleCoinInCoinPage.market_data
+                        .market_cap_change_24h_in_currency[displayCurrency]
                     )}
                     B
                   </div>
                 )}
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Volume/Market:{" "}
                     {(
-                      singleCoin.market_data.total_volume[displayCurrency] /
-                      singleCoin.market_data.market_cap[displayCurrency]
+                      singleCoinInCoinPage.market_data.total_volume[
+                        displayCurrency
+                      ] /
+                      singleCoinInCoinPage.market_data.market_cap[
+                        displayCurrency
+                      ]
                     ).toFixed(5)}
                   </div>
                 )}
 
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Total Volume:{" "}
-                    {singleCoin.market_data.total_volume[
+                    {singleCoinInCoinPage.market_data.total_volume[
                       displayCurrency
                     ].toLocaleString()}
                     BTC
                   </div>
                 )}
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <div className="flex items-center">
                     <CoinPagePlusInCircleIcon />
                     &nbsp;&nbsp; Circulating Supply:{" "}
-                    {singleCoin.market_data.circulating_supply.toLocaleString()}
+                    {singleCoinInCoinPage.market_data.circulating_supply.toLocaleString()}
                     BTC
                   </div>
                 )}
-                {singleCoin.market_data &&
-                  (singleCoin.market_data.max_supply !== null ? (
+                {singleCoinInCoinPage.market_data &&
+                  (singleCoinInCoinPage.market_data.max_supply !== null ? (
                     <div className="flex items-center">
                       <CoinPagePlusInCircleIcon />
                       &nbsp;&nbsp; Max Supply:{" "}
-                      {singleCoin.market_data.max_supply.toLocaleString()}
+                      {singleCoinInCoinPage.market_data.max_supply.toLocaleString()}
                       BTC
                     </div>
                   ) : (
                     <div> Max Supply: N/A</div>
                   ))}
                 <div className="flex justify-between">
-                  {singleCoin.market_data && (
+                  {singleCoinInCoinPage.market_data && (
                     <div>
                       {retainTwoDigits(
-                        (singleCoin.market_data.total_volume[displayCurrency] /
-                          singleCoin.market_data.market_cap[displayCurrency]) *
+                        (singleCoinInCoinPage.market_data.total_volume[
+                          displayCurrency
+                        ] /
+                          singleCoinInCoinPage.market_data.market_cap[
+                            displayCurrency
+                          ]) *
                           100
                       )}
                       %
                     </div>
                   )}
-                  {singleCoin.market_data && (
+                  {singleCoinInCoinPage.market_data && (
                     <div>
                       {retainTwoDigits(
                         (1 -
-                          singleCoin.market_data.total_volume[displayCurrency] /
-                            singleCoin.market_data.market_cap[
+                          singleCoinInCoinPage.market_data.total_volume[
+                            displayCurrency
+                          ] /
+                            singleCoinInCoinPage.market_data.market_cap[
                               displayCurrency
                             ]) *
                           100
@@ -433,12 +461,16 @@ type CoinParams = {
                     </div>
                   )}
                 </div>
-                {singleCoin.market_data && (
+                {singleCoinInCoinPage.market_data && (
                   <ProgressBarOuter background={"#F8D2A6"}>
                     <ProgressBarInner
                       width={
-                        singleCoin.market_data.total_volume[displayCurrency] /
-                        singleCoin.market_data.market_cap[displayCurrency]
+                        singleCoinInCoinPage.market_data.total_volume[
+                          displayCurrency
+                        ] /
+                        singleCoinInCoinPage.market_data.market_cap[
+                          displayCurrency
+                        ]
                       }
                       background={"#D4770C"}
                     ></ProgressBarInner>
@@ -447,8 +479,8 @@ type CoinParams = {
               </div>
               <div className="mt-20 h-64 flex flex-col justify-between ">
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
-                  {singleCoin.links &&
-                    singleCoin.links.homepage
+                  {singleCoinInCoinPage.links &&
+                    singleCoinInCoinPage.links.homepage
                       .filter((e: string) => e !== "")
                       .map((item: string) => (
                         <div key={item}>
@@ -464,9 +496,9 @@ type CoinParams = {
                       ))}
                 </div>
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
-                  {singleCoin.links &&
-                    singleCoin.links.blockchain_site
-                      .filter((item:string) => item.includes("blockchair"))
+                  {singleCoinInCoinPage.links &&
+                    singleCoinInCoinPage.links.blockchain_site
+                      .filter((item: string) => item.includes("blockchair"))
                       .map((item: string) => (
                         <div key={item}>
                           <a
@@ -481,8 +513,8 @@ type CoinParams = {
                       ))}
                 </div>
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
-                  {singleCoin.links &&
-                    singleCoin.links.blockchain_site
+                  {singleCoinInCoinPage.links &&
+                    singleCoinInCoinPage.links.blockchain_site
                       .filter((item: string) => item.includes("tokenview"))
                       .map((item: string) => (
                         <div key={item}>
