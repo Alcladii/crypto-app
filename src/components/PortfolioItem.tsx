@@ -71,8 +71,8 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
             key={item.id}
             className={`flex flex-col w-full ${darkMode ? "" : "theme-light"}`}
           >
-            <div className="flex">
-              <div className="w-[30%] bg-skin-portfolio-item-left-column-back-ground-color rounded-l-lg py-2 pl-4">
+            <div className="flex flex-col sm:flex-row">
+              <div className="w-[25%] bg-skin-portfolio-item-left-column-back-ground-color rounded-l-lg py-2 pl-4">
                 <div className="flex items-center py-3">
                   <div>
                     <CoinTag src={item.coinData.image.large} />
