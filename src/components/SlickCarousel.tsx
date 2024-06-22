@@ -132,7 +132,6 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     if (selectedCoinData.length === 0) {
       setPriceVolumeList([]);
     } else {
-      setPriceVolumeList([]);
       const requests = selectedCoinData.map((item: Coin) => {
         return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
       });

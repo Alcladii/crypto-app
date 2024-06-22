@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
@@ -72,14 +72,15 @@ export default function App() {
   };
 
   const getMarketData = async () => {
-    try {
-      setMarketDataIsLoading(true);
+    setMarketDataLoadingHasError(false);
+    setMarketDataIsLoading(true);   
+    try {     
       const marketDataResponse = await axios.get(
         "https://api.coingecko.com/api/v3/global"
       );
       setMarketDataIsLoading(false);
       setMarketData(marketDataResponse.data.data);
-      setMarketDataLoadingHasError(false);
+      
     } catch (err) {
       setMarketDataLoadingHasError(true);
       setMarketDataIsLoading(false);

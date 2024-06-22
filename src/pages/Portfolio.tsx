@@ -32,8 +32,9 @@ function Portfolio() {
   //So it gives the accurate profit
 
   const getLatestCoinDataOnLoad = async () => {   
-    try {    
-      setFetchingLatestCoinData(true);
+    setFetchingLatestCoinDataHasError(false);
+    setFetchingLatestCoinData(true);
+    try {        
       const promises = portfolioList.map((coin) =>
         axios(
           `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
@@ -41,8 +42,7 @@ function Portfolio() {
       );
       const updatedCoinData = await Promise.all(promises);
       updateToLatestCoinDataOnLoad(updatedCoinData);      
-      setFetchingLatestCoinData(false);
-      setFetchingLatestCoinDataHasError(false);
+      setFetchingLatestCoinData(false);   
     } catch (err) {
       setFetchingLatestCoinDataHasError(true);
       setFetchingLatestCoinData(false);

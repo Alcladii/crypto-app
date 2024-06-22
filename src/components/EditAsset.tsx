@@ -49,8 +49,9 @@ export const EditAsset: React.FC<EditAssetProps> = ({ id, setPortfolioListNeedsU
   };
 
   const updateSelectedCoinData = async (coinId: string) => {
-    try {
-      setSelectedCoinIsLoading(true);
+    setSelectedCoinLoadingHasError(false);
+    setSelectedCoinIsLoading(true);   
+    try {   
       const updatedSingleCoinData = await axios(
         `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
@@ -63,8 +64,7 @@ export const EditAsset: React.FC<EditAssetProps> = ({ id, setPortfolioListNeedsU
         purchaseDate,
         updatedSingleCoinHistoryData.data
       );
-      setSelectedCoinIsLoading(false);
-      setSelectedCoinLoadingHasError(false);
+      setSelectedCoinIsLoading(false);    
     } catch (err) {
       setSelectedCoinLoadingHasError(true);
       setSelectedCoinIsLoading(false);

@@ -5,18 +5,14 @@ import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 import { MagnifyGlass } from "./UI/Svg";
 
-type Coin = {
-  id: string;
-  name: string;
-  symbol: string;
-  large: string;
-}
+
 
 export const SearchItemInput = () => {
-  const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
+  const { darkMode, fetchSearchData } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
-  const [results, setResults] = useState<Coin[]>([]);
+  const [results, setResults] = useState<any>([]);
+  const [fecthingSearchData, setFetchingSearchData] = useState<boolean>(false)
   const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
   const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
@@ -37,21 +33,9 @@ export const SearchItemInput = () => {
     };
   }, []);
 
-  const fetchSearchData = async (value: string) => {
-    try {
-      const response = await axios <{ coins: Coin[] }>(
-        `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
-      );
-      const results = response.data.coins;
-      setResults(results);
-    } catch (error) {
-      setFetchSearchDataHasError(true)
-    }
-  };
-
   useEffect(() => {
     if (debouncedSearchValue) {
-      fetchSearchData(debouncedSearchValue);
+      fetchSearchData(key, debouncedSearchValue, setFetchingSearchData, setFetchSearchDataHasError, setResults);
     }
   }, [debouncedSearchValue]);
 
