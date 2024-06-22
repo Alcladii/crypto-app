@@ -227,7 +227,7 @@ export const InvestmentCalculator = () => {
   return (
     <div className="text-skin-calculator-general-text-color">
       <div
-        className="flex justify-center items-center w-52 h-10 mr-2 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color cursor-pointer"
+        className="flex justify-center items-center w-full sm:w-52 h-10 sm:mr-2 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color cursor-pointer"
         onClick={togglePopup}
       >
         Investment Calculator
