@@ -96,6 +96,13 @@ export type CryptoContextProps = {
   setRedirectedFromPortfolioPage: Dispatch<SetStateAction<boolean>>;
   currencyListIsLoading: boolean;
   currencyLoadingHasError: boolean;
+  fetchSaerchData : {
+    key: string,
+    value: string,
+    setFetchingSearchData: React.Dispatch<React.SetStateAction<boolean>>,
+    setFetchSearchDataHasError: React.Dispatch<React.SetStateAction<boolean>>,
+    setSearchResults: React.Dispatch<React.SetStateAction<any>> 
+  }
 };
 
 interface CryptoProviderProps {
@@ -354,6 +361,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         setRedirectedFromPortfolioPage,
         currencyListIsLoading,
         currencyLoadingHasError,
+        fetchSaerchData,
       }}
     >
       {children}
