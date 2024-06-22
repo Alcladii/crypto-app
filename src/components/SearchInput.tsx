@@ -6,6 +6,12 @@ import { useDebounce } from "../hooks/useDebounce";
 import { MagnifyGlass } from "./UI/Svg";
 
 
+type Coin = {
+  id: string;
+  name: string;
+  symbol: string;
+  large: string;
+}
 
 export const SearchItemInput = () => {
   const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
