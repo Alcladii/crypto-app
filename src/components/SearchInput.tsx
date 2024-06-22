@@ -33,6 +33,18 @@ export const SearchItemInput = () => {
     };
   }, []);
 
+  const fetchSearchData = async (value: string) => {
+    try {
+      const response = await axios <{ coins: Coin[] }>(
+        `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
+      );
+      const results = response.data.coins;
+      setResults(results);
+    } catch (error) {
+      setFetchSearchDataHasError(true)
+    }
+  };
+
   useEffect(() => {
     if (debouncedSearchValue) {
       fetchSearchData(key, debouncedSearchValue, setFetchingSearchData, setFetchSearchDataHasError, setResults);
