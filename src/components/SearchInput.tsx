@@ -45,9 +45,15 @@ export const SearchItemInput = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (debouncedSearchValue) {
+  //     fetchSearchData(debouncedSearchValue);
+  //   }
+  // }, [debouncedSearchValue]);
+
   useEffect(() => {
     if (debouncedSearchValue) {
-      fetchSearchData(key, debouncedSearchValue, setFetchingSearchData, setFetchSearchDataHasError, setResults);
+      fetchSearchData(debouncedSearchValue);
     }
   }, [debouncedSearchValue]);
 
