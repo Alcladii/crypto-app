@@ -8,7 +8,7 @@ import { MagnifyGlass } from "./UI/Svg";
 
 
 export const SearchItemInput = () => {
-  const { darkMode, fetchSearchData } = useContext(CryptoContext) as CryptoContextProps;
+  const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
   const [results, setResults] = useState<any>([]);
