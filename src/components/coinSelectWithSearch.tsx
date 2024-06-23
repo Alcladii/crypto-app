@@ -49,7 +49,7 @@ export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({
   );
 
   return (
-    <div className="w-[75%] h-full">
+    <div className="w-[40%] sm:w-[75%] h-full">
       <input
         className="relative px-2 w-full h-12 rounded-md outline-none bg-skin-calculator-search-bar-unselected-calculator-option-background-color"
         ref={searchInputRef as React.MutableRefObject<HTMLInputElement>}
@@ -60,7 +60,7 @@ export const CoinSelectWithSearch: React.FC<CoinSelectWithSearchProps> = ({
         placeholder="search"
       />
       {isFocused ? (
-        <div className="h-[73%] w-96 absolute overflow-y-scroll rounded-md no-scrollbar bg-skin-calculator-search-drop-down-background-color border-skin-calculator-search-drop-down-border-color">
+        <div className="h-[73%] w-96 absolute right-0 sm:right-auto overflow-y-scroll rounded-md no-scrollbar bg-skin-calculator-search-drop-down-background-color border-skin-calculator-search-drop-down-border-color">
           {filteredCoinsOptions.map((item: any) => (
             <div
               onMouseDown={() => handleCoinSelect(item)}
