@@ -200,7 +200,8 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
                         ></ProgressBarInner>
                       </ProgressBarOuter>
                     </div>
-                    <div className="text-sm text-skin-portfolio-item-titles-text-color">
+                    {/* whitespace-nowrap overflow-hidden */}
+                    <div className="text-sm truncate text-skin-portfolio-item-titles-text-color">
                       Circ Supply vs Max Supply
                     </div>
                   </div>
