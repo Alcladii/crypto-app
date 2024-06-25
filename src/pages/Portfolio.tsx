@@ -1,19 +1,27 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
-import { CryptoContext, CryptoContextProps} from "../contexts/cryptoContext";
+import { v4 as uuidv4 } from "uuid";
+import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 import { InvestmentCalculator } from "../components/InvestmentCalculator";
 
 function Portfolio() {
-  const { portfolioList, setPortfolioList, darkMode } = useContext(CryptoContext) as CryptoContextProps;
+  const { portfolioList, setPortfolioList, darkMode } = useContext(
+    CryptoContext
+  ) as CryptoContextProps;
   const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
   const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
     useState(false);
-  const [portfolioListNeedsUpdate, setPortfolioListNeedsUpdate] = useState(false)
+  const [portfolioListNeedsUpdate, setPortfolioListNeedsUpdate] =
+    useState(false);
 
-  const addCoin = (coin: any, purchaseAmount: any, purchaseDate: any, history: any) => {
+  const addCoin = (
+    coin: any,
+    purchaseAmount: any,
+    purchaseDate: any,
+    history: any
+  ) => {
     const newPortfolioList = [
       ...portfolioList,
       {
@@ -25,24 +33,24 @@ function Portfolio() {
       },
     ];
     setPortfolioList(newPortfolioList);
-    setPortfolioListNeedsUpdate(true)
+    setPortfolioListNeedsUpdate(true);
   };
 
   //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
   //So it gives the accurate profit
 
-  const getLatestCoinDataOnLoad = async () => {   
+  const getLatestCoinDataOnLoad = async () => {
     setFetchingLatestCoinDataHasError(false);
     setFetchingLatestCoinData(true);
-    try {        
+    try {
       const promises = portfolioList.map((coin) =>
         axios(
           `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
         )
       );
       const updatedCoinData = await Promise.all(promises);
-      updateToLatestCoinDataOnLoad(updatedCoinData);      
-      setFetchingLatestCoinData(false);   
+      updateToLatestCoinDataOnLoad(updatedCoinData);
+      setFetchingLatestCoinData(false);
     } catch (err) {
       setFetchingLatestCoinDataHasError(true);
       setFetchingLatestCoinData(false);
@@ -58,11 +66,10 @@ function Portfolio() {
       });
       return item;
     });
-    setPortfolioList(newPortfolioList);   
+    setPortfolioList(newPortfolioList);
   };
 
   useEffect(() => {
-    
     getLatestCoinDataOnLoad();
 
     const minute = 60000;
@@ -70,24 +77,29 @@ function Portfolio() {
     const intervalId = setInterval(() => {
       getLatestCoinDataOnLoad();
     }, minute);
-    setPortfolioListNeedsUpdate(false)
+    setPortfolioListNeedsUpdate(false);
 
     return () => clearInterval(intervalId);
   }, [portfolioListNeedsUpdate]);
 
   return (
-    <div className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}` }>
+    <div
+      className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
+    >
       <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk  ">
-        <div className="flex justify-between">
-          <h2 className="text-xl text-skin-portfolio-item-coin-name-total-value-current-price-text-color">Portfolio</h2>
-          <div className="flex justify-end">
-          <InvestmentCalculator />
-          <AddAsset addCoin={addCoin} />
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+          <h2 className="text-xl mb-3 sm:mb-0 text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
+            Portfolio
+          </h2>
+          <div className="flex flex-col sm:flex-row sm:justify-end">
+            <InvestmentCalculator />
+            <AddAsset addCoin={addCoin} />
           </div>
-          
         </div>
         {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
-        <PortfolioItem setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>
+        <PortfolioItem
+          setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+        />
       </div>
     </div>
   );

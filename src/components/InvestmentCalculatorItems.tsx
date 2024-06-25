@@ -43,9 +43,9 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
 
   return (
     <form className="block">
-      <div className="w-full flex justify-between  mb-4">
-        <div className="flex w-[65%]">
-          <div className="mr-2 w-[50%]">
+      <div className="w-full flex justify-between mb-4">
+        <div className="flex flex-col sm:flex-row w-full sm:w-[65%]">
+          <div className="mb-2 sm:mr-2 w-full sm:w-[50%]">
             <input
               id="start-date"
               name="startDate"
@@ -59,7 +59,7 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
               value={startDate}
             />
           </div>
-          <div className="ml-2 w-[50%]">
+          <div className="mt-2 sm:ml-2 w-full sm:w-[50%]">
             <input
               id="end-date"
               name="endDate"
@@ -74,19 +74,19 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
             />
           </div>
         </div>
-        <div className="w-[10%] rounded-md flex items-center justify-center bg-skin-calculator-items-container-dates-selector-background-color text-calculator-date-seletors-text-color">
+        <div className="hidden sm:block w-[10%] rounded-md flex items-center justify-center bg-skin-calculator-items-container-dates-selector-background-color text-calculator-date-seletors-text-color">
           Q-ty
         </div>
       </div>
-      <div className="px-6 py-4 rounded-md bg-skin-calculator-items-container-dates-selector-background-color">
+      <div className="px-6 py-4 h-auto rounded-md bg-skin-calculator-items-container-dates-selector-background-color">
         <div>
           <label
-            className="h-12 border-b flex items-center justify-between"
+            className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between"
             htmlFor={"initial-investment"}
           >
             <span>Contribution interval, days</span>
             <input
-              className="px-1 text-right bg-transparent outline-none text-lg"
+              className="sm:px-1 py-1 sm:py-0 text-left sm:text-right bg-transparent outline-none text-lg"
               id="contribution-interval"
               name="contributionInterval"
               type="text"
@@ -97,12 +97,12 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
         </div>
         <div>
           <label
-            className="h-12 border-b flex items-center justify-between"
+            className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between"
             htmlFor={"initial-investment"}
           >
             <span>Initial investment, $</span>
             <input
-              className="px-1 text-right bg-transparent outline-none text-lg"
+              className="sm:px-1 py-1 sm:py-0 text-left sm:text-right h-9 bg-transparent outline-none text-lg"
               id="initial-investment"
               name="initialInvestment"
               type="text"
@@ -114,12 +114,12 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
         {!valueCostIsSelected ? (
           <div>
             <label
-              className="h-12 border-b flex items-center justify-between"
+              className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between"
               htmlFor={"investment-Added"}
             >
               <span>Investment added each interval, $</span>
               <input
-                className="px-1 text-right bg-transparent outline-none text-lg"
+                className="sm:px-1 py-1 sm:py-0 text-left sm:text-right h-9 bg-transparent outline-none text-lg"
                 id="investment-Added"
                 name="investmentAdded"
                 type="text"
@@ -131,12 +131,12 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
         ) : (
           <div>
             <label
-              className="h-12 border-b flex items-center justify-between"
+              className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between"
               htmlFor={"target-growth-percentage"}
             >
               <span>Grow rate per interval %</span>
               <input
-                className="px-1 text-right bg-transparent outline-none text-lg"
+                className="sm:px-1 py-1 sm:py-0 text-left sm:text-right h-9 bg-transparent outline-none text-lg"
                 id="target-growth-percentage"
                 name="targetGrowthRate"
                 type="text"
@@ -146,16 +146,16 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
             </label>
           </div>
         )}
-        <div className="h-12  border-b flex items-center justify-between">
+        <div className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>Total Amount Spent on investment, $</div>
-          <div className="text-right px-1">
+          <div className="text-right sm:px-1 h-9 flex items-center">
             {calculationResult !== null &&
               retainTwoDigits(calculationResult.netInvestment)}
           </div>
         </div>
-        <div className="h-12 border-b flex items-center justify-between">
+        <div className="sm:h-12 mb-2 sm:mb-0 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>Coins Value, $</div>
-          <div className="text-right px-1">
+          <div className="text-right sm:px-1 h-9 flex items-center">
             {calculationResult !== null &&
               retainTwoDigits(calculationResult.coinsValue)}
           </div>

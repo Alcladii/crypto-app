@@ -97,7 +97,7 @@ export const InvestmentCalculator = () => {
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=${currency}&from=${startDate}&to=${endDate}&precision=2`
       );
       const historicalData = response.data;
-
+      setFetchingHistoricalData(false)
       return historicalData;
     } catch {
       setFetchingHistoricalData(false);
@@ -227,7 +227,7 @@ export const InvestmentCalculator = () => {
   return (
     <div className="text-skin-calculator-general-text-color">
       <div
-        className="flex justify-center items-center w-52 h-10 mr-2 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color cursor-pointer"
+        className="flex justify-center items-center w-full sm:w-52 h-10 sm:mr-2 rounded-md mb-3 bg-skin-portfolio-item-buttons-background-color text-skin-portfolio-item-buttons-text-color cursor-pointer"
         onClick={togglePopup}
       >
         Investment Calculator
@@ -235,18 +235,18 @@ export const InvestmentCalculator = () => {
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-md  font-space-grotesk">
           <div
-            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[620px] md:h-[768px] bg-skin-app ${
+            className={`fixed top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[768px] lg:w-[820px] h-[768px] overflow-y-auto no-scrollbar bg-skin-app ${
               darkMode ? "" : "theme-light"
             } rounded-lg border-gray-300 shadow-md py-10 md:pt-6 md:pb-10 px-6 md:px-10 bg-skin-calculator-pop-up-background-color`}
           >
-            <div className="flex h-[7%] md:h-[12%] justify-between items-center">
+            <div className="flex h-[7%] md:h-[12%] justify-between items-top sm:items-center">
               <div className="font-space-grotesk text-lg font-semibold">
                 Investment Calculator
               </div>
               <CloseIcon togglePopup={togglePopup} />
             </div>
-            <div id="coin-select" className="flex items-center">
-              <div className="flex justify-center items-center h-12 w-[25%] mr-2 rounded-md bg-skin-calculator-search-bar-unselected-calculator-option-background-color">
+            <div id="coin-select" className="flex items-center justify-between sm:justify-start">
+              <div className="flex justify-center items-center h-12 w-[50%] sm:w-[25%] mr-2 rounded-md bg-skin-calculator-search-bar-unselected-calculator-option-background-color">
                 {selectedOption && (
                   <div className="flex">
                     <img
