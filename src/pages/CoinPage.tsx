@@ -134,11 +134,11 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
           </div>
         )}
         {singleCoinInCoinPage && (
-          <div className="flex w-full my-5">
-            <div className="column-1 flex flex-col w-[55%] mr-6">
-              <div className="flex">
-                <div className="flex w-[45%] h-96 flex flex-col items-center mr-3">
-                  <div className="w-full h-[80%] flex flex-col justify-center items-center rounded-lg bg-skin-single-coin-page-modules-background-color mb-3">
+          <div className="flex flex-col sm:flex-row  w-full my-5">
+            <div className="column-1 flex flex-col w-full sm:w-[55%] mr-6">
+              <div className="flex flex-col sm:flex-row">
+                <div className="flex w-full sm:w-[45%] h-96 flex flex-col items-center mr-3">
+                  <div className="w-full h-[80%] mb-3 flex flex-col justify-center items-center rounded-lg bg-skin-single-coin-page-modules-background-color ">
                     {singleCoinInCoinPage.image && (
                       <div className="p-3 rounded-lg bg-skin-coin-icon-wrapper-background-color">
                         <img
@@ -147,19 +147,17 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                         />
                       </div>
                     )}
-                    <div className="mt-6 text-2xl font-semibold">
-                      <span>{singleCoinInCoinPage.name}</span>&nbsp;
+                    <div className="mt-6 text-2xl font-semibold flex sm:flex-col lg:flex-row items-center">
+                      <div>{singleCoinInCoinPage.name}</div>
                       {singleCoinInCoinPage.symbol && (
-                        <span>
-                          ({singleCoinInCoinPage.symbol.toUpperCase()})
-                        </span>
+                        <div>({singleCoinInCoinPage.symbol.toUpperCase()})</div>
                       )}
                     </div>
                   </div>
                   <div className="h-[20%] w-full flex justify-center items-center mt-3 bg-skin-single-coin-page-modules-background-color rounded-lg">
                     {singleCoinInCoinPage.links && (
                       <a
-                        className="text-skin-single-coin-link-text-color"
+                        className="px-2 truncate text-skin-single-coin-link-text-color"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={singleCoinInCoinPage.links.homepage[0]}
@@ -169,10 +167,10 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                     )}
                   </div>
                 </div>
-                <div className="flex w-[55%] h-96 flex flex-col items-center ml-3 bg-skin-single-coin-page-modules-background-color rounded-lg">
-                  <div className="flex justify-center items-center h-[36%]">
+                <div className="flex flex-col w-full sm:w-[55%] h-96 items-center mt-6 sm:mt-0 sm:ml-3 bg-skin-single-coin-page-modules-background-color rounded-lg">
+                  <div className="flex sm:flex-col lg:flex-row justify-center items-center h-[36%]">
                     {singleCoinInCoinPage.market_data && (
-                      <div className="mr-4 text-3xl font-semibold">
+                      <div className="lg:mr-4 text-3xl sm:text-2xl lg:text-3xl font-semibold">
                         {currencySymbol}
                         {singleCoinInCoinPage.market_data.current_price[
                           displayCurrency
@@ -204,8 +202,11 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                     portfolioList.map(
                       (item) =>
                         item.coinData.id === coinId.coinId && (
-                          <div key={item.id} className=" flex items-center">
-                            <div className="text-xl mr-3">Profit:</div>
+                          <div
+                            key={item.id}
+                            className=" flex items-center sm:flex-col lg:flex-row"
+                          >
+                            <div className="text-xl lg:mr-3">Profit:</div>
                             <div
                               className={`text-xl ${
                                 calculateProfit(item) > 0
@@ -221,8 +222,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                     )}
                   <div className="flex flex-col w-full h-[64%]">
                     <div className="flex flex-col justify-center items-center h-[50%]">
-                      <div className="flex items-center">
-                        <div className="mr-2">
+                      <div className="flex items-center sm:flex-col lg:flex-row">
+                        <div className="flex items-center">
                           {singleCoinInCoinPage.market_data && (
                             <Arrow
                               priceChange={
@@ -231,8 +232,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                               }
                             />
                           )}
+                          <div className="ml-1">All Time High:</div>
                         </div>
-                        All Time High:
                         {singleCoinInCoinPage.market_data && (
                           <div className="mx-2">
                             {currencySymbol}
@@ -241,17 +242,9 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                             ].toLocaleString()}
                           </div>
                         )}
-                        {singleCoinInCoinPage.market_data && (
-                          <div>
-                            {singleCoinInCoinPage.market_data.ath_change_percentage[
-                              displayCurrency
-                            ].toFixed(2)}
-                            %
-                          </div>
-                        )}
                       </div>
                       {singleCoinInCoinPage.market_data && (
-                        <div className="text-skin-single-coin-time-text-color">
+                        <div className="hidden lg:block text-skin-single-coin-time-text-color">
                           {new Date(
                             singleCoinInCoinPage.market_data.ath_date[
                               displayCurrency
@@ -270,8 +263,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                       )}
                     </div>
                     <div className="flex flex-col justify-center items-center h-[50%]">
-                      <div className="flex items-center">
-                        <div className="mr-2">
+                      <div className="flex items-center sm:flex-col lg:flex-row">
+                        <div className="lg:mr-2 flex items-center">
                           {singleCoinInCoinPage.market_data && (
                             <Arrow
                               priceChange={
@@ -280,8 +273,8 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                               }
                             />
                           )}
+                          <div className="ml-1">All Time Low</div>:
                         </div>
-                        All Time Low:
                         {singleCoinInCoinPage.market_data && (
                           <div className="mx-2">
                             {currencySymbol}
@@ -290,19 +283,9 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                             ].toLocaleString()}
                           </div>
                         )}
-                        {singleCoinInCoinPage.market_data && (
-                          <div>
-                            <div>
-                              {singleCoinInCoinPage.market_data.atl_change_percentage[
-                                displayCurrency
-                              ].toFixed(2)}
-                              %
-                            </div>
-                          </div>
-                        )}
                       </div>
                       {singleCoinInCoinPage.market_data && (
-                        <div className="text-skin-single-coin-time-text-color">
+                        <div className="hidden lg:block text-skin-single-coin-time-text-color">
                           {new Date(
                             singleCoinInCoinPage.market_data.atl_date[
                               displayCurrency
@@ -323,7 +306,7 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                   </div>
                 </div>
               </div>
-              <div className="mt-36">
+              <div className="mt-6 sm:mt-36">
                 <div className="mb-4 text-xl font-semibold">Description</div>
                 <p>
                   {singleCoinInCoinPage && (
@@ -345,28 +328,30 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
               </div>
             </div>
 
-            <div className="column-2 flex flex-col w-[45%] ml-6 ">
-              <div className="h-[500px] w-full px-14 py-14 bg-skin-single-coin-page-modules-background-color rounded-lg flex flex-col justify-between text-lg">
+            <div className="column-2 flex flex-col w-full sm:w-[45%] ml-0 sm:ml-6 mt-6 sm:mt-0">
+              <div className="h-[500px] w-full px-7 lg:px-10 xl:px-14 py-7 lg:py-14 bg-skin-single-coin-page-modules-background-color rounded-lg flex flex-col justify-between text-lg">
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Market Cap: {currencySymbol}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex mr-1">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp; Market Cap:
+                    </div>
+                    {currencySymbol}
                     {convertToBillion(
                       singleCoinInCoinPage.market_data.market_cap[
                         displayCurrency
                       ]
                     )}
-                    B&nbsp;&nbsp;
-                    {singleCoinInCoinPage.market_data.price_change_percentage_24h.toFixed(
-                      2
-                    )}
-                    %
+                    B
                   </div>
                 )}
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Fully Diluted Valuation: {currencySymbol}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex truncate mr-1">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp;Fully Diluted Valuation:
+                    </div>
+                    {currencySymbol}
                     {convertToBillion(
                       singleCoinInCoinPage.market_data.fully_diluted_valuation[
                         displayCurrency
@@ -376,9 +361,12 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                   </div>
                 )}
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Volume 24h: {currencySymbol}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp; Volume 24h:
+                    </div>
+                    {currencySymbol}
                     {convertToBillion(
                       singleCoinInCoinPage.market_data
                         .market_cap_change_24h_in_currency[displayCurrency]
@@ -387,9 +375,11 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                   </div>
                 )}
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Volume/Market:{" "}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp; Volume/Market:{" "}
+                    </div>
                     {(
                       singleCoinInCoinPage.market_data.total_volume[
                         displayCurrency
@@ -402,9 +392,11 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                 )}
 
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Total Volume:{" "}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp; Total Volume:{" "}
+                    </div>
                     {singleCoinInCoinPage.market_data.total_volume[
                       displayCurrency
                     ].toLocaleString()}
@@ -412,18 +404,22 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                   </div>
                 )}
                 {singleCoinInCoinPage.market_data && (
-                  <div className="flex items-center">
-                    <CoinPagePlusInCircleIcon />
-                    &nbsp;&nbsp; Circulating Supply:{" "}
+                  <div className="flex sm:flex-col lg:flex-row items-center">
+                    <div className="flex">
+                      <CoinPagePlusInCircleIcon />
+                      &nbsp;&nbsp; Circulating Supply:{" "}
+                    </div>
                     {singleCoinInCoinPage.market_data.circulating_supply.toLocaleString()}
                     BTC
                   </div>
                 )}
                 {singleCoinInCoinPage.market_data &&
                   (singleCoinInCoinPage.market_data.max_supply !== null ? (
-                    <div className="flex items-center">
+                    <div className="flex sm:flex-col lg:flex-row items-center">
+                      <div className="flex">
                       <CoinPagePlusInCircleIcon />
                       &nbsp;&nbsp; Max Supply:{" "}
+                      </div>
                       {singleCoinInCoinPage.market_data.max_supply.toLocaleString()}
                       BTC
                     </div>
@@ -477,7 +473,7 @@ const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
                   </ProgressBarOuter>
                 )}
               </div>
-              <div className="mt-20 h-64 flex flex-col justify-between ">
+              <div className="mt-6 sm:mt-20 h-64 flex flex-col justify-between ">
                 <div className="w-full h-16 bg-skin-single-coin-page-modules-background-color rounded-lg flex justify-center items-center">
                   {singleCoinInCoinPage.links &&
                     singleCoinInCoinPage.links.homepage
