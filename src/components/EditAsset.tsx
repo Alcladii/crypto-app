@@ -10,7 +10,7 @@ type EditAssetProps = {
   setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const EditAsset: React.FC<EditAssetProps> = ({ id, setPortfolioListNeedsUpdate }) => {
+export const EditAsset/*: React.FC<EditAssetProps>*/ = ({ id, setPortfolioListNeedsUpdate }: EditAssetProps) => {
   const {
     portfolioList,
     setPortfolioList,
