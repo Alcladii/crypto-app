@@ -70,17 +70,35 @@ function Portfolio() {
   };
 
   useEffect(() => {
+    // if (portfolioListNeedsUpdate === true) {
+    //   console.log("update after adding coin");
+    //   getLatestCoinDataOnLoad();
+    // }
+    console.log("update after adding coin");
     getLatestCoinDataOnLoad();
 
+    // const minute = 60000;
+
+    // const intervalId = setInterval(() => {
+    //   getLatestCoinDataOnLoad();
+    // }, minute);
+    setPortfolioListNeedsUpdate(false);
+
+    // return () => clearInterval(intervalId);
+  }, [portfolioListNeedsUpdate]);
+
+  useEffect(() => {
     const minute = 60000;
 
     const intervalId = setInterval(() => {
       getLatestCoinDataOnLoad();
+      console.log("updated every minute");
     }, minute);
-    setPortfolioListNeedsUpdate(false);
 
     return () => clearInterval(intervalId);
-  }, [portfolioListNeedsUpdate]);
+  }, []);
+  
+  console.log(portfolioListNeedsUpdate)
 
   return (
     <div

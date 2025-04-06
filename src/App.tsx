@@ -49,8 +49,7 @@ export default function App() {
     redirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  const [loadHomePage, setLoadHomePage] = useLocalState<boolean>(
-    "loadHomePage",
+  const [loadHomePage, setLoadHomePage] = useState<boolean>(
     true
   );
   const [marketData, setMarketData] = useLocalState<any>("marketData", null);

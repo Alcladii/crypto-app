@@ -7,16 +7,20 @@ import App from "./App.tsx";
 import {Home} from "./pages/Homepage.tsx"
 import "./index.css";
 import { CryptoProvider } from "./contexts/cryptoContext";
+import store from '../src/app/store.ts';
+import { Provider } from 'react-redux';
 import { Layout } from "./style/Layout";
 
 //put the style in main when using external library style, for example import "slick-carousel/slick/slick.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter >
-      <CryptoProvider>
+      <CryptoProvider> 
+      {/* <Provider store={store}> */}
         <Layout>
           <App />
        </Layout>
+      {/* </Provider> */}
     </CryptoProvider>
     </BrowserRouter>
 );

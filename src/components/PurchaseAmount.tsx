@@ -9,7 +9,7 @@ type PurchaseAmountProps = {
 export const PurchaseAmount: React.FC<PurchaseAmountProps> = ({ amount }) => {
   const { setPurchasedAmount, darkMode } =
     useContext(CryptoContext) as CryptoContextProps;
-  const [inputPurchasedAmount, setInputPurchasedAmount] = useState(amount);
+  const [inputPurchasedAmount, setInputPurchasedAmount] = useState(amount || '');
   const [placeholder, setPlaceholder] = useState('Purchased Amount');
 
   const handleChange = (value: string) => {
