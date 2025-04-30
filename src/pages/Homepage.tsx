@@ -42,9 +42,9 @@ export const Home = () => {
               loadCoinsPageFromUrl
                 ? "bg-skin-coins-converter-selected-button-background"
                 : "bg-skin-coins-converter-unselected-button-background"
-            } ${
-              darkMode ? "" : "theme-light"
-            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
+            }
+             
+            flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
               loadCoinsPageFromUrl
                 ? "text-skin-coins-currency-selector-selected-button-text-color"
                 : "text-skin-coins-currency-selector-unselected-button-text-color"
@@ -58,9 +58,7 @@ export const Home = () => {
               !loadCoinsPageFromUrl
                 ? "bg-skin-coins-converter-selected-button-background"
                 : "bg-skin-coins-converter-unselected-button-background"
-            } ${
-              darkMode ? "" : "theme-light"
-            } flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
+            }  flex items-center justify-center h-10 w-44 rounded-md cursor-pointer ${
               !loadCoinsPageFromUrl
                 ? "text-skin-coins-currency-selector-selected-button-text-color"
                 : "text-skin-coins-currency-selector-unselected-button-text-color"
@@ -69,7 +67,11 @@ export const Home = () => {
             Currency Converter
           </div>
         </div>
-        {(loadCoinsPageFromUrl || !queryParams.load_coins_page) ? <Coins /> : <CurrencyConverter />}
+        {loadCoinsPageFromUrl || !queryParams.load_coins_page ? (
+          <Coins />
+        ) : (
+          <CurrencyConverter />
+        )}
       </div>
     </div>
   );

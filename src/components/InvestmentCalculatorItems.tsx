@@ -45,7 +45,7 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
     <form className="block">
       <div className="w-full flex justify-between mb-4">
         <div className="flex flex-col sm:flex-row w-full sm:w-[65%]">
-          <div className="mb-2 sm:mr-2 w-full sm:w-[50%]">
+          <div className="mb-2 sm:mr-2 sm:mb-0 w-full sm:w-[50%]">
             <input
               id="start-date"
               name="startDate"
@@ -59,7 +59,7 @@ export const InvestmentCalculatorItems: React.FC<CalculatorInputProps> = ({
               value={startDate}
             />
           </div>
-          <div className="mt-2 sm:ml-2 w-full sm:w-[50%]">
+          <div className="mt-2 sm:ml-2 sm:mt-0 w-full sm:w-[50%]">
             <input
               id="end-date"
               name="endDate"
