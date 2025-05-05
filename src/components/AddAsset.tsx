@@ -17,6 +17,7 @@ type Coin = {
 
 type AddAssetProps = {
   addCoin: (
+    coinId: string | null,
     coin: Coin | null,
     purchasedAmount: string | null,
     purchaseDate: string | null,
@@ -83,6 +84,7 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
         `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
       );
       addCoin(
+        coinId,
         selectedCoin,
         purchasedAmount,
         purchaseDate,

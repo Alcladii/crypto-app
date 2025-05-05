@@ -1,25 +1,43 @@
 import React, { useContext } from "react";
+import axios from "axios";
 import "../App.css";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
 type DeleteAssetProps = {
   id: string;
-  setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  //setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchPortfolio: () => void;
 };
 
 export const DeleteAsset: React.FC<DeleteAssetProps> = ({
   id,
-  setPortfolioListNeedsUpdate,
+  //setPortfolioListNeedsUpdate,
+  fetchPortfolio,
 }) => {
-  const { portfolioList, setPortfolioList } = useContext(
-    CryptoContext
-  ) as CryptoContextProps;
+  // const { portfolioList, setPortfolioList } = useContext(
+  //   CryptoContext
+  // ) as CryptoContextProps;
 
-  const handleRemove = (id: string) => {
-    const newPortfolioList = portfolioList.filter((item) => item.id !== id);
-    setPortfolioList(newPortfolioList);
-    setPortfolioListNeedsUpdate(true);
+  const handleRemove = async (id: string) => {
+    // const newPortfolioList = portfolioList.filter((item) => item.id !== id);
+    // setPortfolioList(newPortfolioList);
+    // setPortfolioListNeedsUpdate(true);
+    try {
+      await axios.delete(`http://localhost:3001/api/portfolio/${id}`);
+    } catch (err) {
+      console.error("Failed to delete portfolio item:", err);
+    }
+    fetchPortfolio();
   };
+
+  // const deletePortfolioItem = async (id: string) => {
+  //   try {
+  //     await axios.delete(`http://localhost:3001/api/portfolio/${id}`);
+  //     setPortfolioList((prev) => prev.filter((item) => item.id !== id));
+  //   } catch (err) {
+  //     console.error('Failed to delete portfolio item:', err);
+  //   }
+  // };
 
   return (
     <div>

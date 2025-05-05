@@ -156,10 +156,11 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   );
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
-  const [portfolioList, setPortfolioList] = useLocalState<any[]>(
-    "portfolioList",
-    []
-  );
+  // const [portfolioList, setPortfolioList] = useLocalState<any[]>(
+  //   "portfolioList",
+  //   []
+  // );
+  const [portfolioList, setPortfolioList] = useState<any[]>([]); 
   const [purchasedAmount, setPurchasedAmount] = useState<string | null>(null);
   const [purchaseDate, setPurchaseDate] = useState<string | null>(null);
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] =
