@@ -229,7 +229,7 @@ export default function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/portfolio" element={<Portfolio loadHomePage={loadHomePage} setLoadHomePage={setLoadHomePage}/>} />
         <Route
           path="/coin-page/:coinId"
           element={

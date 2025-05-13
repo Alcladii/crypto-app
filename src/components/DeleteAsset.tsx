@@ -9,6 +9,8 @@ type DeleteAssetProps = {
   fetchPortfolio: () => void;
 };
 
+const host = import.meta.env.VITE_API_URL;
+
 export const DeleteAsset: React.FC<DeleteAssetProps> = ({
   id,
   //setPortfolioListNeedsUpdate,
@@ -23,7 +25,7 @@ export const DeleteAsset: React.FC<DeleteAssetProps> = ({
     // setPortfolioList(newPortfolioList);
     // setPortfolioListNeedsUpdate(true);
     try {
-      await axios.delete(`http://localhost:3001/api/portfolio/${id}`);
+      await axios.delete(`${host}/api/portfolio/${id}`);
     } catch (err) {
       console.error("Failed to delete portfolio item:", err);
     }

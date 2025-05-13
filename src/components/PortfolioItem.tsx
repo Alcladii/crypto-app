@@ -215,7 +215,6 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({
                       Circ Supply vs Max Supply
                     </div>
                   </div>
-                  <div className="text-white">updated at {item.coinData.last_updated}</div>
                 </div>
               </div>
             </div>
