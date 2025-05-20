@@ -9,25 +9,32 @@ type DeleteAssetProps = {
   fetchPortfolio: () => void;
 };
 
+const host = import.meta.env.VITE_API_URL;
+
 export const DeleteAsset: React.FC<DeleteAssetProps> = ({
   id,
-  //setPortfolioListNeedsUpdate,
-  fetchPortfolio,
+  //fetchPortfolio,
 }) => {
-  // const { portfolioList, setPortfolioList } = useContext(
-  //   CryptoContext
-  // ) as CryptoContextProps;
+   const { portfolioList, setPortfolioList } = useContext(
+   CryptoContext
+  ) as CryptoContextProps;
 
   const handleRemove = async (id: string) => {
     // const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     // setPortfolioList(newPortfolioList);
     // setPortfolioListNeedsUpdate(true);
     try {
-      await axios.delete(`http://localhost:3001/api/portfolio/${id}`);
+      const response = await axios.delete(`${host}/api/portfolio/${id}`);
+      if (response.status === 200 || response.status === 204) {
+        // Only remove from local state after successful deletion
+        setPortfolioList((prev) => prev.filter((item) => item.id !== id));
+      } else {
+        console.error("Unexpected response status:", response.status);
+      }
     } catch (err) {
       console.error("Failed to delete portfolio item:", err);
     }
-    fetchPortfolio();
+    //fetchPortfolio();
   };
 
   // const deletePortfolioItem = async (id: string) => {

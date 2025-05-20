@@ -1,25 +1,43 @@
-import { useState, useEffect, useContext } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 import { InvestmentCalculator } from "../components/InvestmentCalculator";
 
-function Portfolio() {
+type PortfolioProps = {
+  loadHomePage: boolean;
+  setLoadHomePage: Dispatch<SetStateAction<boolean>>;
+};
+
+function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
   const { portfolioList, setPortfolioList, darkMode } = useContext(
     CryptoContext
   ) as CryptoContextProps;
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const host = import.meta.env.VITE_API_URL;
 
   const fetchPortfolio = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/portfolio");
+      const res = await axios.get(`${host}/api/portfolio`);
       setPortfolioList(res.data);
     } catch (err) {
       console.error("Failed to fetch portfolio:", err);
     }
   };
+
+  useEffect(() => {
+    if (loadHomePage) {
+      setLoadHomePage(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchPortfolio();
@@ -34,7 +52,7 @@ function Portfolio() {
   ) => {
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/api/portfolio", {
+      const response = await axios.post(`${host}/api/portfolio`, {
         coinId,
         coin,
         purchaseAmount,
@@ -43,8 +61,13 @@ function Portfolio() {
       });
 
       console.log("Coin saved:", response.data);
-      //setPortfolioListNeedsUpdate(true); // maybe fetch from DB after this
-      fetchPortfolio();
+      setPortfolioList((prevList) =>
+        [...prevList, response.data].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      );
+      //fetchPortfolio();
     } catch (err) {
       console.error("Failed to save coin:", err);
     }
@@ -68,12 +91,9 @@ function Portfolio() {
         );
 
         //Send the latest coinData to your backend to update all entries for this coinId
-        await axios.put(
-          `http://localhost:3001/api/portfolio/coin-data/${coinId}`,
-          {
-            coinData: latestCoinData,
-          }
-        );
+        await axios.put(`${host}/api/portfolio/coin-data/${coinId}`, {
+          coinData: latestCoinData,
+        });
       });
 
       // Wait for all updates to finish

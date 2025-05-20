@@ -11,6 +11,8 @@ type EditAssetProps = {
   fetchPortfolio: () => void;
 };
 
+const host = import.meta.env.VITE_API_URL;
+
 export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
   id,
   //setPortfolioListNeedsUpdate,
@@ -18,7 +20,7 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
 }: EditAssetProps) => {
   const {
     portfolioList,
-    //setPortfolioList,
+    setPortfolioList,
     purchasedAmount,
     purchaseDate,
     isNumber,
@@ -48,14 +50,19 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
     historyData: any
   ) => {
     try {
-      const res = await axios.put(`http://localhost:3001/api/portfolio/${id}`, {
+      const res = await axios.put(`${host}/api/portfolio/${id}`, {
         purchaseAmount: amount,
         purchaseDate: date,
         coinData,
         historyData,
       });
-
-      fetchPortfolio();
+      const updatedItem = res.data;
+    // Update only the changed item in state
+      setPortfolioList((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
+    );
+      //fetchPortfolio();
+      console.log("Portfolio item updated:", res.data);
     } catch (err) {
       console.error("Failed to update portfolio item:", err);
     }

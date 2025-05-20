@@ -3,13 +3,12 @@ import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 
 const prisma = new PrismaClient();
-const app = express();
+const app: any = express();
 app.use(cors());
 app.use(express.json());
 
 app.post('/api/portfolio', async (req, res) => {
   const { coin, purchaseAmount, purchaseDate, history } = req.body;
-
   try {
     const saved = await prisma.portfolio.create({
       data: {
@@ -103,7 +102,4 @@ app.put('/api/portfolio/coin-data/:coinId', async (req, res) => {
 
 
 
-app.listen(3001, () => console.log('Server running on http://localhost:3001'));
-
-
-
+app.listen(3001, () => console.log(`Server running on http://localhost:3001`)); 
