@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
@@ -10,77 +9,96 @@ function Portfolio() {
   const { portfolioList, setPortfolioList, darkMode } = useContext(
     CryptoContext
   ) as CryptoContextProps;
-  const [fetchingLatestCoinData, setFetchingLatestCoinData] = useState(false);
-  const [fetchingLatestCoinDataHasError, setFetchingLatestCoinDataHasError] =
-    useState(false);
-  const [portfolioListNeedsUpdate, setPortfolioListNeedsUpdate] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  const addCoin = (
+  const fetchPortfolio = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/api/portfolio");
+      setPortfolioList(res.data);
+    } catch (err) {
+      console.error("Failed to fetch portfolio:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
+
+  const addCoin = async (
+    coinId: any,
     coin: any,
     purchaseAmount: any,
     purchaseDate: any,
     history: any
   ) => {
-    const newPortfolioList = [
-      ...portfolioList,
-      {
-        id: uuidv4(),
-        coinData: coin,
-        purchaseAmount1: purchaseAmount,
-        purchaseDate1: purchaseDate,
-        historyData: history,
-      },
-    ];
-    setPortfolioList(newPortfolioList);
-    setPortfolioListNeedsUpdate(true);
-  };
-
-  //The functions below make sure every time the portfolio page loads, the data of all coins will be updated to the latest
-  //So it gives the accurate profit
-
-  const getLatestCoinDataOnLoad = async () => {
-    setFetchingLatestCoinDataHasError(false);
-    setFetchingLatestCoinData(true);
+    setIsLoading(true);
     try {
-      const promises = portfolioList.map((coin) =>
-        axios(
-          `https://api.coingecko.com/api/v3/coins/${coin.coinData.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-        )
-      );
-      const updatedCoinData = await Promise.all(promises);
-      updateToLatestCoinDataOnLoad(updatedCoinData);
-      setFetchingLatestCoinData(false);
+      const response = await axios.post("http://localhost:3001/api/portfolio", {
+        coinId,
+        coin,
+        purchaseAmount,
+        purchaseDate,
+        history,
+      });
+
+      console.log("Coin saved:", response.data);
+      //setPortfolioListNeedsUpdate(true); // maybe fetch from DB after this
+      fetchPortfolio();
     } catch (err) {
-      setFetchingLatestCoinDataHasError(true);
-      setFetchingLatestCoinData(false);
+      console.error("Failed to save coin:", err);
     }
   };
 
-  const updateToLatestCoinDataOnLoad = (coinData: any[]) => {
-    const newPortfolioList = portfolioList.map((item) => {
-      coinData.forEach((item1) => {
-        if (item.coinData.id === item1.data.id) {
-          item.coinData = item1.data;
+  const getLatestCoinDataEveryMinute = async (portfolioList: any[]) => {
+    const uniqueCoinIds: any[] = [];
+
+    try {
+      // Get unique coinIds
+      portfolioList.forEach((coin) => {
+        if (!uniqueCoinIds.includes(coin.coinId)) {
+          uniqueCoinIds.push(coin.coinData.id);
         }
       });
-      return item;
-    });
-    setPortfolioList(newPortfolioList);
+
+      // Fetch updated coinData for each unique coin
+      const updateRequests = uniqueCoinIds.map(async (coinId) => {
+        const { data: latestCoinData } = await axios.get(
+          `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        );
+
+        //Send the latest coinData to your backend to update all entries for this coinId
+        await axios.put(
+          `http://localhost:3001/api/portfolio/coin-data/${coinId}`,
+          {
+            coinData: latestCoinData,
+          }
+        );
+      });
+
+      // Wait for all updates to finish
+      await Promise.all(updateRequests);
+
+      // Fetch the updated portfolio list from your backend to update the JSX
+      await fetchPortfolio();
+
+      //setIsUpdating(false);
+    } catch (error) {
+      console.error("Failed to update all coin data:", error);
+      //setHasError(true);
+      //setIsUpdating(false);
+    }
   };
 
   useEffect(() => {
-    getLatestCoinDataOnLoad();
-
     const minute = 60000;
 
     const intervalId = setInterval(() => {
-      getLatestCoinDataOnLoad();
+      getLatestCoinDataEveryMinute(portfolioList);
     }, minute);
-    setPortfolioListNeedsUpdate(false);
 
     return () => clearInterval(intervalId);
-  }, [portfolioListNeedsUpdate]);
+  }, []);
 
   return (
     <div
@@ -96,9 +114,10 @@ function Portfolio() {
             <AddAsset addCoin={addCoin} />
           </div>
         </div>
-        {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>}
+        {/* {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>} */}
         <PortfolioItem
-          setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+          //setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+          fetchPortfolio={fetchPortfolio}
         />
       </div>
     </div>

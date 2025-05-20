@@ -22,7 +22,7 @@ const ProgressBarOuter = styled.div`
   width: 100%;
 `;
 
-const ProgressBarInner = styled.div<{ width: number}>`
+const ProgressBarInner = styled.div<{ width: number }>`
   border-radius: 99px;
   height: 10px;
   width: ${(props) => props.width * 100}%;
@@ -30,10 +30,14 @@ const ProgressBarInner = styled.div<{ width: number}>`
 `;
 
 type PortfolioItemProps = {
-  setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  fetchPortfolio: () => void;
+  //setPortfolioListNeedsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNeedsUpdate }) => {
+export const PortfolioItem: React.FC<PortfolioItemProps> = ({
+  fetchPortfolio,
+  //setPortfolioListNeedsUpdate,
+}) => {
   const {
     displayCurrency,
     currencySymbol,
@@ -43,7 +47,10 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
     setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  const profitPercentage = (item: { historyData: { market_data: { current_price: { [x: string]: number; }; }; }; coinData: { market_data: { current_price: { [x: string]: number; }; }; }; }) => {
+  const profitPercentage = (item: {
+    historyData: { market_data: { current_price: { [x: string]: number } } };
+    coinData: { market_data: { current_price: { [x: string]: number } } };
+  }) => {
     if (item.historyData.market_data) {
       return retainTwoDigits(
         ((item.coinData.market_data.current_price[displayCurrency] -
@@ -52,7 +59,7 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
           100
       );
     }
-    return 0
+    return 0;
   };
 
   const navigate = useNavigate();
@@ -61,7 +68,6 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
     navigate(`/coin-page/${item.id}`);
     setRedirectedFromPortfolioPage(true);
   };
-
 
   return (
     <div>
@@ -74,19 +80,22 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-[35%] lg:w-[30%] rounded-t-lg md:rounded-none md:rounded-l-lg py-2 pl-4 pr-4 md:pr-0 bg-skin-portfolio-item-left-column-back-ground-color ">
                 <div className="flex items-center justify-between md:justify-start pt-3 md:py-3">
-                  <div className="hidden md:block md:mr-2" >
-                    <CoinTag src={item.coinData.image.large} />
-                  </div>                 
-                  <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color" onClick={()=>handleClick(item.coinData)}>                   
+                  <div className="hidden md:block md:mr-2">
+                    <CoinTag src={item.coinData && item.coinData.image.large} />
+                  </div>
+                  <div
+                    className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color"
+                    onClick={() => handleClick(item.coinData)}
+                  >
                     {item.coinData.name}({item.coinData.symbol.toUpperCase()})
                   </div>
-                  <div className="md:hidden md:mr-2" >
+                  <div className="md:hidden md:mr-2">
                     <CoinTag src={item.coinData.image.large} />
-                  </div> 
+                  </div>
                 </div>
                 <div className="md:hidden text-sm text-skin-portfolio-item-titles-text-color">
-                    Purchased&nbsp;{item.purchaseDate1}
-                  </div>
+                  Purchased&nbsp;{new Date(item.purchaseDate).toISOString().split('T')[0]}
+                </div>
                 <div className="py-2">
                   <div className="hidden md:block text-base text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                     Total Value
@@ -97,19 +106,20 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
                       {retainTwoDigits(
                         item.coinData.market_data.current_price[
                           displayCurrency
-                        ] * Number(item.purchaseAmount1)
+                        ] * item.purchaseAmount
                       )}
                       &nbsp;{displayCurrency.toUpperCase()}
                     </div>
                     <div className="mx-3 sm:mx-0 lg:mx-3 flex items-center">
-                      <Arrow priceChange={profitPercentage(item)}/>&nbsp;
+                      <Arrow priceChange={profitPercentage(item)} />
+                      &nbsp;
                       <PriceChangePercentageText
                         coin={profitPercentage(item)}
                       />
                     </div>
                   </div>
                   <div className="hidden md:block mt-3 text-sm text-skin-portfolio-item-titles-text-color">
-                    Purchased&nbsp;{item.purchaseDate1}
+                    Purchased&nbsp;{new Date(item.purchaseDate).toISOString().split('T')[0]}
                   </div>
                 </div>
               </div>
@@ -186,7 +196,8 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
                       <div className="text-xl font-semibold text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
                         {retainTwoDigits(
                           (item.coinData.market_data.circulating_supply /
-                            item.coinData.market_data.total_supply)*100
+                            item.coinData.market_data.total_supply) *
+                            100
                         )}
                         %
                       </div>
@@ -204,12 +215,21 @@ export const PortfolioItem: React.FC<PortfolioItemProps> = ({ setPortfolioListNe
                       Circ Supply vs Max Supply
                     </div>
                   </div>
+                  <div className="text-white">updated at {item.coinData.last_updated}</div>
                 </div>
               </div>
             </div>
             <div className="flex justify-end my-3">
-              <DeleteAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}/>
-              <EditAsset id={item.id} setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate} />
+              <DeleteAsset
+                id={item.id}
+                //setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+                fetchPortfolio={fetchPortfolio}
+              />
+              <EditAsset
+                id={item.id}
+                //setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+                fetchPortfolio={fetchPortfolio}
+              />
             </div>
           </div>
         ))}

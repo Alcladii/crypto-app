@@ -65,7 +65,7 @@ export const InvestmentCalculator = () => {
   };
 
   useEffect(() => {
-    if (!coinListInCalculator) {
+    if (coinListInCalculator.length === 0) {
       getCoinList();
     }
   }, []);
@@ -97,7 +97,7 @@ export const InvestmentCalculator = () => {
         `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=${currency}&from=${startDate}&to=${endDate}&precision=2`
       );
       const historicalData = response.data;
-      setFetchingHistoricalData(false)
+      setFetchingHistoricalData(false);
       return historicalData;
     } catch {
       setFetchingHistoricalData(false);
@@ -245,7 +245,10 @@ export const InvestmentCalculator = () => {
               </div>
               <CloseIcon togglePopup={togglePopup} />
             </div>
-            <div id="coin-select" className="flex items-center justify-between sm:justify-start">
+            <div
+              id="coin-select"
+              className="flex items-center justify-between sm:justify-start"
+            >
               <div className="flex justify-center items-center h-12 w-[50%] sm:w-[25%] mr-2 rounded-md bg-skin-calculator-search-bar-unselected-calculator-option-background-color">
                 {selectedOption && (
                   <div className="flex">

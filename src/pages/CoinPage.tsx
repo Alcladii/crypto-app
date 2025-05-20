@@ -33,7 +33,7 @@ type CoinParams = {
   coinId: string;
 };
 
-const CoinPage: React.FC<CoinPageProps> = ({ portfolioList }) => {
+const CoinPage = ( {portfolioList}: CoinPageProps ) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [singleCoinInCoinPage, setSingleCoinInCoinPage] = useState<any>();
   const [coinDataIsLoading, setCoinDataIsLoading] = useState<boolean>(false);
