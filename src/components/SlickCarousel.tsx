@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { Arrow } from "./UI/Arrow";
-import { ComparisonIcon, CloseIconWithoutCircle } from "../components/UI/Svg"
+import { ComparisonIcon, CloseIconWithoutCircle } from "../components/UI/Svg";
 
 type Coin = {
   id: string;
@@ -13,12 +13,12 @@ type Coin = {
   current_price: number;
   price_change_percentage_24h_in_currency: number;
   selected?: boolean;
-}
+};
 
 type SlickCarouselProps = {
   coinList: Coin[];
   setDisplaySelectCoinToSeeChartMessage: (value: boolean) => void;
-}
+};
 
 const CoinTag = styled.img`
   width: 30px;
@@ -42,7 +42,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     setPriceVolumeChartIsLoadingHasError,
     numOfDaysFromUrl,
     darkMode,
-  } = useContext(CryptoContext) as CryptoContextProps ;
+  } = useContext(CryptoContext) as CryptoContextProps;
 
   const [comparisonIsOn, setComparisonIsOn] = useLocalState<boolean>(
     "comparisonModeOn",
@@ -104,19 +104,26 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     }
   }, [coinList]);
 
-  let numOfSelectedSlides = slidesData.filter((coin: Coin) => coin.selected)
-    .length;
+  let numOfSelectedSlides = slidesData.filter(
+    (coin: Coin) => coin.selected
+  ).length;
 
   const handleClick = (id: string) => {
     setDisplaySelectCoinToSeeChartMessage(false);
-    const newSlides = slidesData.map((coin: Coin) => {
+    const newSlides = [...slidesData];
+
+    newSlides.forEach((coin: Coin) => {
       const isSameCoin = id === coin.id;
+
       if (isSameCoin) {
         if (!comparisonIsOn) {
           coin.selected = true;
         } else {
-          if (numOfSelectedSlides < 3 && !coin.selected) coin.selected = true;
-          else if (coin.selected) coin.selected = false;
+          if (numOfSelectedSlides < 3 && !coin.selected) {
+            coin.selected = true;
+          } else if (coin.selected) {
+            coin.selected = false;
+          }
         }
       } else if (!comparisonIsOn) {
         coin.selected = false;
@@ -209,7 +216,11 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
                         {coin.current_price}
                       </span>
                       <div className="flex items-center">
-                        <Arrow priceChange={coin.price_change_percentage_24h_in_currency} />
+                        <Arrow
+                          priceChange={
+                            coin.price_change_percentage_24h_in_currency
+                          }
+                        />
                         <span
                           className={`${
                             coin.price_change_percentage_24h_in_currency > 0
@@ -227,7 +238,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
                     </div>
                   </div>
                 </div>
-              </div >
+              </div>
             ))}
           </Slider>
         )}

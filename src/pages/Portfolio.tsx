@@ -1,4 +1,10 @@
-import { useState, useEffect, useContext, SetStateAction, Dispatch } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import axios from "axios";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
@@ -10,13 +16,13 @@ type PortfolioProps = {
   setLoadHomePage: Dispatch<SetStateAction<boolean>>;
 };
 
-function Portfolio({loadHomePage, setLoadHomePage}: PortfolioProps) {
+function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
   const { portfolioList, setPortfolioList, darkMode } = useContext(
     CryptoContext
   ) as CryptoContextProps;
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const host = import.meta.env.VITE_API_URL
+  const host = import.meta.env.VITE_API_URL;
 
   const fetchPortfolio = async () => {
     try {
@@ -27,11 +33,11 @@ function Portfolio({loadHomePage, setLoadHomePage}: PortfolioProps) {
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     if (loadHomePage) {
       setLoadHomePage(false);
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     fetchPortfolio();
@@ -55,7 +61,13 @@ function Portfolio({loadHomePage, setLoadHomePage}: PortfolioProps) {
       });
 
       console.log("Coin saved:", response.data);
-      fetchPortfolio();
+      setPortfolioList((prevList) =>
+        [...prevList, response.data].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      );
+      //fetchPortfolio();
     } catch (err) {
       console.error("Failed to save coin:", err);
     }
@@ -79,12 +91,9 @@ function Portfolio({loadHomePage, setLoadHomePage}: PortfolioProps) {
         );
 
         //Send the latest coinData to your backend to update all entries for this coinId
-        await axios.put(
-          `${host}/api/portfolio/coin-data/${coinId}`,
-          {
-            coinData: latestCoinData,
-          }
-        );
+        await axios.put(`${host}/api/portfolio/coin-data/${coinId}`, {
+          coinData: latestCoinData,
+        });
       });
 
       // Wait for all updates to finish

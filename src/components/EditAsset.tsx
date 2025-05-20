@@ -20,7 +20,7 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
 }: EditAssetProps) => {
   const {
     portfolioList,
-    //setPortfolioList,
+    setPortfolioList,
     purchasedAmount,
     purchaseDate,
     isNumber,
@@ -56,8 +56,12 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
         coinData,
         historyData,
       });
-
-      fetchPortfolio();
+      const updatedItem = res.data;
+    // Update only the changed item in state
+      setPortfolioList((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
+    );
+      //fetchPortfolio();
       console.log("Portfolio item updated:", res.data);
     } catch (err) {
       console.error("Failed to update portfolio item:", err);
