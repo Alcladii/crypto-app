@@ -96,7 +96,6 @@ export type CryptoContextProps = {
   currencyListIsLoading: boolean;
   currencyLoadingHasError: boolean;
 };
-
 interface CryptoProviderProps {
   children: ReactNode;
 }
@@ -143,17 +142,20 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState<boolean>(false);
-  const [priceVolumeList, setPriceVolumeList] = useLocalState<any[]>(
-    "priceVolumeList",
-    []
-  );
+  // const [priceVolumeList, setPriceVolumeList] = useLocalState<any[]>(
+  //   "priceVolumeList",
+  //   []
+  // );
+  const [priceVolumeList, setPriceVolumeList] = useState<any[]>([])
   const [numOfDays, setNumOfDays] = useLocalState<string>("numOfDays", "7");
   const [coinsInChart, setCoinsInChart] = useState<any[]>([]);
   const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
-  const [selectedCoinData, setSelectedCoinData] = useLocalState<any[]>(
-    "selectedCoinData",
-    []
-  );
+  // const [selectedCoinData, setSelectedCoinData] = useLocalState<any[]>(
+  //   "selectedCoinData",
+  //   []
+  // );
+  const [selectedCoinData, setSelectedCoinData] = useState<any[]>([])
+  console.log("selectedCoinData", selectedCoinData)
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
   // const [portfolioList, setPortfolioList] = useLocalState<any[]>(
@@ -172,6 +174,8 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const [darkMode, setDarkMode] = useLocalState<boolean>("darkMode", true);
   const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] =
     useLocalState<boolean>("redirectFromPortfolioPage", false);
+
+    console.log("priceVolumeList", priceVolumeList)
 
   const convertToBillion = (number: number): string => {
     return (number / 1000000000).toFixed(2);
