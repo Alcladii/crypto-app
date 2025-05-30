@@ -98,13 +98,13 @@ const LineChart: React.FC<LineChartProps> = ({ priceVolumeList }) => {
   const priceData = {
     labels:
       priceVolumeList.length !== 0 &&
-      priceVolumeList[0].data.prices.map((item: Price) => {
+      priceVolumeList[0].prices.map((item: Price) => {
         return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
     datasets: priceVolumeList.map((item: PriceVolume) => {
       return {
         label: `Trade Price`,
-        data: item.data.prices.map((price: Price) => price[1]),
+        data: item.prices.map((price: Price) => price[1]),
         borderColor: borderColors[priceVolumeList.indexOf(item)],
         backgroundColor: (context: any) => {
           const ctx = context.chart.ctx;
