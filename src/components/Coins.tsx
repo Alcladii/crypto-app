@@ -96,7 +96,10 @@ function Coins() {
     setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  console.log("priceVolumeChartIsLoadingHasError",priceVolumeChartIsLoadingHasError)
+  console.log(
+    "priceVolumeChartIsLoadingHasError",
+    priceVolumeChartIsLoadingHasError
+  );
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
@@ -136,7 +139,10 @@ function Coins() {
   const getCoinList = async () => {
     try {
       let coins;
-      const order = (showTopFifty || !queryParams.show_top_fifty) ? "market_cap_desc" : "market_cap_asc";
+      const order =
+        showTopFifty || !queryParams.show_top_fifty
+          ? "market_cap_desc"
+          : "market_cap_asc";
       setCoinListIsLoading(true);
       const response = await api(
         `/coins/markets`,
@@ -179,9 +185,9 @@ function Coins() {
   }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
-    if (currencyList.length === 0){
+    if (currencyList.length === 0) {
       getCurrencyList();
-    }   
+    }
   }, []);
 
   const navigate = useNavigate();
@@ -518,10 +524,15 @@ function Coins() {
           <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
+                !priceVolumeList.includes(undefined) &&
+                !priceVolumeList.includes(null) && (
+                  <LineChart priceVolumeList={priceVolumeList} />
+                )}
+              {/* {priceVolumeList.length !== 0 &&
                 !priceVolumeList.some(item => item.data === undefined) &&
                 !priceVolumeList.some(item => item.data === null) && (
                   <LineChart priceVolumeList={priceVolumeList} />
-                )}
+                )} */}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -539,11 +550,16 @@ function Coins() {
               </div>
             </div>
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-               {priceVolumeList.length !== 0 &&
-                !priceVolumeList.some(item => item.data === undefined) &&
-                !priceVolumeList.some(item => item.data === null) && (
+            {priceVolumeList.length !== 0 &&
+                !priceVolumeList.includes(undefined) &&
+                !priceVolumeList.includes(null) && (
                   <BarChart priceVolumeList={priceVolumeList} />
-                )} 
+                )}
+              {/* {priceVolumeList.length !== 0 &&
+                !priceVolumeList.some((item) => item.data === undefined) &&
+                !priceVolumeList.some((item) => item.data === null) && (
+                  <BarChart priceVolumeList={priceVolumeList} />
+                )} */}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
