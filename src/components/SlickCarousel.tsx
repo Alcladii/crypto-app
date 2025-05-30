@@ -156,6 +156,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   //console.log("selectedCoinData", selectedCoinData)
 
   // useEffect(() => {
+  //   CODE FROM SECOND CHANGE (WITHOUT REFETCH FAILED COINS IN THE NEXT TRY)
   //   // const prevSelectedCoinData = prevSelectedCoinDataRef.current;
 
   //   // const prevIds = new Set(prevSelectedCoinData.map((coin) => coin.id));
@@ -192,6 +193,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   //   // }
   //   // prevSelectedCoinDataRef.current = selectedCoinData;
 
+  //  CODE FROM FIRST TIME
   //    const requests = selectedCoinData.map((item: Coin) => {
   //       return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
   //     });
