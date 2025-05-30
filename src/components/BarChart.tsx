@@ -83,7 +83,7 @@ const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
   const volumeData = {
     labels:
       priceVolumeList !== null &&
-      priceVolumeList[0].total_volumes.map((item: Volume) => {
+      priceVolumeList[0].data.total_volumes.map((item: Volume) => {
         return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
     datasets: priceVolumeList.map((item: PriceVolume) => {
