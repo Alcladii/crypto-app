@@ -233,6 +233,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     currency: string,
     numOfDays: string
   ) => {
+    console.log("get Coin Price Volume called")
     setPriceVolumeChartIsLoadingHasError(false);
     setPriceVolumeChartIsLoading(true);
     try {
