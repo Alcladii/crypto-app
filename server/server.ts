@@ -1,17 +1,22 @@
+import 'dotenv/config'
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
+import { clerkClient, requireAuth, getAuth } from "@clerk/express"
 
 const prisma = new PrismaClient();
 const app: any = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/api/portfolio', async (req, res) => {
+app.post('/api/portfolio', requireAuth(), async (req, res) => {
   const { coin, purchaseAmount, purchaseDate, history } = req.body;
+  const {userId} = req.auth();
+  console.log("req.auth:", req.auth);
   try {
     const saved = await prisma.portfolio.create({
       data: {
+        userId,
         coinId: coin.id,
         // coinName: coin.name,
         coinData: coin,
@@ -28,9 +33,11 @@ app.post('/api/portfolio', async (req, res) => {
   }
 });
 
-app.get('/api/portfolio', async (req, res) => {
+app.get('/api/portfolio', requireAuth(), async (req, res) => {
+  const {userId} = req.auth()
   try {
     const data = await prisma.portfolio.findMany({
+      where: { userId },
       orderBy: { createdAt: 'desc' }, // Optional: latest first
     });
     res.json(data);
@@ -40,7 +47,7 @@ app.get('/api/portfolio', async (req, res) => {
   }
 });
 
-app.delete('/api/portfolio/:id', async (req, res) => {
+app.delete('/api/portfolio/:id', requireAuth(),async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -55,7 +62,7 @@ app.delete('/api/portfolio/:id', async (req, res) => {
   }
 });
 
-app.put('/api/portfolio/:id', async (req, res) => {
+app.put('/api/portfolio/:id', requireAuth(),async (req, res) => {
   const { id } = req.params;
   const { coinData, purchaseAmount, purchaseDate, historyData } = req.body;
 

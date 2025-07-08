@@ -15,8 +15,8 @@ datasource db {
 
 model Portfolio {
   id              String   @id @default(uuid())
+  userId          String
   coinId          String
-  //coinName        String
   coinData     Json
   purchaseAmount  Float
   purchaseDate    DateTime

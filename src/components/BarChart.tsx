@@ -32,6 +32,7 @@ type BarChartProps = {
 };
 
 const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
+  //console.log("priceVolumeList from Barchart",priceVolumeList)
   const { numOfDays, numOfDaysFromUrl } = useContext(
     CryptoContext
   ) as CryptoContextProps;
@@ -83,14 +84,16 @@ const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
   const volumeData = {
     labels:
       priceVolumeList !== null &&
-      priceVolumeList[0].data.total_volumes.map((item: Volume) => {
+      priceVolumeList[0].total_volumes.map((item: Volume) => {
+      //priceVolumeList[0].data.total_volumes.map((item: Volume) => {
         return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
       }),
     datasets: priceVolumeList.map((item: PriceVolume) => {
       const backgroundColor = colors[priceVolumeList.indexOf(item)];
       return {
         label: `Trade Price`,
-        data: item.data.total_volumes.map((volume: Volume) => volume[1]),
+        data: item.total_volumes.map((volume: Volume) => volume[1]),
+        //data: item.data.total_volumes.map((volume: Volume) => volume[1]),
         backgroundColor,
         pointRadius: 3,
         borderWidth: 0,

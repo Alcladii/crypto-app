@@ -50,6 +50,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   );
   const prevSelectedCoinDataRef = useRef<Coin[]>([]);
   const failedCoinIdsRef = useRef<Set<string>>(new Set());
+  const prevDays = useRef<string | null>(null);
 
   const settings = {
     dots: false,
@@ -95,10 +96,10 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
       slide.selected = false;
     });
     setSlidesData(resetSlidesData);
-  }
+  };
 
   useEffect(() => {
-    resetSelectedCoins()
+    resetSelectedCoins();
   }, []);
 
   useEffect(() => {
@@ -127,7 +128,6 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     const newSlides = [...slidesData];
 
     newSlides.forEach((coin: Coin) => {
-      
       const isSameCoin = id === coin.id;
 
       if (isSameCoin) {
@@ -146,7 +146,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
       return coin;
     });
     const selectedCoin = slidesData.filter((coin: Coin) => coin.selected);
-    console.log("selectedCoin", selectedCoin);
+    //console.log("selectedCoin", selectedCoin);
     setSelectedCoinData(selectedCoin);
     setSlidesData(newSlides);
   };
@@ -155,7 +155,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
 
   //console.log("selectedCoinData", selectedCoinData)
 
-  // useEffect(() => {
+  useEffect(() => {
   //   CODE FROM SECOND CHANGE (WITHOUT REFETCH FAILED COINS IN THE NEXT TRY)
   //   // const prevSelectedCoinData = prevSelectedCoinDataRef.current;
 
@@ -193,80 +193,136 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   //   // }
   //   // prevSelectedCoinDataRef.current = selectedCoinData;
 
-  //  CODE FROM FIRST TIME
-  //    const requests = selectedCoinData.map((item: Coin) => {
-  //       return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
-  //     });
-  //     Promise.all(requests).then((responses) => {
-  //       setPriceVolumeList(responses);
-  //     });
+   //CODE FROM FIRST TIME
+     const requests = selectedCoinData.map((item: Coin) => {
+        return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+      });
+      Promise.all(requests).then((responses) => {
+        setPriceVolumeList(responses);
+      });
+  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
+
+  // useEffect(() => {
+  //   const prevSelectedCoinData = prevSelectedCoinDataRef.current;
+
+  //   const prevIds = new Set(prevSelectedCoinData.map((coin) => coin.id));
+  //   const currentIds = new Set(selectedCoinData.map((coin) => coin.id));
+
+  //   const addedCoins = selectedCoinData.filter((coin) => !prevIds.has(coin.id));
+  //   const removedIds = [...prevIds].filter((id) => !currentIds.has(id));
+
+  //   if (selectedCoinData.length === 0) {
+  //     setPriceVolumeList([]);
+  //     failedCoinIdsRef.current.clear();
+  //   } 
+  //   // else if (numOfDaysFromUrl !== prevDays.current) {
+  //   //   const requests = selectedCoinData.map((item: Coin) => {
+  //   //     return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+  //   //   });
+  //   //   Promise.all(requests).then((responses) => {
+  //   //     setPriceVolumeList(responses);
+  //   //   });
+  //   // }
+  //   //else if (numOfDaysFromUrl !== prevDays.current) {
+  //     // const requests = selectedCoinData.map((item: Coin) => {
+  //     //         return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+  //     //       });
+  //     //       Promise.all(requests).then((responses) => {
+  //     //         setPriceVolumeList(responses);
+  //     //       });
+  //     // If the number of days has changed, we need to refetch all selected coins
+  //     // const requests = selectedCoinData.map((item) =>
+  //     //   getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl)
+  //     //     .then((data) => ({ id: item.id, data }))
+  //     //     .catch(() => ({ id: item.id, data: undefined }))
+  //     // );
+  //     // Promise.all(requests).then((results) => {
+  //     //   const validData = results.filter((r) => r.data !== undefined);
+  //     //   const failedIds = results
+  //     //     .filter((r) => r.data === undefined)
+  //     //     .map((r) => r.id);
+  //     //   // Track which coins failed so we can retry next time
+  //     //   failedIds.forEach((id) => failedCoinIdsRef.current.add(id));
+  //     //   validData.forEach((r) => failedCoinIdsRef.current.delete(r.id));
+  //     //   setPriceVolumeList((prev) => {
+  //     //     // Remove deleted and failed ones
+  //     //     const filteredPrev = prev.filter(
+  //     //       (item) =>
+  //     //         !removedIds.includes(item.id) &&
+  //     //         !validData.find((newItem) => newItem.id === item.id)
+  //     //     );
+  //     //     // Add or update successful results
+  //     //     return [...filteredPrev, ...validData];
+  //     //   });
+  //     // });
+  //   //} 
+  //   else {
+  //     // Detect if days value changed
+  //     const daysChanged = prevDays.current !== numOfDaysFromUrl;
+  //     // Also retry any coin whose data was undefined before
+  //     const retryCoins = selectedCoinData.filter((coin) =>
+  //       failedCoinIdsRef.current.has(coin.id)
+  //     );
+
+  //     // If days changed, refetch all selected coins
+  //     const outdatedCoins = daysChanged ? selectedCoinData : [];
+  //     //console.log("outdatedCoins", outdatedCoins)
+  //     const coinsToFetch = [...addedCoins, ...retryCoins, ...outdatedCoins];
+
+  //     //console.log("coinsToFetch", coinsToFetch)
+  //     const uniqueCoinsToFetch = Array.from(
+  //       new Map(coinsToFetch.map((coin) => [coin.id, coin])).values()
+  //     );
+
+  //     if (uniqueCoinsToFetch.length > 0) {
+  //       const requests = uniqueCoinsToFetch.map((item) =>
+  //         getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl)
+  //           .then((data) => {
+  //             return { id: item.id, data };
+  //           })
+  //           .catch(() => {
+  //             return { id: item.id, data: undefined };
+  //           })
+  //       );
+
+  //       Promise.all(requests).then((results) => {
+  //         const validData = results.filter((r) => r.data !== undefined);
+  //         const failedIds = results
+  //           .filter((r) => r.data === undefined)
+  //           .map((r) => r.id);
+
+  //         // Track which coins failed so we can retry next time
+  //         failedIds.forEach((id) => failedCoinIdsRef.current.add(id));
+  //         validData.forEach((r) => failedCoinIdsRef.current.delete(r.id));
+
+  //         setPriceVolumeList((prev) => {
+  //           // Remove deleted and failed ones
+  //           const filteredPrev = prev.filter(
+  //             (item) =>
+  //               !removedIds.includes(item.id) &&
+  //               !validData.find((newItem) => newItem.id === item.id)
+  //           );
+  //           // Add or update successful results
+  //           return [...filteredPrev, ...validData];
+  //         });
+  //       });
+  //     } else if (removedIds.length > 0) {
+  //       setPriceVolumeList((prev) =>
+  //         prev.filter((item) => !removedIds.includes(item.id))
+  //       );
+  //     }
+  //   }
+
+  //   prevSelectedCoinDataRef.current = selectedCoinData;
+  //   prevDays.current = numOfDaysFromUrl;
   // }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
 
-
-  useEffect(() => {
-    const prevSelectedCoinData = prevSelectedCoinDataRef.current;
-  
-    const prevIds = new Set(prevSelectedCoinData.map((coin) => coin.id));
-    const currentIds = new Set(selectedCoinData.map((coin) => coin.id));
-  
-    const addedCoins = selectedCoinData.filter((coin) => !prevIds.has(coin.id));
-    const removedIds = [...prevIds].filter((id) => !currentIds.has(id));
-  
-    if (selectedCoinData.length === 0) {
-      setPriceVolumeList([]);
-      failedCoinIdsRef.current.clear();
-    } else {
-      // Also retry any coin whose data was undefined before
-      const retryCoins = selectedCoinData.filter((coin) =>
-        failedCoinIdsRef.current.has(coin.id)
-      );
-  
-      const coinsToFetch = [...addedCoins, ...retryCoins];
-      const uniqueCoinsToFetch = Array.from(
-        new Map(coinsToFetch.map((coin) => [coin.id, coin])).values()
-      );
-  
-      if (uniqueCoinsToFetch.length > 0) {
-        const requests = uniqueCoinsToFetch.map((item) =>
-          getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl)
-            .then((data) => {
-              return { id: item.id, data };
-            })
-            .catch(() => {
-              return { id: item.id, data: undefined };
-            })
-        );
-  
-        Promise.all(requests).then((results) => {
-          const validData = results.filter((r) => r.data !== undefined);
-          const failedIds = results
-            .filter((r) => r.data === undefined)
-            .map((r) => r.id);
-  
-          // Track which coins failed so we can retry next time
-          failedIds.forEach((id) => failedCoinIdsRef.current.add(id));
-          validData.forEach((r) => failedCoinIdsRef.current.delete(r.id));
-  
-          setPriceVolumeList((prev) => {
-            // Remove deleted and failed ones
-            const filteredPrev = prev.filter(
-              (item) =>
-                !removedIds.includes(item.id) &&
-                !validData.find((newItem) => newItem.id === item.id)
-            );
-            // Add or update successful results
-            return [...filteredPrev, ...validData];
-          });
-        });
-      } else if (removedIds.length > 0) {
-        setPriceVolumeList((prev) =>
-          prev.filter((item) => !removedIds.includes(item.id))
-        );
-      }
-    }
-  
-    prevSelectedCoinDataRef.current = selectedCoinData;
-  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
+  // console.log(
+  //   "numOfDaysFromUrl",
+  //   numOfDaysFromUrl,
+  //   "prevDays",
+  //   prevDays.current
+  // );
 
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn);

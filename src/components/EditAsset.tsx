@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
 import "../App.css";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { PurchaseAmount } from "./PurchaseAmount";
@@ -34,6 +35,7 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
   const [selectedCoinIsLoading, setSelectedCoinIsLoading] = useState(false);
   const [selectedCoinLoadingHasError, setSelectedCoinLoadingHasError] =
     useState(false);
+  const { getToken } = useAuth();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -50,17 +52,24 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
     historyData: any
   ) => {
     try {
+      const token = await getToken();
       const res = await axios.put(`${host}/api/portfolio/${id}`, {
         purchaseAmount: amount,
         purchaseDate: date,
         coinData,
         historyData,
+      },  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const updatedItem = res.data;
-    // Update only the changed item in state
+      // Update only the changed item in state
       setPortfolioList((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
-    );
+        prev.map((item) =>
+          item.id === id ? { ...item, ...updatedItem } : item
+        )
+      );
       //fetchPortfolio();
       console.log("Portfolio item updated:", res.data);
     } catch (err) {

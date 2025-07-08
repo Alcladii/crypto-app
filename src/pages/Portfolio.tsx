@@ -6,16 +6,24 @@ import {
   Dispatch,
 } from "react";
 import axios from "axios";
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  RedirectToSignIn,
+  useAuth,
+} from "@clerk/clerk-react";
+import { useLocation, Navigate } from "react-router-dom"
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 import { InvestmentCalculator } from "../components/InvestmentCalculator";
+import { SignInPage } from "./SignIn";
 
 type PortfolioProps = {
   loadHomePage: boolean;
   setLoadHomePage: Dispatch<SetStateAction<boolean>>;
 };
-
 function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
   const { portfolioList, setPortfolioList, darkMode } = useContext(
     CryptoContext
@@ -23,10 +31,18 @@ function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const host = import.meta.env.VITE_API_URL;
+  const { isSignedIn, getToken } = useAuth();
+  const location = useLocation()
 
   const fetchPortfolio = async () => {
     try {
-      const res = await axios.get(`${host}/api/portfolio`);
+      const token = await getToken();
+      //console.log("Token:", token);
+      const res = await axios.get(`${host}/api/portfolio`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPortfolioList(res.data);
     } catch (err) {
       console.error("Failed to fetch portfolio:", err);
@@ -44,6 +60,7 @@ function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
   }, []);
 
   const addCoin = async (
+    //userId: string | null,
     coinId: any,
     coin: any,
     purchaseAmount: any,
@@ -51,14 +68,24 @@ function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
     history: any
   ) => {
     setIsLoading(true);
+
     try {
-      const response = await axios.post(`${host}/api/portfolio`, {
-        coinId,
-        coin,
-        purchaseAmount,
-        purchaseDate,
-        history,
-      });
+      const token = await getToken();
+      const response = await axios.post(
+        `${host}/api/portfolio`,
+        {
+          coinId,
+          coin,
+          purchaseAmount,
+          purchaseDate,
+          history,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("Coin saved:", response.data);
       setPortfolioList((prevList) =>
@@ -120,25 +147,35 @@ function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
     return () => clearInterval(intervalId);
   }, []);
 
+  // if (!isSignedIn) {
+  //   return (
+  //     <RedirectToSignIn redirectUrl={location.pathname} />
+  //   );
+  // }
+
   return (
     <div
       className={`bg-skin-app h-full w-screen ${darkMode ? "" : "theme-light"}`}
     >
+      {!isSignedIn && <SignInPage redirectUrl="/portfolio" />} 
+
       <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk  ">
-        <div className="flex flex-col sm:flex-row sm:justify-between">
-          <h2 className="text-xl mb-3 sm:mb-0 text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
-            Portfolio
-          </h2>
-          <div className="flex flex-col sm:flex-row sm:justify-end">
-            <InvestmentCalculator />
-            <AddAsset addCoin={addCoin} />
+        <SignedIn>
+          <div className="flex flex-col sm:flex-row sm:justify-between">
+            <h2 className="text-xl mb-3 sm:mb-0 text-skin-portfolio-item-coin-name-total-value-current-price-text-color">
+              Portfolio
+            </h2>
+            <div className="flex flex-col sm:flex-row sm:justify-end">
+              <InvestmentCalculator />
+              <AddAsset addCoin={addCoin} />
+            </div>
           </div>
-        </div>
-        {/* {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>} */}
-        <PortfolioItem
-          //setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
-          fetchPortfolio={fetchPortfolio}
-        />
+          {/* {fetchingLatestCoinDataHasError && <div>Error Updating Data</div>} */}
+          <PortfolioItem
+            //setPortfolioListNeedsUpdate={setPortfolioListNeedsUpdate}
+            fetchPortfolio={fetchPortfolio}
+          />
+        </SignedIn>
       </div>
     </div>
   );

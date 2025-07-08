@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.32.4",
+    "@clerk/clerk-sdk-node": "^4.13.23",
+    "@clerk/express": "^1.7.4",
     "@prisma/client": "^6.7.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/react-chartjs-2": "^2.5.7",
@@ -17,6 +20,7 @@
     "body-parser": "^2.2.0",
     "chart.js": "^4.4.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "lodash": "^4.17.21",
     "query-string": "^8.1.0",
