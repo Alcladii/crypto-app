@@ -155,7 +155,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //   []
   // );
   const [selectedCoinData, setSelectedCoinData] = useState<any[]>([])
-  console.log("selectedCoinData", selectedCoinData)
+  //console.log("selectedCoinData", selectedCoinData)
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
   // const [portfolioList, setPortfolioList] = useLocalState<any[]>(
@@ -175,7 +175,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] =
     useLocalState<boolean>("redirectFromPortfolioPage", false);
 
-    console.log("priceVolumeList", priceVolumeList)
+    //console.log("priceVolumeList", priceVolumeList)
 
   const convertToBillion = (number: number): string => {
     return (number / 1000000000).toFixed(2);

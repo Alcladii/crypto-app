@@ -118,7 +118,7 @@ export const CurrencyConverter = () => {
   );
 
   const getSelectedRightCurrencyData = async (item: string) => {
-    console.log("getSelectedRightCurrencyData in CurrencyConverter.tsx ran");
+    //console.log("getSelectedRightCurrencyData in CurrencyConverter.tsx ran");
     setSingleCoinLoadingHasError(false);
     setSingleCoinIsLoading(true);
     try {

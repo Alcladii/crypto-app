@@ -1,11 +1,20 @@
 import { useState, useContext, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  SignIn,
+} from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { Home } from "./pages/Homepage.tsx";
 import Portfolio from "./pages/Portfolio.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
+import { SignInPage } from "./pages/SignIn.tsx";
 import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput.tsx";
 import { CurrencySelector } from "./components/CurrencySelector.tsx";
@@ -49,14 +58,16 @@ export default function App() {
     redirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  const [loadHomePage, setLoadHomePage] = useState<boolean>(
-    true
-  );
+  const navigate = useNavigate();
+  //const { isSignedIn } = useUser();
+
+  const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
   const [marketData, setMarketData] = useLocalState<any>("marketData", null);
   const [marketDataIsLoading, setMarketDataIsLoading] =
     useState<boolean>(false);
   const [marketDataLoadingHasError, setMarketDataLoadingHasError] =
     useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleHomePageClick = () => {
     setLoadHomePage(true);
@@ -64,6 +75,11 @@ export default function App() {
 
   const handlePortfolioPageClick = () => {
     setLoadHomePage(false);
+    // if (isSignedIn) {
+    //   navigate("/portfolio");
+    // } else {
+    //   navigate("/sign-in");
+    // }
   };
 
   const toggleDarkMode = () => {
@@ -72,14 +88,13 @@ export default function App() {
 
   const getMarketData = async () => {
     setMarketDataLoadingHasError(false);
-    setMarketDataIsLoading(true);   
-    try {     
+    setMarketDataIsLoading(true);
+    try {
       const marketDataResponse = await axios.get(
         "https://api.coingecko.com/api/v3/global"
       );
       setMarketDataIsLoading(false);
       setMarketData(marketDataResponse.data.data);
-      
     } catch (err) {
       setMarketDataLoadingHasError(true);
       setMarketDataIsLoading(false);
@@ -89,6 +104,14 @@ export default function App() {
   useEffect(() => {
     getMarketData();
   }, []);
+
+  // const handlePortfolioClick = () => {
+  //   if (isSignedIn) {
+  //     navigate("/portfolio");
+  //   } else {
+  //     navigate("/sign-in");
+  //   }
+  // };
 
   return (
     <div>
@@ -202,7 +225,7 @@ export default function App() {
                   !loadHomePage
                     ? "text-skin-selected-button-app-name-text"
                     : "text-skin-unselected-button-text"
-                } flex items-center justify-center`}
+                } flex items-center justify-center cursor-pointer`}
               >
                 <PortfolioIcon loadHomePage={loadHomePage} />
                 &nbsp;Portfolio
@@ -224,12 +247,110 @@ export default function App() {
             >
               {darkMode ? <SunIconForLightMode /> : <MoonIconForLightMode />}
             </button>
+            <div>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                {/* <button
+                  className={`w-20 h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center ${
+                    darkMode ? "" : "theme-light"
+                  }`}
+                  onClick={() => navigate("/sign-in")}
+                >
+                  Sign In
+                </button> */}
+                <div className="relative">
+                  {/* <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
+                    </svg>
+                  </button> */}
+                  <button
+      onClick={() => setIsOpen(!isOpen)}
+      className="w-10 h-10 flex flex-col justify-center items-center relative group"
+      aria-label="Menu"
+    >
+      {/* Top line */}
+      <span
+        className={`block w-6 h-0.5 bg-current transform transition duration-300 ${
+          isOpen ? "rotate-45 translate-y-1" : "-translate-y-1.5"
+        }`}
+      ></span>
+      {/* Middle line (hide when open) */}
+      <span
+        className={`block w-6 h-0.5 bg-current my-0.5 transition-opacity duration-300 ${
+          isOpen ? "opacity-0" : "opacity-100"
+        }`}
+      ></span>
+      {/* Bottom line */}
+      <span
+        className={`block w-6 h-0.5 bg-current transform transition duration-300 ${
+          isOpen ? "-rotate-45 -translate-y-1" : "translate-y-1.5"
+        }`}
+      ></span>
+    </button>
+
+                  {/* {isOpen && ( */}
+
+                  <div
+                    className={`absolute right-0 top-[calc(100%+0.5rem)] w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50  overflow-hidden transition-all duration-500 ease-in-out ${
+                      isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                    } ${darkMode ? "" : "theme-light"}`}
+                  >
+                    <div className="flex flex-col p-2 space-y-2">
+                      <button
+                        className="w-full h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center"
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigate("/sign-in");
+                        }}
+                      >
+                        Sign In
+                      </button>
+                      <button
+                        className="w-full h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center"
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigate("/sign-up");
+                        }}
+                      >
+                        Sign Up
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* )} */}
+                </div>
+              </SignedOut>
+            </div>
           </div>
         </div>
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio loadHomePage={loadHomePage} setLoadHomePage={setLoadHomePage}/>} />
+        <Route
+          path="/portfolio"
+          element={
+            <Portfolio
+              loadHomePage={loadHomePage}
+              setLoadHomePage={setLoadHomePage}
+            />
+          }
+        />
         <Route
           path="/coin-page/:coinId"
           element={
@@ -240,6 +361,7 @@ export default function App() {
             )
           }
         />
+        <Route path="/sign-in" element={<SignInPage redirectUrl={"/"} />} />
       </Routes>
     </div>
   );

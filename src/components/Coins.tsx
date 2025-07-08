@@ -96,10 +96,10 @@ function Coins() {
     setRedirectedFromPortfolioPage,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  console.log(
-    "priceVolumeChartIsLoadingHasError",
-    priceVolumeChartIsLoadingHasError
-  );
+  // console.log(
+  //   "priceVolumeChartIsLoadingHasError",
+  //   priceVolumeChartIsLoadingHasError
+  // );
 
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);

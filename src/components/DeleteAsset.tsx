@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
 import "../App.css";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
@@ -15,16 +16,23 @@ export const DeleteAsset: React.FC<DeleteAssetProps> = ({
   id,
   //fetchPortfolio,
 }) => {
-   const { portfolioList, setPortfolioList } = useContext(
-   CryptoContext
+  const { portfolioList, setPortfolioList } = useContext(
+    CryptoContext
   ) as CryptoContextProps;
+
+  const { getToken } = useAuth();
 
   const handleRemove = async (id: string) => {
     // const newPortfolioList = portfolioList.filter((item) => item.id !== id);
     // setPortfolioList(newPortfolioList);
     // setPortfolioListNeedsUpdate(true);
     try {
-      const response = await axios.delete(`${host}/api/portfolio/${id}`);
+      const token = await getToken();
+      const response = await axios.delete(`${host}/api/portfolio/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status === 200 || response.status === 204) {
         // Only remove from local state after successful deletion
         setPortfolioList((prev) => prev.filter((item) => item.id !== id));

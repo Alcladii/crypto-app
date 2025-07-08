@@ -96,10 +96,10 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
       slide.selected = false;
     });
     setSlidesData(resetSlidesData);
-  }
+  };
 
   useEffect(() => {
-    resetSelectedCoins()
+    resetSelectedCoins();
   }, []);
 
   useEffect(() => {
@@ -128,7 +128,6 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     const newSlides = [...slidesData];
 
     newSlides.forEach((coin: Coin) => {
-      
       const isSameCoin = id === coin.id;
 
       if (isSameCoin) {
@@ -147,7 +146,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
       return coin;
     });
     const selectedCoin = slidesData.filter((coin: Coin) => coin.selected);
-    console.log("selectedCoin", selectedCoin);
+    //console.log("selectedCoin", selectedCoin);
     setSelectedCoinData(selectedCoin);
     setSlidesData(newSlides);
   };
@@ -203,45 +202,48 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   //     });
   // }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
 
-
   useEffect(() => {
     const prevSelectedCoinData = prevSelectedCoinDataRef.current;
-  
+
     const prevIds = new Set(prevSelectedCoinData.map((coin) => coin.id));
     const currentIds = new Set(selectedCoinData.map((coin) => coin.id));
-  
+
     const addedCoins = selectedCoinData.filter((coin) => !prevIds.has(coin.id));
     const removedIds = [...prevIds].filter((id) => !currentIds.has(id));
-  
+
     if (selectedCoinData.length === 0) {
       setPriceVolumeList([]);
       failedCoinIdsRef.current.clear();
-    } else if (numOfDaysFromUrl !== prevDays.current) {
-      
+    } 
+    // else if (numOfDaysFromUrl !== prevDays.current) {
+    //   const requests = selectedCoinData.map((item: Coin) => {
+    //     return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
+    //   });
+    //   Promise.all(requests).then((responses) => {
+    //     setPriceVolumeList(responses);
+    //   });
+    // }
+    //else if (numOfDaysFromUrl !== prevDays.current) {
       // const requests = selectedCoinData.map((item: Coin) => {
       //         return getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl);
       //       });
       //       Promise.all(requests).then((responses) => {
       //         setPriceVolumeList(responses);
       //       });
-      
       // If the number of days has changed, we need to refetch all selected coins
       // const requests = selectedCoinData.map((item) =>
       //   getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl)
       //     .then((data) => ({ id: item.id, data }))
       //     .catch(() => ({ id: item.id, data: undefined }))
       // );
-  
       // Promise.all(requests).then((results) => {
       //   const validData = results.filter((r) => r.data !== undefined);
       //   const failedIds = results
       //     .filter((r) => r.data === undefined)
       //     .map((r) => r.id);
-  
       //   // Track which coins failed so we can retry next time
       //   failedIds.forEach((id) => failedCoinIdsRef.current.add(id));
       //   validData.forEach((r) => failedCoinIdsRef.current.delete(r.id));
-  
       //   setPriceVolumeList((prev) => {
       //     // Remove deleted and failed ones
       //     const filteredPrev = prev.filter(
@@ -253,19 +255,25 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
       //     return [...filteredPrev, ...validData];
       //   });
       // });
-
-    }
+    //} 
     else {
+      // Detect if days value changed
+      const daysChanged = prevDays.current !== numOfDaysFromUrl;
       // Also retry any coin whose data was undefined before
       const retryCoins = selectedCoinData.filter((coin) =>
         failedCoinIdsRef.current.has(coin.id)
       );
-  
-      const coinsToFetch = [...addedCoins, ...retryCoins];
+
+      // If days changed, refetch all selected coins
+      const outdatedCoins = daysChanged ? selectedCoinData : [];
+      //console.log("outdatedCoins", outdatedCoins)
+      const coinsToFetch = [...addedCoins, ...retryCoins, ...outdatedCoins];
+
+      //console.log("coinsToFetch", coinsToFetch)
       const uniqueCoinsToFetch = Array.from(
         new Map(coinsToFetch.map((coin) => [coin.id, coin])).values()
       );
-  
+
       if (uniqueCoinsToFetch.length > 0) {
         const requests = uniqueCoinsToFetch.map((item) =>
           getCoinPriceVolume(item.id, displayCurrency, numOfDaysFromUrl)
@@ -276,17 +284,17 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
               return { id: item.id, data: undefined };
             })
         );
-  
+
         Promise.all(requests).then((results) => {
           const validData = results.filter((r) => r.data !== undefined);
           const failedIds = results
             .filter((r) => r.data === undefined)
             .map((r) => r.id);
-  
+
           // Track which coins failed so we can retry next time
           failedIds.forEach((id) => failedCoinIdsRef.current.add(id));
           validData.forEach((r) => failedCoinIdsRef.current.delete(r.id));
-  
+
           setPriceVolumeList((prev) => {
             // Remove deleted and failed ones
             const filteredPrev = prev.filter(
@@ -304,12 +312,17 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
         );
       }
     }
-  
+
     prevSelectedCoinDataRef.current = selectedCoinData;
     prevDays.current = numOfDaysFromUrl;
-  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);     
+  }, [selectedCoinData, displayCurrency, numOfDaysFromUrl]);
 
-  console.log("numOfDaysFromUrl", numOfDaysFromUrl, "prevDays", prevDays.current);
+  // console.log(
+  //   "numOfDaysFromUrl",
+  //   numOfDaysFromUrl,
+  //   "prevDays",
+  //   prevDays.current
+  // );
 
   const handleComparison = () => {
     setComparisonIsOn(!comparisonIsOn);

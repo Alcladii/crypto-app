@@ -32,7 +32,7 @@ type BarChartProps = {
 };
 
 const BarChart: React.FC<BarChartProps> = ({ priceVolumeList }) => {
-  console.log("priceVolumeList from Barchart",priceVolumeList)
+  //console.log("priceVolumeList from Barchart",priceVolumeList)
   const { numOfDays, numOfDaysFromUrl } = useContext(
     CryptoContext
   ) as CryptoContextProps;
