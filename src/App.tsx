@@ -6,9 +6,7 @@ import "./App.css";
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
   UserButton,
-  SignIn,
 } from "@clerk/clerk-react";
 import { useUser } from "@clerk/clerk-react";
 import { Home } from "./pages/Homepage.tsx";
@@ -60,7 +58,6 @@ export default function App() {
   } = useContext(CryptoContext) as CryptoContextProps;
 
   const navigate = useNavigate();
-  //const { isSignedIn } = useUser();
 
   const [loadHomePage, setLoadHomePage] = useState<boolean>(true);
   const [marketData, setMarketData] = useLocalState<any>("marketData", null);
@@ -76,11 +73,6 @@ export default function App() {
 
   const handlePortfolioPageClick = () => {
     setLoadHomePage(false);
-    // if (isSignedIn) {
-    //   navigate("/portfolio");
-    // } else {
-    //   navigate("/sign-in");
-    // }
   };
 
   const toggleDarkMode = () => {
@@ -105,14 +97,6 @@ export default function App() {
   useEffect(() => {
     getMarketData();
   }, []);
-
-  // const handlePortfolioClick = () => {
-  //   if (isSignedIn) {
-  //     navigate("/portfolio");
-  //   } else {
-  //     navigate("/sign-in");
-  //   }
-  // };
 
   return (
     <div>
