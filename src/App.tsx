@@ -15,6 +15,7 @@ import { Home } from "./pages/Homepage.tsx";
 import Portfolio from "./pages/Portfolio.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
 import { SignInPage } from "./pages/SignIn.tsx";
+import { SignUpPage } from "./pages/SignUp.tsx";
 import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
 import { SearchItemInput } from "./components/SearchInput.tsx";
 import { CurrencySelector } from "./components/CurrencySelector.tsx";
@@ -252,68 +253,40 @@ export default function App() {
                 <UserButton />
               </SignedIn>
               <SignedOut>
-                {/* <button
-                  className={`w-20 h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center ${
-                    darkMode ? "" : "theme-light"
-                  }`}
-                  onClick={() => navigate("/sign-in")}
-                >
-                  Sign In
-                </button> */}
                 <div className="relative">
-                  {/* <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
-                  >
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
-                    </svg>
-                  </button> */}
                   <button
-      onClick={() => setIsOpen(!isOpen)}
-      className="w-10 h-10 flex flex-col justify-center items-center relative group"
-      aria-label="Menu"
-    >
-      {/* Top line */}
-      <span
-        className={`block w-6 h-0.5 bg-current transform transition duration-300 ${
-          isOpen ? "rotate-45 translate-y-1" : "-translate-y-1.5"
-        }`}
-      ></span>
-      {/* Middle line (hide when open) */}
-      <span
-        className={`block w-6 h-0.5 bg-current my-0.5 transition-opacity duration-300 ${
-          isOpen ? "opacity-0" : "opacity-100"
-        }`}
-      ></span>
-      {/* Bottom line */}
-      <span
-        className={`block w-6 h-0.5 bg-current transform transition duration-300 ${
-          isOpen ? "-rotate-45 -translate-y-1" : "translate-y-1.5"
-        }`}
-      ></span>
-    </button>
-
-                  {/* {isOpen && ( */}
-
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="w-10 h-10 flex flex-col justify-center items-center relative group"
+                    aria-label="Menu"
+                  >
+                    {/* Top line */}
+                    <span
+                      className={`block w-6 h-0.5 bg-current transform transition duration-300 text-skin-selected-button-app-name-text ${
+                        isOpen ? "rotate-45 translate-y-1" : "-translate-y-1.5"
+                      }`}
+                    ></span>
+                    {/* Middle line (hide when open) */}
+                    <span
+                      className={`block w-6 h-0.5 bg-current my-0.5 transition-opacity duration-300 text-skin-selected-button-app-name-text ${
+                        isOpen ? "opacity-0" : "opacity-100"
+                      }`}
+                    ></span>
+                    {/* Bottom line */}
+                    <span
+                      className={`block w-6 h-0.5 bg-current transform transition duration-300 text-skin-selected-button-app-name-text ${
+                        isOpen ? "-rotate-45 -translate-y-1" : "translate-y-1.5"
+                      }`}
+                    ></span>
+                  </button>
+                  {/* bg-white dark:bg-gray-800*/} 
                   <div
-                    className={`absolute right-0 top-[calc(100%+0.5rem)] w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50  overflow-hidden transition-all duration-500 ease-in-out ${
+                    className={`absolute right-0 top-[calc(100%+0.5rem)] w-40 rounded-md shadow-lg bg-skin-unselected-button-bg ring-1 ring-black ring-opacity-5 z-50  overflow-hidden transition-all duration-500 ease-in-out ${
                       isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                     } ${darkMode ? "" : "theme-light"}`}
                   >
                     <div className="flex flex-col p-2 space-y-2">
                       <button
-                        className="w-full h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center"
+                        className="w-full h-10 rounded-md bg-skin-coins-converter-selected-button-background text-skin-selected-button-app-name-text flex justify-center items-center"
                         onClick={() => {
                           setIsOpen(false);
                           navigate("/sign-in");
@@ -322,7 +295,7 @@ export default function App() {
                         Sign In
                       </button>
                       <button
-                        className="w-full h-10 rounded-md bg-skin-unselected-button-bg flex justify-center items-center"
+                        className="w-full h-10 rounded-md bg-skin-coins-converter-selected-button-background text-skin-selected-button-app-name-text flex justify-center items-center"
                         onClick={() => {
                           setIsOpen(false);
                           navigate("/sign-up");
@@ -362,6 +335,7 @@ export default function App() {
           }
         />
         <Route path="/sign-in" element={<SignInPage redirectUrl={"/"} />} />
+        <Route path="/sign-up" element={<SignUpPage redirectUrl={"/"} />} />
       </Routes>
     </div>
   );
