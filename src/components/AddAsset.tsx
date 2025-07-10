@@ -159,12 +159,15 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
                   }}
                 >
                   <option value="" disabled selected>
-                    Please select coins
+                    Please select a coin
                   </option>
                   {coinsOptions}
                 </select>
                 <PurchaseAmount />
                 {!isNumber && <div>Put in a number</div>}
+                <div className="block sm:hidden text-skin-add-asset-popup-buttons-title-text-color mt-2">
+                  Purchased Date
+                </div>
                 <PurchaseDate />
                 <div className="flex justify-between">
                   <div
