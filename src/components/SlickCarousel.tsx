@@ -354,7 +354,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
         )}
       </div>
       <div>
-        {slidesData && (
+        {slidesData.length > 0 && (
           <Slider {...settings}>
             {slidesData.map((coin: Coin) => (
               <div key={coin.id}>
