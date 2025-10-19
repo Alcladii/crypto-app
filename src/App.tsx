@@ -175,9 +175,9 @@ export default function App() {
             <AppIcon />
             <span className="ml-2 hidden sm:block">CryptoFun</span>
           </div>
-          <div className="w-40 sm:w-60 lg:w-68 xl:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
+          <div className="w-24 sm:w-60 lg:w-68 xl:w-80 flex rounded-md p-1 sm:p-0 bg-skin-home-porfolio-button-wrapper-background-color sm:bg-transparent">
             <div
-              className={`flex items-center justify-center h-10 w-[30%] sm:w-1/2 lg:w-1/2  xl:w-1/2 mr-0.5 rounded-md ${
+              className={`flex items-center justify-center h-10 w-1/2 mr-0.5 rounded-md ${
                 loadHomePage
                   ? "bg-skin-coins-converter-selected-button-background"
                   : "bg-skin-coins-converter-unselected-button-background"
@@ -190,14 +190,14 @@ export default function App() {
                   loadHomePage
                     ? "text-skin-selected-button-app-name-text"
                     : "text-skin-unselected-button-text"
-                } flex items-center justify-center`}
+                } flex items-center justify-center cursor-pointer`}
               >
                 <HomeIcon loadHomePage={loadHomePage} />
                 <span className="hidden sm:block">&nbsp;Home</span>
               </Link>
             </div>
             <div
-              className={`flex items-center justify-center h-10 w-[70%] sm:w-1/2 lg:w-1/2 xl:w-1/2 ml-0.5 rounded-md ${
+              className={`flex items-center justify-center h-10 w-1/2 ml-0.5 rounded-md ${
                 !loadHomePage
                   ? "bg-skin-coins-converter-selected-button-background"
                   : "bg-skin-coins-converter-unselected-button-background"
@@ -213,7 +213,7 @@ export default function App() {
                 } flex items-center justify-center cursor-pointer`}
               >
                 <PortfolioIcon loadHomePage={loadHomePage} />
-                &nbsp;Portfolio
+                <span className="hidden sm:block">&nbsp;Portfolio</span>
               </Link>
             </div>
           </div>
