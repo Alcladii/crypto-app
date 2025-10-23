@@ -169,6 +169,7 @@ export default function App() {
       </div>
       <div className={`bg-skin-app w-screen ${darkMode ? "" : "theme-light"}`}>
         <div className="max-w-[1296px] mx-auto flex items-center justify-between py-8 px-5 sm:px-10">
+          
           <div
             className={`flex items-center font-sans font-bold text-2xl text-skin-selected-button-app-name-text`}
           >
@@ -216,7 +217,7 @@ export default function App() {
                 <span className="hidden sm:block">&nbsp;Portfolio</span>
               </Link>
             </div>
-          </div>
+          </div>        
           <div className="flex items-center md:space-x-5">
             <div className="flex flex-col relative">
               <SearchItemInput />
@@ -234,7 +235,9 @@ export default function App() {
             </button>
             <div>
               <SignedIn>
-                <UserButton />
+                <div className="ml-2">
+                  <UserButton />
+                </div>               
               </SignedIn>
               <SignedOut>
                 <div className="relative">
@@ -289,11 +292,10 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-
                   {/* )} */}
                 </div>
               </SignedOut>
-            </div>
+            </div>            
           </div>
         </div>
       </div>
