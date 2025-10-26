@@ -146,7 +146,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //   "priceVolumeList",
   //   []
   // );
-  const [priceVolumeList, setPriceVolumeList] = useState<any[]>([])
+  const [priceVolumeList, setPriceVolumeList] = useState<any[]>([]);
   const [numOfDays, setNumOfDays] = useLocalState<string>("numOfDays", "7");
   const [coinsInChart, setCoinsInChart] = useState<any[]>([]);
   const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
@@ -154,7 +154,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //   "selectedCoinData",
   //   []
   // );
-  const [selectedCoinData, setSelectedCoinData] = useState<any[]>([])
+  const [selectedCoinData, setSelectedCoinData] = useState<any[]>([]);
   //console.log("selectedCoinData", selectedCoinData)
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
@@ -162,7 +162,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //   "portfolioList",
   //   []
   // );
-  const [portfolioList, setPortfolioList] = useState<any[]>([]); 
+  const [portfolioList, setPortfolioList] = useState<any[]>([]);
   const [purchasedAmount, setPurchasedAmount] = useState<string | null>(null);
   const [purchaseDate, setPurchaseDate] = useState<string | null>(null);
   const [formattedDateForHistoryApiCall, setFormattedDateForHistoryApiCall] =
@@ -175,7 +175,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] =
     useLocalState<boolean>("redirectFromPortfolioPage", false);
 
-    //console.log("priceVolumeList", priceVolumeList)
+  console.log("priceVolumeList", priceVolumeList)
 
   const convertToBillion = (number: number): string => {
     return (number / 1000000000).toFixed(2);
@@ -228,28 +228,43 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
 
   const currencySymbol = currenciesTyped[displayCurrency.toUpperCase()]?.symbol;
 
+  // const getCoinPriceVolume = async (
+  //   coinId: string,
+  //   currency: string,
+  //   numOfDays: string
+  // ) => {
+  //   console.log("get Coin Price Volume called")
+  //   setPriceVolumeChartIsLoadingHasError(false);
+  //   setPriceVolumeChartIsLoading(true);
+  //   try {
+  //     let apiUrl: string;
+  //     if (numOfDays === "2") {
+  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
+  //     } else {
+  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
+  //     }
+  //     const { data } = await axios(apiUrl);
+  //     setPriceVolumeChartIsLoading(false);
+  //     return data;
+  //   } catch (err) {
+  //     setPriceVolumeChartIsLoadingHasError(true);
+  //     setPriceVolumeChartIsLoading(false);
+  //   }
+  // };
   const getCoinPriceVolume = async (
     coinId: string,
     currency: string,
     numOfDays: string
   ) => {
-    console.log("get Coin Price Volume called")
-    setPriceVolumeChartIsLoadingHasError(false);
-    setPriceVolumeChartIsLoading(true);
-    try {
-      let apiUrl: string;
-      if (numOfDays === "2") {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
-      } else {
-        apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
-      }
-      const { data } = await axios(apiUrl);
-      setPriceVolumeChartIsLoading(false);
-      return data;
-    } catch (err) {
-      setPriceVolumeChartIsLoadingHasError(true);
-      setPriceVolumeChartIsLoading(false);
-    }
+    console.log("getCoinPriceVolume called");
+
+    const apiUrl =
+      numOfDays === "2"
+        ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
+        : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
+
+    const { data } = await axios.get(apiUrl);
+    return data; // React Query expects your function to just return data or throw an error
   };
 
   const location = useLocation();

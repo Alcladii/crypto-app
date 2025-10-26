@@ -32,104 +32,104 @@ type LineChartProps = {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ priceVolumeList }) => {
-  
-  const { numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
-  const maxTicksLimit = setMaxTicksLimit(numOfDaysFromUrl);
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-        text: "Chart.js Line Chart",
-      },
-    },
-    scales: {
-      "y-axis-1": {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      "y-axis-2": {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      "y-axis-3": {
-        display: false,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      x: {
-        display: true,
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-        ticks: {
-          maxTicksLimit: maxTicksLimit,
-        },
-      },
-    },
-    tension: 0.5,
-  };
+  console.log("LineChart priceVolumeList", priceVolumeList);
+  // const { numOfDaysFromUrl } = useContext(CryptoContext) as CryptoContextProps;
+  // const maxTicksLimit = setMaxTicksLimit(numOfDaysFromUrl);
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       display: false,
+  //     },
+  //     title: {
+  //       display: false,
+  //       text: "Chart.js Line Chart",
+  //     },
+  //   },
+  //   scales: {
+  //     "y-axis-1": {
+  //       display: false,
+  //       grid: {
+  //         display: false,
+  //         drawBorder: false,
+  //       },
+  //     },
+  //     "y-axis-2": {
+  //       display: false,
+  //       grid: {
+  //         display: false,
+  //         drawBorder: false,
+  //       },
+  //     },
+  //     "y-axis-3": {
+  //       display: false,
+  //       grid: {
+  //         display: false,
+  //         drawBorder: false,
+  //       },
+  //     },
+  //     x: {
+  //       display: true,
+  //       grid: {
+  //         display: false,
+  //         drawBorder: false,
+  //       },
+  //       ticks: {
+  //         maxTicksLimit: maxTicksLimit,
+  //       },
+  //     },
+  //   },
+  //   tension: 0.5,
+  // };
 
-  const borderColors = ["#7878FA", "#D878FA", "#01F1E3"];
-  const backgroundColors = [
-    ["rgba(116, 116, 242, 0.1)", "rgba(116, 116, 242, 0.01)"],
-    ["rgba(216, 120, 250, 0.1)", "rgba(216, 120, 250, 0.01)"],
-    ["rgba(30, 213, 191, 0.1)", "rgba(145, 252, 228, 0.01)"],
-  ];
+  // const borderColors = ["#7878FA", "#D878FA", "#01F1E3"];
+  // const backgroundColors = [
+  //   ["rgba(116, 116, 242, 0.1)", "rgba(116, 116, 242, 0.01)"],
+  //   ["rgba(216, 120, 250, 0.1)", "rgba(216, 120, 250, 0.01)"],
+  //   ["rgba(30, 213, 191, 0.1)", "rgba(145, 252, 228, 0.01)"],
+  // ];
 
-  type Price = [number, number]
+  // type Price = [number, number]
 
-  type PriceVolume = {
-    data: any;
-    prices: Price[];
-  };
-  const priceData = {
-    labels:
-      priceVolumeList.length !== 0 &&
-      priceVolumeList[0].prices.map((item: Price) => {
-      //priceVolumeList[0].data.prices.map((item: Price) => {
-        return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
-      }),
-    datasets: priceVolumeList.map((item: PriceVolume) => {
-      return {
-        label: `Trade Price`,
-        data: item.prices.map((price: Price) => price[1]),
-        //data: item.data.prices.map((price: Price) => price[1]),
-        borderColor: borderColors[priceVolumeList.indexOf(item)],
-        backgroundColor: (context: any) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-          gradient.addColorStop(
-            0,
-            `${backgroundColors[priceVolumeList.indexOf(item)][0]}`
-          );
-          gradient.addColorStop(
-            1,
-            `${backgroundColors[priceVolumeList.indexOf(item)][1]}`
-          );
-          return gradient;
-        },
-        pointRadius: 0,
-        borderWidth: 3,
-        fill: true,
-        yAxisID: `y-axis-${priceVolumeList.indexOf(item) + 1}`,
-      };
-    }),
-  };
+  // type PriceVolume = {
+  //   data: any;
+  //   prices: Price[];
+  // };
+  // const priceData = {
+  //   labels:
+  //     priceVolumeList.length !== 0 &&
+  //     priceVolumeList[0].prices.map((item: Price) => {
+  //     //priceVolumeList[0].data.prices.map((item: Price) => {
+  //       return setDisplayIntervalLineBarChart(numOfDaysFromUrl, item);
+  //     }),
+  //   datasets: priceVolumeList.map((item: PriceVolume) => {
+  //     return {
+  //       label: `Trade Price`,
+  //       data: item.prices.map((price: Price) => price[1]),
+  //       //data: item.data.prices.map((price: Price) => price[1]),
+  //       borderColor: borderColors[priceVolumeList.indexOf(item)],
+  //       backgroundColor: (context: any) => {
+  //         const ctx = context.chart.ctx;
+  //         const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+  //         gradient.addColorStop(
+  //           0,
+  //           `${backgroundColors[priceVolumeList.indexOf(item)][0]}`
+  //         );
+  //         gradient.addColorStop(
+  //           1,
+  //           `${backgroundColors[priceVolumeList.indexOf(item)][1]}`
+  //         );
+  //         return gradient;
+  //       },
+  //       pointRadius: 0,
+  //       borderWidth: 3,
+  //       fill: true,
+  //       yAxisID: `y-axis-${priceVolumeList.indexOf(item) + 1}`,
+  //     };
+  //   }),
+  // };
 
-  return <Line data={priceData} options={options} />;
+  // return <Line data={priceData} options={options} />;
 };
 
 export default LineChart;

@@ -523,6 +523,7 @@ function Coins() {
           </div>
           <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
+            {/* uncomment this */}
               {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
@@ -550,11 +551,12 @@ function Coins() {
               </div>
             </div>
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-            {priceVolumeList.length !== 0 &&
+              {/* uncomment this */}
+            {/* {priceVolumeList.length !== 0 &&
                 !priceVolumeList.includes(undefined) &&
                 !priceVolumeList.includes(null) && (
                   <BarChart priceVolumeList={priceVolumeList} />
-                )}
+                )} */}
               {/* {priceVolumeList.length !== 0 &&
                 !priceVolumeList.some((item) => item.data === undefined) &&
                 !priceVolumeList.some((item) => item.data === null) && (
