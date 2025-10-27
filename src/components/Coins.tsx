@@ -16,6 +16,7 @@ import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSe
 import { SortArrowAccent } from "../components/UI/Svg";
 import { SortArrowDescent } from "../components/UI/Svg";
 import { SortArrowOriginal } from "../components/UI/Svg";
+import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -85,7 +86,7 @@ function Coins() {
     numOfDays,
     priceVolumeChartIsLoading,
     priceVolumeChartIsLoadingHasError,
-    priceVolumeList,
+    //priceVolumeList,
     selectedCoinData,
     coinList,
     setCoinList,
@@ -94,6 +95,9 @@ function Coins() {
     changeSearchParams,
     darkMode,
     setRedirectedFromPortfolioPage,
+    selectedCoinIds,
+    getCoinPriceVolume,
+    numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
   // console.log(
@@ -500,8 +504,10 @@ function Coins() {
     }
   }, []);
 
+  const priceVolumeList = useCoinDataQuery(selectedCoinIds, displayCurrency, numOfDaysFromUrl).map((r) => r.data);
+
   return (
-    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px]`}>
+    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px] font-space-grotesk`}>
       <div className="my-5">
         <SlickCarousel
           coinList={coinList}
@@ -521,18 +527,12 @@ function Coins() {
               <div>Loading Price and Volume Chart</div>
             )}
           </div>
-          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
+          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7 text-sm xl:text-base">
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
-                !priceVolumeList.includes(undefined) &&
-                !priceVolumeList.includes(null) && (
-                  <LineChart priceVolumeList={priceVolumeList} />
-                )}
-              {/* {priceVolumeList.length !== 0 &&
-                !priceVolumeList.some(item => item.data === undefined) &&
-                !priceVolumeList.some(item => item.data === null) && (
-                  <LineChart priceVolumeList={priceVolumeList} />
-                )} */}
+                priceVolumeList.every(
+                  (item) => item !== undefined && item !== null
+                ) && <LineChart priceVolumeList={priceVolumeList} />}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -550,16 +550,10 @@ function Coins() {
               </div>
             </div>
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-            {priceVolumeList.length !== 0 &&
-                !priceVolumeList.includes(undefined) &&
-                !priceVolumeList.includes(null) && (
-                  <BarChart priceVolumeList={priceVolumeList} />
-                )}
-              {/* {priceVolumeList.length !== 0 &&
-                !priceVolumeList.some((item) => item.data === undefined) &&
-                !priceVolumeList.some((item) => item.data === null) && (
-                  <BarChart priceVolumeList={priceVolumeList} />
-                )} */}
+              {priceVolumeList.length !== 0 &&
+                priceVolumeList.every(
+                  (item) => item !== undefined && item !== null
+                ) && <BarChart priceVolumeList={priceVolumeList} />}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -629,7 +623,7 @@ function Coins() {
             Bottom 50{" "}
           </div>
         </div>
-        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color font-space-grotesk ">
+        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color ">
           <div className="text-xl">Market Overview</div>
           <UpAndDownPercentagePeriodSelector
             selectedTimePeriod={selectedTimePeriod}
@@ -729,7 +723,7 @@ function Coins() {
           {displayCoinList.map((singleCoin) => (
             <div
               key={singleCoin.id}
-              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
+              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md bg-skin-coin-list-background-color"
             >
               <div className="md:w-[6%] lg:w-[5%] xl:w-[4%] min-w-12 pl-3 items-center text-skin-coin-list-text-color hidden md:flex">
                 {displayCoinList.indexOf(singleCoin) + 1}
