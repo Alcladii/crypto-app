@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useQueries } from "@tanstack/react-query";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import "../App.css";
 import LineChart from "./LineChart";
@@ -16,6 +17,7 @@ import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSe
 import { SortArrowAccent } from "../components/UI/Svg";
 import { SortArrowDescent } from "../components/UI/Svg";
 import { SortArrowOriginal } from "../components/UI/Svg";
+import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -85,7 +87,7 @@ function Coins() {
     numOfDays,
     priceVolumeChartIsLoading,
     priceVolumeChartIsLoadingHasError,
-    priceVolumeList,
+    //priceVolumeList,
     selectedCoinData,
     coinList,
     setCoinList,
@@ -94,6 +96,9 @@ function Coins() {
     changeSearchParams,
     darkMode,
     setRedirectedFromPortfolioPage,
+    selectedCoinIds,
+    getCoinPriceVolume,
+    numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
   // console.log(
@@ -500,6 +505,17 @@ function Coins() {
     }
   }, []);
 
+  const priceVolumeList = useQueries({
+    queries: selectedCoinIds.map((item) => ({
+      queryKey: ["coinData", item, displayCurrency, numOfDaysFromUrl],
+      queryFn: () =>
+        getCoinPriceVolume(item, displayCurrency, numOfDaysFromUrl),
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 30 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    })),
+  }).map((r) => r.data);
+
   return (
     <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px]`}>
       <div className="my-5">
@@ -523,17 +539,10 @@ function Coins() {
           </div>
           <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
-            {/* uncomment this */}
               {priceVolumeList.length !== 0 &&
-                !priceVolumeList.includes(undefined) &&
-                !priceVolumeList.includes(null) && (
-                  <LineChart priceVolumeList={priceVolumeList} />
-                )}
-              {/* {priceVolumeList.length !== 0 &&
-                !priceVolumeList.some(item => item.data === undefined) &&
-                !priceVolumeList.some(item => item.data === null) && (
-                  <LineChart priceVolumeList={priceVolumeList} />
-                )} */}
+                priceVolumeList.every(
+                  (item) => item !== undefined && item !== null
+                ) && <LineChart priceVolumeList={priceVolumeList} />}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (
@@ -551,17 +560,10 @@ function Coins() {
               </div>
             </div>
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-              {/* uncomment this */}
-            {/* {priceVolumeList.length !== 0 &&
-                !priceVolumeList.includes(undefined) &&
-                !priceVolumeList.includes(null) && (
-                  <BarChart priceVolumeList={priceVolumeList} />
-                )} */}
-              {/* {priceVolumeList.length !== 0 &&
-                !priceVolumeList.some((item) => item.data === undefined) &&
-                !priceVolumeList.some((item) => item.data === null) && (
-                  <BarChart priceVolumeList={priceVolumeList} />
-                )} */}
+              {priceVolumeList.length !== 0 &&
+                priceVolumeList.every(
+                  (item) => item !== undefined && item !== null
+                ) && <BarChart priceVolumeList={priceVolumeList} />}
               <div className="flex justify-between flex-col lg:flex-row">
                 {selectedCoinData &&
                   selectedCoinData.map((coin) => (

@@ -50,11 +50,6 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     false
   );
 
-  const [selectedCoinIds, setSelectedCoinIds] = useLocalState<string[]>(
-    "selectedCoinIds",
-    []
-  );
-
   const settings = {
     dots: false,
     infinite: false,
@@ -153,48 +148,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     setSlidesData(newSlides);
   };
 
-  const selectedIds = useMemo(() => {
-    return selectedCoinData.map((coin) => coin.id);
-  }, [selectedCoinData.map((coin) => coin.id).join(",")]);
-
-  //console.log("selectedIds", selectedIds);
-
-  function useCoinsData(
-    selectedCoinIds: string[],
-    displayCurrency: string,
-    numOfDaysFromUrl: string
-  ) {
-     const results =  useQueries({
-      queries: selectedCoinIds.map((item) => ({
-        queryKey: ["coinData", item, displayCurrency, numOfDaysFromUrl],
-        queryFn: () =>
-          getCoinPriceVolume(item, displayCurrency, numOfDaysFromUrl),
-        staleTime: 5 * 60 * 1000,
-        cacheTime: 30 * 60 * 1000,
-        refetchOnWindowFocus: false,
-      })),
-    });
-    return results;
-  }
-
-
-  const results = useCoinsData(selectedIds, displayCurrency, numOfDaysFromUrl);
-
-  useEffect(() => {
-  // filter out any queries that haven’t loaded yet
-  const completed = results
-    .filter((r) => r.data && !r.isLoading && !r.isError)
-    .map((r, i) => ({
-      //coinId: selectedIds[i],
-      data: r.data,
-    }));
-
-  setPriceVolumeList(completed);
-}, [ selectedIds]);
-
-
-
-  //NEED A FUNCTION TO CLEAR SELECTED COINS ON PAGE LOAD
+  //NEED A FUNCTION TO CLEAR SELECTED COIS ON PAGE LOAD
 
   // useEffect(() => {
   //   const requests = selectedCoinData.map((item: Coin) => {

@@ -4,6 +4,7 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
+  useMemo,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -95,6 +96,7 @@ export type CryptoContextProps = {
   setRedirectedFromPortfolioPage: Dispatch<SetStateAction<boolean>>;
   currencyListIsLoading: boolean;
   currencyLoadingHasError: boolean;
+  selectedCoinIds: string[];
 };
 interface CryptoProviderProps {
   children: ReactNode;
@@ -142,26 +144,13 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     priceVolumeChartIsLoadingHasError,
     setPriceVolumeChartIsLoadingHasError,
   ] = useState<boolean>(false);
-  // const [priceVolumeList, setPriceVolumeList] = useLocalState<any[]>(
-  //   "priceVolumeList",
-  //   []
-  // );
   const [priceVolumeList, setPriceVolumeList] = useState<any[]>([]);
   const [numOfDays, setNumOfDays] = useLocalState<string>("numOfDays", "7");
   const [coinsInChart, setCoinsInChart] = useState<any[]>([]);
   const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
-  // const [selectedCoinData, setSelectedCoinData] = useLocalState<any[]>(
-  //   "selectedCoinData",
-  //   []
-  // );
   const [selectedCoinData, setSelectedCoinData] = useState<any[]>([]);
-  //console.log("selectedCoinData", selectedCoinData)
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
-  // const [portfolioList, setPortfolioList] = useLocalState<any[]>(
-  //   "portfolioList",
-  //   []
-  // );
   const [portfolioList, setPortfolioList] = useState<any[]>([]);
   const [purchasedAmount, setPurchasedAmount] = useState<string | null>(null);
   const [purchaseDate, setPurchaseDate] = useState<string | null>(null);
@@ -174,8 +163,6 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const [darkMode, setDarkMode] = useLocalState<boolean>("darkMode", true);
   const [redirectedFromPortfolioPage, setRedirectedFromPortfolioPage] =
     useLocalState<boolean>("redirectFromPortfolioPage", false);
-
-  console.log("priceVolumeList", priceVolumeList)
 
   const convertToBillion = (number: number): string => {
     return (number / 1000000000).toFixed(2);
@@ -256,15 +243,13 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     currency: string,
     numOfDays: string
   ) => {
-    console.log("getCoinPriceVolume called");
-
     const apiUrl =
       numOfDays === "2"
         ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
         : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
 
     const { data } = await axios.get(apiUrl);
-    return data; // React Query expects your function to just return data or throw an error
+    return data; 
   };
 
   const location = useLocation();
@@ -292,6 +277,10 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     const updatedParams = {};
     navigateURL(`?${queryString.stringify(updatedParams)}`);
   };
+
+  const selectedCoinIds = useMemo(() => {
+    return selectedCoinData.map((coin) => coin.id);
+  }, [selectedCoinData.map((coin) => coin.id).join(",")]);
 
   return (
     <CryptoContext.Provider
@@ -352,6 +341,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         setRedirectedFromPortfolioPage,
         currencyListIsLoading,
         currencyLoadingHasError,
+        selectedCoinIds,
       }}
     >
       {children}
