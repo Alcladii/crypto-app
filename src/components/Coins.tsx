@@ -2,7 +2,6 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useQueries } from "@tanstack/react-query";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import "../App.css";
 import LineChart from "./LineChart";
@@ -505,19 +504,10 @@ function Coins() {
     }
   }, []);
 
-  const priceVolumeList = useQueries({
-    queries: selectedCoinIds.map((item) => ({
-      queryKey: ["coinData", item, displayCurrency, numOfDaysFromUrl],
-      queryFn: () =>
-        getCoinPriceVolume(item, displayCurrency, numOfDaysFromUrl),
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 30 * 60 * 1000,
-      refetchOnWindowFocus: false,
-    })),
-  }).map((r) => r.data);
+  const priceVolumeList = useCoinDataQuery(selectedCoinIds, displayCurrency, numOfDaysFromUrl).map((r) => r.data);
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px]`}>
+    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px] font-space-grotesk`}>
       <div className="my-5">
         <SlickCarousel
           coinList={coinList}
@@ -537,7 +527,7 @@ function Coins() {
               <div>Loading Price and Volume Chart</div>
             )}
           </div>
-          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7">
+          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7 text-sm xl:text-base">
             <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
               {priceVolumeList.length !== 0 &&
                 priceVolumeList.every(
@@ -633,7 +623,7 @@ function Coins() {
             Bottom 50{" "}
           </div>
         </div>
-        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color font-space-grotesk ">
+        <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color ">
           <div className="text-xl">Market Overview</div>
           <UpAndDownPercentagePeriodSelector
             selectedTimePeriod={selectedTimePeriod}
@@ -733,7 +723,7 @@ function Coins() {
           {displayCoinList.map((singleCoin) => (
             <div
               key={singleCoin.id}
-              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md font-space-grotesk bg-skin-coin-list-background-color"
+              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md bg-skin-coin-list-background-color"
             >
               <div className="md:w-[6%] lg:w-[5%] xl:w-[4%] min-w-12 pl-3 items-center text-skin-coin-list-text-color hidden md:flex">
                 {displayCoinList.indexOf(singleCoin) + 1}
