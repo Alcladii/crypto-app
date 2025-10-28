@@ -507,7 +507,7 @@ function Coins() {
   const priceVolumeList = useCoinDataQuery(selectedCoinIds, displayCurrency, numOfDaysFromUrl).map((r) => r.data);
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px] font-space-grotesk`}>
+    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px] font-space-grotesk text-base`}>
       <div className="my-5">
         <SlickCarousel
           coinList={coinList}
@@ -735,10 +735,10 @@ function Coins() {
                 <div className="flex items-center text-skin-coin-list-text-color">
                   <CoinTag src={singleCoin.image} />
                   <div className="flex flex-col-reverse sm:flex-col ml-2 sm:ml-4">
-                    <div className="hidden sm:block text-sm sm:text-lg text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">
+                    <div className="hidden sm:block text-sm sm:text-base text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">
                       {singleCoin.name}
                     </div>
-                    <div className="sm:flex text-sm sm:text-lg">
+                    <div className="sm:flex text-sm sm:text-base">
                       <span className="hidden sm:block">(</span>
                       {singleCoin.symbol.toUpperCase()}
                       <span className="hidden sm:block">)</span>
@@ -754,8 +754,8 @@ function Coins() {
                   />
                 </div>
               </div>
-              <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-lg text-skin-coin-list-text-color">
-                <div className="text-sm sm:text-lg">
+              <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-base text-skin-coin-list-text-color">
+                <div className="text-sm sm:text-base">
                   {currencySymbol}
                   {singleCoin.current_price &&
                     singleCoin.current_price.toLocaleString()}
