@@ -10,7 +10,7 @@ export const PriceChangePercentageText: React.FC<PriceChangePercentageTextProps>
 
   return (
     <div
-      className={`flex justify-start items-center text-sm sm:text-lg ${
+      className={`flex justify-start items-center text-sm sm:text-base ${
         coin > 0 ? "text-skin-change-percentage-in-coin-page-positive-text-color" : "text-skin-change-percentage-in-coin-page-negative-text-color"
       }`}
     >
