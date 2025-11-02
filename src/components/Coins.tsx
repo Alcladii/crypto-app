@@ -2,11 +2,14 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useInView } from "react-intersection-observer";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import axios from "axios";
 import "../App.css";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
-import api from "../api";
+//import api from "../api";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "./SlickCarousel";
 import { Arrow } from "./UI/Arrow";
@@ -17,6 +20,10 @@ import { SortArrowAccent } from "../components/UI/Svg";
 import { SortArrowDescent } from "../components/UI/Svg";
 import { SortArrowOriginal } from "../components/UI/Svg";
 import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
+import { useShowTopFifty } from "../hooks/showTopFifty";
+import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
+import { CoinsListItem } from "../components/CoinsListItem";
+import { isPending } from "@reduxjs/toolkit";
 
 const CoinTag = styled.img`
   width: 30px;
@@ -100,11 +107,6 @@ function Coins() {
     numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  // console.log(
-  //   "priceVolumeChartIsLoadingHasError",
-  //   priceVolumeChartIsLoadingHasError
-  // );
-
   const [coinListIsLoading, setCoinListIsLoading] = useState(false);
   const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState<boolean>(
@@ -138,29 +140,21 @@ function Coins() {
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
-  const showTopFifty = queryParams.show_top_fifty === "true";
+  //const showTopFifty = queryParams.show_top_fifty === "true";
 
-  const getCoinList = async () => {
-    try {
-      let coins;
-      const order =
-        showTopFifty || !queryParams.show_top_fifty
-          ? "market_cap_desc"
-          : "market_cap_asc";
-      setCoinListIsLoading(true);
-      const response = await api(
-        `/coins/markets`,
-        `vs_currency=${displayCurrency}&order=${order}&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-      );
-      coins = response.data;
-      setCoinList(coins);
-      setCoinListIsLoading(false);
-      setCoinListLoadingHasError(false);
-    } catch (err) {
-      setCoinListLoadingHasError(true);
-      setCoinListIsLoading(false);
+  const showTopFifty = useShowTopFifty();
+  const { data, status, error, fetchNextPage, hasNextPage } =
+    useInfiniteCoinsListScroll();
+
+  console.log(error?.message);
+
+  const { ref, inView } = useInView({rootMargin: '300px'});
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
     }
-  };
+  }, [inView, hasNextPage]);
 
   const setToDsc = () => {
     setCoinListDsc(true);
@@ -172,21 +166,68 @@ function Coins() {
     changeSearchParams("show_top_fifty", "false");
   };
 
+  // if (status === "pending") {
+  //   return <div className="text-white">Loading ... </div>;
+  // }
+
+  // const coinsList = data
+  //   ? data.pages.flatMap((page) => page.coins)
+  //   : [];
+
+  //   console.log(coinsList)
+
+  // return (
+  //   <div
+  //     className={`${
+  //       darkMode ? "" : "theme-light"
+  //     } max-w-[1296px] font-space-grotesk text-base`}
+  //   >
+  //     <div>
+  //       <button className="text-white bg-yellow mr-2" onClick={setToDsc}>Show Top 50</button>
+  //       <button className="text-white bg-yellow ml-2" onClick={setToAsc}>Show Bottom 50</button>
+  //     </div>
+  //     {data?.pages.map((items, pageIndex) => (
+  //       <div key={pageIndex}>
+  //         {items.map((coin: any, index: number) =>{
+  //           if (items.length == index + 1) {
+  //             return (<div ref={ref} className="text-base text-white" key={coin.id}>
+  //               {coin.name}
+  //             </div>);
+  //           }
+  //           return (<div className="text-base text-white" key={coin.id}>
+  //             {coin.name}
+  //           </div>)
+  //         })}
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
+
+  // const setToDsc = () => {
+  //   setCoinListDsc(true);
+  //   changeSearchParams("show_top_fifty", "true");
+  // };
+
+  // const setToAsc = () => {
+  //   setCoinListDsc(false);
+  //   changeSearchParams("show_top_fifty", "false");
+  // };
+
   useEffect(() => {
     handleSearchParams("show_top_fifty", "true");
   }, [coinListDsc]);
 
-  useEffect(() => {
-    getCoinList();
+  // useEffect(() => {
+  //   getCoinList();
 
-    const minute = 60000;
+  //   const minute = 60000;
 
-    const intervalId = setInterval(() => {
-      getCoinList();
-    }, minute);
+  //   const intervalId = setInterval(() => {
+  //     getCoinList();
+  //   }, minute);
 
-    return () => clearInterval(intervalId);
-  }, [coinListDsc, showTopFifty]);
+  //   return () => clearInterval(intervalId);
+  // }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
     if (currencyList.length === 0) {
@@ -196,10 +237,10 @@ function Coins() {
 
   const navigate = useNavigate();
 
-  const handleClick = (item: Coin) => {
-    navigate(`/coin-page/${item.id}`);
-    setRedirectedFromPortfolioPage(false);
-  };
+  // const handleClick = (item: Coin) => {
+  //   navigate(`/coin-page/${item.id}`);
+  //   setRedirectedFromPortfolioPage(false);
+  // };
 
   const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
@@ -486,10 +527,6 @@ function Coins() {
     "#5082CF",
   ];
 
-  const calculateColorIndex = (coin: Coin) => {
-    return displayCoinList.indexOf(coin) % progressBarColors.length;
-  };
-
   useEffect(() => {
     if (tableRef.current) {
       const observer = new IntersectionObserver(
@@ -504,10 +541,25 @@ function Coins() {
     }
   }, []);
 
-  const priceVolumeList = useCoinDataQuery(selectedCoinIds, displayCurrency, numOfDaysFromUrl).map((r) => r.data);
+  const priceVolumeList = useCoinDataQuery(
+    selectedCoinIds,
+    displayCurrency,
+    numOfDaysFromUrl
+  ).map((r) => r.data);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"} max-w-[1296px] font-space-grotesk text-base`}>
+    <div
+      className={`${
+        darkMode ? "" : "theme-light"
+      } max-w-[1296px] font-space-grotesk text-base`}
+    >
       <div className="my-5">
         <SlickCarousel
           coinList={coinList}
@@ -630,7 +682,7 @@ function Coins() {
             setSelectedTimePeriod={setSelectedTimePeriod}
           />
         </div>
-        {coinListIsLoading && (
+        {status === "pending" && (
           <div className="flex justify-center my-5">Loading Coin List</div>
         )}
         <div className="no-scrollbar">
@@ -720,168 +772,53 @@ function Coins() {
               Last 7d
             </div>
           </div>
-          {displayCoinList.map((singleCoin) => (
-            <div
-              key={singleCoin.id}
-              className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md bg-skin-coin-list-background-color"
-            >
-              <div className="md:w-[6%] lg:w-[5%] xl:w-[4%] min-w-12 pl-3 items-center text-skin-coin-list-text-color hidden md:flex">
-                {displayCoinList.indexOf(singleCoin) + 1}
-              </div>
-              <div
-                className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center pl-3 md:pl-0"
-                onClick={() => handleClick(singleCoin)}
-              >
-                <div className="flex items-center text-skin-coin-list-text-color">
-                  <CoinTag src={singleCoin.image} />
-                  <div className="flex flex-col-reverse sm:flex-col ml-2 sm:ml-4">
-                    <div className="hidden sm:block text-sm sm:text-base text-mobile-view-coin-name-text-color sm:text-skin-coin-list-text-color">
-                      {singleCoin.name}
-                    </div>
-                    <div className="sm:flex text-sm sm:text-base">
-                      <span className="hidden sm:block">(</span>
-                      {singleCoin.symbol.toUpperCase()}
-                      <span className="hidden sm:block">)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[35%] sm:hidden min-w-32 pr-3 flex justify-start items-center">
-                <div className="w-5/6 pt-6">
-                  <LineChartIndividualCoin
-                    priceList={singleCoin.sparkline_in_7d.price}
-                    color={progressBarColors[calculateColorIndex(singleCoin)]}
+          {data?.pages.map((items, pageIndex) => (
+            <div key={pageIndex}>
+              {items.map((coin: any, index: number) => {
+                const globalIndex = pageIndex * 50 + index;
+                if (items.length == index + 1) {
+                  return (
+                    <CoinsListItem
+                      key={coin.id}
+                      displayCoinList={items}
+                      singleCoin={coin}
+                      innerRef={ref}
+                      index={globalIndex}
+                    />
+                  );
+                }
+                return (
+                  <CoinsListItem
+                    key={coin.id}
+                    displayCoinList={items}
+                    singleCoin={coin}
+                    index={globalIndex}
                   />
-                </div>
-              </div>
-              <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center text-base text-skin-coin-list-text-color">
-                <div className="text-sm sm:text-base">
-                  {currencySymbol}
-                  {singleCoin.current_price &&
-                    singleCoin.current_price.toLocaleString()}
-                </div>
-                <div className="text-md flex items-center sm:hidden ">
-                  <Arrow
-                    priceChange={
-                      singleCoin[
-                        `price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin
-                      ] as number
-                    }
-                  />
-                  &nbsp;
-                  <PriceChangePercentageText
-                    coin={
-                      singleCoin[
-                        `price_change_percentage_${selectedTimePeriod}_in_currency` as keyof Coin
-                      ] as number
-                    }
-                  />
-                </div>
-              </div>
-              <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_1h_in_currency
-                  }
-                />
-                <div className="ml-1">
-                  <PriceChangePercentageText
-                    coin={singleCoin.price_change_percentage_1h_in_currency}
-                  />
-                </div>
-              </div>
-              <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_24h_in_currency
-                  }
-                />
-                <div className="ml-1">
-                  <PriceChangePercentageText
-                    coin={singleCoin.price_change_percentage_24h_in_currency}
-                  />
-                </div>
-              </div>
-              <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
-                <Arrow
-                  priceChange={
-                    singleCoin.price_change_percentage_7d_in_currency
-                  }
-                />
-                <div className="ml-1">
-                  <PriceChangePercentageText
-                    coin={singleCoin.price_change_percentage_7d_in_currency}
-                  />
-                </div>
-              </div>
-              <div className="xl:w-[20%] lg:w-[24%] min-w-44 pr-3.5 justify-start items-center text-skin-coin-list-text-color hidden lg:flex">
-                <div className="w-full">
-                  <div className="flex w-full items-center justify-between text-sm">
-                    <span>
-                      {currencySymbol}
-                      {convertToBillion(singleCoin.market_cap_change_24h)}B
-                    </span>
-                    <span>
-                      {currencySymbol}
-                      {convertToBillion(singleCoin.market_cap)}B
-                    </span>
-                  </div>
-                  <ProgressBarOuter
-                    background={
-                      progressBarColors[calculateColorIndex(singleCoin)]
-                    }
-                  >
-                    <ProgressBarInner
-                      width={
-                        singleCoin.market_cap_change_24h / singleCoin.market_cap
-                      }
-                      background={
-                        progressBarColors[calculateColorIndex(singleCoin)]
-                      }
-                    ></ProgressBarInner>
-                  </ProgressBarOuter>
-                </div>
-              </div>
-              <div className="w-[20%] min-w-44 pl-3.5 justify-start items-center text-skin-coin-list-text-color hidden xl:flex">
-                <div className="w-full">
-                  <div className="flex w-full items-center justify-between text-sm">
-                    <span>
-                      {currencySymbol}
-                      {convertToBillion(singleCoin.circulating_supply)}B
-                    </span>
-                    <span>
-                      {currencySymbol}
-                      {convertToBillion(singleCoin.total_supply)}B
-                    </span>
-                  </div>
-                  <ProgressBarOuter
-                    background={
-                      progressBarColors[calculateColorIndex(singleCoin)]
-                    }
-                  >
-                    <ProgressBarInner
-                      width={
-                        singleCoin.circulating_supply / singleCoin.total_supply
-                      }
-                      background={
-                        progressBarColors[calculateColorIndex(singleCoin)]
-                      }
-                    ></ProgressBarInner>
-                  </ProgressBarOuter>
-                </div>
-              </div>
-              <div className="hidden sm:flex sm:w-[25%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-3 justify-end items-center">
-                <div className="w-5/6 pt-6">
-                  <LineChartIndividualCoin
-                    priceList={singleCoin.sparkline_in_7d.price}
-                    color={progressBarColors[calculateColorIndex(singleCoin)]}
-                  />
-                </div>
-              </div>
+                );
+              })}
             </div>
           ))}
         </div>
-        {coinListLoadingHasError && <div>Error in fetching Coins List</div>}
+        <div className="flex justify-center z-99">
+          <button
+            className={`fixed bottom-12 transition-all duration-300 text-white bg-purple-300
+              ${
+                isSticky
+                  ? "opacity-100 pointer-events-auto"
+                  : "opacity-0 pointer-events-none"
+              }
+           `}
+           onClick={handleScrollToTop}
+          >
+            Go Back to Top
+          </button>
+        </div>
+
+        {error && (
+          <div className="text-white w-full text-center">
+            {error.message} API calls ran out, retry in a minute
+          </div>
+        )}
       </div>
     </div>
   );
