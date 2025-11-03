@@ -1,20 +1,12 @@
-import { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext, useRef, useMemo } from "react";
 import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
-import axios from "axios";
 import "../App.css";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
-//import api from "../api";
-import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { SlickCarousel } from "./SlickCarousel";
-import { Arrow } from "./UI/Arrow";
 import { DaysButton } from "./DaysButton";
-import { PriceChangePercentageText } from "./PriceChangePercentageText";
 import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
 import { SortArrowAccent } from "../components/UI/Svg";
 import { SortArrowDescent } from "../components/UI/Svg";
@@ -23,28 +15,6 @@ import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
 import { useShowTopFifty } from "../hooks/showTopFifty";
 import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
 import { CoinsListItem } from "../components/CoinsListItem";
-import { isPending } from "@reduxjs/toolkit";
-
-const CoinTag = styled.img`
-  width: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProgressBarOuter = styled.div<{ background: string }>`
-  border-radius: 99px;
-  background: ${(props) => `${props.background}80`};
-  height: 8px;
-  width: 100%;
-`;
-
-const ProgressBarInner = styled.div<{ width: number; background: string }>`
-  border-radius: 99px;
-  height: 8px;
-  width: ${(props) => props.width * 100}%;
-  background: ${(props) => props.background};
-`;
 
 const ColorIndicator = styled.div<{ background: string }>`
   height: 10px;
@@ -81,6 +51,13 @@ type Coin = {
   circulating_supply: number;
   total_supply: number;
 };
+
+// type SortableKeys =
+//   | "name"
+//   | "current_price"
+//   | "price_change_percentage_1h_in_currency"
+//   | "price_change_percentage_24h_in_currency"
+//   | "price_change_percentage_7d_in_currency";
 
 function Coins() {
   const {
@@ -140,15 +117,22 @@ function Coins() {
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
+  console.log("displayCoinList", displayCoinList)
+
   //const showTopFifty = queryParams.show_top_fifty === "true";
 
   const showTopFifty = useShowTopFifty();
   const { data, status, error, fetchNextPage, hasNextPage } =
     useInfiniteCoinsListScroll();
 
-  console.log(error?.message);
+  const flattenedData = useMemo(() => {
+     return data?.pages ? data.pages.flat() : [];
+   }, [data]);
 
-  const { ref, inView } = useInView({rootMargin: '300px'});
+  //console.log(flattenedData)
+
+
+  const { ref: sentinelRef, inView } = useInView({ rootMargin: "300px" });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -166,81 +150,15 @@ function Coins() {
     changeSearchParams("show_top_fifty", "false");
   };
 
-  // if (status === "pending") {
-  //   return <div className="text-white">Loading ... </div>;
-  // }
-
-  // const coinsList = data
-  //   ? data.pages.flatMap((page) => page.coins)
-  //   : [];
-
-  //   console.log(coinsList)
-
-  // return (
-  //   <div
-  //     className={`${
-  //       darkMode ? "" : "theme-light"
-  //     } max-w-[1296px] font-space-grotesk text-base`}
-  //   >
-  //     <div>
-  //       <button className="text-white bg-yellow mr-2" onClick={setToDsc}>Show Top 50</button>
-  //       <button className="text-white bg-yellow ml-2" onClick={setToAsc}>Show Bottom 50</button>
-  //     </div>
-  //     {data?.pages.map((items, pageIndex) => (
-  //       <div key={pageIndex}>
-  //         {items.map((coin: any, index: number) =>{
-  //           if (items.length == index + 1) {
-  //             return (<div ref={ref} className="text-base text-white" key={coin.id}>
-  //               {coin.name}
-  //             </div>);
-  //           }
-  //           return (<div className="text-base text-white" key={coin.id}>
-  //             {coin.name}
-  //           </div>)
-  //         })}
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
-  // const setToDsc = () => {
-  //   setCoinListDsc(true);
-  //   changeSearchParams("show_top_fifty", "true");
-  // };
-
-  // const setToAsc = () => {
-  //   setCoinListDsc(false);
-  //   changeSearchParams("show_top_fifty", "false");
-  // };
-
   useEffect(() => {
     handleSearchParams("show_top_fifty", "true");
   }, [coinListDsc]);
-
-  // useEffect(() => {
-  //   getCoinList();
-
-  //   const minute = 60000;
-
-  //   const intervalId = setInterval(() => {
-  //     getCoinList();
-  //   }, minute);
-
-  //   return () => clearInterval(intervalId);
-  // }, [coinListDsc, showTopFifty]);
 
   useEffect(() => {
     if (currencyList.length === 0) {
       getCurrencyList();
     }
   }, []);
-
-  const navigate = useNavigate();
-
-  // const handleClick = (item: Coin) => {
-  //   navigate(`/coin-page/${item.id}`);
-  //   setRedirectedFromPortfolioPage(false);
-  // };
 
   const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
@@ -433,7 +351,7 @@ function Coins() {
     queryParams.sort_order_by_price_change_7d;
 
   const sortCoinList = () => {
-    const sortedCoinList = [...coinList];
+    const sortedCoinList = flattenedData ? [...flattenedData] : [];
 
     if (
       sortByInQueryParams === "name" &&
@@ -495,7 +413,7 @@ function Coins() {
       (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
         sortOrderByPriceChange7dInQueryParams === "default")
     ) {
-      setDisplayCoinList(coinList);
+      setDisplayCoinList(flattenedData || []);
     }
   };
 
@@ -508,24 +426,80 @@ function Coins() {
     sortOrderByPriceChange1hInQueryParams,
     sortOrderByPriceChange24hInQueryParams,
     sortOrderByPriceChange7dInQueryParams,
-    coinList,
+    flattenedData,
   ]);
+
+  // const comparator = useMemo(() => {
+  //   return (a: Coin, b: Coin) => {
+  //     if (!sortByInQueryParams) return 0;
+  //     // build ONE comparator based on query params
+  //     if (sortByInQueryParams === "name") {
+  //       const dir = sortOrderByNameInQueryParams === "ascent" ? 1 : -1;
+  //       if (sortOrderByNameInQueryParams === "default") return 0;
+  //       return dir * a.name.localeCompare(b.name);
+  //     }
+
+  //     const numFieldMap: Record<string, keyof Coin> = {
+  //       current_price: "current_price",
+  //       price_change_percentage_1h_in_currency:
+  //         "price_change_percentage_1h_in_currency",
+  //       price_change_percentage_24h_in_currency:
+  //         "price_change_percentage_24h_in_currency",
+  //       price_change_percentage_7d_in_currency:
+  //         "price_change_percentage_7d_in_currency",
+  //     };
+
+  //     const field = numFieldMap[sortByInQueryParams as SortableKeys];
+  //     if (!field) return 0;
+
+  //     const direction =
+  //       (sortByInQueryParams === "current_price" &&
+  //         sortOrderByPriceInQueryParams === "ascent") ||
+  //       (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+  //         sortOrderByPriceChange1hInQueryParams === "ascent") ||
+  //       (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+  //         sortOrderByPriceChange24hInQueryParams === "ascent") ||
+  //       (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+  //         sortOrderByPriceChange7dInQueryParams === "ascent")
+  //         ? 1
+  //         : (sortByInQueryParams === "current_price" &&
+  //             sortOrderByPriceInQueryParams === "default") ||
+  //           (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+  //             sortOrderByPriceChange1hInQueryParams === "default") ||
+  //           (sortByInQueryParams ===
+  //             "price_change_percentage_24h_in_currency" &&
+  //             sortOrderByPriceChange24hInQueryParams === "default") ||
+  //           (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+  //             sortOrderByPriceChange7dInQueryParams === "default")
+  //         ? 0
+  //         : -1;
+
+  //     if (direction === 0) return 0;
+  //     return direction * ((a[field] as number) - (b[field] as number));
+  //   };
+  // }, [
+  //   sortByInQueryParams,
+  //   sortOrderByNameInQueryParams,
+  //   sortOrderByPriceInQueryParams,
+  //   sortOrderByPriceChange1hInQueryParams,
+  //   sortOrderByPriceChange24hInQueryParams,
+  //   sortOrderByPriceChange7dInQueryParams,
+  // ]);
+
+  // const sortedCoinList = useMemo(() => {
+  //   const src = flattenedData ?? [];
+  //   if (!src.length) return [];
+  //   // copy before sort to keep it pure
+  //   const next = [...src];
+  //   next.sort(comparator);
+  //   return next;
+  // }, [flattenedData, comparator]);
+
+  // console.log(sortedCoinList)
 
   useEffect(() => {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
-
-  const progressBarColors = [
-    "#C27721",
-    "#6374C3",
-    "#30E0A1",
-    "#F5AC37",
-    "#F3EB2F",
-    "#638FFE",
-    "#4DEEE5",
-    "#F06142",
-    "#5082CF",
-  ];
 
   useEffect(() => {
     if (tableRef.current) {
@@ -536,8 +510,8 @@ function Coins() {
           threshold: [1],
         }
       );
-
       observer.observe(tableRef.current);
+      //return () => observer.disconnect();
     }
   }, []);
 
@@ -554,6 +528,18 @@ function Coins() {
     });
   };
 
+  const progressBarColors = [
+    "#C27721",
+    "#6374C3",
+    "#30E0A1",
+    "#F5AC37",
+    "#F3EB2F",
+    "#638FFE",
+    "#4DEEE5",
+    "#F06142",
+    "#5082CF",
+  ];
+
   return (
     <div
       className={`${
@@ -562,7 +548,7 @@ function Coins() {
     >
       <div className="my-5">
         <SlickCarousel
-          coinList={coinList}
+          coinList={displayCoinList}
           setDisplaySelectCoinToSeeChartMessage={
             setDisplaySelectCoinToSeeChartMessage
           }
@@ -772,32 +758,40 @@ function Coins() {
               Last 7d
             </div>
           </div>
-          {data?.pages.map((items, pageIndex) => (
-            <div key={pageIndex}>
-              {items.map((coin: any, index: number) => {
-                const globalIndex = pageIndex * 50 + index;
-                if (items.length == index + 1) {
+          {/* {displayCoinList.map((coin: any, index: number) => {
+                //const globalIndex = index * 50 + index;
+                const isLast = index === displayCoinList.length - 1;
+                if (isLast) {
                   return (
                     <CoinsListItem
                       key={coin.id}
-                      displayCoinList={items}
+                      displayCoinList={displayCoinList}
                       singleCoin={coin}
                       innerRef={ref}
-                      index={globalIndex}
+                      index={index}
                     />
                   );
                 }
                 return (
                   <CoinsListItem
                     key={coin.id}
-                    displayCoinList={items}
+                    displayCoinList={displayCoinList}
                     singleCoin={coin}
-                    index={globalIndex}
+                    index={index}
                   />
                 );
-              })}
-            </div>
+              })} */}
+          {displayCoinList.map((coin: Coin, index: number) => (
+            <CoinsListItem
+              key={index}
+              //displayCoinList={sortedCoinList}
+              singleCoin={coin}
+              index={index}
+              color={progressBarColors[index % progressBarColors.length]}
+            />
           ))}
+
+          <div ref={sentinelRef} style={{ height: 1 }} />
         </div>
         <div className="flex justify-center z-99">
           <button
@@ -808,7 +802,7 @@ function Coins() {
                   : "opacity-0 pointer-events-none"
               }
            `}
-           onClick={handleScrollToTop}
+            onClick={handleScrollToTop}
           >
             Go Back to Top
           </button>
