@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, memo } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import LineChart from "./LineChart";
@@ -55,19 +55,19 @@ const ProgressBarInner = styled.div<{ width: number; background: string }>`
 `;
 
 type CoinsListItemProps = {
-  displayCoinList: Coin[];
   singleCoin: Coin;
   innerRef?: React.Ref<HTMLDivElement>;
-  index: number
+  index: number;
+  color: string;
 };
 
 
 
-export const CoinsListItem: React.FC<CoinsListItemProps> = ({
-  displayCoinList,
+export const CoinsListItem:React.FC<CoinsListItemProps>= ({
   singleCoin,
   innerRef,
-  index
+  index,
+  color,
 }) => {
   const {
     useLocalState,
@@ -104,20 +104,20 @@ export const CoinsListItem: React.FC<CoinsListItemProps> = ({
 
   //console.log(displayCoinList)
 
-  const progressBarColors = [
-    "#C27721",
-    "#6374C3",
-    "#30E0A1",
-    "#F5AC37",
-    "#F3EB2F",
-    "#638FFE",
-    "#4DEEE5",
-    "#F06142",
-    "#5082CF",
-  ];
-  const calculateColorIndex = (coin: Coin) => {
-    return displayCoinList.indexOf(coin) % progressBarColors.length;
-  };
+//   const progressBarColors = [
+//     "#C27721",
+//     "#6374C3",
+//     "#30E0A1",
+//     "#F5AC37",
+//     "#F3EB2F",
+//     "#638FFE",
+//     "#4DEEE5",
+//     "#F06142",
+//     "#5082CF",
+//   ];
+//   const calculateColorIndex = (coin: Coin) => {
+//     return displayCoinList.indexOf(coin) % progressBarColors.length;
+//   };
 
   //console.log(displayCoinList)
 
@@ -152,7 +152,8 @@ export const CoinsListItem: React.FC<CoinsListItemProps> = ({
         <div className="w-5/6 pt-6">
           <LineChartIndividualCoin
             priceList={singleCoin.sparkline_in_7d.price}
-            color={progressBarColors[calculateColorIndex(singleCoin)]}
+            //color={progressBarColors[calculateColorIndex(singleCoin)]}
+            color = {color}
           />
         </div>
       </div>
@@ -223,11 +224,13 @@ export const CoinsListItem: React.FC<CoinsListItemProps> = ({
             </span>
           </div>
           <ProgressBarOuter
-            background={progressBarColors[calculateColorIndex(singleCoin)]}
+            //background={progressBarColors[calculateColorIndex(singleCoin)]}
+            background={color}
           >
             <ProgressBarInner
               width={singleCoin.market_cap_change_24h / singleCoin.market_cap}
-              background={progressBarColors[calculateColorIndex(singleCoin)]}
+              //background={progressBarColors[calculateColorIndex(singleCoin)]}
+              background={color}
             ></ProgressBarInner>
           </ProgressBarOuter>
         </div>
@@ -245,11 +248,13 @@ export const CoinsListItem: React.FC<CoinsListItemProps> = ({
             </span>
           </div>
           <ProgressBarOuter
-            background={progressBarColors[calculateColorIndex(singleCoin)]}
+            //background={progressBarColors[calculateColorIndex(singleCoin)]}
+            background={color}
           >
             <ProgressBarInner
               width={singleCoin.circulating_supply / singleCoin.total_supply}
-              background={progressBarColors[calculateColorIndex(singleCoin)]}
+              //background={progressBarColors[calculateColorIndex(singleCoin)]}
+              background={color}
             ></ProgressBarInner>
           </ProgressBarOuter>
         </div>
@@ -258,7 +263,8 @@ export const CoinsListItem: React.FC<CoinsListItemProps> = ({
         <div className="w-5/6 pt-6">
           <LineChartIndividualCoin
             priceList={singleCoin.sparkline_in_7d.price}
-            color={progressBarColors[calculateColorIndex(singleCoin)]}
+            //color={progressBarColors[calculateColorIndex(singleCoin)]}
+            color={color}
           />
         </div>
       </div>

@@ -10,6 +10,7 @@ export const useInfiniteCoinsListScroll = () => {
     CryptoContext
   ) as CryptoContextProps;
 
+
   const getCoinsList = async ({ pageParam }: { pageParam: number }) => {
     const order =
       showTopFifty || !queryParams.show_top_fifty
