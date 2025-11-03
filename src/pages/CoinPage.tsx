@@ -110,7 +110,7 @@ const CoinPage = ( {portfolioList}: CoinPageProps ) => {
       <div className="max-w-[1296px] mx-auto px-10 py-8 font-space-grotesk text-skin-single-coin-page-text-color">
         {!redirectedFromPortfolioPage ? (
           <div
-            className="flex justify-center items-center w-36 h-10 bg-skin-coins-converter-selected-button-background rounded-lg"
+            className="flex justify-center items-center w-36 h-10 bg-skin-coins-converter-selected-button-background rounded-lg cursor-pointer"
             onClick={handleClick}
           >
             Back to Coins
