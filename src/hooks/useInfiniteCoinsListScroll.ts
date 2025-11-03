@@ -31,6 +31,7 @@ export const useInfiniteCoinsListScroll = () => {
       const nextPage = lastPage.length ? allPages.length + 1 : undefined;
       return nextPage;
     },
+    staleTime: 60000
   });
 
   return query;

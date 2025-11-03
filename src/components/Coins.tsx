@@ -154,18 +154,6 @@ function Coins() {
     handleSearchParams("show_top_fifty", "true");
   }, [coinListDsc]);
 
-  // useEffect(() => {
-  //   getCoinList();
-
-  //   const minute = 60000;
-
-  //   const intervalId = setInterval(() => {
-  //     getCoinList();
-  //   }, minute);
-
-  //   return () => clearInterval(intervalId);
-  // }, [coinListDsc, showTopFifty]);
-
   useEffect(() => {
     if (currencyList.length === 0) {
       getCurrencyList();
