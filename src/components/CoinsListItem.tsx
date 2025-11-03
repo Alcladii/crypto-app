@@ -59,6 +59,7 @@ type CoinsListItemProps = {
   innerRef?: React.Ref<HTMLDivElement>;
   index: number;
   color: string;
+  selectedTimePeriod: string;
 };
 
 
@@ -68,6 +69,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
   innerRef,
   index,
   color,
+  selectedTimePeriod
 }) => {
   const {
     useLocalState,
@@ -93,7 +95,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
     numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
+  //const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
   const navigate = useNavigate();
 
