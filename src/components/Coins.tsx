@@ -52,13 +52,6 @@ type Coin = {
   total_supply: number;
 };
 
-// type SortableKeys =
-//   | "name"
-//   | "current_price"
-//   | "price_change_percentage_1h_in_currency"
-//   | "price_change_percentage_24h_in_currency"
-//   | "price_change_percentage_7d_in_currency";
-
 function Coins() {
   const {
     useLocalState,
@@ -70,22 +63,15 @@ function Coins() {
     numOfDays,
     priceVolumeChartIsLoading,
     priceVolumeChartIsLoadingHasError,
-    //priceVolumeList,
     selectedCoinData,
-    coinList,
-    setCoinList,
     handleSearchParams,
     queryParams,
     changeSearchParams,
     darkMode,
-    setRedirectedFromPortfolioPage,
     selectedCoinIds,
-    getCoinPriceVolume,
     numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
-  const [coinListIsLoading, setCoinListIsLoading] = useState(false);
-  const [coinListLoadingHasError, setCoinListLoadingHasError] = useState(false);
   const [coinListDsc, setCoinListDsc] = useLocalState<boolean>(
     "coinListDsc",
     true
@@ -116,11 +102,6 @@ function Coins() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
-
-  console.log("displayCoinList", displayCoinList)
-
-  //const showTopFifty = queryParams.show_top_fifty === "true";
-
   const showTopFifty = useShowTopFifty();
   const { data, status, error, fetchNextPage, hasNextPage } =
     useInfiniteCoinsListScroll();
@@ -129,10 +110,7 @@ function Coins() {
      return data?.pages ? data.pages.flat() : [];
    }, [data]);
 
-  //console.log(flattenedData)
-
-
-  const { ref: sentinelRef, inView } = useInView({ rootMargin: "300px" });
+  const { ref, inView } = useInView({ rootMargin: "300px" });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -429,74 +407,6 @@ function Coins() {
     flattenedData,
   ]);
 
-  // const comparator = useMemo(() => {
-  //   return (a: Coin, b: Coin) => {
-  //     if (!sortByInQueryParams) return 0;
-  //     // build ONE comparator based on query params
-  //     if (sortByInQueryParams === "name") {
-  //       const dir = sortOrderByNameInQueryParams === "ascent" ? 1 : -1;
-  //       if (sortOrderByNameInQueryParams === "default") return 0;
-  //       return dir * a.name.localeCompare(b.name);
-  //     }
-
-  //     const numFieldMap: Record<string, keyof Coin> = {
-  //       current_price: "current_price",
-  //       price_change_percentage_1h_in_currency:
-  //         "price_change_percentage_1h_in_currency",
-  //       price_change_percentage_24h_in_currency:
-  //         "price_change_percentage_24h_in_currency",
-  //       price_change_percentage_7d_in_currency:
-  //         "price_change_percentage_7d_in_currency",
-  //     };
-
-  //     const field = numFieldMap[sortByInQueryParams as SortableKeys];
-  //     if (!field) return 0;
-
-  //     const direction =
-  //       (sortByInQueryParams === "current_price" &&
-  //         sortOrderByPriceInQueryParams === "ascent") ||
-  //       (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
-  //         sortOrderByPriceChange1hInQueryParams === "ascent") ||
-  //       (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
-  //         sortOrderByPriceChange24hInQueryParams === "ascent") ||
-  //       (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
-  //         sortOrderByPriceChange7dInQueryParams === "ascent")
-  //         ? 1
-  //         : (sortByInQueryParams === "current_price" &&
-  //             sortOrderByPriceInQueryParams === "default") ||
-  //           (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
-  //             sortOrderByPriceChange1hInQueryParams === "default") ||
-  //           (sortByInQueryParams ===
-  //             "price_change_percentage_24h_in_currency" &&
-  //             sortOrderByPriceChange24hInQueryParams === "default") ||
-  //           (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
-  //             sortOrderByPriceChange7dInQueryParams === "default")
-  //         ? 0
-  //         : -1;
-
-  //     if (direction === 0) return 0;
-  //     return direction * ((a[field] as number) - (b[field] as number));
-  //   };
-  // }, [
-  //   sortByInQueryParams,
-  //   sortOrderByNameInQueryParams,
-  //   sortOrderByPriceInQueryParams,
-  //   sortOrderByPriceChange1hInQueryParams,
-  //   sortOrderByPriceChange24hInQueryParams,
-  //   sortOrderByPriceChange7dInQueryParams,
-  // ]);
-
-  // const sortedCoinList = useMemo(() => {
-  //   const src = flattenedData ?? [];
-  //   if (!src.length) return [];
-  //   // copy before sort to keep it pure
-  //   const next = [...src];
-  //   next.sort(comparator);
-  //   return next;
-  // }, [flattenedData, comparator]);
-
-  // console.log(sortedCoinList)
-
   useEffect(() => {
     handleSearchParams("days", numOfDays);
   }, [numOfDays]);
@@ -511,7 +421,7 @@ function Coins() {
         }
       );
       observer.observe(tableRef.current);
-      //return () => observer.disconnect();
+      return () => observer.disconnect();
     }
   }, []);
 
@@ -758,40 +668,30 @@ function Coins() {
               Last 7d
             </div>
           </div>
-          {/* {displayCoinList.map((coin: any, index: number) => {
-                //const globalIndex = index * 50 + index;
+          {displayCoinList.map((coin: any, index: number) => {
                 const isLast = index === displayCoinList.length - 1;
                 if (isLast) {
                   return (
                     <CoinsListItem
                       key={coin.id}
-                      displayCoinList={displayCoinList}
                       singleCoin={coin}
                       innerRef={ref}
                       index={index}
+                      color={progressBarColors[index % progressBarColors.length]}
+                      selectedTimePeriod = {selectedTimePeriod}
                     />
                   );
                 }
                 return (
                   <CoinsListItem
                     key={coin.id}
-                    displayCoinList={displayCoinList}
                     singleCoin={coin}
                     index={index}
+                    color={progressBarColors[index % progressBarColors.length]}
+                    selectedTimePeriod = {selectedTimePeriod}
                   />
                 );
-              })} */}
-          {displayCoinList.map((coin: Coin, index: number) => (
-            <CoinsListItem
-              key={index}
-              //displayCoinList={sortedCoinList}
-              singleCoin={coin}
-              index={index}
-              color={progressBarColors[index % progressBarColors.length]}
-            />
-          ))}
-
-          <div ref={sentinelRef} style={{ height: 1 }} />
+              })}
         </div>
         <div className="flex justify-center z-99">
           <button

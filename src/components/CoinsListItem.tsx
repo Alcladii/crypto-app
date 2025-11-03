@@ -1,20 +1,9 @@
-import { useState, useEffect, useContext, useRef, memo } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import LineChart from "./LineChart";
-import BarChart from "./BarChart";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
-import { SlickCarousel } from "./SlickCarousel";
 import { Arrow } from "./UI/Arrow";
-import { DaysButton } from "./DaysButton";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
-import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
-import { SortArrowAccent } from "../components/UI/Svg";
-import { SortArrowDescent } from "../components/UI/Svg";
-import { SortArrowOriginal } from "../components/UI/Svg";
-import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
-import { useShowTopFifty } from "../hooks/showTopFifty";
-import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 
 type Coin = {
@@ -59,41 +48,21 @@ type CoinsListItemProps = {
   innerRef?: React.Ref<HTMLDivElement>;
   index: number;
   color: string;
+  selectedTimePeriod: string;
 };
 
-
-
-export const CoinsListItem:React.FC<CoinsListItemProps>= ({
+export const CoinsListItem: React.FC<CoinsListItemProps> = ({
   singleCoin,
   innerRef,
   index,
   color,
+  selectedTimePeriod,
 }) => {
   const {
-    useLocalState,
     convertToBillion,
-    displayCurrency,
     currencySymbol,
-    getCurrencyList,
-    currencyList,
-    numOfDays,
-    priceVolumeChartIsLoading,
-    priceVolumeChartIsLoadingHasError,
-    //priceVolumeList,
-    selectedCoinData,
-    coinList,
-    setCoinList,
-    handleSearchParams,
-    queryParams,
-    changeSearchParams,
-    darkMode,
     setRedirectedFromPortfolioPage,
-    selectedCoinIds,
-    getCoinPriceVolume,
-    numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
-
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
 
   const navigate = useNavigate();
 
@@ -101,25 +70,6 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
     navigate(`/coin-page/${item.id}`);
     setRedirectedFromPortfolioPage(false);
   };
-
-  //console.log(displayCoinList)
-
-//   const progressBarColors = [
-//     "#C27721",
-//     "#6374C3",
-//     "#30E0A1",
-//     "#F5AC37",
-//     "#F3EB2F",
-//     "#638FFE",
-//     "#4DEEE5",
-//     "#F06142",
-//     "#5082CF",
-//   ];
-//   const calculateColorIndex = (coin: Coin) => {
-//     return displayCoinList.indexOf(coin) % progressBarColors.length;
-//   };
-
-  //console.log(displayCoinList)
 
   return (
     <div
@@ -153,7 +103,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
           <LineChartIndividualCoin
             priceList={singleCoin.sparkline_in_7d.price}
             //color={progressBarColors[calculateColorIndex(singleCoin)]}
-            color = {color}
+            color={color}
           />
         </div>
       </div>
