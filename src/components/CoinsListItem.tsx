@@ -83,7 +83,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
         {index + 1}
       </div>
       <div
-        className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center pl-3 md:pl-0"
+        className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center pl-3 md:pl-0 cursor-pointer"
         onClick={() => handleClick(singleCoin)}
       >
         <div className="flex items-center text-skin-coin-list-text-color">
