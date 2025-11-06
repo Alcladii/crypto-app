@@ -18,7 +18,7 @@ type Coin = {
 
 type SlickCarouselProps = {
   coinList: Coin[];
-  setDisplaySelectCoinToSeeChartMessage: (value: boolean) => void;
+  //setDisplaySelectCoinToSeeChartMessage: (value: boolean) => void;
 };
 
 const CoinTag = styled.img`
@@ -27,7 +27,7 @@ const CoinTag = styled.img`
 
 export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   coinList,
-  setDisplaySelectCoinToSeeChartMessage,
+  //setDisplaySelectCoinToSeeChartMessage,
 }) => {
   const {
     currencySymbol,
@@ -122,7 +122,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   ).length;
 
   const handleClick = (id: string) => {
-    setDisplaySelectCoinToSeeChartMessage(false);
+    //setDisplaySelectCoinToSeeChartMessage(false);
     const newSlides = [...slidesData];
 
     newSlides.forEach((coin: Coin) => {
@@ -164,7 +164,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     resetSelectedCoins();
     setSelectedCoinData([]);
     setPriceVolumeChartIsLoadingHasError(false);
-    setDisplaySelectCoinToSeeChartMessage(true);
+    //setDisplaySelectCoinToSeeChartMessage(true);
   };
 
   return (

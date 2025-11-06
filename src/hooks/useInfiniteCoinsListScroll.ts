@@ -16,9 +16,9 @@ export const useInfiniteCoinsListScroll = () => {
       showTopFifty || !queryParams.show_top_fifty
         ? "market_cap_desc"
         : "market_cap_asc";
-
+     console.log("get Coins List ran")
     const response = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${displayCurrency}&order=${order}&per_page=50&page=${pageParam}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${displayCurrency}&order=${order}&per_page=25&page=${pageParam}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     return response.data;
   };
