@@ -16,6 +16,7 @@ import { useShowTopFifty } from "../hooks/showTopFifty";
 import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
 import { CoinsListItem } from "../components/CoinsListItem";
 import { ChartsPanel } from "../components/ChartsPanel"
+import { DataPeriodSelector } from "./DataPeriodSelector";
 
 const ColorIndicator = styled.div<{ background: string }>`
   height: 10px;
@@ -23,19 +24,19 @@ const ColorIndicator = styled.div<{ background: string }>`
   background: ${(props) => props.background};
 `;
 
-type DaysSelectionData = {
-  days: string;
-  buttonText: string;
-};
+// type DaysSelectionData = {
+//   days: string;
+//   buttonText: string;
+// };
 
-const daysSelectionData: DaysSelectionData[] = [
-  { days: "2", buttonText: "1D" },
-  { days: "7", buttonText: "7D" },
-  { days: "30", buttonText: "1M" },
-  { days: "90", buttonText: "90D" },
-  { days: "180", buttonText: "180D" },
-  { days: "365", buttonText: "1Y" },
-];
+// const daysSelectionData: DaysSelectionData[] = [
+//   { days: "2", buttonText: "1D" },
+//   { days: "7", buttonText: "7D" },
+//   { days: "30", buttonText: "1M" },
+//   { days: "90", buttonText: "90D" },
+//   { days: "180", buttonText: "180D" },
+//   { days: "365", buttonText: "1Y" },
+// ];
 
 type Coin = {
   id: string;
@@ -423,9 +424,13 @@ function Coins() {
     flattenedData,
   ]);
 
-  useEffect(() => {
-    handleSearchParams("days", numOfDays);
-  }, [numOfDays]);
+  // useEffect(() => {
+  //   handleSearchParams("days", numOfDays);
+  // }, [numOfDays]);
+
+  // useEffect(() => {
+  //   handleSearchParams("days", "7");
+  // }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -519,6 +524,8 @@ function Coins() {
           // }
         />
       </div>
+      <ChartsPanel />
+      <DataPeriodSelector />
       {/* {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
         <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
           Please select a coin to view chart
@@ -584,7 +591,7 @@ function Coins() {
             ))}
         </div>
       )} */}
-      <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
+      {/* <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         {daysSelectionData.map((item) => (
           <DaysButton
             key={item.days}
@@ -592,7 +599,7 @@ function Coins() {
             buttonText={item.buttonText}
           />
         ))}
-      </div>
+      </div> */}
       <div>
         <div className="flex justify-center my-6">
           <div

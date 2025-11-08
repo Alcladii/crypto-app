@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, memo } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
@@ -54,26 +54,37 @@ type CoinsListItemProps = {
 
 
 export const CoinsListItem:React.FC<CoinsListItemProps>= ({
+//export const CoinsListItem = memo(function CoinsListItem({
   singleCoin,
   innerRef,
   index,
   color,
   selectedTimePeriod
-}) => {
-  const {
-    convertToBillion,
-    currencySymbol,
-    setRedirectedFromPortfolioPage,
-  } = useContext(CryptoContext) as CryptoContextProps;
+}: CoinsListItemProps) => {
+  // const {
+  //   convertToBillion,
+  //   currencySymbol,
+  //   setRedirectedFromPortfolioPage,
+  // } = useContext(CryptoContext) as CryptoContextProps;
+
+  const convertToBillion = (number: number): string => {
+    return (number / 1000000000).toFixed(2);
+  };
+  
+  const currencySymbol = "$"
+  console.log("item re-rendered")
 
   const navigate = useNavigate();
 
   const handleClick = (item: Coin) => {
     navigate(`/coin-page/${item.id}`);
-    setRedirectedFromPortfolioPage(false);
+    //setRedirectedFromPortfolioPage(false);
   };
 
   return (
+    // <div>
+    //   <div className="text-yellow-300">Coin Item</div>
+    // </div>
     <div
       key={singleCoin.id}
       className="flex items-center h-20 my-2.5 w-full bg-button-unselected-search-bar-background rounded-md bg-skin-coin-list-background-color"
@@ -216,4 +227,5 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
       </div>
     </div>
   );
-};
+//});
+}
