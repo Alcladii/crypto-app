@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import "../App.css";
-import LineChart from "./LineChart";
-import BarChart from "./BarChart";
+//import LineChart from "./LineChart";
+//import BarChart from "./BarChart";
 import { SlickCarousel } from "./SlickCarousel";
 import { DaysButton } from "./DaysButton";
 import { UpAndDownPercentagePeriodSelector } from "./UpAndDownPercentagePeriodSelector";
@@ -15,6 +15,8 @@ import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
 import { useShowTopFifty } from "../hooks/showTopFifty";
 import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
 import { CoinsListItem } from "../components/CoinsListItem";
+import { ChartsPanel } from "../components/ChartsPanel"
+import { DataPeriodSelector } from "./DataPeriodSelector";
 
 const ColorIndicator = styled.div<{ background: string }>`
   height: 10px;
@@ -22,19 +24,19 @@ const ColorIndicator = styled.div<{ background: string }>`
   background: ${(props) => props.background};
 `;
 
-type DaysSelectionData = {
-  days: string;
-  buttonText: string;
-};
+// type DaysSelectionData = {
+//   days: string;
+//   buttonText: string;
+// };
 
-const daysSelectionData: DaysSelectionData[] = [
-  { days: "2", buttonText: "1D" },
-  { days: "7", buttonText: "7D" },
-  { days: "30", buttonText: "1M" },
-  { days: "90", buttonText: "90D" },
-  { days: "180", buttonText: "180D" },
-  { days: "365", buttonText: "1Y" },
-];
+// const daysSelectionData: DaysSelectionData[] = [
+//   { days: "2", buttonText: "1D" },
+//   { days: "7", buttonText: "7D" },
+//   { days: "30", buttonText: "1M" },
+//   { days: "90", buttonText: "90D" },
+//   { days: "180", buttonText: "180D" },
+//   { days: "365", buttonText: "1Y" },
+// ];
 
 type Coin = {
   id: string;
@@ -103,20 +105,35 @@ function Coins() {
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
   const showTopFifty = useShowTopFifty();
-  const { data, status, error, fetchNextPage, hasNextPage } =
-    useInfiniteCoinsListScroll();
+  const {
+    data,
+    status,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteCoinsListScroll();
 
   const flattenedData = useMemo(() => {
     return data?.pages ? data.pages.flat() : [];
   }, [data]);
 
-  const { ref, inView } = useInView({ rootMargin: "300px" });
+  const { ref, inView } = useInView({rootMargin: "1250px"});
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage]);
+
+  console.log(
+    "inview",
+    inView,
+    "hasNextPage",
+    hasNextPage,
+    "isFetchingNextPage",
+    isFetchingNextPage
+  );
 
   const setToDsc = () => {
     setCoinListDsc(true);
@@ -138,7 +155,7 @@ function Coins() {
     }
   }, []);
 
-  const colors = ["#7878FA", "#D878FA", "#01F1E3"];
+  //const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {
@@ -407,9 +424,13 @@ function Coins() {
     flattenedData,
   ]);
 
-  useEffect(() => {
-    handleSearchParams("days", numOfDays);
-  }, [numOfDays]);
+  // useEffect(() => {
+  //   handleSearchParams("days", numOfDays);
+  // }, [numOfDays]);
+
+  // useEffect(() => {
+  //   handleSearchParams("days", "7");
+  // }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -424,11 +445,11 @@ function Coins() {
     }
   }, []);
 
-  const priceVolumeList = useCoinDataQuery(
-    selectedCoinIds,
-    displayCurrency,
-    numOfDaysFromUrl
-  ).map((r) => r.data);
+  // const priceVolumeList = useCoinDataQuery(
+  //   selectedCoinIds,
+  //   displayCurrency,
+  //   numOfDaysFromUrl
+  // ).map((r) => r.data);
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -449,6 +470,46 @@ function Coins() {
     "#5082CF",
   ];
 
+  // return (
+  //   <div>
+  //     {/* {data?.pages.map((items, pageIndex) => (
+        
+  //       <div key={pageIndex}> */}
+  //         {flattenedData.map((coin: any, index: number) => {
+  //           //const globalIndex = pageIndex * 50 + index;
+  //           if (flattenedData.length == index + 1) {
+  //             return (
+  //               // <div ref={ref} className="text-base text-white" key={coin.id} >
+  //               //   {globalIndex +1}&nbsp;{coin.name}
+  //               // </div>
+  //                <CoinsListItem
+  //                 key={index}
+  //                 singleCoin={coin}
+  //                 innerRef={ref}
+  //                 index={index}
+  //                 color={progressBarColors[index % progressBarColors.length]}
+  //                 selectedTimePeriod={selectedTimePeriod}
+  //                />
+  //             );
+  //           }
+  //           return (
+  //             // <div className="text-base text-white" key={coin.id}>
+  //             //   {globalIndex + 1}&nbsp;{coin.name}
+  //             // </div>
+  //              <CoinsListItem
+  //               key={index}
+  //               singleCoin={coin}
+  //               index={index}
+  //               color={progressBarColors[index % progressBarColors.length]}
+  //               selectedTimePeriod={selectedTimePeriod}
+  //             />
+  //           );
+  //         })}
+  //       {/* </div> */}
+  //     {/* ))} */}
+  //   </div>
+  // );
+
   return (
     <div
       className={`${
@@ -458,12 +519,14 @@ function Coins() {
       <div className="my-5">
         <SlickCarousel
           coinList={displayCoinList}
-          setDisplaySelectCoinToSeeChartMessage={
-            setDisplaySelectCoinToSeeChartMessage
-          }
+          // setDisplaySelectCoinToSeeChartMessage={
+          //   setDisplaySelectCoinToSeeChartMessage
+          // }
         />
       </div>
-      {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
+      <ChartsPanel />
+      <DataPeriodSelector />
+      {/* {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
         <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
           Please select a coin to view chart
         </div>
@@ -527,8 +590,8 @@ function Coins() {
               </div>
             ))}
         </div>
-      )}
-      <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
+      )} */}
+      {/* <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
         {daysSelectionData.map((item) => (
           <DaysButton
             key={item.days}
@@ -536,7 +599,7 @@ function Coins() {
             buttonText={item.buttonText}
           />
         ))}
-      </div>
+      </div> */}
       <div>
         <div className="flex justify-center my-6">
           <div
