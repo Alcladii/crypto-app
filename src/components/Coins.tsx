@@ -17,6 +17,7 @@ import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll"
 import { CoinsListItem } from "../components/CoinsListItem";
 import { ChartsPanel } from "../components/ChartsPanel"
 import { DataPeriodSelector } from "./DataPeriodSelector";
+import { RenderTest } from "./RenderTest";
 
 const ColorIndicator = styled.div<{ background: string }>`
   height: 10px;
@@ -730,7 +731,7 @@ function Coins() {
               Last 7d
             </div>
           </div>
-          {displayCoinList.map((coin: any, index: number) => {
+          {/* {displayCoinList.map((coin: any, index: number) => {
             const isLast = index === displayCoinList.length - 1;
             if (isLast) {
               return (
@@ -753,7 +754,7 @@ function Coins() {
                 selectedTimePeriod={selectedTimePeriod}
               />
             );
-          })}
+          })} */}
         </div>
         <div className="flex justify-center z-99">
           <button
@@ -769,14 +770,10 @@ function Coins() {
             Go Back to Top
           </button>
         </div>
-
-        {error && (
-          <div className="text-white w-full text-center">
-            {error.message} API calls ran out, retry in a minute
-          </div>
-        )}
       </div>
+      <RenderTest />
     </div>
+    
   );
 }
 

@@ -9,6 +9,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { CryptoProvider } from "./contexts/cryptoContext";
 import { Layout } from "./style/Layout";
+import {App2} from "./App2.tsx"
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <CryptoProvider>
           <Layout>
             <App />
+            <App2 />
           </Layout>
         </CryptoProvider>
         <ReactQueryDevtools initialIsOpen={true} />
