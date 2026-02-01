@@ -126,15 +126,6 @@ function Coins() {
     }
   }, [inView, hasNextPage]);
 
-  console.log(
-    "inview",
-    inView,
-    "hasNextPage",
-    hasNextPage,
-    "isFetchingNextPage",
-    isFetchingNextPage
-  );
-
   const setToDsc = () => {
     setCoinListDsc(true);
     changeSearchParams("show_top_fifty", "true");
@@ -154,8 +145,6 @@ function Coins() {
       getCurrencyList();
     }
   }, []);
-
-  //const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {

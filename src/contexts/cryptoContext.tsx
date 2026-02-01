@@ -30,7 +30,7 @@ const currenciesTyped = currencies as Currencies;
 export type CryptoContextProps = {
   useLocalState: <T>(
     key: string,
-    initialValue: T
+    initialValue: T,
   ) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;
   retainTwoDigits: (number: number) => number;
@@ -38,7 +38,7 @@ export type CryptoContextProps = {
     item: string,
     setSingleCoin: React.Dispatch<React.SetStateAction<any>>,
     setSingleCoinIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>
+    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>,
   ) => Promise<void>;
   singleCoin: any;
   setSingleCoin: Dispatch<SetStateAction<any>>;
@@ -59,7 +59,7 @@ export type CryptoContextProps = {
   getCoinPriceVolume: (
     coinId: string,
     currency: string,
-    numOfDays: string
+    numOfDays: string,
   ) => Promise<any>;
   slidesData: any[];
   setSlidesData: Dispatch<SetStateAction<any[]>>;
@@ -103,20 +103,20 @@ interface CryptoProviderProps {
 }
 
 export const CryptoContext = createContext<CryptoContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   const useLocalState = <T,>(
     key: string,
-    initialValue: T
+    initialValue: T,
   ): [T, Dispatch<SetStateAction<T>>] => {
     const storedValue = window.localStorage.getItem(key);
     const item = storedValue ? JSON.parse(storedValue) : initialValue;
     const [state, setState] = useState<T>(item);
 
     const updateState: Dispatch<SetStateAction<T>> = (
-      value: SetStateAction<T>
+      value: SetStateAction<T>,
     ) => {
       const valueToStore = value instanceof Function ? value(state) : value;
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -128,11 +128,11 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
 
   const [displayCurrency, setDisplayCurrency] = useLocalState<string>(
     "currentDisplayCurrency",
-    "usd"
+    "usd",
   );
   const [currencyList, setCurrencyList] = useLocalState<string[]>(
     "currencyList",
-    []
+    [],
   );
   const [currencyListIsLoading, setCurrencyListIsLoading] =
     useState<boolean>(false);
@@ -180,13 +180,13 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     item: string,
     setSingleCoin: React.Dispatch<React.SetStateAction<any>>,
     setSingleCoinIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>
+    setSingleCoinLoadingHasError: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     setSingleCoinIsLoading(true);
     setSingleCoinLoadingHasError(false);
     try {
       const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`,
       );
       setSingleCoinIsLoading(false);
       setSingleCoin(singleCoinData.data);
@@ -201,7 +201,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     setCurrencyListIsLoading(true);
     try {
       const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`,
       );
       let fetchCurrencyList: string[];
       fetchCurrencyList = Object.keys(singleCoinData.data.market_data.ath);
@@ -215,66 +215,29 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
 
   const currencySymbol = currenciesTyped[displayCurrency.toUpperCase()]?.symbol;
 
-  // const getCoinPriceVolume = async (
-  //   coinId: string,
-  //   currency: string,
-  //   numOfDays: string
-  // ) => {
-  //   console.log("get Coin Price Volume called")
-  //   setPriceVolumeChartIsLoadingHasError(false);
-  //   setPriceVolumeChartIsLoading(true);
-  //   try {
-  //     let apiUrl: string;
-  //     if (numOfDays === "2") {
-  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
-  //     } else {
-  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
-  //     }
-  //     const { data } = await axios(apiUrl);
-  //     setPriceVolumeChartIsLoading(false);
-  //     return data;
-  //   } catch (err) {
-  //     setPriceVolumeChartIsLoadingHasError(true);
-  //     setPriceVolumeChartIsLoading(false);
-  //   }
-  // };
-
-  // const getCoinPriceVolume = async (
-  //   coinId: string,
-  //   currency: string,
-  //   numOfDays: string
-  // ) => {
-  //   const apiUrl =
-  //     numOfDays === "2"
-  //       ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
-  //       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
-
-  //   const { data } = await axios.get(apiUrl);
-  //   return data; 
-  // };
-
   const getCoinPriceVolume = async (
-  coinId: string,
-  currency: string,
-  numOfDays: string
-) => {
-  const /*{ data }*/res = await axios.get("http://localhost:3001/api/coingecko/market-chart", {
-    params: {
-      coinId,
-      currency,
-      days: numOfDays,
-    },
-  });
+    coinId: string,
+    currency: string,
+    numOfDays: string,
+  ) => {
+    const /*{ data }*/ res = await axios.get(
+        "http://localhost:3001/api/coingecko/market-chart",
+        {
+          params: {
+            coinId,
+            currency,
+            days: numOfDays,
+          },
+        },
+      );
 
-  if (!res.data.ok) {
-  // you can throw to let React Query set isError=true
-  throw new Error(res.data.error.message);
-}
+    if (!res.data.ok) {
+      // you can throw to let React Query set isError=true
+      throw new Error(res.data.error.message);
+    }
 
-return res.data.data;
-
-  //return data;
-};
+    return res.data.data;
+  };
 
   const location = useLocation();
   const navigateURL = useNavigate();
