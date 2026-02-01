@@ -156,7 +156,7 @@ app.get("/api/coingecko/market-chart", async (req, res) => {
       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}&interval=daily`;
 
     const response = await fetch(url);
-    
+
     if (response.status === 429) {
       const retryAfter = response.headers.get("retry-after");
       return sendErr(res, 429, "Rate limited by CoinGecko", retryAfter);
@@ -171,12 +171,6 @@ app.get("/api/coingecko/market-chart", async (req, res) => {
   } catch {
     return sendErr(res, 500, "CoinGecko proxy failed");
   }
-  //   const data = await response.json();
-
-  //   res.json(data);
-  // } catch (err) {
-  //   res.status(500).json({ error: "CoinGecko proxy failed" });
-  // }
 });
 
 // app.get("/api/coingecko/markets", async (req, res) => {

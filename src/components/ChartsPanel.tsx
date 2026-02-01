@@ -16,7 +16,6 @@ export const ChartsPanel = () => {
     convertToBillion,
     displayCurrency,
     currencySymbol,
-    //priceVolumeChartIsLoadingHasError,
     selectedCoinData,
     handleSearchParams,
     queryParams,
@@ -25,16 +24,6 @@ export const ChartsPanel = () => {
     selectedCoinIds,
     numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
-
-  //use isLoading/isError/isSuccess flags to decide what to render, and only pass successful data to the charts.
-
-  // const priceVolumeList = useCoinDataQuery(
-  //   selectedCoinIds,
-  //   displayCurrency,
-  //   numOfDaysFromUrl
-  // ).map((r) => r.data);
-
-  // console.log("pricevolumeList", priceVolumeList)
 
   const results = useCoinDataQuery(
     selectedCoinIds,
@@ -63,18 +52,9 @@ export const ChartsPanel = () => {
 
   return (
     <>
-      {/* {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
-        <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-          Please select a coin to view chart
-        </div>
-      ) : ( */}
       <div>
         <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7 text-sm xl:text-base">
           <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
-            {/* {priceVolumeList.length !== 0 &&
-                priceVolumeList.every(
-                  (item) => item !== undefined && item !== null
-                ) && <LineChart priceVolumeList={priceVolumeList} />} */}
             {isLoading ? (
               <div className="text-skin-prompt-text-color">Loading chart…</div>
             ) : isError ? (
@@ -105,10 +85,6 @@ export const ChartsPanel = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-            {/* {priceVolumeList.length !== 0 &&
-              priceVolumeList.every(
-                (item) => item !== undefined && item !== null,
-              ) && <BarChart priceVolumeList={priceVolumeList} />} */}
               {isLoading ? (
               <div className="text-skin-prompt-text-color">Loading chart…</div>
             ) : isError ? (
@@ -139,17 +115,7 @@ export const ChartsPanel = () => {
             </div>
           </div>
         </div>
-
-        {/* {(priceVolumeList.length === 0 &&
-            priceVolumeChartIsLoadingHasError) ||
-            (priceVolumeChartIsLoadingHasError && (
-              <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-                Error fetching Price and Volume Chart
-              </div>
-            ))} */}
       </div>
-      {/*} )
-       } */}
     </>
   );
 };
