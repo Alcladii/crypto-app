@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { useShowTopFifty } from "./showTopFifty";
 
+const host = import.meta.env.VITE_API_URL;
+
 export const useInfiniteCoinsListScroll = () => {
   const showTopFifty = useShowTopFifty();
   const { queryParams, displayCurrency } = useContext(
@@ -29,7 +31,7 @@ export const useInfiniteCoinsListScroll = () => {
         : "market_cap_asc";
 
     const response = await axios.get(
-      "http://localhost:3001/api/coingecko/markets",
+      `${host}/api/coingecko/markets`,
       {
         params: {
           vs_currency: displayCurrency,
