@@ -238,19 +238,43 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //     setPriceVolumeChartIsLoading(false);
   //   }
   // };
-  const getCoinPriceVolume = async (
-    coinId: string,
-    currency: string,
-    numOfDays: string
-  ) => {
-    const apiUrl =
-      numOfDays === "2"
-        ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
-        : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
 
-    const { data } = await axios.get(apiUrl);
-    return data; 
-  };
+  // const getCoinPriceVolume = async (
+  //   coinId: string,
+  //   currency: string,
+  //   numOfDays: string
+  // ) => {
+  //   const apiUrl =
+  //     numOfDays === "2"
+  //       ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
+  //       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
+
+  //   const { data } = await axios.get(apiUrl);
+  //   return data; 
+  // };
+
+  const getCoinPriceVolume = async (
+  coinId: string,
+  currency: string,
+  numOfDays: string
+) => {
+  const /*{ data }*/res = await axios.get("http://localhost:3001/api/coingecko/market-chart", {
+    params: {
+      coinId,
+      currency,
+      days: numOfDays,
+    },
+  });
+
+  if (!res.data.ok) {
+  // you can throw to let React Query set isError=true
+  throw new Error(res.data.error.message);
+}
+
+return res.data.data;
+
+  //return data;
+};
 
   const location = useLocation();
   const navigateURL = useNavigate();
