@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef, ChangeEvent } from "react";
 import axios from "axios";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 import { MagnifyGlass } from "./UI/Svg";

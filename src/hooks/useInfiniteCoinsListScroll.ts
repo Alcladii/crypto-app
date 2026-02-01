@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useContext } from "react";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { useShowTopFifty } from "./showTopFifty";
 
 export const useInfiniteCoinsListScroll = () => {
@@ -19,12 +19,14 @@ export const useInfiniteCoinsListScroll = () => {
      console.log("get Coins List ran")
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${displayCurrency}&order=${order}&per_page=25&page=${pageParam}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      // `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=${pageParam}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     return response.data;
   };
 
   const query = useInfiniteQuery({
-    queryKey: ["coins", displayCurrency, showTopFifty],
+    //queryKey: ["coins", displayCurrency, showTopFifty],
+    queryKey: ["coins", showTopFifty],
     queryFn: getCoinsList,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -33,6 +35,6 @@ export const useInfiniteCoinsListScroll = () => {
     },
     staleTime: 60000
   });
-
+  console.log("query", query)
   return query;
 };

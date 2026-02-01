@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { DollarSign, OpenDropDownArrowCurrencySelector } from "../components/UI/Svg"
 
 export const CurrencySelector = () => {

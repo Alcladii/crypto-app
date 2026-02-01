@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import queryString from "query-string";
 import currencies from "../mocks/currencies.json";
+import { useLocalState } from "../hooks/useLocalState";
 
 type Currency = {
   symbol: string;
@@ -28,10 +29,10 @@ type Currencies = {
 const currenciesTyped = currencies as Currencies;
 
 export type CryptoContextProps = {
-  useLocalState: <T>(
-    key: string,
-    initialValue: T
-  ) => [T, Dispatch<SetStateAction<T>>];
+  // useLocalState: <T>(
+  //   key: string,
+  //   initialValue: T
+  // ) => [T, Dispatch<SetStateAction<T>>];
   convertToBillion: (number: number) => string;
   retainTwoDigits: (number: number) => number;
   getSingleCoinData: (
@@ -43,28 +44,28 @@ export type CryptoContextProps = {
   singleCoin: any;
   setSingleCoin: Dispatch<SetStateAction<any>>;
   displayCurrency: string;
-  getCurrencyList: () => Promise<void>;
+  //getCurrencyList: () => Promise<void>;
   setDisplayCurrency: Dispatch<SetStateAction<string>>;
   currencyList: string[];
-  setCurrencyList: Dispatch<SetStateAction<string[]>>;
+  //setCurrencyList: Dispatch<SetStateAction<string[]>>;
   currencySymbol?: string;
   setNumOfDays: Dispatch<SetStateAction<string>>;
-  priceVolumeChartIsLoading: boolean;
-  priceVolumeChartIsLoadingHasError: boolean;
+  // priceVolumeChartIsLoading: boolean;
+  // priceVolumeChartIsLoadingHasError: boolean;
   setPriceVolumeList: Dispatch<SetStateAction<any[]>>;
   priceVolumeList: any[];
   coinsInChart: any[];
   setCoinsInChart: Dispatch<SetStateAction<any[]>>;
   numOfDays: string;
-  getCoinPriceVolume: (
-    coinId: string,
-    currency: string,
-    numOfDays: string
-  ) => Promise<any>;
-  slidesData: any[];
-  setSlidesData: Dispatch<SetStateAction<any[]>>;
-  selectedCoinData: any[];
-  setSelectedCoinData: Dispatch<SetStateAction<any[]>>;
+  // getCoinPriceVolume: (
+  //   coinId: string,
+  //   currency: string,
+  //   numOfDays: string
+  // ) => Promise<any>;
+  // slidesData: any[];
+  //setSlidesData: Dispatch<SetStateAction<any[]>>;
+  //selectedCoinData: any[];
+  //setSelectedCoinData: Dispatch<SetStateAction<any[]>>;
   coinList: any[];
   setCoinList: Dispatch<SetStateAction<any[]>>;
   portfolioList: any[];
@@ -82,7 +83,7 @@ export type CryptoContextProps = {
   location: ReturnType<typeof useLocation>;
   queryParams: queryString.ParsedQuery<string>;
   navigateURL: ReturnType<typeof useNavigate>;
-  setPriceVolumeChartIsLoadingHasError: Dispatch<SetStateAction<boolean>>;
+  //setPriceVolumeChartIsLoadingHasError: Dispatch<SetStateAction<boolean>>;
   currencyConverterDays: string;
   setCurrencyConverterDays: Dispatch<SetStateAction<string>>;
   editAsset: boolean;
@@ -96,7 +97,7 @@ export type CryptoContextProps = {
   setRedirectedFromPortfolioPage: Dispatch<SetStateAction<boolean>>;
   currencyListIsLoading: boolean;
   currencyLoadingHasError: boolean;
-  selectedCoinIds: string[];
+  //selectedCoinIds: string[];
 };
 interface CryptoProviderProps {
   children: ReactNode;
@@ -107,48 +108,33 @@ export const CryptoContext = createContext<CryptoContextProps | undefined>(
 );
 
 export const CryptoProvider = ({ children }: CryptoProviderProps) => {
-  const useLocalState = <T,>(
-    key: string,
-    initialValue: T
-  ): [T, Dispatch<SetStateAction<T>>] => {
-    const storedValue = window.localStorage.getItem(key);
-    const item = storedValue ? JSON.parse(storedValue) : initialValue;
-    const [state, setState] = useState<T>(item);
-
-    const updateState: Dispatch<SetStateAction<T>> = (
-      value: SetStateAction<T>
-    ) => {
-      const valueToStore = value instanceof Function ? value(state) : value;
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      setState(valueToStore);
-    };
-
-    return [state, updateState];
-  };
+  
 
   const [displayCurrency, setDisplayCurrency] = useLocalState<string>(
     "currentDisplayCurrency",
     "usd"
   );
-  const [currencyList, setCurrencyList] = useLocalState<string[]>(
-    "currencyList",
-    []
-  );
+  // const [currencyList, setCurrencyList] = useLocalState<string[]>(
+  //   "currencyList",
+  //   []
+  // );
+
+  const currencyList = ["usd", "gbp", "eur", "jpy"]
   const [currencyListIsLoading, setCurrencyListIsLoading] =
     useState<boolean>(false);
   const [currencyLoadingHasError, setCurrencyLoadingHasError] =
     useState<boolean>(false);
   const [priceVolumeChartIsLoading, setPriceVolumeChartIsLoading] =
     useState<boolean>(false);
-  const [
-    priceVolumeChartIsLoadingHasError,
-    setPriceVolumeChartIsLoadingHasError,
-  ] = useState<boolean>(false);
+  // const [
+  //   priceVolumeChartIsLoadingHasError,
+  //   setPriceVolumeChartIsLoadingHasError,
+  // ] = useState<boolean>(false);
   const [priceVolumeList, setPriceVolumeList] = useState<any[]>([]);
   const [numOfDays, setNumOfDays] = useLocalState<string>("numOfDays", "7");
   const [coinsInChart, setCoinsInChart] = useState<any[]>([]);
-  const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
-  const [selectedCoinData, setSelectedCoinData] = useState<any[]>([]);
+  //const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
+  //const [selectedCoinData, setSelectedCoinData] = useState<any[]>([]);
   const [singleCoin, setSingleCoin] = useLocalState<any>("singleCoin", null);
   const [coinList, setCoinList] = useLocalState<any[]>("coinList", []);
   const [portfolioList, setPortfolioList] = useState<any[]>([]);
@@ -196,22 +182,22 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     }
   };
 
-  const getCurrencyList = async () => {
-    setCurrencyLoadingHasError(false);
-    setCurrencyListIsLoading(true);
-    try {
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
-      let fetchCurrencyList: string[];
-      fetchCurrencyList = Object.keys(singleCoinData.data.market_data.ath);
-      setCurrencyList(fetchCurrencyList);
-      setCurrencyListIsLoading(false);
-    } catch (err) {
-      setCurrencyLoadingHasError(true);
-      setCurrencyListIsLoading(false);
-    }
-  };
+  // const getCurrencyList = async () => {
+  //   setCurrencyLoadingHasError(false);
+  //   setCurrencyListIsLoading(true);
+  //   try {
+  //     const singleCoinData = await axios(
+  //       `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+  //     );
+  //     let fetchCurrencyList: string[];
+  //     fetchCurrencyList = Object.keys(singleCoinData.data.market_data.ath);
+  //     setCurrencyList(fetchCurrencyList);
+  //     setCurrencyListIsLoading(false);
+  //   } catch (err) {
+  //     setCurrencyLoadingHasError(true);
+  //     setCurrencyListIsLoading(false);
+  //   }
+  // };
 
   const currencySymbol = currenciesTyped[displayCurrency.toUpperCase()]?.symbol;
 
@@ -238,19 +224,19 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
   //     setPriceVolumeChartIsLoading(false);
   //   }
   // };
-  const getCoinPriceVolume = async (
-    coinId: string,
-    currency: string,
-    numOfDays: string
-  ) => {
-    const apiUrl =
-      numOfDays === "2"
-        ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
-        : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
+  // const getCoinPriceVolume = async (
+  //   coinId: string,
+  //   currency: string,
+  //   numOfDays: string
+  // ) => {
+  //   const apiUrl =
+  //     numOfDays === "2"
+  //       ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
+  //       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
 
-    const { data } = await axios.get(apiUrl);
-    return data; 
-  };
+  //   const { data } = await axios.get(apiUrl);
+  //   return data; 
+  // };
 
   const location = useLocation();
   const navigateURL = useNavigate();
@@ -278,38 +264,38 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     navigateURL(`?${queryString.stringify(updatedParams)}`);
   };
 
-  const selectedCoinIds = useMemo(() => {
-    return selectedCoinData.map((coin) => coin.id);
-  }, [selectedCoinData.map((coin) => coin.id).join(",")]);
+  // const selectedCoinIds = useMemo(() => {
+  //   return selectedCoinData.map((coin) => coin.id);
+  // }, [selectedCoinData.map((coin) => coin.id).join(",")]);
 
   return (
     <CryptoContext.Provider
       value={{
-        useLocalState,
+        //useLocalState,
         convertToBillion,
         retainTwoDigits,
         getSingleCoinData,
         singleCoin,
         setSingleCoin,
         displayCurrency,
-        getCurrencyList,
+        //getCurrencyList,
         setDisplayCurrency,
         currencyList,
-        setCurrencyList,
+        //setCurrencyList,
         currencySymbol,
         setNumOfDays,
-        priceVolumeChartIsLoading,
-        priceVolumeChartIsLoadingHasError,
+        // priceVolumeChartIsLoading,
+        // priceVolumeChartIsLoadingHasError,
         setPriceVolumeList,
         priceVolumeList,
         coinsInChart,
         setCoinsInChart,
         numOfDays,
-        getCoinPriceVolume,
-        slidesData,
-        setSlidesData,
-        selectedCoinData,
-        setSelectedCoinData,
+        //getCoinPriceVolume,
+        // slidesData,
+        // setSlidesData,
+        //selectedCoinData,
+        //setSelectedCoinData,
         coinList,
         setCoinList,
         portfolioList,
@@ -327,7 +313,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         location,
         queryParams,
         navigateURL,
-        setPriceVolumeChartIsLoadingHasError,
+        //ahartIsLoadingHasError,
         currencyConverterDays,
         setCurrencyConverterDays,
         editAsset,
@@ -341,7 +327,7 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
         setRedirectedFromPortfolioPage,
         currencyListIsLoading,
         currencyLoadingHasError,
-        selectedCoinIds,
+        //selectedCoinIds,
       }}
     >
       {children}

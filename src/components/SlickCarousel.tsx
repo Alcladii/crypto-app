@@ -2,9 +2,16 @@ import { useContext, useEffect, useRef, useMemo } from "react";
 import { useQueries } from "@tanstack/react-query";
 import Slider from "react-slick";
 import styled from "styled-components";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { Arrow } from "./UI/Arrow";
 import { ComparisonIcon, CloseIconWithoutCircle } from "../components/UI/Svg";
+import {
+  CoinsListContext,
+  CoinsListContextProps,
+} from "../contexts/CoinsListContext";
+import { useLocalState } from "../hooks/useLocalState";
+import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
+import { CarouselChartsContext, CarouselChartsContextProps } from "../contexts/CarouselChartsContext";
 
 type Coin = {
   id: string;
@@ -17,7 +24,7 @@ type Coin = {
 };
 
 type SlickCarouselProps = {
-  coinList: Coin[];
+  //coinList: Coin[];
   //setDisplaySelectCoinToSeeChartMessage: (value: boolean) => void;
 };
 
@@ -25,30 +32,31 @@ const CoinTag = styled.img`
   width: 30px;
 `;
 
-export const SlickCarousel: React.FC<SlickCarouselProps> = ({
-  coinList,
-  //setDisplaySelectCoinToSeeChartMessage,
-}) => {
-  const {
-    currencySymbol,
-    retainTwoDigits,
-    useLocalState,
-    getCoinPriceVolume,
-    setPriceVolumeList,
-    slidesData,
-    setSlidesData,
-    selectedCoinData,
-    setSelectedCoinData,
-    displayCurrency,
-    setPriceVolumeChartIsLoadingHasError,
-    numOfDaysFromUrl,
-    darkMode,
-  } = useContext(CryptoContext) as CryptoContextProps;
-
+export const SlickCarousel: React.FC<SlickCarouselProps> = (
+  {
+    //coinList,
+    //setDisplaySelectCoinToSeeChartMessage,
+  }
+) => {
+  //console.log("carousel rendered")
+  const {setSelectedCoinData} = useContext(CarouselChartsContext) as CarouselChartsContextProps
+  const [slidesData, setSlidesData] = useLocalState<any[]>("slidesData", []);
+  // const [selectedCoinData, setSelectedCoinData] = useLocalState<any[]>(
+  //   "selectedCoinData",
+  //   []
+  // );
   const [comparisonIsOn, setComparisonIsOn] = useLocalState<boolean>(
     "comparisonModeOn",
     false
   );
+
+  //const { data } = useContext(CoinsListContext) as CoinsListContextProps;
+  const { data } = useInfiniteCoinsListScroll();
+
+  //const flattened = data?.pages.flatMap((page: any) => page) ?? [];
+  const flattened = useMemo(() => {
+    return data?.pages ? data.pages.flat() : [];
+  }, [data]);
 
   const settings = {
     dots: false,
@@ -89,7 +97,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   };
 
   const resetSelectedCoins = () => {
-    const resetSlidesData = [...slidesData];
+    const resetSlidesData = [...flattened];
     resetSlidesData.forEach((slide: Coin) => {
       slide.selected = false;
     });
@@ -101,13 +109,13 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   }, []);
 
   useEffect(() => {
-    if (coinList.length > 0) {
+    if (flattened.length > 0) {
       const coinIdsInSlidesData = slidesData.map((coin: Coin) => coin.id);
-      const coinsNotInSlidesData = coinList.filter(
-        (coin) => !coinIdsInSlidesData.includes(coin.id)
+      const coinsNotInSlidesData = flattened.filter(
+        (coin: any) => !coinIdsInSlidesData.includes(coin.id)
       );
       if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => ({
+        const coinsInSlides = flattened.map((coin: any) => ({
           ...coin,
           selected: false,
         }));
@@ -115,7 +123,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
         setSelectedCoinData([]);
       }
     }
-  }, [coinList]);
+  }, [flattened]);
 
   let numOfSelectedSlides = slidesData.filter(
     (coin: Coin) => coin.selected
@@ -163,12 +171,13 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
     setComparisonIsOn(!comparisonIsOn);
     resetSelectedCoins();
     setSelectedCoinData([]);
-    setPriceVolumeChartIsLoadingHasError(false);
+    //setPriceVolumeChartIsLoadingHasError(false);
     //setDisplaySelectCoinToSeeChartMessage(true);
   };
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"} `}>
+    // <div className={`${darkMode ? "" : "theme-light"} `}>
+    <div>
       <div className="flex justify-end items-center py-8 ">
         {comparisonIsOn ? (
           <div
@@ -221,7 +230,7 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
                     </div>
                     <div className="font-space-grotesk text-sm flex flex-col sm:flex-row items-end sm:items-center">
                       <span className="text-skin-carousel-current-price-text-color">
-                        {currencySymbol}
+                        {/* {currencySymbol} */}
                         {coin.current_price}
                       </span>
                       <div className="flex items-center">
@@ -237,16 +246,19 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
                               : "text-go-down"
                           }`}
                         >
-                          {coin.price_change_percentage_24h_in_currency &&
-                            retainTwoDigits(
+                          {
+                            coin.price_change_percentage_24h_in_currency &&
+                              // retainTwoDigits(
                               coin.price_change_percentage_24h_in_currency
-                            )}
+                            //)
+                          }
                           %
                         </span>
                       </div>
                     </div>
                   </div>
                 </div>
+                //
               </div>
             ))}
           </Slider>

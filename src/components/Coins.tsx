@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef, useMemo } from "react";
 import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import "../App.css";
 //import LineChart from "./LineChart";
 //import BarChart from "./BarChart";
@@ -15,9 +15,13 @@ import { useCoinDataQuery } from "../hooks/useCoinDataQuery";
 import { useShowTopFifty } from "../hooks/showTopFifty";
 import { useInfiniteCoinsListScroll } from "../hooks/useInfiniteCoinsListScroll";
 import { CoinsListItem } from "../components/CoinsListItem";
-import { ChartsPanel } from "../components/ChartsPanel"
+import { ChartsPanel } from "../components/ChartsPanel";
 import { DataPeriodSelector } from "./DataPeriodSelector";
 import { RenderTest } from "./RenderTest";
+//import { CoinsProvider } from "../contexts/CoinsListContext";
+import { CoinsList } from "./CoinsList";
+import { CarouselChartsProvider } from "../contexts/CarouselChartsContext";
+import { useLocalState } from "../hooks/useLocalState";
 
 const ColorIndicator = styled.div<{ background: string }>`
   height: 10px;
@@ -57,21 +61,21 @@ type Coin = {
 
 function Coins() {
   const {
-    useLocalState,
+    //useLocalState,
     convertToBillion,
     displayCurrency,
     currencySymbol,
-    getCurrencyList,
+    //getCurrencyList,
     currencyList,
     numOfDays,
-    priceVolumeChartIsLoading,
-    priceVolumeChartIsLoadingHasError,
-    selectedCoinData,
+    // priceVolumeChartIsLoading,
+    // priceVolumeChartIsLoadingHasError,
+    //selectedCoinData,
     handleSearchParams,
     queryParams,
     changeSearchParams,
     darkMode,
-    selectedCoinIds,
+    //selectedCoinIds,
     numOfDaysFromUrl,
   } = useContext(CryptoContext) as CryptoContextProps;
 
@@ -106,35 +110,26 @@ function Coins() {
   const [isSticky, setIsticky] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("1h");
   const showTopFifty = useShowTopFifty();
-  const {
-    data,
-    status,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteCoinsListScroll();
+  // const {
+  //   data,
+  //   status,
+  //   error,
+  //   fetchNextPage,
+  //   hasNextPage,
+  //   isFetchingNextPage,
+  // } = useInfiniteCoinsListScroll();
 
-  const flattenedData = useMemo(() => {
-    return data?.pages ? data.pages.flat() : [];
-  }, [data]);
+  // const flattenedData = useMemo(() => {
+  //   return data?.pages ? data.pages.flat() : [];
+  // }, [data]);
 
-  const { ref, inView } = useInView({rootMargin: "1250px"});
+  // const { ref, inView } = useInView({ rootMargin: "1250px" });
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage]);
-
-  console.log(
-    "inview",
-    inView,
-    "hasNextPage",
-    hasNextPage,
-    "isFetchingNextPage",
-    isFetchingNextPage
-  );
+  // useEffect(() => {
+  //   if (inView && hasNextPage && !isFetchingNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView, hasNextPage]);
 
   const setToDsc = () => {
     setCoinListDsc(true);
@@ -150,280 +145,280 @@ function Coins() {
     handleSearchParams("show_top_fifty", "true");
   }, [coinListDsc]);
 
-  useEffect(() => {
-    if (currencyList.length === 0) {
-      getCurrencyList();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (currencyList.length === 0) {
+  //     getCurrencyList();
+  //   }
+  // }, []);
 
   //const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
-  const handleSortOrderByName = () => {
-    if (sortOrderByName === "default") {
-      setSortOrderByName("ascent");
-      changeSearchParams("sort_order_by_name", "ascent");
-    } else if (sortOrderByName === "ascent") {
-      setSortOrderByName("descent");
-      changeSearchParams("sort_order_by_name", "descent");
-    } else {
-      setSortOrderByName("default");
-      changeSearchParams("sort_order_by_name", "default");
-    }
-  };
+  // const handleSortOrderByName = () => {
+  //   if (sortOrderByName === "default") {
+  //     setSortOrderByName("ascent");
+  //     changeSearchParams("sort_order_by_name", "ascent");
+  //   } else if (sortOrderByName === "ascent") {
+  //     setSortOrderByName("descent");
+  //     changeSearchParams("sort_order_by_name", "descent");
+  //   } else {
+  //     setSortOrderByName("default");
+  //     changeSearchParams("sort_order_by_name", "default");
+  //   }
+  // };
 
-  const handleSortOrderByPrice = () => {
-    if (sortOrderByPrice === "default") {
-      setSortOrderByPrice("ascent");
-      changeSearchParams("sort_order_by_price", "ascent");
-    } else if (sortOrderByPrice === "ascent") {
-      setSortOrderByPrice("descent");
-      changeSearchParams("sort_order_by_price", "descent");
-    } else {
-      setSortOrderByPrice("default");
-      changeSearchParams("sort_order_by_price", "default");
-    }
-  };
+  // const handleSortOrderByPrice = () => {
+  //   if (sortOrderByPrice === "default") {
+  //     setSortOrderByPrice("ascent");
+  //     changeSearchParams("sort_order_by_price", "ascent");
+  //   } else if (sortOrderByPrice === "ascent") {
+  //     setSortOrderByPrice("descent");
+  //     changeSearchParams("sort_order_by_price", "descent");
+  //   } else {
+  //     setSortOrderByPrice("default");
+  //     changeSearchParams("sort_order_by_price", "default");
+  //   }
+  // };
 
-  const handleSortOrderByPriceChange1h = () => {
-    if (sortOrderByPriceChange1h === "default") {
-      setSortOrderByPriceChange1h("ascent");
-      changeSearchParams("sort_order_by_price_change_1h", "ascent");
-    } else if (sortOrderByPriceChange1h === "ascent") {
-      setSortOrderByPriceChange1h("descent");
-      changeSearchParams("sort_order_by_price_change_1h", "descent");
-    } else {
-      setSortOrderByPriceChange1h("default");
-      changeSearchParams("sort_order_by_price_change_1h", "default");
-    }
-  };
+  // const handleSortOrderByPriceChange1h = () => {
+  //   if (sortOrderByPriceChange1h === "default") {
+  //     setSortOrderByPriceChange1h("ascent");
+  //     changeSearchParams("sort_order_by_price_change_1h", "ascent");
+  //   } else if (sortOrderByPriceChange1h === "ascent") {
+  //     setSortOrderByPriceChange1h("descent");
+  //     changeSearchParams("sort_order_by_price_change_1h", "descent");
+  //   } else {
+  //     setSortOrderByPriceChange1h("default");
+  //     changeSearchParams("sort_order_by_price_change_1h", "default");
+  //   }
+  // };
 
-  const handleSortOrderByPriceChange24h = () => {
-    if (sortOrderByPriceChange24h === "default") {
-      setSortOrderByPriceChange24h("ascent");
-      changeSearchParams("sort_order_by_price_change_24h", "ascent");
-    } else if (sortOrderByPriceChange24h === "ascent") {
-      setSortOrderByPriceChange24h("descent");
-      changeSearchParams("sort_order_by_price_change_24h", "descent");
-    } else {
-      setSortOrderByPriceChange24h("default");
-      changeSearchParams("sort_order_by_price_change_24h", "default");
-    }
-  };
+  // const handleSortOrderByPriceChange24h = () => {
+  //   if (sortOrderByPriceChange24h === "default") {
+  //     setSortOrderByPriceChange24h("ascent");
+  //     changeSearchParams("sort_order_by_price_change_24h", "ascent");
+  //   } else if (sortOrderByPriceChange24h === "ascent") {
+  //     setSortOrderByPriceChange24h("descent");
+  //     changeSearchParams("sort_order_by_price_change_24h", "descent");
+  //   } else {
+  //     setSortOrderByPriceChange24h("default");
+  //     changeSearchParams("sort_order_by_price_change_24h", "default");
+  //   }
+  // };
 
-  const handleSortOrderByPriceChange7d = () => {
-    if (sortOrderByPriceChange7d === "default") {
-      setSortOrderByPriceChange7d("ascent");
-      changeSearchParams("sort_order_by_price_change_7d", "ascent");
-    } else if (sortOrderByPriceChange7d === "ascent") {
-      setSortOrderByPriceChange7d("descent");
-      changeSearchParams("sort_order_by_price_change_7d", "descent");
-    } else {
-      setSortOrderByPriceChange7d("default");
-      changeSearchParams("sort_order_by_price_change_7d", "default");
-    }
-  };
+  // const handleSortOrderByPriceChange7d = () => {
+  //   if (sortOrderByPriceChange7d === "default") {
+  //     setSortOrderByPriceChange7d("ascent");
+  //     changeSearchParams("sort_order_by_price_change_7d", "ascent");
+  //   } else if (sortOrderByPriceChange7d === "ascent") {
+  //     setSortOrderByPriceChange7d("descent");
+  //     changeSearchParams("sort_order_by_price_change_7d", "descent");
+  //   } else {
+  //     setSortOrderByPriceChange7d("default");
+  //     changeSearchParams("sort_order_by_price_change_7d", "default");
+  //   }
+  // };
 
-  const handleSortByName = () => {
-    if (sortBy !== "name") {
-      setSortBy("name");
-    }
-    changeSearchParams("sort_by", "name");
-    handleSortOrderByName();
-    setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default");
-    setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default");
-    setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default");
-    setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default");
-  };
+  // const handleSortByName = () => {
+  //   if (sortBy !== "name") {
+  //     setSortBy("name");
+  //   }
+  //   changeSearchParams("sort_by", "name");
+  //   handleSortOrderByName();
+  //   setSortOrderByPrice("default");
+  //   changeSearchParams("sort_order_by_price", "default");
+  //   setSortOrderByPriceChange1h("default");
+  //   changeSearchParams("sort_order_by_price_change_1h", "default");
+  //   setSortOrderByPriceChange24h("default");
+  //   changeSearchParams("sort_order_by_price_change_24h", "default");
+  //   setSortOrderByPriceChange7d("default");
+  //   changeSearchParams("sort_order_by_price_change_7d", "default");
+  // };
 
-  const handleSortByPrice = () => {
-    if (sortBy !== "current_price") {
-      setSortBy("current_price");
-    }
-    changeSearchParams("sort_by", "current_price");
-    handleSortOrderByPrice();
-    setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default");
-    setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default");
-    setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default");
-    setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default");
-  };
+  // const handleSortByPrice = () => {
+  //   if (sortBy !== "current_price") {
+  //     setSortBy("current_price");
+  //   }
+  //   changeSearchParams("sort_by", "current_price");
+  //   handleSortOrderByPrice();
+  //   setSortOrderByName("default");
+  //   changeSearchParams("sort_order_by_name", "default");
+  //   setSortOrderByPriceChange1h("default");
+  //   changeSearchParams("sort_order_by_price_change_1h", "default");
+  //   setSortOrderByPriceChange24h("default");
+  //   changeSearchParams("sort_order_by_price_change_24h", "default");
+  //   setSortOrderByPriceChange7d("default");
+  //   changeSearchParams("sort_order_by_price_change_7d", "default");
+  // };
 
-  const handleSortByOneHour = () => {
-    if (sortBy !== "price_change_percentage_1h_in_currency") {
-      setSortBy("price_change_percentage_1h_in_currency");
-    }
-    changeSearchParams("sort_by", "price_change_percentage_1h_in_currency");
-    handleSortOrderByPriceChange1h();
-    setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default");
-    setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default");
-    setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default");
-    setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default");
-  };
+  // const handleSortByOneHour = () => {
+  //   if (sortBy !== "price_change_percentage_1h_in_currency") {
+  //     setSortBy("price_change_percentage_1h_in_currency");
+  //   }
+  //   changeSearchParams("sort_by", "price_change_percentage_1h_in_currency");
+  //   handleSortOrderByPriceChange1h();
+  //   setSortOrderByName("default");
+  //   changeSearchParams("sort_order_by_name", "default");
+  //   setSortOrderByPrice("default");
+  //   changeSearchParams("sort_order_by_price", "default");
+  //   setSortOrderByPriceChange24h("default");
+  //   changeSearchParams("sort_order_by_price_change_24h", "default");
+  //   setSortOrderByPriceChange7d("default");
+  //   changeSearchParams("sort_order_by_price_change_7d", "default");
+  // };
 
-  const handleSortByTwentyFourHours = () => {
-    if (sortBy !== "price_change_percentage_24h_in_currency") {
-      setSortBy("price_change_percentage_24h_in_currency");
-    }
-    changeSearchParams("sort_by", "price_change_percentage_24h_in_currency");
-    handleSortOrderByPriceChange24h();
-    setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default");
-    setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default");
-    setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default");
-    setSortOrderByPriceChange7d("default");
-    changeSearchParams("sort_order_by_price_change_7d", "default");
-  };
+  // const handleSortByTwentyFourHours = () => {
+  //   if (sortBy !== "price_change_percentage_24h_in_currency") {
+  //     setSortBy("price_change_percentage_24h_in_currency");
+  //   }
+  //   changeSearchParams("sort_by", "price_change_percentage_24h_in_currency");
+  //   handleSortOrderByPriceChange24h();
+  //   setSortOrderByName("default");
+  //   changeSearchParams("sort_order_by_name", "default");
+  //   setSortOrderByPrice("default");
+  //   changeSearchParams("sort_order_by_price", "default");
+  //   setSortOrderByPriceChange1h("default");
+  //   changeSearchParams("sort_order_by_price_change_1h", "default");
+  //   setSortOrderByPriceChange7d("default");
+  //   changeSearchParams("sort_order_by_price_change_7d", "default");
+  // };
 
-  const handleSortBySevenDays = () => {
-    if (sortBy !== "price_change_percentage_7d_in_currency") {
-      setSortBy("price_change_percentage_7d_in_currency");
-    }
-    changeSearchParams("sort_by", "price_change_percentage_7d_in_currency");
-    handleSortOrderByPriceChange7d();
-    setSortOrderByName("default");
-    changeSearchParams("sort_order_by_name", "default");
-    setSortOrderByPrice("default");
-    changeSearchParams("sort_order_by_price", "default");
-    setSortOrderByPriceChange1h("default");
-    changeSearchParams("sort_order_by_price_change_1h", "default");
-    setSortOrderByPriceChange24h("default");
-    changeSearchParams("sort_order_by_price_change_24h", "default");
-  };
+  // const handleSortBySevenDays = () => {
+  //   if (sortBy !== "price_change_percentage_7d_in_currency") {
+  //     setSortBy("price_change_percentage_7d_in_currency");
+  //   }
+  //   changeSearchParams("sort_by", "price_change_percentage_7d_in_currency");
+  //   handleSortOrderByPriceChange7d();
+  //   setSortOrderByName("default");
+  //   changeSearchParams("sort_order_by_name", "default");
+  //   setSortOrderByPrice("default");
+  //   changeSearchParams("sort_order_by_price", "default");
+  //   setSortOrderByPriceChange1h("default");
+  //   changeSearchParams("sort_order_by_price_change_1h", "default");
+  //   setSortOrderByPriceChange24h("default");
+  //   changeSearchParams("sort_order_by_price_change_24h", "default");
+  // };
 
-  useEffect(() => {
-    handleSearchParams("sort_by", sortBy);
-  }, [sortBy]);
+  // useEffect(() => {
+  //   handleSearchParams("sort_by", sortBy);
+  // }, [sortBy]);
 
-  useEffect(() => {
-    handleSearchParams("sort_order_by_name", sortOrderByName);
-  }, [sortOrderByName]);
+  // useEffect(() => {
+  //   handleSearchParams("sort_order_by_name", sortOrderByName);
+  // }, [sortOrderByName]);
 
-  useEffect(() => {
-    handleSearchParams("sort_order_by_price", sortOrderByPrice);
-  }, [sortOrderByPrice]);
+  // useEffect(() => {
+  //   handleSearchParams("sort_order_by_price", sortOrderByPrice);
+  // }, [sortOrderByPrice]);
 
-  useEffect(() => {
-    handleSearchParams(
-      "sort_order_by_price_change_1h",
-      sortOrderByPriceChange1h
-    );
-  }, [sortOrderByPriceChange1h]);
+  // useEffect(() => {
+  //   handleSearchParams(
+  //     "sort_order_by_price_change_1h",
+  //     sortOrderByPriceChange1h
+  //   );
+  // }, [sortOrderByPriceChange1h]);
 
-  useEffect(() => {
-    handleSearchParams(
-      "sort_order_by_price_change_24h",
-      sortOrderByPriceChange24h
-    );
-  }, [sortOrderByPriceChange24h]);
+  // useEffect(() => {
+  //   handleSearchParams(
+  //     "sort_order_by_price_change_24h",
+  //     sortOrderByPriceChange24h
+  //   );
+  // }, [sortOrderByPriceChange24h]);
 
-  useEffect(() => {
-    handleSearchParams(
-      "sort_order_by_price_change_7d",
-      sortOrderByPriceChange7d
-    );
-  }, [sortOrderByPriceChange7d]);
+  // useEffect(() => {
+  //   handleSearchParams(
+  //     "sort_order_by_price_change_7d",
+  //     sortOrderByPriceChange7d
+  //   );
+  // }, [sortOrderByPriceChange7d]);
 
-  const sortByInQueryParams = queryParams.sort_by;
-  const sortOrderByNameInQueryParams = queryParams.sort_order_by_name;
-  const sortOrderByPriceInQueryParams = queryParams.sort_order_by_price;
-  const sortOrderByPriceChange1hInQueryParams =
-    queryParams.sort_order_by_price_change_1h;
-  const sortOrderByPriceChange24hInQueryParams =
-    queryParams.sort_order_by_price_change_24h;
-  const sortOrderByPriceChange7dInQueryParams =
-    queryParams.sort_order_by_price_change_7d;
+  // const sortByInQueryParams = queryParams.sort_by;
+  // const sortOrderByNameInQueryParams = queryParams.sort_order_by_name;
+  // const sortOrderByPriceInQueryParams = queryParams.sort_order_by_price;
+  // const sortOrderByPriceChange1hInQueryParams =
+  //   queryParams.sort_order_by_price_change_1h;
+  // const sortOrderByPriceChange24hInQueryParams =
+  //   queryParams.sort_order_by_price_change_24h;
+  // const sortOrderByPriceChange7dInQueryParams =
+  //   queryParams.sort_order_by_price_change_7d;
 
-  const sortCoinList = () => {
-    const sortedCoinList = flattenedData ? [...flattenedData] : [];
+  // const sortCoinList = () => {
+  //   const sortedCoinList = flattenedData ? [...flattenedData] : [];
 
-    if (
-      sortByInQueryParams === "name" &&
-      sortOrderByNameInQueryParams === "ascent"
-    ) {
-      sortedCoinList.sort((value1, value2) =>
-        value1[sortByInQueryParams].localeCompare(value2[sortByInQueryParams])
-      );
-      setDisplayCoinList(sortedCoinList);
-    } else if (
-      sortByInQueryParams === "name" &&
-      sortOrderByNameInQueryParams === "descent"
-    ) {
-      sortedCoinList.sort((value1, value2) =>
-        value2[sortByInQueryParams].localeCompare(value1[sortByInQueryParams])
-      );
-      setDisplayCoinList(sortedCoinList);
-    } else if (
-      (sortByInQueryParams === "current_price" &&
-        sortOrderByPriceInQueryParams === "ascent") ||
-      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
-        sortOrderByPriceChange1hInQueryParams === "ascent") ||
-      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
-        sortOrderByPriceChange24hInQueryParams === "ascent") ||
-      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
-        sortOrderByPriceChange7dInQueryParams === "ascent")
-    ) {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value1[sortByInQueryParams] - value2[sortByInQueryParams]
-      );
-      setDisplayCoinList(sortedCoinList);
-    } else if (
-      (sortByInQueryParams === "current_price" &&
-        sortOrderByPriceInQueryParams === "descent") ||
-      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
-        sortOrderByPriceChange1hInQueryParams === "descent") ||
-      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
-        sortOrderByPriceChange24hInQueryParams === "descent") ||
-      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
-        sortOrderByPriceChange7dInQueryParams === "descent")
-    ) {
-      sortedCoinList.sort(
-        (value1, value2) =>
-          value2[sortByInQueryParams] - value1[sortByInQueryParams]
-      );
-      setDisplayCoinList(sortedCoinList);
-    } else if (
-      (sortByInQueryParams === "default" &&
-        sortOrderByNameInQueryParams === "default") ||
-      (sortByInQueryParams === "name" &&
-        sortOrderByNameInQueryParams === "default") ||
-      (sortByInQueryParams === "current_price" &&
-        sortOrderByPriceInQueryParams === "default") ||
-      (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
-        sortOrderByPriceChange1hInQueryParams === "default") ||
-      (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
-        sortOrderByPriceChange24hInQueryParams === "default") ||
-      (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
-        sortOrderByPriceChange7dInQueryParams === "default")
-    ) {
-      setDisplayCoinList(flattenedData || []);
-    }
-  };
+  //   if (
+  //     sortByInQueryParams === "name" &&
+  //     sortOrderByNameInQueryParams === "ascent"
+  //   ) {
+  //     sortedCoinList.sort((value1, value2) =>
+  //       value1[sortByInQueryParams].localeCompare(value2[sortByInQueryParams])
+  //     );
+  //     setDisplayCoinList(sortedCoinList);
+  //   } else if (
+  //     sortByInQueryParams === "name" &&
+  //     sortOrderByNameInQueryParams === "descent"
+  //   ) {
+  //     sortedCoinList.sort((value1, value2) =>
+  //       value2[sortByInQueryParams].localeCompare(value1[sortByInQueryParams])
+  //     );
+  //     setDisplayCoinList(sortedCoinList);
+  //   } else if (
+  //     (sortByInQueryParams === "current_price" &&
+  //       sortOrderByPriceInQueryParams === "ascent") ||
+  //     (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+  //       sortOrderByPriceChange1hInQueryParams === "ascent") ||
+  //     (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+  //       sortOrderByPriceChange24hInQueryParams === "ascent") ||
+  //     (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+  //       sortOrderByPriceChange7dInQueryParams === "ascent")
+  //   ) {
+  //     sortedCoinList.sort(
+  //       (value1, value2) =>
+  //         value1[sortByInQueryParams] - value2[sortByInQueryParams]
+  //     );
+  //     setDisplayCoinList(sortedCoinList);
+  //   } else if (
+  //     (sortByInQueryParams === "current_price" &&
+  //       sortOrderByPriceInQueryParams === "descent") ||
+  //     (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+  //       sortOrderByPriceChange1hInQueryParams === "descent") ||
+  //     (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+  //       sortOrderByPriceChange24hInQueryParams === "descent") ||
+  //     (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+  //       sortOrderByPriceChange7dInQueryParams === "descent")
+  //   ) {
+  //     sortedCoinList.sort(
+  //       (value1, value2) =>
+  //         value2[sortByInQueryParams] - value1[sortByInQueryParams]
+  //     );
+  //     setDisplayCoinList(sortedCoinList);
+  //   } else if (
+  //     (sortByInQueryParams === "default" &&
+  //       sortOrderByNameInQueryParams === "default") ||
+  //     (sortByInQueryParams === "name" &&
+  //       sortOrderByNameInQueryParams === "default") ||
+  //     (sortByInQueryParams === "current_price" &&
+  //       sortOrderByPriceInQueryParams === "default") ||
+  //     (sortByInQueryParams === "price_change_percentage_1h_in_currency" &&
+  //       sortOrderByPriceChange1hInQueryParams === "default") ||
+  //     (sortByInQueryParams === "price_change_percentage_24h_in_currency" &&
+  //       sortOrderByPriceChange24hInQueryParams === "default") ||
+  //     (sortByInQueryParams === "price_change_percentage_7d_in_currency" &&
+  //       sortOrderByPriceChange7dInQueryParams === "default")
+  //   ) {
+  //     setDisplayCoinList(flattenedData || []);
+  //   }
+  // };
 
-  useEffect(() => {
-    sortCoinList();
-  }, [
-    sortByInQueryParams,
-    sortOrderByNameInQueryParams,
-    sortOrderByPriceInQueryParams,
-    sortOrderByPriceChange1hInQueryParams,
-    sortOrderByPriceChange24hInQueryParams,
-    sortOrderByPriceChange7dInQueryParams,
-    flattenedData,
-  ]);
+  // useEffect(() => {
+  //   sortCoinList();
+  // }, [
+  //   sortByInQueryParams,
+  //   sortOrderByNameInQueryParams,
+  //   sortOrderByPriceInQueryParams,
+  //   sortOrderByPriceChange1hInQueryParams,
+  //   sortOrderByPriceChange24hInQueryParams,
+  //   sortOrderByPriceChange7dInQueryParams,
+  //   flattenedData,
+  // ]);
 
   // useEffect(() => {
   //   handleSearchParams("days", numOfDays);
@@ -459,22 +454,22 @@ function Coins() {
     });
   };
 
-  const progressBarColors = [
-    "#C27721",
-    "#6374C3",
-    "#30E0A1",
-    "#F5AC37",
-    "#F3EB2F",
-    "#638FFE",
-    "#4DEEE5",
-    "#F06142",
-    "#5082CF",
-  ];
+  // const progressBarColors = [
+  //   "#C27721",
+  //   "#6374C3",
+  //   "#30E0A1",
+  //   "#F5AC37",
+  //   "#F3EB2F",
+  //   "#638FFE",
+  //   "#4DEEE5",
+  //   "#F06142",
+  //   "#5082CF",
+  // ];
 
   // return (
   //   <div>
   //     {/* {data?.pages.map((items, pageIndex) => (
-        
+
   //       <div key={pageIndex}> */}
   //         {flattenedData.map((coin: any, index: number) => {
   //           //const globalIndex = pageIndex * 50 + index;
@@ -517,16 +512,27 @@ function Coins() {
         darkMode ? "" : "theme-light"
       } max-w-[1296px] font-space-grotesk text-base`}
     >
-      <div className="my-5">
+      {/* <CoinsProvider> */}
+      <CarouselChartsProvider>
+        <div className="my-5">
+          <SlickCarousel />
+        </div>
+        <ChartsPanel />
+      </CarouselChartsProvider>
+      <DataPeriodSelector />
+      <CoinsList />
+
+      {/* </CoinsProvider> */}
+      {/* <div className="my-5">
         <SlickCarousel
-          coinList={displayCoinList}
-          // setDisplaySelectCoinToSeeChartMessage={
-          //   setDisplaySelectCoinToSeeChartMessage
-          // }
+        //coinList={displayCoinList}
+        // setDisplaySelectCoinToSeeChartMessage={
+        //   setDisplaySelectCoinToSeeChartMessage
+        // }
         />
       </div>
       <ChartsPanel />
-      <DataPeriodSelector />
+      <DataPeriodSelector /> */}
       {/* {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
         <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
           Please select a coin to view chart
@@ -641,9 +647,9 @@ function Coins() {
             setSelectedTimePeriod={setSelectedTimePeriod}
           />
         </div>
-        {status === "pending" && (
+        {/* {status === "pending" && (
           <div className="flex justify-center my-5">Loading Coin List</div>
-        )}
+        )} */}
         <div className="no-scrollbar">
           <div
             ref={tableRef}
@@ -660,7 +666,7 @@ function Coins() {
             </div>
             <div className="w-[35%] sm:w-[35%] md:w-[21%] lg:w-[18%] xl:w-[15%] min-w-32 pr-2 flex justify-start items-center">
               <div className="mr-1 pl-3 md:pl-0">Name</div>
-              <div onClick={handleSortByName}>
+              {/* <div onClick={handleSortByName}>
                 {sortOrderByNameInQueryParams === "default" ? (
                   <SortArrowAccent />
                 ) : sortOrderByNameInQueryParams === "ascent" ? (
@@ -668,14 +674,14 @@ function Coins() {
                 ) : (
                   <SortArrowOriginal />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="w-[35%] sm:hidden min-w-32 flex justify-start items-center">
               Last 7d
             </div>
             <div className="w-[30%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 flex justify-start items-center">
               <div className="mr-1">Price</div>
-              <div onClick={handleSortByPrice}>
+              {/* <div onClick={handleSortByPrice}>
                 {sortOrderByPriceInQueryParams === "default" ? (
                   <SortArrowAccent />
                 ) : sortOrderByPriceInQueryParams === "ascent" ? (
@@ -683,11 +689,11 @@ function Coins() {
                 ) : (
                   <SortArrowOriginal />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="w-[25%] sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
               <div className="mr-1">1h%</div>
-              <div onClick={handleSortByOneHour}>
+              {/* <div onClick={handleSortByOneHour}>
                 {sortOrderByPriceChange1hInQueryParams === "default" ? (
                   <SortArrowAccent />
                 ) : sortOrderByPriceChange1hInQueryParams === "ascent" ? (
@@ -695,11 +701,11 @@ function Coins() {
                 ) : (
                   <SortArrowOriginal />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
               <div className="mr-1">24h%</div>
-              <div onClick={handleSortByTwentyFourHours}>
+              {/* <div onClick={handleSortByTwentyFourHours}>
                 {sortOrderByPriceChange24hInQueryParams === "default" ? (
                   <SortArrowAccent />
                 ) : sortOrderByPriceChange24hInQueryParams === "ascent" ? (
@@ -707,11 +713,11 @@ function Coins() {
                 ) : (
                   <SortArrowOriginal />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden md:flex">
               <div className="mr-1">7d%</div>
-              <div onClick={handleSortBySevenDays}>
+              {/* <div onClick={handleSortBySevenDays}>
                 {sortOrderByPriceChange7dInQueryParams === "default" ? (
                   <SortArrowAccent />
                 ) : sortOrderByPriceChange7dInQueryParams === "ascent" ? (
@@ -719,7 +725,7 @@ function Coins() {
                 ) : (
                   <SortArrowOriginal />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="xl:w-[20%] lg:w-[24%] min-w-44 pr-3.5 justify-start items-center hidden lg:flex">
               24h volume/Market Cap
@@ -731,6 +737,7 @@ function Coins() {
               Last 7d
             </div>
           </div>
+
           {/* {displayCoinList.map((coin: any, index: number) => {
             const isLast = index === displayCoinList.length - 1;
             if (isLast) {
@@ -773,7 +780,6 @@ function Coins() {
       </div>
       <RenderTest />
     </div>
-    
   );
 }
 

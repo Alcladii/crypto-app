@@ -14,7 +14,7 @@ import Portfolio from "./pages/Portfolio.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
 import { SignInPage } from "./pages/SignIn.tsx";
 import { SignUpPage } from "./pages/SignUp.tsx";
-import { CryptoContext, CryptoContextProps } from "./contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "./contexts/GlobalContext.tsx";
 import { SearchItemInput } from "./components/SearchInput.tsx";
 import { CurrencySelector } from "./components/CurrencySelector.tsx";
 import {
@@ -29,6 +29,7 @@ import {
   SunIconForLightMode,
   MoonIconForLightMode,
 } from "./components/UI/Svg.tsx";
+import { useLocalState } from "./hooks/useLocalState.ts"
 
 const ProgressBarOuter = styled.div`
   border-radius: 99px;
@@ -46,7 +47,6 @@ const ProgressBarInner = styled.div<{ width: number; background: string }>`
 
 export default function App() {
   const {
-    useLocalState,
     displayCurrency,
     convertToTrillion,
     convertToBillion,

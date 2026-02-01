@@ -23,7 +23,7 @@ ChartJS.register(
   Filler,
   Legend
 );
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { setMaxTicksLimit } from "./setMaxTicksLimitLineBarChartCoinList";
 import { setDisplayIntervalLineBarChart } from "./setDisplayTimeIntervalLineBarChart";
 

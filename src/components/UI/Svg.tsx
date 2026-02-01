@@ -2,7 +2,7 @@ import { useContext } from "react";
 import {
   CryptoContext,
   CryptoContextProps,
-} from "../../contexts/cryptoContext";
+} from "../../contexts/GlobalContext";
 
 type CloseIconProps = { togglePopup: () => void };
 

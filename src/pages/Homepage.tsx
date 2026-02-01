@@ -1,18 +1,21 @@
 import { useContext, useEffect } from "react";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import Coins from "../components/Coins";
 import { CurrencyConverter } from "../components/CurrencyConverter";
+import { useLocalState } from "../hooks/useLocalState"
+import { useQueryParams } from "../hooks/useQueryParams";
 
 export const Home = () => {
   const {
-    useLocalState,
-    handleSearchParams,
+    //useLocalState,
+    //handleSearchParams,
     queryParams,
-    changeSearchParams,
+    //changeSearchParams,
     darkMode,
   } = useContext(CryptoContext) as CryptoContextProps;
   const [loadCoins, setLoadCoins] = useLocalState("loadCoinsPage", true);
+  const { handleSearchParams, changeSearchParams} = useQueryParams()
 
   const handleCoinsListClick = () => {
     setLoadCoins(true);

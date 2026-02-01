@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from "react";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { useDebounce } from "../hooks/useDebounce";
 
 type CoinSelectWithSearchProps = {

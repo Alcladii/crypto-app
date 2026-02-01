@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 
 type DaysButtonInCurrencyConverterProps = {
   days: string,

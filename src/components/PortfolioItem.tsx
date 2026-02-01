@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { DeleteAsset } from "./DeleteAsset";
 import { EditAsset } from "./EditAsset";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";

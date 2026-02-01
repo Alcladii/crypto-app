@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { CoinSelectWithSearch } from "./coinSelectWithSearch";
 import { InvestmentCalculatorItems } from "./InvestmentCalculatorItems";
 import { CloseIcon } from "../components/UI/Svg";

@@ -1,33 +1,36 @@
-import { useContext } from "react";
+
+
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { useQueryParams } from "../hooks/useQueryParams";
 
 type DaysButtonProps = {
   days: string;
   buttonText: string;
-}
+};
 
 export const DaysButton: React.FC<DaysButtonProps> = ({ days, buttonText }) => {
-  const { setNumOfDays, changeSearchParams, queryParams, darkMode } =
-    useContext(CryptoContext) as CryptoContextProps;
+  //const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
 
-  const daysInChart: string = queryParams.days as string;
+  const { queryParams, handleSearchParams } = useQueryParams()
+
+  const daysFromSearchParams = queryParams.days
 
   return (
-    <div className={`${darkMode ? "" : "theme-light"} w-[17%] sm:w-16`}>
+    // <div className={`${darkMode ? "" : "theme-light"} w-[17%] sm:w-16`}>
+    <div className={` w-[17%] sm:w-16`}>
       <div
         className={`${
-          daysInChart === days
+          daysFromSearchParams === days
             ? "bg-skin-days-button-background-color"
             : "bg-transparent"
         } h-10 mx-1 my-1  flex justify-center items-center rounded-md cursor-pointer ${
-          daysInChart === days
+          daysFromSearchParams === days
             ? "text-skin-days-button-top-bottom-fifty-text-color"
             : "text-skin-unselected-days-top-bottom-fifty-button-text-color"
         }`}
         onClick={() => {
-          setNumOfDays(days);
-          changeSearchParams("days", days);
+          //setNumOfDays(days);
+          handleSearchParams("days", days);
         }}
       >
         {buttonText}

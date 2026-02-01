@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { DaysButton } from "./DaysButton";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { useQueryParams } from "../hooks/useQueryParams";
 
 type DaysSelectionData = {
   days: string;
@@ -17,11 +17,10 @@ const daysSelectionData: DaysSelectionData[] = [
 ];
 
 export const DataPeriodSelector = () => {
-  const { handleSearchParams } = useContext(
-    CryptoContext
-  ) as CryptoContextProps;
+  const { handleSearchParams } = useQueryParams();
 
   useEffect(() => {
+    console.log("handleSearchParams triggered")
     handleSearchParams("days", "7");
   }, []);
 
@@ -38,4 +37,4 @@ export const DataPeriodSelector = () => {
       </div>
     </div>
   );
-}
+};

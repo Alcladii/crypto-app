@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 
 type CalculatorInputProps = {
   formInput: {

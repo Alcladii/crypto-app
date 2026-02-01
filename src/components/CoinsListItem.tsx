@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LineChartIndividualCoin from "./LineChartIndividualCoin";
 import { Arrow } from "./UI/Arrow";
 import { PriceChangePercentageText } from "./PriceChangePercentageText";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 
 type Coin = {
   id: string;
@@ -47,8 +47,8 @@ type CoinsListItemProps = {
   singleCoin: Coin;
   innerRef?: React.Ref<HTMLDivElement>;
   index: number;
-  color: string;
-  selectedTimePeriod: string;
+  //color: string;
+  //selectedTimePeriod: string;
 };
 
 
@@ -58,8 +58,8 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
   singleCoin,
   innerRef,
   index,
-  color,
-  selectedTimePeriod
+  //color,
+  //selectedTimePeriod
 }: CoinsListItemProps) => {
   // const {
   //   convertToBillion,
@@ -72,7 +72,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
   };
   
   const currencySymbol = "$"
-  console.log("item re-rendered")
+  //console.log("item re-rendered")
 
   const navigate = useNavigate();
 
@@ -80,6 +80,21 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
     navigate(`/coin-page/${item.id}`);
     //setRedirectedFromPortfolioPage(false);
   };
+
+  const progressBarColors = [
+    "#C27721",
+    "#6374C3",
+    "#30E0A1",
+    "#F5AC37",
+    "#F3EB2F",
+    "#638FFE",
+    "#4DEEE5",
+    "#F06142",
+    "#5082CF",
+  ];
+
+  const color=progressBarColors[index % progressBarColors.length]
+
 
   return (
     // <div>
@@ -125,7 +140,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
           {singleCoin.current_price &&
             singleCoin.current_price.toLocaleString()}
         </div>
-        <div className="text-md flex items-center sm:hidden ">
+        {/* <div className="text-md flex items-center sm:hidden ">
           <Arrow
             priceChange={
               singleCoin[
@@ -141,7 +156,7 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
               ] as number
             }
           />
-        </div>
+        </div> */}
       </div>
       <div className="sm:w-[20%] md:w-[13%] lg:w-[11%] xl:w-[9%] min-w-24 pl-2 justify-start items-center hidden sm:flex">
         <Arrow

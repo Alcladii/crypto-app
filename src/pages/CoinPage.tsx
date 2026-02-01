@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { PriceChangePercentageText } from "../components/PriceChangePercentageText";
 import { Arrow } from "../components/UI/Arrow";
 import { CoinPagePlusInCircleIcon } from "../components/UI/Svg";

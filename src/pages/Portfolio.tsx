@@ -14,7 +14,7 @@ import {
   useAuth,
 } from "@clerk/clerk-react";
 import { useLocation, Navigate } from "react-router-dom"
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 import { AddAsset } from "../components/AddAsset";
 import { PortfolioItem } from "../components/PortfolioItem";
 import { InvestmentCalculator } from "../components/InvestmentCalculator";

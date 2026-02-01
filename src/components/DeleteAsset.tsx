@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 
 type DeleteAssetProps = {
   id: string;

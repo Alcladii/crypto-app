@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import "../App.css";
-import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
+import { CryptoContext, CryptoContextProps } from "../contexts/GlobalContext";
 
 type PurchaseDateProps = {
   date?: any;
