@@ -105,10 +105,23 @@ export const ChartsPanel = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-            {priceVolumeList.length !== 0 &&
+            {/* {priceVolumeList.length !== 0 &&
               priceVolumeList.every(
                 (item) => item !== undefined && item !== null,
-              ) && <BarChart priceVolumeList={priceVolumeList} />}
+              ) && <BarChart priceVolumeList={priceVolumeList} />} */}
+              {isLoading ? (
+              <div className="text-skin-prompt-text-color">Loading chart…</div>
+            ) : isError ? (
+              <div className="text-skin-prompt-text-color">
+                Rate limit hit (429). Please wait a moment and try again.
+              </div>
+            ) : priceVolumeList.length > 0 ? (
+              <BarChart priceVolumeList={priceVolumeList} />
+            ) : (
+              <div className="text-skin-prompt-text-color">
+                No chart data yet — select a coin to view chart.
+              </div>
+            )}
             <div className="flex justify-between flex-col lg:flex-row">
               {selectedCoinData &&
                 selectedCoinData.map((coin) => (
