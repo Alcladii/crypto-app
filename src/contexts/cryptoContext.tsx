@@ -27,6 +27,8 @@ type Currencies = {
 
 const currenciesTyped = currencies as Currencies;
 
+const host = import.meta.env.VITE_API_URL;
+
 export type CryptoContextProps = {
   useLocalState: <T>(
     key: string,
@@ -215,50 +217,12 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
 
   const currencySymbol = currenciesTyped[displayCurrency.toUpperCase()]?.symbol;
 
-  // const getCoinPriceVolume = async (
-  //   coinId: string,
-  //   currency: string,
-  //   numOfDays: string
-  // ) => {
-  //   console.log("get Coin Price Volume called")
-  //   setPriceVolumeChartIsLoadingHasError(false);
-  //   setPriceVolumeChartIsLoading(true);
-  //   try {
-  //     let apiUrl: string;
-  //     if (numOfDays === "2") {
-  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`;
-  //     } else {
-  //       apiUrl = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
-  //     }
-  //     const { data } = await axios(apiUrl);
-  //     setPriceVolumeChartIsLoading(false);
-  //     return data;
-  //   } catch (err) {
-  //     setPriceVolumeChartIsLoadingHasError(true);
-  //     setPriceVolumeChartIsLoading(false);
-  //   }
-  // };
-
-  // const getCoinPriceVolume = async (
-  //   coinId: string,
-  //   currency: string,
-  //   numOfDays: string
-  // ) => {
-  //   const apiUrl =
-  //     numOfDays === "2"
-  //       ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}`
-  //       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${numOfDays}&interval=daily`;
-
-  //   const { data } = await axios.get(apiUrl);
-  //   return data; 
-  // };
-
   const getCoinPriceVolume = async (
   coinId: string,
   currency: string,
   numOfDays: string
 ) => {
-  const /*{ data }*/res = await axios.get("http://localhost:3001/api/coingecko/market-chart", {
+  const /*{ data }*/res = await axios.get(`${host}/api/coingecko/market-chart`, {
     params: {
       coinId,
       currency,
