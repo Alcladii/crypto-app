@@ -18,6 +18,8 @@ export const useInfiniteCoinsListScroll = () => {
         ? "market_cap_desc"
         : "market_cap_asc";
 
+    console.log("order", order)
+
     const res = await axios.get(`${host}/api/coingecko/markets`, {
       params: {
         vs_currency: displayCurrency,

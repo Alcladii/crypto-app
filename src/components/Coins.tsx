@@ -476,7 +476,7 @@ function Coins() {
       <ChartsPanel />
       <DataPeriodSelector />
       <div>
-        <div className="flex justify-center my-6">
+        {/* <div className="flex justify-center my-6">
           <div
             className={`${
               showTopFifty
@@ -507,7 +507,7 @@ function Coins() {
             {" "}
             Bottom 50{" "}
           </div>
-        </div>
+        </div> */}
         <div className="sm:hidden flex justify-between items-center mb-5 text-skin-prompt-text-color ">
           <div className="text-xl">Market Overview</div>
           <UpAndDownPercentagePeriodSelector
