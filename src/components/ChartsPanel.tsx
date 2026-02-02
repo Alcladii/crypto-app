@@ -39,15 +39,6 @@ export const ChartsPanel = () => {
     .filter((r) => r.isSuccess && r.data)
     .map((r) => r.data);
 
-  // Optional: see the first error (useful for debugging / messaging)
-  const firstError = results.find((r) => r.isError)?.error;
-
-  console.log("pricevolumeList", priceVolumeList, {
-    isLoading,
-    isError,
-    firstError,
-  });
-
   const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   return (

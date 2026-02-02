@@ -12,39 +12,31 @@ export const useInfiniteCoinsListScroll = () => {
     CryptoContext,
   ) as CryptoContextProps;
 
-  // const getCoinsList = async ({ pageParam }: { pageParam: number }) => {
-  //   const order =
-  //     showTopFifty || !queryParams.show_top_fifty
-  //       ? "market_cap_desc"
-  //       : "market_cap_asc";
-  //    console.log("get Coins List ran")
-  //   const response = await axios.get(
-  //     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${displayCurrency}&order=${order}&per_page=25&page=${pageParam}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-  //   );
-  //   return response.data;
-  // };
-
   const getCoinsList = async ({ pageParam }: { pageParam: number }) => {
     const order =
       showTopFifty || !queryParams.show_top_fifty
         ? "market_cap_desc"
         : "market_cap_asc";
 
-    const response = await axios.get(
-      `${host}/api/coingecko/markets`,
-      {
-        params: {
-          vs_currency: displayCurrency,
-          order,
-          per_page: 25,
-          page: pageParam,
-          sparkline: true,
-          price_change_percentage: "1h,24h,7d",
-        },
+    const res = await axios.get(`${host}/api/coingecko/markets`, {
+      params: {
+        vs_currency: displayCurrency,
+        order,
+        per_page: 25,
+        page: pageParam,
+        sparkline: true,
+        price_change_percentage: "1h,24h,7d",
       },
-    );
+    });
 
-    return response.data;
+    if (!res.data.ok) {
+      // make React Query go into isError
+      const err = new Error(res.data.error.message);
+      (err as any).code = res.data.error.code;
+      throw err;
+    }
+
+    return res.data.data;
   };
 
   const query = useInfiniteQuery({

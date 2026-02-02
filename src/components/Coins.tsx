@@ -126,15 +126,6 @@ function Coins() {
     }
   }, [inView, hasNextPage]);
 
-  console.log(
-    "inview",
-    inView,
-    "hasNextPage",
-    hasNextPage,
-    "isFetchingNextPage",
-    isFetchingNextPage
-  );
-
   const setToDsc = () => {
     setCoinListDsc(true);
     changeSearchParams("show_top_fifty", "true");
@@ -154,8 +145,6 @@ function Coins() {
       getCurrencyList();
     }
   }, []);
-
-  //const colors = ["#7878FA", "#D878FA", "#01F1E3"];
 
   const handleSortOrderByName = () => {
     if (sortOrderByName === "default") {
@@ -470,46 +459,6 @@ function Coins() {
     "#5082CF",
   ];
 
-  // return (
-  //   <div>
-  //     {/* {data?.pages.map((items, pageIndex) => (
-        
-  //       <div key={pageIndex}> */}
-  //         {flattenedData.map((coin: any, index: number) => {
-  //           //const globalIndex = pageIndex * 50 + index;
-  //           if (flattenedData.length == index + 1) {
-  //             return (
-  //               // <div ref={ref} className="text-base text-white" key={coin.id} >
-  //               //   {globalIndex +1}&nbsp;{coin.name}
-  //               // </div>
-  //                <CoinsListItem
-  //                 key={index}
-  //                 singleCoin={coin}
-  //                 innerRef={ref}
-  //                 index={index}
-  //                 color={progressBarColors[index % progressBarColors.length]}
-  //                 selectedTimePeriod={selectedTimePeriod}
-  //                />
-  //             );
-  //           }
-  //           return (
-  //             // <div className="text-base text-white" key={coin.id}>
-  //             //   {globalIndex + 1}&nbsp;{coin.name}
-  //             // </div>
-  //              <CoinsListItem
-  //               key={index}
-  //               singleCoin={coin}
-  //               index={index}
-  //               color={progressBarColors[index % progressBarColors.length]}
-  //               selectedTimePeriod={selectedTimePeriod}
-  //             />
-  //           );
-  //         })}
-  //       {/* </div> */}
-  //     {/* ))} */}
-  //   </div>
-  // );
-
   return (
     <div
       className={`${
@@ -526,80 +475,6 @@ function Coins() {
       </div>
       <ChartsPanel />
       <DataPeriodSelector />
-      {/* {priceVolumeList.length === 0 && displaySelectCoinToSeeChartMessage ? (
-        <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-          Please select a coin to view chart
-        </div>
-      ) : (
-        <div>
-          <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-            {priceVolumeChartIsLoading && (
-              <div>Loading Price and Volume Chart</div>
-            )}
-          </div>
-          <div className="flex flex-col md:flex-row justify-center items-center h-auto my-7 text-sm xl:text-base">
-            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:mr-7 mb-3 md:mb-0 bg-skin-charts-background-color rounded-md">
-              {priceVolumeList.length !== 0 &&
-                priceVolumeList.every(
-                  (item) => item !== undefined && item !== null
-                ) && <LineChart priceVolumeList={priceVolumeList} />}
-              <div className="flex justify-between flex-col lg:flex-row">
-                {selectedCoinData &&
-                  selectedCoinData.map((coin) => (
-                    <div
-                      key={coin.id}
-                      className="flex items-center mx-2.5 mt-2 text-skin-chart-color-indicator-text-color"
-                    >
-                      <ColorIndicator
-                        background={colors[selectedCoinData.indexOf(coin)]}
-                      ></ColorIndicator>
-                      &nbsp;{coin.name}&nbsp;{currencySymbol}
-                      {coin.current_price.toLocaleString()}
-                    </div>
-                  ))}
-              </div>
-            </div>
-            <div className="w-full md:w-1/2 h-auto p-5 mr-0 md:ml-7 mt-3 md:mt-0 bg-skin-charts-background-color rounded-md">
-              {priceVolumeList.length !== 0 &&
-                priceVolumeList.every(
-                  (item) => item !== undefined && item !== null
-                ) && <BarChart priceVolumeList={priceVolumeList} />}
-              <div className="flex justify-between flex-col lg:flex-row">
-                {selectedCoinData &&
-                  selectedCoinData.map((coin) => (
-                    <div
-                      key={coin.id}
-                      className="flex items-center mx-1 mt-2 text-skin-chart-color-indicator-text-color"
-                    >
-                      <ColorIndicator
-                        background={colors[selectedCoinData.indexOf(coin)]}
-                      ></ColorIndicator>
-                      &nbsp;{coin.name}&nbsp;{currencySymbol}
-                      {convertToBillion(coin.total_volume)}B
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
-
-          {(priceVolumeList.length === 0 &&
-            priceVolumeChartIsLoadingHasError) ||
-            (priceVolumeChartIsLoadingHasError && (
-              <div className="my-8 text-2xl flex justify-center text-skin-prompt-text-color">
-                Error fetching Price and Volume Chart
-              </div>
-            ))}
-        </div>
-      )} */}
-      {/* <div className="flex my-5 w-full sm:w-fit h-auto bg-skin-days-bar-background-color rounded-md">
-        {daysSelectionData.map((item) => (
-          <DaysButton
-            key={item.days}
-            days={item.days}
-            buttonText={item.buttonText}
-          />
-        ))}
-      </div> */}
       <div>
         <div className="flex justify-center my-6">
           <div
