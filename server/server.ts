@@ -209,7 +209,105 @@ app.get("/api/coingecko/market-chart", async (req, res) => {
 //   }
 // });
 
+// app.get("/api/coingecko/markets", async (req, res) => {
+//   try {
+//     const {
+//       vs_currency = "usd",
+//       order = "market_cap_desc",
+//       per_page = "25",
+//       page = "1",
+//       sparkline = "true",
+//       price_change_percentage = "1h,24h,7d",
+//     } = req.query;
+
+//     const url =
+//       "https://api.coingecko.com/api/v3/coins/markets" +
+//       `?vs_currency=${encodeURIComponent(String(vs_currency))}` +
+//       `&order=${encodeURIComponent(String(order))}` +
+//       `&per_page=${encodeURIComponent(String(per_page))}` +
+//       `&page=${encodeURIComponent(String(page))}` +
+//       `&sparkline=${encodeURIComponent(String(sparkline))}` +
+//       `&price_change_percentage=${encodeURIComponent(String(price_change_percentage))}`;
+
+//     const cacheKey = `markets:${url}`;
+
+//     // ✅ 1) Serve from cache
+//     const cached = getCache(cacheKey);
+//     if (cached) {
+//       res.set("Cache-Control", "public, max-age=30");
+//       return res.json(cached);
+//     }
+
+//     // ✅ 2) De-dupe concurrent identical requests
+//     if (inFlight.has(cacheKey)) {
+//       const data = await inFlight.get(cacheKey)!;
+//       res.set("Cache-Control", "public, max-age=30");
+//       return res.json(data);
+//     }
+
+//     // ✅ 3) Fetch upstream (store promise first to dedupe)
+//     const p = (async () => {
+//       const resp = await fetch(url, { headers: { accept: "application/json" } });
+
+//       // Pass through rate limit status + Retry-After if present
+//       if (resp.status === 429) {
+//         const retryAfter = resp.headers.get("retry-after");
+//         const text = await resp.text();
+//         const err: any = new Error("Rate limited by CoinGecko");
+//         err.status = 429;
+//         err.retryAfter = retryAfter;
+//         err.body = text;
+//         throw err;
+//       }
+
+//       if (!resp.ok) {
+//         const text = await resp.text();
+//         const err: any = new Error(`CoinGecko error ${resp.status}`);
+//         err.status = resp.status;
+//         err.body = text;
+//         throw err;
+//       }
+
+//       return await resp.json();
+//     })();
+
+//     inFlight.set(cacheKey, p);
+
+//     try {
+//       const data = await p;
+
+//       // ✅ Cache for 30 seconds (tune: 15–60s)
+//       setCache(cacheKey, data, 30_000);
+
+//       res.set("Cache-Control", "public, max-age=30");
+//       return res.json(data);
+//     } finally {
+//       inFlight.delete(cacheKey);
+//     }
+//   } catch (e: any) {
+//     if (e?.status === 429) {
+//       if (e.retryAfter) res.set("Retry-After", String(e.retryAfter));
+//       return res.status(429).send(e.body ?? "Too Many Requests");
+//     }
+//     return res.status(e?.status ?? 500).send(e?.body ?? "Proxy failed");
+//   }
+// });
+
 app.get("/api/coingecko/markets", async (req, res) => {
+  const ok = <T,>(data: T, cacheSeconds = 30) => {
+    res.set("Cache-Control", `public, max-age=${cacheSeconds}`);
+    return res.json({ ok: true as const, data });
+  };
+
+  const fail = (code: number, message: string, retryAfter?: string | null) => {
+    if (retryAfter) res.set("Retry-After", String(retryAfter));
+    return res.status(code).json({
+      ok: false as const,
+      error: { code, message },
+      retryAfter: retryAfter ?? null,
+    });
+  };
+
   try {
     const {
       vs_currency = "usd",
@@ -227,44 +325,39 @@ app.get("/api/coingecko/markets", async (req, res) => {
       `&per_page=${encodeURIComponent(String(per_page))}` +
       `&page=${encodeURIComponent(String(page))}` +
       `&sparkline=${encodeURIComponent(String(sparkline))}` +
-      `&price_change_percentage=${encodeURIComponent(String(price_change_percentage))}`;
+      `&price_change_percentage=${encodeURIComponent(
+        String(price_change_percentage)
+      )}`;
 
     const cacheKey = `markets:${url}`;
 
     // ✅ 1) Serve from cache
     const cached = getCache(cacheKey);
-    if (cached) {
-      res.set("Cache-Control", "public, max-age=30");
-      return res.json(cached);
-    }
+    if (cached) return ok(cached, 30);
 
     // ✅ 2) De-dupe concurrent identical requests
     if (inFlight.has(cacheKey)) {
       const data = await inFlight.get(cacheKey)!;
-      res.set("Cache-Control", "public, max-age=30");
-      return res.json(data);
+      return ok(data, 30);
     }
 
     // ✅ 3) Fetch upstream (store promise first to dedupe)
     const p = (async () => {
       const resp = await fetch(url, { headers: { accept: "application/json" } });
 
-      // Pass through rate limit status + Retry-After if present
       if (resp.status === 429) {
         const retryAfter = resp.headers.get("retry-after");
         const text = await resp.text();
-        const err: any = new Error("Rate limited by CoinGecko");
+        const err: any = new Error(text || "Rate limited by CoinGecko");
         err.status = 429;
         err.retryAfter = retryAfter;
-        err.body = text;
         throw err;
       }
 
       if (!resp.ok) {
         const text = await resp.text();
-        const err: any = new Error(`CoinGecko error ${resp.status}`);
+        const err: any = new Error(text || `CoinGecko error ${resp.status}`);
         err.status = resp.status;
-        err.body = text;
         throw err;
       }
 
@@ -279,23 +372,16 @@ app.get("/api/coingecko/markets", async (req, res) => {
       // ✅ Cache for 30 seconds (tune: 15–60s)
       setCache(cacheKey, data, 30_000);
 
-      res.set("Cache-Control", "public, max-age=30");
-      return res.json(data);
+      return ok(data, 30);
     } finally {
       inFlight.delete(cacheKey);
     }
   } catch (e: any) {
     if (e?.status === 429) {
-      if (e.retryAfter) res.set("Retry-After", String(e.retryAfter));
-      return res.status(429).send(e.body ?? "Too Many Requests");
+      return fail(429, "Rate limit exceeded. Please retry shortly.", e.retryAfter);
     }
-    return res.status(e?.status ?? 500).send(e?.body ?? "Proxy failed");
+    return fail(e?.status ?? 500, e?.message ?? "Proxy failed");
   }
 });
-
-
-
-
-
 
 app.listen(3001, () => console.log(`Server running on http://localhost:3001`)); 

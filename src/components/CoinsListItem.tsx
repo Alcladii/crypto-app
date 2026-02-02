@@ -72,7 +72,6 @@ export const CoinsListItem:React.FC<CoinsListItemProps>= ({
   };
   
   const currencySymbol = "$"
-  console.log("item re-rendered")
 
   const navigate = useNavigate();
 
