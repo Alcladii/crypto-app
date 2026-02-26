@@ -25,6 +25,8 @@ type AddAssetProps = {
   ) => void;
 };
 
+const host = import.meta.env.VITE_API_URL;
+
 export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
   const {
     coinList,
@@ -65,10 +67,8 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
     setSelectCoinDataHasError(false);
     setSelectCoinIsLoading(true);
     try {
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
-      setSelectedCoin(singleCoinData.data);
+      const res = await axios.get(`${host}/api/coingecko/coins/${coinId}`);
+      setSelectedCoin(res.data.data);
       setSelectCoinIsLoading(false);
     } catch (err) {
       setSelectCoinDataHasError(true);
@@ -80,15 +80,16 @@ export const AddAsset: React.FC<AddAssetProps> = ({ addCoin }) => {
     setSelectedCoinLoadingHasError(false);
     setSelectedCoinIsLoading(true);
     try {
-      const singleCoinHistory = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
+      const res = await axios.get(
+        `${host}/api/coingecko/coins/${coinId}/history`,
+        { params: { date: formattedDateForHistoryApiCall } }
       );
       addCoin(
         coinId,
         selectedCoin,
         purchasedAmount,
         purchaseDate,
-        singleCoinHistory.data
+        res.data.data
       );
       setSelectedCoinIsLoading(false);
     } catch (err) {

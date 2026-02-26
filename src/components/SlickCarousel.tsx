@@ -97,7 +97,16 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   };
 
   useEffect(() => {
-    resetSelectedCoins();
+    const selectedIds = new Set(selectedCoinData.map((c: Coin) => c.id));
+    if (selectedIds.size === 0) {
+      resetSelectedCoins();
+    } else {
+      const synced = slidesData.map((slide: Coin) => ({
+        ...slide,
+        selected: selectedIds.has(slide.id),
+      }));
+      setSlidesData(synced);
+    }
   }, []);
 
   useEffect(() => {

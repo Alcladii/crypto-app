@@ -25,7 +25,7 @@ type PortfolioProps = {
   setLoadHomePage: Dispatch<SetStateAction<boolean>>;
 };
 function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
-  const { portfolioList, setPortfolioList, darkMode } = useContext(
+  const { setPortfolioList, darkMode } = useContext(
     CryptoContext
   ) as CryptoContextProps;
   const [isLoading, setIsLoading] = useState(false);
@@ -100,52 +100,6 @@ function Portfolio({ loadHomePage, setLoadHomePage }: PortfolioProps) {
     }
   };
 
-  const getLatestCoinDataEveryMinute = async (portfolioList: any[]) => {
-    const uniqueCoinIds: any[] = [];
-
-    try {
-      // Get unique coinIds
-      portfolioList.forEach((coin) => {
-        if (!uniqueCoinIds.includes(coin.coinId)) {
-          uniqueCoinIds.push(coin.coinData.id);
-        }
-      });
-
-      // Fetch updated coinData for each unique coin
-      const updateRequests = uniqueCoinIds.map(async (coinId) => {
-        const { data: latestCoinData } = await axios.get(
-          `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-        );
-
-        //Send the latest coinData to your backend to update all entries for this coinId
-        await axios.put(`${host}/api/portfolio/coin-data/${coinId}`, {
-          coinData: latestCoinData,
-        });
-      });
-
-      // Wait for all updates to finish
-      await Promise.all(updateRequests);
-
-      // Fetch the updated portfolio list from your backend to update the JSX
-      await fetchPortfolio();
-
-      //setIsUpdating(false);
-    } catch (error) {
-      console.error("Failed to update all coin data:", error);
-      //setHasError(true);
-      //setIsUpdating(false);
-    }
-  };
-
-  useEffect(() => {
-    const minute = 60000;
-
-    const intervalId = setInterval(() => {
-      getLatestCoinDataEveryMinute(portfolioList);
-    }, minute);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   // if (!isSignedIn) {
   //   return (

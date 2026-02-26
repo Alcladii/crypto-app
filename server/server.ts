@@ -141,6 +141,13 @@ app.put('/api/portfolio/coin-data/:coinId', async (req, res) => {
   }
 });
 
+const cgHeaders = (): Record<string, string> => ({
+  accept: "application/json",
+  ...(process.env.COINGECKO_API_KEY
+    ? { "x-cg-demo-api-key": process.env.COINGECKO_API_KEY }
+    : {}),
+});
+
 app.get("/api/coingecko/market-chart", async (req, res) => {
   try {
     const { coinId, currency, days } = req.query;
@@ -155,7 +162,7 @@ app.get("/api/coingecko/market-chart", async (req, res) => {
       ? `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`
       : `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}&interval=daily`;
 
-    const response = await fetch(url);
+    const response = await fetch(url, { headers: cgHeaders() });
 
     if (response.status === 429) {
       const retryAfter = response.headers.get("retry-after");
@@ -293,6 +300,150 @@ app.get("/api/coingecko/market-chart", async (req, res) => {
 //   }
 // });
 
+app.get("/api/coingecko/coins/:coinId", async (req, res) => {
+  const { coinId } = req.params;
+  const url =
+    `https://api.coingecko.com/api/v3/coins/${encodeURIComponent(coinId)}` +
+    `?localization=false&tickers=false&market_data=true` +
+    `&community_data=true&developer_data=false&sparkline=false`;
+  const cacheKey = `coin:${coinId}`;
+
+  const cached = getCache(cacheKey);
+  if (cached) return sendOk(res, cached, 60);
+
+  if (inFlight.has(cacheKey)) {
+    try {
+      const data = await inFlight.get(cacheKey)!;
+      return sendOk(res, data, 60);
+    } catch (e: any) {
+      return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed", e?.retryAfter ?? null);
+    }
+  }
+
+  const p = (async () => {
+    const resp = await fetch(url, { headers: cgHeaders() });
+    if (resp.status === 429) {
+      const err: any = new Error("Rate limited by CoinGecko");
+      err.status = 429;
+      err.retryAfter = resp.headers.get("retry-after");
+      throw err;
+    }
+    if (!resp.ok) {
+      const err: any = new Error(`CoinGecko error ${resp.status}`);
+      err.status = resp.status;
+      throw err;
+    }
+    return resp.json();
+  })();
+
+  inFlight.set(cacheKey, p);
+  try {
+    const data = await p;
+    setCache(cacheKey, data, 60_000);
+    return sendOk(res, data, 60);
+  } catch (e: any) {
+    if (e?.status === 429) return sendErr(res, 429, "Rate limit exceeded.", e.retryAfter);
+    return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed");
+  } finally {
+    inFlight.delete(cacheKey);
+  }
+});
+
+app.get("/api/coingecko/coins/:coinId/history", async (req, res) => {
+  const { coinId } = req.params;
+  const { date } = req.query as { date: string };
+  const url =
+    `https://api.coingecko.com/api/v3/coins/${encodeURIComponent(coinId)}/history` +
+    `?date=${encodeURIComponent(date)}&localization=false`;
+  const cacheKey = `coin-history:${coinId}:${date}`;
+
+  const cached = getCache(cacheKey);
+  if (cached) return sendOk(res, cached, 86400);
+
+  if (inFlight.has(cacheKey)) {
+    try {
+      const data = await inFlight.get(cacheKey)!;
+      return sendOk(res, data, 86400);
+    } catch (e: any) {
+      return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed", e?.retryAfter ?? null);
+    }
+  }
+
+  const p = (async () => {
+    const resp = await fetch(url, { headers: cgHeaders() });
+    if (resp.status === 429) {
+      const err: any = new Error("Rate limited by CoinGecko");
+      err.status = 429;
+      err.retryAfter = resp.headers.get("retry-after");
+      throw err;
+    }
+    if (!resp.ok) {
+      const err: any = new Error(`CoinGecko error ${resp.status}`);
+      err.status = resp.status;
+      throw err;
+    }
+    return resp.json();
+  })();
+
+  inFlight.set(cacheKey, p);
+  try {
+    const data = await p;
+    setCache(cacheKey, data, 24 * 60 * 60 * 1000);
+    return sendOk(res, data, 86400);
+  } catch (e: any) {
+    if (e?.status === 429) return sendErr(res, 429, "Rate limit exceeded.", e.retryAfter);
+    return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed");
+  } finally {
+    inFlight.delete(cacheKey);
+  }
+});
+
+app.get("/api/coingecko/search", async (req, res) => {
+  const { query } = req.query as { query: string };
+  const url = `https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(query)}`;
+  const cacheKey = `search:${query.toLowerCase()}`;
+
+  const cached = getCache(cacheKey);
+  if (cached) return sendOk(res, cached, 300);
+
+  if (inFlight.has(cacheKey)) {
+    try {
+      const data = await inFlight.get(cacheKey)!;
+      return sendOk(res, data, 300);
+    } catch (e: any) {
+      return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed", e?.retryAfter ?? null);
+    }
+  }
+
+  const p = (async () => {
+    const resp = await fetch(url, { headers: cgHeaders() });
+    if (resp.status === 429) {
+      const err: any = new Error("Rate limited by CoinGecko");
+      err.status = 429;
+      err.retryAfter = resp.headers.get("retry-after");
+      throw err;
+    }
+    if (!resp.ok) {
+      const err: any = new Error(`CoinGecko error ${resp.status}`);
+      err.status = resp.status;
+      throw err;
+    }
+    return resp.json();
+  })();
+
+  inFlight.set(cacheKey, p);
+  try {
+    const data = await p;
+    setCache(cacheKey, data, 5 * 60 * 1000);
+    return sendOk(res, data, 300);
+  } catch (e: any) {
+    if (e?.status === 429) return sendErr(res, 429, "Rate limit exceeded.", e.retryAfter);
+    return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed");
+  } finally {
+    inFlight.delete(cacheKey);
+  }
+});
+
 app.get("/api/coingecko/markets", async (req, res) => {
   const ok = <T,>(data: T, cacheSeconds = 30) => {
     res.set("Cache-Control", `public, max-age=${cacheSeconds}`);
@@ -343,7 +494,7 @@ app.get("/api/coingecko/markets", async (req, res) => {
 
     // ✅ 3) Fetch upstream (store promise first to dedupe)
     const p = (async () => {
-      const resp = await fetch(url, { headers: { accept: "application/json" } });
+      const resp = await fetch(url, { headers: cgHeaders() });
 
       if (resp.status === 429) {
         const retryAfter = resp.headers.get("retry-after");
@@ -384,4 +535,49 @@ app.get("/api/coingecko/markets", async (req, res) => {
   }
 });
 
-app.listen(3001, () => console.log(`Server running on http://localhost:3001`)); 
+app.get("/api/coingecko/global", async (_req: any, res: any) => {
+  const url = "https://api.coingecko.com/api/v3/global";
+  const cacheKey = "global";
+
+  const cached = getCache(cacheKey);
+  if (cached) return sendOk(res, cached, 60);
+
+  if (inFlight.has(cacheKey)) {
+    try {
+      const data = await inFlight.get(cacheKey)!;
+      return sendOk(res, data, 60);
+    } catch (e: any) {
+      return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed", e?.retryAfter ?? null);
+    }
+  }
+
+  const p = (async () => {
+    const resp = await fetch(url, { headers: cgHeaders() });
+    if (resp.status === 429) {
+      const err: any = new Error("Rate limited by CoinGecko");
+      err.status = 429;
+      err.retryAfter = resp.headers.get("retry-after");
+      throw err;
+    }
+    if (!resp.ok) {
+      const err: any = new Error(`CoinGecko error ${resp.status}`);
+      err.status = resp.status;
+      throw err;
+    }
+    return resp.json();
+  })();
+
+  inFlight.set(cacheKey, p);
+  try {
+    const data = await p;
+    setCache(cacheKey, data, 60_000);
+    return sendOk(res, data, 60);
+  } catch (e: any) {
+    if (e?.status === 429) return sendErr(res, 429, "Rate limit exceeded.", e.retryAfter);
+    return sendErr(res, e?.status ?? 500, e?.message ?? "Proxy failed");
+  } finally {
+    inFlight.delete(cacheKey);
+  }
+});
+
+app.listen(3001, () => console.log(`Server running on http://localhost:3001`));
