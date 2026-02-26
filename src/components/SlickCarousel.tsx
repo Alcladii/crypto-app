@@ -97,23 +97,28 @@ export const SlickCarousel: React.FC<SlickCarouselProps> = ({
   };
 
   useEffect(() => {
-    resetSelectedCoins();
+    const selectedIds = new Set(selectedCoinData.map((c: Coin) => c.id));
+    if (selectedIds.size === 0) {
+      resetSelectedCoins();
+    } else {
+      const synced = slidesData.map((slide: Coin) => ({
+        ...slide,
+        selected: selectedIds.has(slide.id),
+      }));
+      setSlidesData(synced);
+    }
   }, []);
 
   useEffect(() => {
     if (coinList.length > 0) {
-      const coinIdsInSlidesData = slidesData.map((coin: Coin) => coin.id);
-      const coinsNotInSlidesData = coinList.filter(
-        (coin) => !coinIdsInSlidesData.includes(coin.id)
+      const selectedIds = new Set(
+        slidesData.filter((c: Coin) => c.selected).map((c: Coin) => c.id)
       );
-      if (coinsNotInSlidesData.length > 0) {
-        const coinsInSlides = coinList.map((coin) => ({
-          ...coin,
-          selected: false,
-        }));
-        setSlidesData(coinsInSlides);
-        setSelectedCoinData([]);
-      }
+      const coinsInSlides = coinList.map((coin) => ({
+        ...coin,
+        selected: selectedIds.has(coin.id),
+      }));
+      setSlidesData(coinsInSlides);
     }
   }, [coinList]);
 

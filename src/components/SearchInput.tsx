@@ -1,9 +1,12 @@
 import { useState, useContext, useEffect, useRef, ChangeEvent } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { CryptoContext, CryptoContextProps } from "../contexts/cryptoContext";
 import { ResultList } from "./ResultList";
 import { useDebounce } from "../hooks/useDebounce";
 import { MagnifyGlass } from "./UI/Svg";
+
+const host = import.meta.env.VITE_API_URL;
 
 
 type Coin = {
@@ -17,9 +20,6 @@ export const SearchItemInput = () => {
   const { darkMode } = useContext(CryptoContext) as CryptoContextProps;
   const [inputValue, setInputValue] = useState<string>("");
   const [showSearchInputPopup, setShowSearchInputPopup] = useState<boolean>(false);
-  const [results, setResults] = useState<Coin[]>([]);
-  const [fetchSearchDataHasError, setFetchSearchDataHasError] = useState<boolean>(false)
-  const key = import.meta.env.VITE_API_KEY_CRYPTO;
   const debouncedSearchValue = useDebounce(inputValue, 500);
   let searchInputRef = useRef<HTMLDivElement>(null);
 
@@ -28,7 +28,6 @@ export const SearchItemInput = () => {
       if (searchInputRef.current && !searchInputRef.current.contains(e.target as Node)) {
         setShowSearchInputPopup(false);
         setInputValue("");
-        setResults([]);
       }
     };
     document.addEventListener("mousedown", closeSearchInput);
@@ -38,23 +37,21 @@ export const SearchItemInput = () => {
     };
   }, []);
 
-  const fetchSearchData = async (value: string) => {
-    try {
-      const response = await axios <{ coins: Coin[] }>(
-        `https://api.coingecko.com/api/v3/search?key=${key}&query=${value.toLowerCase()}`
-      );
-      const results = response.data.coins;
-      setResults(results);
-    } catch (error) {
-      setFetchSearchDataHasError(true)
-    }
-  };
+  const { data: searchData, isError: fetchSearchDataHasError } = useQuery({
+    queryKey: ["search", debouncedSearchValue],
+    queryFn: async () => {
+      const { data: res } = await axios.get(`${host}/api/coingecko/search`, {
+        params: { query: debouncedSearchValue },
+      });
+      if (!res.ok) throw new Error(res.error.message);
+      return res.data.coins as Coin[];
+    },
+    enabled: debouncedSearchValue.length > 0,
+    staleTime: 5 * 60 * 1000,
+    placeholderData: [],
+  });
 
-  useEffect(() => {
-    if (debouncedSearchValue) {
-      fetchSearchData(debouncedSearchValue);
-    }
-  }, [debouncedSearchValue]);
+  const results = searchData ?? [];
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

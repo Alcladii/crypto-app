@@ -83,19 +83,20 @@ export const EditAsset /*: React.FC<EditAssetProps>*/ = ({
 
     try {
       const updatedCoinRes = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `${host}/api/coingecko/coins/${coinId}`
       );
 
       const historyRes = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDateForHistoryApiCall}&localization=false`
+        `${host}/api/coingecko/coins/${coinId}/history`,
+        { params: { date: formattedDateForHistoryApiCall } }
       );
 
       await updatePortfolioItem(
         id,
-        updatedCoinRes.data,
+        updatedCoinRes.data.data,
         purchasedAmount,
         purchaseDate,
-        historyRes.data
+        historyRes.data.data
       );
 
       setSelectedCoinIsLoading(false);

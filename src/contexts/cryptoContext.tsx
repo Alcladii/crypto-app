@@ -187,11 +187,9 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     setSingleCoinIsLoading(true);
     setSingleCoinLoadingHasError(false);
     try {
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
+      const res = await axios.get(`${host}/api/coingecko/coins/${item}`);
       setSingleCoinIsLoading(false);
-      setSingleCoin(singleCoinData.data);
+      setSingleCoin(res.data.data);
     } catch (err) {
       setSingleCoinIsLoading(false);
       setSingleCoinLoadingHasError(true);
@@ -202,11 +200,9 @@ export const CryptoProvider = ({ children }: CryptoProviderProps) => {
     setCurrencyLoadingHasError(false);
     setCurrencyListIsLoading(true);
     try {
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
+      const res = await axios.get(`${host}/api/coingecko/coins/bitcoin`);
       let fetchCurrencyList: string[];
-      fetchCurrencyList = Object.keys(singleCoinData.data.market_data.ath);
+      fetchCurrencyList = Object.keys(res.data.data.market_data.ath);
       setCurrencyList(fetchCurrencyList);
       setCurrencyListIsLoading(false);
     } catch (err) {

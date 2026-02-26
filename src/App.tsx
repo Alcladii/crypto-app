@@ -8,7 +8,6 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/clerk-react";
-import { useUser } from "@clerk/clerk-react";
 import { Home } from "./pages/Homepage.tsx";
 import Portfolio from "./pages/Portfolio.tsx";
 import CoinPage from "./pages/CoinPage.tsx";
@@ -79,15 +78,17 @@ export default function App() {
     setDarkMode(!darkMode);
   };
 
+  const host = import.meta.env.VITE_API_URL;
+
   const getMarketData = async () => {
     setMarketDataLoadingHasError(false);
     setMarketDataIsLoading(true);
     try {
       const marketDataResponse = await axios.get(
-        "https://api.coingecko.com/api/v3/global"
+        `${host}/api/coingecko/global`
       );
       setMarketDataIsLoading(false);
-      setMarketData(marketDataResponse.data.data);
+      setMarketData(marketDataResponse.data.data.data);
     } catch (err) {
       setMarketDataLoadingHasError(true);
       setMarketDataIsLoading(false);

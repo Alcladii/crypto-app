@@ -99,16 +99,16 @@ export const CurrencyConverter = () => {
     }
   };
 
+  const host = import.meta.env.VITE_API_URL;
+
   const getSelectedLeftCurrencyData = useCallback(
     async (item: string) => {
       try {
         setSingleCoinIsLoading(true);
         setSingleCoinLoadingHasError(false);
-        const singleCoinData = await axios(
-          `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-        );
+        const res = await axios.get(`${host}/api/coingecko/coins/${item}`);
         setSingleCoinIsLoading(false);
-        setLeftCurrencyData(singleCoinData.data);
+        setLeftCurrencyData(res.data.data);
       } catch (err) {
         setSingleCoinLoadingHasError(true);
         setSingleCoinIsLoading(false);
@@ -118,15 +118,12 @@ export const CurrencyConverter = () => {
   );
 
   const getSelectedRightCurrencyData = async (item: string) => {
-    //console.log("getSelectedRightCurrencyData in CurrencyConverter.tsx ran");
     setSingleCoinLoadingHasError(false);
     setSingleCoinIsLoading(true);
     try {
-      const singleCoinData = await axios(
-        `https://api.coingecko.com/api/v3/coins/${item}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
+      const res = await axios.get(`${host}/api/coingecko/coins/${item}`);
       setSingleCoinIsLoading(false);
-      setRightCurrencyData(singleCoinData.data);
+      setRightCurrencyData(res.data.data);
     } catch (err) {
       setSingleCoinLoadingHasError(true);
       setSingleCoinIsLoading(false);
@@ -135,7 +132,7 @@ export const CurrencyConverter = () => {
 
   const handleLeftCurrencySelect = (value: string) => {
     setLeftCurrency(value);
-    getSelectedLeftCurrencyData(leftCurrency);
+    getSelectedLeftCurrencyData(value);
   };
 
   const handleRightCurrencySelect = (value: string) => {
