@@ -19,6 +19,9 @@ export const CurrencyConverter = () => {
     getCoinPriceVolume,
     displayCurrency,
     coinList,
+    setCoinList,
+    getCurrencyList,
+    currencyList,
     currencySymbol,
     currencyConverterDays,
     darkMode,
@@ -238,6 +241,36 @@ export const CurrencyConverter = () => {
       }
     });
   }, [rightCurrency]);
+
+  useEffect(() => {
+    if (currencyList.length === 0) {
+      getCurrencyList();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (coinList.length === 0) {
+      axios
+        .get(`${host}/api/coingecko/markets`, {
+          params: {
+            vs_currency: displayCurrency,
+            order: "market_cap_desc",
+            per_page: 250,
+            page: 1,
+            sparkline: false,
+          },
+        })
+        .then((res) => {
+          if (res.data.ok) setCoinList(res.data.data);
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    getSelectedLeftCurrencyData(leftCurrency);
+    getSelectedRightCurrencyData(rightCurrency);
+  }, []);
 
   return (
     <div className={`${darkMode ? "" : "theme-light"}`}>
